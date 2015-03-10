@@ -69,12 +69,6 @@
     <Reference Include="Microsoft.Xrm.Sdk">
       <HintPath>..\XrmToolBox\Referenced Assemblies\Microsoft.Xrm.Sdk.dll</HintPath>
     </Reference>
-    <Reference Include="PluginProfiler.Library">
-      <HintPath>..\..\Bin\PluginProfiler.Library.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginProfiler.Plugins">
-      <HintPath>..\..\Bin\PluginProfiler.Plugins.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
@@ -382,10 +376,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Solutions\PluginProfiler\PluginProfiler.Solution.zip">
-      <Link>PluginProfiler.Solution.zip</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Images\AccessDenied.gif" />
     <Content Include="Images\Assembly.gif" />
     <Content Include="Images\AssemblySelected.gif" />
