@@ -93,7 +93,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\SampleCode\CS\HelperCode\DeviceIdManager.cs">
+    <Compile Include="DeviceIdManager.cs">
       <Link>DeviceIdManager.cs</Link>
     </Compile>
     <Compile Include="AboutForm.cs">
