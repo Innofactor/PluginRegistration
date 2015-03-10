@@ -58,14 +58,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Crm.Sdk.Proxy">
-      <HintPath>..\..\Bin\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+      <HintPath>..\XrmToolBox\Referenced Assemblies\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IdentityModel">
       <HintPath>..\..\..\..\private\lib\Microsoft.IdentityModel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk">
-      <HintPath>..\..\Bin\Microsoft.Xrm.Sdk.dll</HintPath>
+      <HintPath>..\XrmToolBox\Referenced Assemblies\Microsoft.Xrm.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="PluginProfiler.Library">
       <HintPath>..\..\Bin\PluginProfiler.Library.dll</HintPath>
