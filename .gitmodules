@@ -1,0 +1,3 @@
+[submodule "XrmToolBox"]
+	path = XrmToolBox
+	url = https://github.com/MscrmTools/XrmToolBox.git
