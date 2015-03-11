@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyTitle("Plugin Registration Tool")]
 [assembly: AssemblyDescription("Compatible with Microsoft Dynamics CRM 5.0 (On-Premise)")]
 [assembly: AssemblyProduct("PluginRegistrationTool")]

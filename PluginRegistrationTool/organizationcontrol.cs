@@ -21,10 +21,11 @@ using System.Drawing;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using XrmToolBox;
 
 namespace PluginRegistrationTool
 {
-	public partial class OrganizationControl : UserControl
+	public partial class OrganizationControl : PluginBase
 	{
 		private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
 		private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
@@ -37,6 +38,10 @@ namespace PluginRegistrationTool
 		private Dictionary<string, CrmTreeNode> m_rootNodeList = null;
 		private Dictionary<Guid, Guid> m_viewNodeList = null;
 		private Dictionary<Guid, Guid> m_stepParentList = null;
+
+        public OrganizationControl()
+        {
+        }
 
 		public OrganizationControl(CrmOrganization org, MainForm mainForm)
 		{

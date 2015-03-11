@@ -442,6 +442,12 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XrmToolBox\XrmToolBox\XrmToolBox.csproj">
+      <Project>{328d55be-8b9a-4087-a5c2-9fbaf623f54b}</Project>
+      <Name>XrmToolBox</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
