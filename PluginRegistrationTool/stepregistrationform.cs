@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-using PluginProfiler.Plugins;
+// using PluginProfiler.Plugins;
 
 namespace PluginRegistrationTool
 {
@@ -279,18 +279,18 @@ namespace PluginRegistrationTool
 				txtSecureConfig.Text = this.m_currentStep.SecureConfiguration;
 
 				string stepName;
-				if (this.m_currentStep.IsProfiled && org.Plugins[this.m_currentStep.PluginId].IsProfilerPlugin)
-				{
-					//If the current step is a profiler step, the form that is displayed should use the configuration from the original step.
-					ProfilerConfiguration profilerConfig = OrganizationHelper.RetrieveProfilerConfiguration(this.m_currentStep);
-					stepName = profilerConfig.OriginalEventHandlerName;
-					txtUnsecureConfiguration.Text = profilerConfig.Configuration;
-				}
-				else
-				{
+                //if (this.m_currentStep.IsProfiled && org.Plugins[this.m_currentStep.PluginId].IsProfilerPlugin)
+                //{
+                //    //If the current step is a profiler step, the form that is displayed should use the configuration from the original step.
+                //    // ProfilerConfiguration profilerConfig = OrganizationHelper.RetrieveProfilerConfiguration(this.m_currentStep);
+                //    // stepName = profilerConfig.OriginalEventHandlerName;
+                //    // txtUnsecureConfiguration.Text = profilerConfig.Configuration;
+                //}
+                //else
+                //{
 					txtUnsecureConfiguration.Text = this.m_currentStep.UnsecureConfiguration;
 					stepName = this.m_currentStep.Name;
-				}
+                //}
 
 				if (stepName == this.GenerateDescription())
 				{
@@ -588,8 +588,8 @@ namespace PluginRegistrationTool
 
 			if (plugin.IsProfilerPlugin)
 			{
-				step.ProfilerStepId = step.StepId;
-				step.UnsecureConfiguration = OrganizationHelper.UpdateWithStandaloneConfiguration(step).ToString();
+                //step.ProfilerStepId = step.StepId;
+                //step.UnsecureConfiguration = OrganizationHelper.UpdateWithStandaloneConfiguration(step).ToString();
 			}
 			else if (null != this.m_currentStep)
 			{
@@ -633,11 +633,11 @@ namespace PluginRegistrationTool
 						return;
 					}
 
-					//Refresh the profiler step to have the same settings
-					if (step.IsProfiled)
-					{
-						OrganizationHelper.RefreshProfilerStep(step);
-					}
+                    ////Refresh the profiler step to have the same settings
+                    //if (step.IsProfiled)
+                    //{
+                    //    OrganizationHelper.RefreshProfilerStep(step);
+                    //}
 
 					rankChanged = (this.m_currentStep.Rank != step.Rank);
 

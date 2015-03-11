@@ -341,19 +341,19 @@ namespace PluginRegistrationTool
 
 		private void toolProfilerReplay_Click(object sender, EventArgs e)
 		{
-			using (DebugPluginForm form = new DebugPluginForm(null))
-			{
-				form.Text = "Replay Plug-in Execution";
-				form.ShowDialog();
-			}
+            //using (DebugPluginForm form = new DebugPluginForm(null))
+            //{
+            //    form.Text = "Replay Plug-in Execution";
+            //    form.ShowDialog();
+            //}
 		}
 
 		private void toolPluginProfile_Click(object sender, EventArgs e)
 		{
-			using (PluginProfileForm form = new PluginProfileForm())
-			{
-				form.ShowDialog();
-			}
+            //using (PluginProfileForm form = new PluginProfileForm())
+            //{
+            //    form.ShowDialog();
+            //}
 		}
 		#endregion
 

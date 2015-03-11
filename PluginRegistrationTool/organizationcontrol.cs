@@ -632,127 +632,127 @@ namespace PluginRegistrationTool
 
 		private void toolProfilerInstall_Click(object sender, EventArgs e)
 		{
-			if (!OrganizationHelper.IsProfilerSupported)
-			{
-				return;
-			}
+            //if (true/*!OrganizationHelper.IsProfilerSupported*/)
+            //{
+            //    return;
+            //}
 
-			if (null != this.m_org.ProfilerPlugin)
-			{
-				if (DialogResult.Yes != MessageBox.Show(this, "This will delete all previously collected profiling sessions. Continue?", "Profiler Installation",
-					MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2))
-				{
-					return;
-				}
+            //if (null != this.m_org.ProfilerPlugin)
+            //{
+            //    if (DialogResult.Yes != MessageBox.Show(this, "This will delete all previously collected profiling sessions. Continue?", "Profiler Installation",
+            //        MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2))
+            //    {
+            //        return;
+            //    }
 
-				try
-				{
-					Guid nodeId = OrganizationHelper.UninstallProfiler(this.m_org);
-					if (trvPlugins.HasNode(nodeId))
-					{
-						trvPlugins.RemoveNode(nodeId);
-					}
+            //    try
+            //    {
+            //        //Guid nodeId = OrganizationHelper.UninstallProfiler(this.m_org);
+            //        if (trvPlugins.HasNode(nodeId))
+            //        {
+            //            trvPlugins.RemoveNode(nodeId);
+            //        }
 
-					trvPlugins.RefreshNodes(false);
-				}
-				catch (Exception ex)
-				{
-					ErrorMessage.ShowErrorMessageBox(this, "Unable to Uninstall the Profiler", "Profiler Installation Error", ex);
-					return;
-				}
+            //        trvPlugins.RefreshNodes(false);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ErrorMessage.ShowErrorMessageBox(this, "Unable to Uninstall the Profiler", "Profiler Installation Error", ex);
+            //        return;
+            //    }
 
-				MessageBox.Show(this, "Profiler Uninstalled Successfully", "Profiler Installation",
-					MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			else
-			{
-				try
-				{
-					trvPlugins.AddNode(Guid.Empty, OrganizationHelper.InstallProfiler(this.m_org));
-				}
-				catch (Exception ex)
-				{
-					ErrorMessage.ShowErrorMessageBox(this, "Unable to Install the Profiler", "Profiler Installation Error", ex);
-					return;
-				}
+            //    MessageBox.Show(this, "Profiler Uninstalled Successfully", "Profiler Installation",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        //trvPlugins.AddNode(Guid.Empty, OrganizationHelper.InstallProfiler(this.m_org));
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ErrorMessage.ShowErrorMessageBox(this, "Unable to Install the Profiler", "Profiler Installation Error", ex);
+            //        return;
+            //    }
 
-				MessageBox.Show(this, "Profiler Installed Successfully", "Profiler Installation",
-					MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
+            //    MessageBox.Show(this, "Profiler Installed Successfully", "Profiler Installation",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
 
-			if (null != trvPlugins.SelectedNode)
-			{
-				this.SelectItem(trvPlugins.SelectedNode);
-			}
-			this.RefreshProfilerGeneralMenu();
+            //if (null != trvPlugins.SelectedNode)
+            //{
+            //    this.SelectItem(trvPlugins.SelectedNode);
+            //}
+            //this.RefreshProfilerGeneralMenu();
 		}
 
 		private void toolProfilerEnable_Click(object sender, EventArgs e)
 		{
-			if (!OrganizationHelper.IsProfilerSupported)
-			{
-				return;
-			}
+            //if (true/*!OrganizationHelper.IsProfilerSupported*/)
+            //{
+            //    return;
+            //}
 
-			CrmPluginStep step = trvPlugins.SelectedNode as CrmPluginStep;
-			if (null == step)
-			{
-				return;
-			}
+            //CrmPluginStep step = trvPlugins.SelectedNode as CrmPluginStep;
+            //if (null == step)
+            //{
+            //    return;
+            //}
 
-			if (step.IsProfiled)
-			{
-				//Update the status on the server
-				OrganizationHelper.DisableProfiler(step);
+            //if (step.IsProfiled)
+            //{
+            //    //Update the status on the server
+            //    //OrganizationHelper.DisableProfiler(step);
 
-				//Retrieve the new status for the step
-				OrganizationHelper.RefreshStep(step.Organization, step);
-				if (null != step.Organization.ProfilerPlugin)
-				{
-					OrganizationHelper.RefreshPlugin(step.Organization, step.Organization.ProfilerPlugin);
-				}
+            //    //Retrieve the new status for the step
+            //    OrganizationHelper.RefreshStep(step.Organization, step);
+            //    if (null != step.Organization.ProfilerPlugin)
+            //    {
+            //        OrganizationHelper.RefreshPlugin(step.Organization, step.Organization.ProfilerPlugin);
+            //    }
 
-				//Update the profiler status
-				step.ProfilerStepId = null;
+            //    //Update the profiler status
+            //    step.ProfilerStepId = null;
 
-				//Refresh the node on the tree
-				trvPlugins.RefreshNode(step.NodeId);
-			}
-			else
-			{
-				//Update the status on the server
-				Guid profilerStepId = OrganizationHelper.EnableProfiler(step);
+            //    //Refresh the node on the tree
+            //    trvPlugins.RefreshNode(step.NodeId);
+            //}
+            //else
+            //{
+            //    //Update the status on the server
+            //    //Guid profilerStepId = OrganizationHelper.EnableProfiler(step);
 
-				//Retrieve the new status for the step (first ensure that the profiler plug-in is known).
-				if (null == step.Organization.ProfilerPlugin)
-				{
-					this.toolRefresh_Click(sender, e);
-					return;
-				}
-				else
-				{
-					OrganizationHelper.RefreshPlugin(step.Organization, step.Organization.ProfilerPlugin);
-					OrganizationHelper.RefreshStep(step.Organization, step);
+            //    //Retrieve the new status for the step (first ensure that the profiler plug-in is known).
+            //    if (null == step.Organization.ProfilerPlugin)
+            //    {
+            //        this.toolRefresh_Click(sender, e);
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        OrganizationHelper.RefreshPlugin(step.Organization, step.Organization.ProfilerPlugin);
+            //        OrganizationHelper.RefreshStep(step.Organization, step);
 
-					//Update the profiler status
-					step.ProfilerStepId = profilerStepId;
+            //        //Update the profiler status
+            //        step.ProfilerStepId = profilerStepId;
 
-					//Refresh the node on the tree
-					trvPlugins.RefreshNode(step.NodeId);
-					trvPlugins.RefreshNode(step.Organization.ProfilerPlugin.NodeId);
-				}
-			}
+            //        //Refresh the node on the tree
+            //        trvPlugins.RefreshNode(step.NodeId);
+            //        trvPlugins.RefreshNode(step.Organization.ProfilerPlugin.NodeId);
+            //    }
+            //}
 
-			this.SelectItem(step);
+            //this.SelectItem(step);
 		}
 
 		private void toolProfilerDebug_Click(object sender, EventArgs e)
 		{
-			using (DebugPluginForm form = new DebugPluginForm(this.m_org))
-			{
-				form.Text = "Debug Existing Plug-in";
-				form.ShowDialog(this);
-			}
+            //using (DebugPluginForm form = new DebugPluginForm(this.m_org))
+            //{
+            //    form.Text = "Debug Existing Plug-in";
+            //    form.ShowDialog(this);
+            //}
 		}
 		#endregion
 
@@ -1108,7 +1108,7 @@ namespace PluginRegistrationTool
 						btnSave.Enabled = false;
 						this.UpdateEnableButton(step.Enabled);
 
-						if (!OrganizationHelper.IsProfilerSupported ||
+                        if (true/*!OrganizationHelper.IsProfilerSupported*/ ||
 							!(step.IsProfiled || step.Organization.Plugins[step.PluginId].IsProfilerPlugin))
 						{
 							this.toolEnable.Visible = true;
@@ -1504,7 +1504,7 @@ namespace PluginRegistrationTool
 
 		private void RefreshProfilerGeneralMenu()
 		{
-			if (OrganizationHelper.IsProfilerSupported)
+			if (false/*OrganizationHelper.IsProfilerSupported*/)
 			{
 				mnuContextGeneralProfilerInstall.Visible = true;
 				mnuContextGeneralSepProfiler.Visible = true;
@@ -1548,7 +1548,7 @@ namespace PluginRegistrationTool
 
 			toolProfilerEnable.Visible = false;
 
-			if (OrganizationHelper.IsProfilerSupported && null != step &&
+			if (false/*OrganizationHelper.IsProfilerSupported*/ && null != step &&
 				null != step.Organization && null != step.Organization.ProfilerPlugin)
 			{
 				if (!step.Organization.Plugins[step.PluginId].IsProfilerPlugin &&

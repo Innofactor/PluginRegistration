@@ -30,8 +30,8 @@ using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
 
-using PluginProfiler.Library;
-using PluginProfiler.Plugins;
+//using PluginProfiler.Library;
+//using PluginProfiler.Plugins;
 
 using CrmSdk;
 
@@ -643,274 +643,274 @@ namespace PluginRegistrationTool
 			}
 		}
 
-		#region Plug-in Profiler Methods
-		/// <summary>
-		/// Installs the profiler in the given organization
-		/// </summary>
-		/// <param name="org">Organization for the profiler</param>
-		internal static CrmPlugin InstallProfiler(CrmOrganization org)
-		{
-			ThrowIfProfilerNotSupported();
+        //#region Plug-in Profiler Methods
+        ///// <summary>
+        ///// Installs the profiler in the given organization
+        ///// </summary>
+        ///// <param name="org">Organization for the profiler</param>
+        //internal static CrmPlugin InstallProfiler(CrmOrganization org)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == org)
-			{
-				throw new ArgumentNullException("org");
-			}
+        //    if (null == org)
+        //    {
+        //        throw new ArgumentNullException("org");
+        //    }
 
-			//Install the profiler
-			EntityReference profilerTypeReference = PluginProfiler.Library.ProfilerManagementUtility.InstallProfiler(org.OrganizationService);
+        //    //Install the profiler
+        //    EntityReference profilerTypeReference = PluginProfiler.Library.ProfilerManagementUtility.InstallProfiler(org.OrganizationService);
 
-			//Retrieve the assembly and plug-in
-			RelationshipQueryCollection relatedEntityQueries = new RelationshipQueryCollection();
-			relatedEntityQueries.Add(new Relationship("pluginassembly_plugintype"),
-				new QueryExpression(PluginAssembly.EntityLogicalName)
-				{
-					ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName)
-				});
+        //    //Retrieve the assembly and plug-in
+        //    RelationshipQueryCollection relatedEntityQueries = new RelationshipQueryCollection();
+        //    relatedEntityQueries.Add(new Relationship("pluginassembly_plugintype"),
+        //        new QueryExpression(PluginAssembly.EntityLogicalName)
+        //        {
+        //            ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName)
+        //        });
 
-			RetrieveRequest request = new RetrieveRequest()
-			{
-				ColumnSet = GetColumnSet(PluginType.EntityLogicalName),
-				RelatedEntitiesQuery = relatedEntityQueries,
-				Target = profilerTypeReference
-			};
+        //    RetrieveRequest request = new RetrieveRequest()
+        //    {
+        //        ColumnSet = GetColumnSet(PluginType.EntityLogicalName),
+        //        RelatedEntitiesQuery = relatedEntityQueries,
+        //        Target = profilerTypeReference
+        //    };
 
-			PluginType profilerType = (PluginType)((RetrieveResponse)org.OrganizationService.Execute(request)).Entity;
+        //    PluginType profilerType = (PluginType)((RetrieveResponse)org.OrganizationService.Execute(request)).Entity;
 
-			//Create the two representations for the assembly and plug-in
-			CrmPluginAssembly assembly = new CrmPluginAssembly(org, profilerType.pluginassembly_plugintype);
-			assembly.IsProfilerAssembly = true;
-			org.AddAssembly(assembly);
+        //    //Create the two representations for the assembly and plug-in
+        //    CrmPluginAssembly assembly = new CrmPluginAssembly(org, profilerType.pluginassembly_plugintype);
+        //    assembly.IsProfilerAssembly = true;
+        //    org.AddAssembly(assembly);
 
-			CrmPlugin plugin = new CrmPlugin(org, profilerType);
-			plugin.IsProfilerPlugin = true;
-			assembly.AddPlugin(plugin);
+        //    CrmPlugin plugin = new CrmPlugin(org, profilerType);
+        //    plugin.IsProfilerPlugin = true;
+        //    assembly.AddPlugin(plugin);
 
-			//Add the plug-in to the organization
-			org.ProfilerPlugin = plugin;
+        //    //Add the plug-in to the organization
+        //    org.ProfilerPlugin = plugin;
 
-			return plugin;
-		}
+        //    return plugin;
+        //}
 
-		/// <summary>
-		/// Enables the Profiler for a Given Step
-		/// </summary>
-		internal static Guid EnableProfiler(CrmPluginStep step)
-		{
-			ThrowIfProfilerNotSupported();
+        ///// <summary>
+        ///// Enables the Profiler for a Given Step
+        ///// </summary>
+        //internal static Guid EnableProfiler(CrmPluginStep step)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == step)
-			{
-				throw new ArgumentNullException("step");
-			}
-			else if (null == step.Organization)
-			{
-				throw new ArgumentNullException("step", "Organization must be set on the step.");
-			}
+        //    if (null == step)
+        //    {
+        //        throw new ArgumentNullException("step");
+        //    }
+        //    else if (null == step.Organization)
+        //    {
+        //        throw new ArgumentNullException("step", "Organization must be set on the step.");
+        //    }
 
-			return PluginProfiler.Library.ProfilerManagementUtility.Enable(step.Organization.OrganizationService, step.StepId);
-		}
+        //    return PluginProfiler.Library.ProfilerManagementUtility.Enable(step.Organization.OrganizationService, step.StepId);
+        //}
 
-		/// <summary>
-		/// Enables the Profiler for a Given Step
-		/// </summary>
-		internal static void RefreshProfilerStep(CrmPluginStep step)
-		{
-			ThrowIfProfilerNotSupported();
+        ///// <summary>
+        ///// Enables the Profiler for a Given Step
+        ///// </summary>
+        //internal static void RefreshProfilerStep(CrmPluginStep step)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == step)
-			{
-				throw new ArgumentNullException("step");
-			}
-			else if (null == step.Organization)
-			{
-				throw new ArgumentNullException("step", "Organization must be set on the step.");
-			}
-			else if (null == step.ProfilerStepId)
-			{
-				throw new ArgumentNullException("step", "ProfilerStepId must be set.");
-			}
+        //    if (null == step)
+        //    {
+        //        throw new ArgumentNullException("step");
+        //    }
+        //    else if (null == step.Organization)
+        //    {
+        //        throw new ArgumentNullException("step", "Organization must be set on the step.");
+        //    }
+        //    else if (null == step.ProfilerStepId)
+        //    {
+        //        throw new ArgumentNullException("step", "ProfilerStepId must be set.");
+        //    }
 
-			// Allow the Profiler library to refresh the configuration of the step
-			ProfilerManagementUtility.RefreshProfilerStep(step.Organization.OrganizationService, 
-				step.ProfilerStepId.GetValueOrDefault());
-		}
+        //    // Allow the Profiler library to refresh the configuration of the step
+        //    ProfilerManagementUtility.RefreshProfilerStep(step.Organization.OrganizationService, 
+        //        step.ProfilerStepId.GetValueOrDefault());
+        //}
 
-		/// <summary>
-		/// Disables the Profiler for a Given Step
-		/// </summary>
-		internal static void DisableProfiler(CrmPluginStep step)
-		{
-			ThrowIfProfilerNotSupported();
+        ///// <summary>
+        ///// Disables the Profiler for a Given Step
+        ///// </summary>
+        //internal static void DisableProfiler(CrmPluginStep step)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == step)
-			{
-				throw new ArgumentNullException("step");
-			}
-			else if (null == step.Organization)
-			{
-				throw new ArgumentNullException("step", "Organization must be set on the step.");
-			}
+        //    if (null == step)
+        //    {
+        //        throw new ArgumentNullException("step");
+        //    }
+        //    else if (null == step.Organization)
+        //    {
+        //        throw new ArgumentNullException("step", "Organization must be set on the step.");
+        //    }
 
-			PluginProfiler.Library.ProfilerManagementUtility.Disable(step.Organization.OrganizationService, step.StepId);
-		}
+        //    PluginProfiler.Library.ProfilerManagementUtility.Disable(step.Organization.OrganizationService, step.StepId);
+        //}
 
-		/// <summary>
-		/// Disables the Profiler for a Given Step
-		/// </summary>
-		internal static Guid UninstallProfiler(CrmOrganization org)
-		{
-			ThrowIfProfilerNotSupported();
+        ///// <summary>
+        ///// Disables the Profiler for a Given Step
+        ///// </summary>
+        //internal static Guid UninstallProfiler(CrmOrganization org)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == org)
-			{
-				throw new ArgumentNullException("org");
-			}
+        //    if (null == org)
+        //    {
+        //        throw new ArgumentNullException("org");
+        //    }
 
-			//Retrieve the assembly id for the profiler
-			Guid assemblyId = org.ProfilerPlugin.AssemblyId;
-			Guid pluginId = org.ProfilerPlugin.PluginId;
+        //    //Retrieve the assembly id for the profiler
+        //    Guid assemblyId = org.ProfilerPlugin.AssemblyId;
+        //    Guid pluginId = org.ProfilerPlugin.PluginId;
 
-			//Remove the Profiler
-			PluginProfiler.Library.ProfilerManagementUtility.UninstallProfiler(org.OrganizationService);
+        //    //Remove the Profiler
+        //    PluginProfiler.Library.ProfilerManagementUtility.UninstallProfiler(org.OrganizationService);
 
-			//Ensure that the assembly is removed from the organization
-			if (org.Assemblies.ContainsKey(assemblyId))
-			{
-				org.RemoveAssembly(assemblyId);
-			}
+        //    //Ensure that the assembly is removed from the organization
+        //    if (org.Assemblies.ContainsKey(assemblyId))
+        //    {
+        //        org.RemoveAssembly(assemblyId);
+        //    }
 
-			//Reset the profiler plug-in for the organization
-			org.ProfilerPlugin = null;
+        //    //Reset the profiler plug-in for the organization
+        //    org.ProfilerPlugin = null;
 
-			//Loop through all of the existing steps that are marked as profiled steps and update them
-			foreach (CrmPluginStep step in org.Steps)
-			{
-				if (!step.IsProfiled)
-				{
-					continue;
-				}
+        //    //Loop through all of the existing steps that are marked as profiled steps and update them
+        //    foreach (CrmPluginStep step in org.Steps)
+        //    {
+        //        if (!step.IsProfiled)
+        //        {
+        //            continue;
+        //        }
 
-				//Refresh the contents of the step
-				RefreshStep(org, step);
-				step.ProfilerStepId = null;
-			}
+        //        //Refresh the contents of the step
+        //        RefreshStep(org, step);
+        //        step.ProfilerStepId = null;
+        //    }
 
-			return pluginId;
-		}
+        //    return pluginId;
+        //}
 
-		/// <summary>
-		/// Creates a ProfilerConfiguration for the given step
-		/// </summary>
-		/// <param name="step">Step that needs to be configured for the Context Replay</param>
-		/// <returns>Configuration for the profiler</returns>
-		internal static PluginProfiler.Plugins.ProfilerConfiguration UpdateWithStandaloneConfiguration(CrmPluginStep step)
-		{
-			if (null == step)
-			{
-				throw new ArgumentNullException("step");
-			}
+        ///// <summary>
+        ///// Creates a ProfilerConfiguration for the given step
+        ///// </summary>
+        ///// <param name="step">Step that needs to be configured for the Context Replay</param>
+        ///// <returns>Configuration for the profiler</returns>
+        //internal static PluginProfiler.Plugins.ProfilerConfiguration UpdateWithStandaloneConfiguration(CrmPluginStep step)
+        //{
+        //    if (null == step)
+        //    {
+        //        throw new ArgumentNullException("step");
+        //    }
 
-			//Convert the entity into a CRM entity
-			SdkMessageProcessingStep entity =
-				(SdkMessageProcessingStep)step.GenerateCrmEntities()[SdkMessageProcessingStep.EntityLogicalName];
+        //    //Convert the entity into a CRM entity
+        //    SdkMessageProcessingStep entity =
+        //        (SdkMessageProcessingStep)step.GenerateCrmEntities()[SdkMessageProcessingStep.EntityLogicalName];
 
-			//Retrieve the configuration for the entity from the profiler management utility
-			return PluginProfiler.Library.ProfilerManagementUtility.UpdateWithStandaloneConfiguration(entity);
-		}
+        //    //Retrieve the configuration for the entity from the profiler management utility
+        //    return PluginProfiler.Library.ProfilerManagementUtility.UpdateWithStandaloneConfiguration(entity);
+        //}
 
-		/// <summary>
-		/// Indicates whether the profiler is supported in the current configuration
-		/// </summary>
-		internal static bool IsProfilerSupported
-		{
-			get
-			{
-				return true;
-			}
-		}
+        ///// <summary>
+        ///// Indicates whether the profiler is supported in the current configuration
+        ///// </summary>
+        //internal static bool IsProfilerSupported
+        //{
+        //    get
+        //    {
+        //        return true;
+        //    }
+        //}
 
-		/// <summary>
-		/// Indicates whether the given type is a profiler plug-in
-		/// </summary>
-		private static bool IsProfilerPlugin(CrmPlugin plugin)
-		{
-			ThrowIfProfilerNotSupported();
+        ///// <summary>
+        ///// Indicates whether the given type is a profiler plug-in
+        ///// </summary>
+        //private static bool IsProfilerPlugin(CrmPlugin plugin)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == plugin)
-			{
-				throw new ArgumentNullException("plugin");
-			}
+        //    if (null == plugin)
+        //    {
+        //        throw new ArgumentNullException("plugin");
+        //    }
 
-			return PluginProfiler.Library.ProfilerManagementUtility.IsProfilerPlugin(plugin.TypeName);
-		}
+        //    return PluginProfiler.Library.ProfilerManagementUtility.IsProfilerPlugin(plugin.TypeName);
+        //}
 
-		/// <summary>
-		/// Indicates whether the given type is a profiler plug-in
-		/// </summary>
-		internal static PluginProfiler.Plugins.ProfilerConfiguration RetrieveProfilerConfiguration(CrmPluginStep step)
-		{
-			ThrowIfProfilerNotSupported();
+        ///// <summary>
+        ///// Indicates whether the given type is a profiler plug-in
+        ///// </summary>
+        //internal static PluginProfiler.Plugins.ProfilerConfiguration RetrieveProfilerConfiguration(CrmPluginStep step)
+        //{
+        //    ThrowIfProfilerNotSupported();
 
-			if (null == step)
-			{
-				throw new ArgumentNullException("step");
-			}
+        //    if (null == step)
+        //    {
+        //        throw new ArgumentNullException("step");
+        //    }
 
-			try
-			{
-				return PluginProfiler.Library.ProfilerManagementUtility.RetrieveConfiguration(step.UnsecureConfiguration);
-			}
-			catch (Exception)
-			{
-				return null;
-			}
-		}
+        //    try
+        //    {
+        //        return PluginProfiler.Library.ProfilerManagementUtility.RetrieveConfiguration(step.UnsecureConfiguration);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return null;
+        //    }
+        //}
 
-		/// <summary>
-		/// Attempts to parse the given profile. If it fails, an error is displayed.
-		/// </summary>
-		/// <param name="owner">Owner window of the error dialog</param>
-		/// <param name="profilePathControl">Control for the profile path</param>
-		/// <param name="requireReportParse">Indicates that the report should be parsed even if it has already been parsed.</param>
-		/// <param name="report">Report variable maintained by the forms</param>
-		internal static bool ParseReportOrShowError(System.Windows.Forms.IWin32Window owner,
-			FileBrowserControl profilePathControl, bool requireReportParse, ref ProfilerPluginReport report)
-		{
-			if (null == profilePathControl || !profilePathControl.FileExists)
-			{
-				return false;
-			}
-			else if (!requireReportParse && null != report)
-			{
-				//If the report has already been specified, there is no need to reparse it
-				return true;
-			}
+        ///// <summary>
+        ///// Attempts to parse the given profile. If it fails, an error is displayed.
+        ///// </summary>
+        ///// <param name="owner">Owner window of the error dialog</param>
+        ///// <param name="profilePathControl">Control for the profile path</param>
+        ///// <param name="requireReportParse">Indicates that the report should be parsed even if it has already been parsed.</param>
+        ///// <param name="report">Report variable maintained by the forms</param>
+        //internal static bool ParseReportOrShowError(System.Windows.Forms.IWin32Window owner,
+        //    FileBrowserControl profilePathControl, bool requireReportParse, ref ProfilerPluginReport report)
+        //{
+        //    if (null == profilePathControl || !profilePathControl.FileExists)
+        //    {
+        //        return false;
+        //    }
+        //    else if (!requireReportParse && null != report)
+        //    {
+        //        //If the report has already been specified, there is no need to reparse it
+        //        return true;
+        //    }
 
-			try
-			{
-				report = ProfilerExecutionUtility.RetrieveReport(profilePathControl.FileName);
-				return true;
-			}
-			catch (Exception ex)
-			{
-				ErrorMessage.ShowErrorMessageBox(owner, string.Format(CultureInfo.InvariantCulture,
-					"An error occurred while parsing the Plug-in's profile from file {0}.", profilePathControl.FileName),
-					"Profile Parsing Error", ex);
-			}
+        //    try
+        //    {
+        //        report = ProfilerExecutionUtility.RetrieveReport(profilePathControl.FileName);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ErrorMessage.ShowErrorMessageBox(owner, string.Format(CultureInfo.InvariantCulture,
+        //            "An error occurred while parsing the Plug-in's profile from file {0}.", profilePathControl.FileName),
+        //            "Profile Parsing Error", ex);
+        //    }
 
-			report = null;
-			return false;
-		}
+        //    report = null;
+        //    return false;
+        //}
 
-		private static void ThrowIfProfilerNotSupported()
-		{
-			if (!IsProfilerSupported)
-			{
-				throw new NotSupportedException("Profiler is not supported with the current configuration.");
-			}
-		}
-		#endregion
+        //private static void ThrowIfProfilerNotSupported()
+        //{
+        //    if (!IsProfilerSupported)
+        //    {
+        //        throw new NotSupportedException("Profiler is not supported with the current configuration.");
+        //    }
+        //}
+        //#endregion
 
 		#region Private Helper Methods
 		private static CrmMessage UpdateMessageProperties(CrmMessage message)
@@ -1085,7 +1085,7 @@ namespace PluginRegistrationTool
 			EntityCollection results = org.OrganizationService.RetrieveMultipleAllPages(query);
 
 			//Initialize the map
-			bool profilerPluginLocated = !OrganizationHelper.IsProfilerSupported;
+            bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
 			typeList = new Dictionary<Guid, CrmPlugin>();
 			foreach (PluginType plugin in results.Entities)
 			{
@@ -1102,7 +1102,7 @@ namespace PluginRegistrationTool
 				CrmPlugin crmPlugin = assembly[plugin.PluginTypeId.Value];
 				if (!profilerPluginLocated)
 				{
-					bool isProfilerPlugin = IsProfilerPlugin(crmPlugin);
+                    bool isProfilerPlugin = false;// IsProfilerPlugin(crmPlugin);
 					crmPlugin.IsProfilerPlugin = isProfilerPlugin;
 					profilerPluginLocated = isProfilerPlugin;
 
@@ -1215,20 +1215,20 @@ namespace PluginRegistrationTool
 
 					if (plugin.IsProfilerPlugin)
 					{
-						ProfilerConfiguration configuration = RetrieveProfilerConfiguration(crmStep);
-						if (null != configuration)
-						{
-							EntityReference profiledHandler = configuration.EventHandler;
-							if (configuration.IsContextReplay.GetValueOrDefault())
-							{
-								crmStep.ProfilerStepId = crmStep.StepId;
-							}
-							else if (null != profiledHandler && !profiledStepList.ContainsKey(profiledHandler.Id))
-							{
-								profiledStepList[profiledHandler.Id] = crmStep;
-								crmStep.ProfilerOriginalStepId = profiledHandler.Id;
-							}
-						}
+						// ProfilerConfiguration configuration = RetrieveProfilerConfiguration(crmStep);
+                        //if (null != configuration)
+                        //{
+                        //    EntityReference profiledHandler = configuration.EventHandler;
+                        //    if (configuration.IsContextReplay.GetValueOrDefault())
+                        //    {
+                        //        crmStep.ProfilerStepId = crmStep.StepId;
+                        //    }
+                        //    else if (null != profiledHandler && !profiledStepList.ContainsKey(profiledHandler.Id))
+                        //    {
+                        //        profiledStepList[profiledHandler.Id] = crmStep;
+                        //        crmStep.ProfilerOriginalStepId = profiledHandler.Id;
+                        //    }
+                        //}
 					}
 
 					crmStep.SecureConfigurationRecordIdInvalid = invalidSecureConfigurationId;
