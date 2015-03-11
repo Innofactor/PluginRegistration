@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.30319</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2E450060-2AC3-40A5-B6E5-2FD642886E18}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PluginRegistrationTool</RootNamespace>
+    <AssemblyName>PluginRegistration</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Crm.Sdk.Proxy">
+      <HintPath>..\XrmToolBox\Referenced Assemblies\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel">
+      <HintPath>..\..\..\..\private\lib\Microsoft.IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Sdk">
+      <HintPath>..\XrmToolBox\Referenced Assemblies\Microsoft.Xrm.Sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DeviceIdManager.cs">
+      <Link>DeviceIdManager.cs</Link>
+    </Compile>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ACM\ACMCommands\Command.cs" />
+    <Compile Include="ACM\ACMCommands\CreateCommand.cs" />
+    <Compile Include="ACM\ACMCommands\DeleteCommand.cs" />
+    <Compile Include="ACM\ACMCommands\GetAllCommand.cs" />
+    <Compile Include="ACM\ACMCommands\GetCommand.cs" />
+    <Compile Include="ACM\ACMCommands\UpdateCommand.cs" />
+    <Compile Include="ACM\ACMResources\InputClaim.cs" />
+    <Compile Include="ACM\ACMResources\Issuer.cs" />
+    <Compile Include="ACM\ACMResources\OutputClaim.cs" />
+    <Compile Include="ACM\ACMResources\Resource.cs" />
+    <Compile Include="ACM\ACMResources\Rule.cs" />
+    <Compile Include="ACM\ACMResources\Scope.cs" />
+    <Compile Include="ACM\ACMResources\Security.cs" />
+    <Compile Include="ACM\ACMResources\SecuritySetting.cs" />
+    <Compile Include="ACM\ACMResources\TokenPolicy.cs" />
+    <Compile Include="ACM\CommandLineArgument.cs" />
+    <Compile Include="ACM\Constants.cs" />
+    <Compile Include="ACM\Acm.cs" />
+    <Compile Include="ACM\ResourceUri.cs" />
+    <Compile Include="ACM\ResponseMessage.cs" />
+    <Compile Include="ACM\TokenRequestor.cs" />
+    <Compile Include="ACSConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ACSConfigurationForm.Designer.cs">
+      <DependentUpon>ACSConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ACSConfigurationManagementServiceHelperExtensions.cs" />
+    <Compile Include="ACSConfigurationWithManagementService.cs" />
+    <Compile Include="ACSManagement\AccessControlTypes.cs" />
+    <Compile Include="ACSManagement\ManagementServiceExtensions.cs" />
+    <Compile Include="ACSManagement\ManagementServiceHelper.cs" />
+    <Compile Include="ACSManagement\ManagementServiceTypes.cs" />
+    <Compile Include="ACSManagement\SamplesConfiguration.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="AssemblyReader.cs" />
+    <Compile Include="AssemblyResolver.cs" />
+    <Compile Include="ACSAuthenticationStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ACSAuthenticationStatusForm.Designer.cs">
+      <DependentUpon>ACSAuthenticationStatusForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AutoRefreshSecurityToken.cs" />
+    <Compile Include="PluginProfileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginProfileForm.Designer.cs">
+      <DependentUpon>PluginProfileForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugPluginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugPluginForm.Designer.cs">
+      <DependentUpon>DebugPluginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FileBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FileBrowserControl.Designer.cs">
+      <DependentUpon>FileBrowserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedTypes.cs" />
+    <Compile Include="OrganizationServiceExtensions.cs" />
+    <Compile Include="ToolServiceProxies.cs" />
+    <Compile Include="CrmServiceEndpoint.cs" />
+    <Compile Include="ServiceBusConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServiceBusConfigForm.designer.cs">
+      <DependentUpon>ServiceBusConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CrmAttributeSelectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CrmAttributeSelectionControl.Designer.cs">
+      <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AttributeSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AttributeSelectionForm.designer.cs">
+      <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionsForm.Designer.cs">
+      <DependentUpon>ConnectionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CrmAttribute.cs" />
+    <Compile Include="CrmConnection.cs" />
+    <Compile Include="CrmEntityDictionary.cs" />
+    <Compile Include="CrmMessageEntity.cs" />
+    <Compile Include="CrmPluginAssembly.cs" />
+    <Compile Include="CrmPluginImage.cs" />
+    <Compile Include="CrmMessage.cs" />
+    <Compile Include="CrmOrganization.cs" />
+    <Compile Include="CrmPlugin.cs" />
+    <Compile Include="CrmPluginStep.cs" />
+    <Compile Include="CrmResources.cs" />
+    <Compile Include="CrmUser.cs" />
+    <Compile Include="CrmWebServiceHelper.cs" />
+    <Compile Include="ErrorMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorMessage.Designer.cs">
+      <DependentUpon>ErrorMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageRegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageRegistrationForm.Designer.cs">
+      <DependentUpon>ImageRegistrationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePropertyNameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessagePropertyNameForm.Designer.cs">
+      <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OrganizationControl.Designer.cs">
+      <DependentUpon>OrganizationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationHelper.cs" />
+    <Compile Include="OrganizationsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OrganizationsForm.Designer.cs">
+      <DependentUpon>OrganizationsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PluginRegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginRegistrationForm.Designer.cs">
+      <DependentUpon>PluginRegistrationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CrmTreeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CrmTreeControl.Designer.cs">
+      <DependentUpon>CrmTreeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserCredentialsDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WebServiceProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebServiceProgressForm.Designer.cs">
+      <DependentUpon>WebServiceProgressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressIndicator.cs" />
+    <Compile Include="RegistrationHelper.cs" />
+    <Compile Include="StepRegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StepRegistrationForm.Designer.cs">
+      <DependentUpon>StepRegistrationForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\Debug.gif" />
+    <Content Include="Images\PluginProfile.gif" />
+    <Content Include="Images\PluginProfilerSelected.gif" />
+    <Content Include="Images\DisableProfiler.gif" />
+    <Content Include="Images\EnableProfiler.gif" />
+    <Content Include="Images\InstallProfiler.gif" />
+    <Content Include="Images\PluginProfiler.gif" />
+    <Content Include="Images\Refresh.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ACSConfigurationForm.resx">
+      <DependentUpon>ACSConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ACSAuthenticationStatusForm.resx">
+      <DependentUpon>ACSAuthenticationStatusForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginProfileForm.resx">
+      <DependentUpon>PluginProfileForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugPluginForm.resx">
+      <DependentUpon>DebugPluginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileBrowserControl.resx">
+      <DependentUpon>FileBrowserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceBusConfigForm.resx">
+      <DependentUpon>ServiceBusConfigForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrmAttributeSelectionControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AttributeSelectionForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConnectionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrmTreeControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CrmTreeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrmTreeControlDefaults.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessage.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ErrorMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageRegistrationForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImageRegistrationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessagePropertyNameForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrganizationControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OrganizationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrganizationsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OrganizationsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginRegistrationForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PluginRegistrationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebServiceProgressForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WebServiceProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StepRegistrationForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StepRegistrationForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\AccessDenied.gif" />
+    <Content Include="Images\Assembly.gif" />
+    <Content Include="Images\AssemblySelected.gif" />
+    <Content Include="Images\Connection.gif" />
+    <Content Include="Images\ConnectionSelected.gif" />
+    <Content Include="Images\Delete.gif" />
+    <Content Include="Images\EditLabel.gif" />
+    <Content Include="Images\Errors.gif" />
+    <Content Include="Images\Export.gif" />
+    <Content Include="Images\Import.gif" />
+    <Content Include="Images\Register.gif" />
+    <Content Include="Images\Search.gif" />
+    <Content Include="Images\ServiceEndpoint.png" />
+    <None Include="Images\ServiceEndpointSelected.gif" />
+    <Content Include="Images\StepProfiled.gif" />
+    <Content Include="Images\StepProfiledSelected.gif" />
+    <Content Include="Images\UninstallProfiler.gif" />
+    <Content Include="Images\Update.gif" />
+    <Content Include="Images\Image.gif" />
+    <Content Include="Images\ImageSelected.gif" />
+    <None Include="Images\ImportExport.gif" />
+    <Content Include="Images\Message.gif" />
+    <Content Include="Images\MessageEntity.gif" />
+    <Content Include="Images\MessageEntitySelected.gif" />
+    <Content Include="Images\MessageSelected.gif" />
+    <Content Include="Images\Organization.gif" />
+    <Content Include="Images\OrganizationSelected.gif" />
+    <Content Include="Images\Plugin.gif" />
+    <Content Include="Images\PluginSelected.gif" />
+    <Content Include="Images\StepDisabled.gif" />
+    <Content Include="Images\StepDisabledSelected.gif" />
+    <Content Include="Images\StepEnabled.gif" />
+    <Content Include="Images\StepEnabledSelected.gif" />
+    <Content Include="Images\View.gif" />
+    <Content Include="Images\WorkflowActivity.gif" />
+    <Content Include="Images\WorkflowActivitySelected.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XrmToolBox\Connection Projects\McTools.Xrm.Connection\McTools.Xrm.Connection.csproj">
+      <Project>{c3824c2c-6e2e-4fde-a2aa-229bbc7c3b1f}</Project>
+      <Name>McTools.Xrm.Connection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XrmToolBox\XrmToolBox\XrmToolBox.csproj">
+      <Project>{328d55be-8b9a-4087-a5c2-9fbaf623f54b}</Project>
+      <Name>XrmToolBox</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
