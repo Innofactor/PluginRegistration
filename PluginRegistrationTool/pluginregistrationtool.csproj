@@ -6,7 +6,7 @@
     <ProductVersion>10.0.30319</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D9F4AE53-BB22-4E98-A0D4-F9ED69768DEF}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PluginRegistrationTool</RootNamespace>
     <AssemblyName>PluginRegistration</AssemblyName>
@@ -19,7 +19,6 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NoWin32Manifest>true</NoWin32Manifest>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
