@@ -18,9 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Xrm.Sdk.Discovery;
 using XrmToolBox;
 
 namespace PluginRegistrationTool
@@ -41,9 +43,44 @@ namespace PluginRegistrationTool
 
         public OrganizationControl()
         {
+            //        public CrmOrganization(string metadataServiceUrl, string organizationServiceUrl,
+            //Guid organizationId, string organizationFriendlyName, string organizationUniqueName, string webApplicationUrl)
+
+            // var org = new CrmOrganization(string.Empty, this.ConnectionDetail.OrganizationServiceUrl, this.ConnectionDetail.
+
+            // var org = new CrmOrganization(
+
+            this.Enter += OrganizationControl_Enter;
         }
 
-		public OrganizationControl(CrmOrganization org, MainForm mainForm)
+        void OrganizationControl_Enter(object sender, EventArgs e)
+        {
+            WebRequest.GetSystemWebProxy();
+
+            if (this.ConnectionDetail != null)
+            {
+                var service = base.ConnectionDetail.GetDiscoveryService();
+
+                var request = new RetrieveOrganizationRequest
+                {
+                    UniqueName = this.ConnectionDetail.Organization
+                };
+                
+                var response = (RetrieveOrganizationResponse)service.Execute(request);
+
+                var org = new CrmOrganization(response.Detail);
+                org.Connection = new CrmConnection();
+
+                this.Init(org, new MainForm("Connections.config"));
+            }
+        }
+
+        public OrganizationControl(CrmOrganization org, MainForm mainForm)
+        {
+            this.Init(org, mainForm);
+        }
+
+        public void Init(CrmOrganization org, MainForm mainForm)
 		{
 			if (org == null)
 			{

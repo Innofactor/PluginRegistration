@@ -79,11 +79,11 @@ namespace PluginRegistrationTool
 		/// <returns>Generated SecurityTokenResponse for the device</returns>
 		public SecurityTokenResponse AuthenticateDevice()
 		{
-			if (null == this._deviceCredentials)
-			{
-				this._deviceCredentials = DeviceIdManager.LoadOrRegisterDevice(
-					this._proxy.ServiceConfiguration.CurrentIssuer.IssuerAddress.Uri);
-			}
+            //if (null == this._deviceCredentials)
+            //{
+            //    this._deviceCredentials = DeviceIdManager.LoadOrRegisterDevice(
+            //        this._proxy.ServiceConfiguration.CurrentIssuer.IssuerAddress.Uri);
+            //}
 
 			return this._proxy.ServiceConfiguration.AuthenticateDevice(this._deviceCredentials);
 		}
