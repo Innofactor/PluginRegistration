@@ -58,20 +58,20 @@ namespace PluginRegistrationTool
 			{
 				throw new ArgumentNullException("org");
 			}
-			else if (org.Connection == null)
+            else if (org.ConnectionDetail == null)
 			{
-				throw new ArgumentNullException("org.Connection");
+                throw new ArgumentNullException("org.ConnectionDetail");
 			}
 
 			TabPage page;
-			if (this.m_orgList.ContainsKey(org.Connection.ConnectionId) &&
-				this.m_orgList[org.Connection.ConnectionId].ContainsKey(org.OrganizationId))
+			if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId) &&
+				this.m_orgList[org.ConnectionDetail.ConnectionId].ContainsKey(org.OrganizationId))
 			{
-				page = this.GetTab(org.Connection.ConnectionId, org.OrganizationId);
+                page = this.GetTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
 			}
 			else
 			{
-				page = new TabPage(string.Format("{0}: {1}", org.Connection.Label, org.OrganizationFriendlyName));
+                page = new TabPage(string.Format("{0}: {1}", org.ConnectionDetail.ConnectionName, org.OrganizationFriendlyName));
 				page.Tag = org;
 				tabOrganizations.TabPages.Add(page);
 
@@ -81,16 +81,16 @@ namespace PluginRegistrationTool
 
 				page.Controls.Add(orgControl);
 
-				if (this.m_orgList.ContainsKey(org.Connection.ConnectionId))
+                if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId))
 				{
-					this.m_orgList[org.Connection.ConnectionId].Add(org.OrganizationId, orgControl);
+                    this.m_orgList[org.ConnectionDetail.ConnectionId].Add(org.OrganizationId, orgControl);
 				}
 				else
 				{
 					Dictionary<Guid, OrganizationControl> orgList = new Dictionary<Guid, OrganizationControl>();
 					orgList.Add(org.OrganizationId, orgControl);
 
-					this.m_orgList.Add(org.Connection.ConnectionId, orgList);
+                    this.m_orgList.Add(org.ConnectionDetail.ConnectionId, orgList);
 				}
 			}
 

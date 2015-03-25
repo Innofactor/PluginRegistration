@@ -61,9 +61,9 @@ namespace PluginRegistrationTool
 			if (null == assembly)
 			{
 				//If this is a known assembly, check for the default isolation mode for each authentication type
-				if (null != org.Connection)
+				if (null != org.ConnectionDetail)
 				{
-					switch (org.Connection.DiscoveryService.ServiceConfiguration.AuthenticationType)
+                    switch (org.ConnectionDetail.GetDiscoveryService().ServiceConfiguration.AuthenticationType)
 					{
 						case Microsoft.Xrm.Sdk.Client.AuthenticationProviderType.ActiveDirectory:
 							radIsolationNone.Checked = true;
