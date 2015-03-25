@@ -702,13 +702,13 @@ namespace PluginRegistrationTool
 
 			CrmOrganization org = (CrmOrganization)this.m_editingItem;
 
-			if (!this.OrganizationsForm.OrganizationHasTab(org.Connection.ConnectionId, org.OrganizationId) ||
+			if (!this.OrganizationsForm.OrganizationHasTab(org.ConnectionDetail.ConnectionId, org.OrganizationId) ||
 				MessageBox.Show("This will close the organization window. Continue?",
 					"Close Windows", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 			{
-				if (this.OrganizationsForm.OrganizationHasTab(org.Connection.ConnectionId, org.OrganizationId))
+                if (this.OrganizationsForm.OrganizationHasTab(org.ConnectionDetail.ConnectionId, org.OrganizationId))
 				{
-					this.OrganizationsForm.CloseOrganizationTab(org.Connection.ConnectionId, org.OrganizationId);
+                    this.OrganizationsForm.CloseOrganizationTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
 				}
 			}
 			else
@@ -991,10 +991,10 @@ namespace PluginRegistrationTool
 						if (trvConnections.HasNode(org.OrganizationId))
 						{
 							CrmOrganization compareOrg = (CrmOrganization)trvConnections[org.OrganizationId];
-							if (compareOrg.Connection.ConnectionId != con.ConnectionId)
+                            if (compareOrg.ConnectionDetail.ConnectionId != con.ConnectionId)
 							{
 								MessageBox.Show(string.Format("Unable to load Organizations for \"{0}\", because the same Organization Id is being used by \"{1}\".\nPlease close \"{1}\" connection and try again.",
-									con.Label, compareOrg.Connection.Label), "Error",
+                                    con.Label, compareOrg.ConnectionDetail.ConnectionName), "Error",
 									MessageBoxButtons.OK, MessageBoxIcon.Warning);
 								con.ClearOrganizations();
 								return;
@@ -1032,9 +1032,9 @@ namespace PluginRegistrationTool
 				throw new ArgumentNullException("org");
 			}
 
-			if (org.Connected && this.m_orgsForm.OrganizationHasTab(org.Connection.ConnectionId, org.OrganizationId))
+			if (org.Connected && this.m_orgsForm.OrganizationHasTab(org.ConnectionDetail.ConnectionId, org.OrganizationId))
 			{
-				this.m_orgsForm.SelectOrganizationTab(org.Connection.ConnectionId, org.OrganizationId);
+                this.m_orgsForm.SelectOrganizationTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
 			}
 			else
 			{
@@ -1177,7 +1177,7 @@ namespace PluginRegistrationTool
 				ICrmTreeNode node;
 				if (trvConnections.SelectedNode.NodeType == CrmTreeNodeType.Organization)
 				{
-					node = trvConnections[((CrmOrganization)trvConnections.SelectedNode).Connection.ConnectionId];
+					node = trvConnections[((CrmOrganization)trvConnections.SelectedNode).ConnectionDetail.ConnectionId];
 				}
 				else
 				{

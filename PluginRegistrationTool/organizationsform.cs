@@ -126,7 +126,7 @@ namespace PluginRegistrationTool
 			return false;
 		}
 
-		public void SelectOrganizationTab(Guid connectionId, Guid organizationId)
+		public void SelectOrganizationTab(Guid? connectionId, Guid organizationId)
 		{
 			tabOrganizations.SelectedTab = GetTab(connectionId, organizationId);
 		}

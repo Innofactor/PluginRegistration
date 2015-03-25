@@ -542,7 +542,7 @@ namespace PluginRegistrationTool
 			catch (Exception ex)
 			{
 				ErrorMessage.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
-				((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.Connection.ConnectionId,
+				((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
 					this.m_org.OrganizationId);
 				return;
 			}
