@@ -35,7 +35,7 @@ namespace PluginRegistrationTool
 		private bool m_autoExpand = true;
 		private bool m_singleParentCheck = false;
 		private CrmTreeNodeType m_excludeTypes = CrmTreeNodeType.None;
-		private Dictionary<Guid, CrmTreeNode> m_nodeList = new Dictionary<Guid, CrmTreeNode>();
+		private Dictionary<Guid?, CrmTreeNode> m_nodeList = new Dictionary<Guid?, CrmTreeNode>();
 		private NodeSorter m_sorter = new NodeSorter();
 		private bool m_disableSelectionChange = false;
 		private bool m_disableCheckChange = false;
@@ -142,7 +142,7 @@ namespace PluginRegistrationTool
 		/// <exception cref="ArgumentException">If the Guid cannot be found</exception>
 		/// <returns>Node that was found</returns>
 		[Browsable(false)]
-		public ICrmTreeNode this[Guid nodeId]
+		public ICrmTreeNode this[Guid? nodeId]
 		{
 			get
 			{
@@ -792,7 +792,7 @@ namespace PluginRegistrationTool
 		/// </summary>
 		/// <param name="nodeId"></param>
 		/// <returns>True if the node exists, False if it doesn't</returns>
-		public bool HasNode(Guid nodeId)
+		public bool HasNode(Guid? nodeId)
 		{
 			return (this.m_nodeList.ContainsKey(nodeId));
 		}

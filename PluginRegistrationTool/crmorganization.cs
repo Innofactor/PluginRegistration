@@ -1078,6 +1078,7 @@ namespace PluginRegistrationTool
 		{
 			lock (this)
 			{
+                //this.m_organizationService = this.ConnectionDetail.GetOrganizationService();
 				this.m_organizationService = new ManagedTokenOrganizationServiceProxy(new Uri(this.OrganizationServiceUrl),
 					this.Connection.Credentials);
 				this.m_organizationService.EnableProxyTypes();
