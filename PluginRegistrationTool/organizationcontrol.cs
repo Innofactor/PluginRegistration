@@ -22,8 +22,10 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Discovery;
 using XrmToolBox;
+using McTools.Xrm.Connection;
 
 namespace PluginRegistrationTool
 {
@@ -59,17 +61,7 @@ namespace PluginRegistrationTool
 
             if (this.ConnectionDetail != null)
             {
-                var service = base.ConnectionDetail.GetDiscoveryService();
-
-                var request = new RetrieveOrganizationRequest
-                {
-                    UniqueName = this.ConnectionDetail.Organization
-                };
-                
-                var response = (RetrieveOrganizationResponse)service.Execute(request);
-
-                var org = new CrmOrganization(response.Detail);
-                org.Connection = new CrmConnection();
+                var org = new CrmOrganization(this.ConnectionDetail);
 
                 this.Init(org, new MainForm("Connections.config"));
             }

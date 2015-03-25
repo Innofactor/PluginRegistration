@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using Microsoft.Xrm.Sdk.Discovery;
 
 using Microsoft.Xrm.Sdk.Client;
+using McTools.Xrm.Connection;
 
 namespace PluginRegistrationTool
 {
@@ -82,21 +83,43 @@ namespace PluginRegistrationTool
 			m_userList = users;
 		}
 
+        public CrmOrganization(ConnectionDetail detail)
+        {
+            this.ConnectionDetail = detail;
+
+            var service = detail.GetDiscoveryService();
+
+            var request = new RetrieveOrganizationRequest
+            {
+                UniqueName = detail.Organization
+            };
+
+            var response = (RetrieveOrganizationResponse)service.Execute(request);
+
+            this.Init(response.Detail);
+            this.Connection = new CrmConnection();
+        }
+
 		public CrmOrganization(OrganizationDetail detail)
 		{
-			if (detail == null)
-			{
-				throw new ArgumentNullException("detail");
-			}
-
-			this.OrganizationServiceUrl = detail.Endpoints[EndpointType.OrganizationService];
-			this.WebApplicationUrl = detail.Endpoints[EndpointType.WebApplication];
-
-			this.OrganizationId = detail.OrganizationId;
-			this.OrganizationFriendlyName = detail.FriendlyName;
-			this.OrganizationUniqueName = detail.UniqueName;
-			this.ServerBuild = new Version(detail.OrganizationVersion);
+            this.Init(detail);
 		}
+
+        private void Init(OrganizationDetail detail)
+        {
+            if (detail == null)
+            {
+                throw new ArgumentNullException("detail");
+            }
+
+            this.OrganizationServiceUrl = detail.Endpoints[EndpointType.OrganizationService];
+            this.WebApplicationUrl = detail.Endpoints[EndpointType.WebApplication];
+
+            this.OrganizationId = detail.OrganizationId;
+            this.OrganizationFriendlyName = detail.FriendlyName;
+            this.OrganizationUniqueName = detail.UniqueName;
+            this.ServerBuild = new Version(detail.OrganizationVersion);
+        }
 
 		public CrmOrganization(string metadataServiceUrl, string organizationServiceUrl,
 			Guid organizationId, string organizationFriendlyName, string organizationUniqueName, string webApplicationUrl)
@@ -1275,7 +1298,9 @@ namespace PluginRegistrationTool
 			}
 		}
 		#endregion
-	}
+
+        public ConnectionDetail ConnectionDetail { get; set; }
+    }
 
 	#region Public Classes & Enums
 

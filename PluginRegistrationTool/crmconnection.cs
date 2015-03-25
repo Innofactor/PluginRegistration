@@ -55,6 +55,11 @@ namespace PluginRegistrationTool
 		{
 		}
 
+        public CrmConnection(string label, DiscoveryServiceProxy discoveryService)
+            : this("Unknown", "http://localhost", null, null, null)
+        {
+        }
+
 		public CrmConnection(string label, string discoveryServiceUrl, string userDomain, string userName, SecureString userPassword,
 			params CrmOrganization[] organization)
 		{
