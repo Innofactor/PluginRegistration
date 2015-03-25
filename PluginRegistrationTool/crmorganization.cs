@@ -97,7 +97,6 @@ namespace PluginRegistrationTool
             var response = (RetrieveOrganizationResponse)service.Execute(request);
 
             this.Init(response.Detail);
-            this.Connection = new CrmConnection();
         }
 
 		public CrmOrganization(OrganizationDetail detail)

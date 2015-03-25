@@ -78,9 +78,9 @@ namespace PluginRegistrationTool
 			{
 				throw new ArgumentNullException("org");
 			}
-			else if (org.Connection == null)
+			else if (org.ConnectionDetail == null)
 			{
-				throw new ArgumentNullException("org.Connection");
+				throw new ArgumentNullException("org.ConnectionDetail");
 			}
 
 			InitializeComponent();
