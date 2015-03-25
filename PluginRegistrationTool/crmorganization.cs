@@ -132,18 +132,18 @@ namespace PluginRegistrationTool
 		}
 
 		#region Properties
-		[XmlIgnore]
-		public CrmConnection Connection
-		{
-			get
-			{
-				return this.m_connection;
-			}
-			set
-			{
-				this.m_connection = value;
-			}
-		}
+        //[XmlIgnore]
+        //public CrmConnection Connection
+        //{
+        //    get
+        //    {
+        //        return this.m_connection;
+        //    }
+        //    set
+        //    {
+        //        this.m_connection = value;
+        //    }
+        //}
 
 		[XmlElement(ElementName = "CrmServiceUrl", Type = typeof(string), IsNullable = false)]
 		public string OrganizationServiceUrl

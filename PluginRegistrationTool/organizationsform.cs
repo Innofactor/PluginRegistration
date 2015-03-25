@@ -23,14 +23,14 @@ namespace PluginRegistrationTool
 {
 	public partial class OrganizationsForm : Form
 	{
-		private Dictionary<Guid, Dictionary<Guid, OrganizationControl>> m_orgList;
+		private Dictionary<Guid?, Dictionary<Guid, OrganizationControl>> m_orgList;
 		private MainForm m_mainForm;
 
 		public OrganizationsForm(MainForm mainForm)
 		{
 			InitializeComponent();
 
-			this.m_orgList = new Dictionary<Guid, Dictionary<Guid, OrganizationControl>>();
+			this.m_orgList = new Dictionary<Guid?, Dictionary<Guid, OrganizationControl>>();
 			this.m_mainForm = mainForm;
 		}
 
@@ -39,7 +39,7 @@ namespace PluginRegistrationTool
 			if (tabOrganizations.SelectedTab != null)
 			{
 				CrmOrganization org = ((CrmOrganization)tabOrganizations.SelectedTab.Tag);
-				CloseOrganizationTab(org.Connection.ConnectionId, org.OrganizationId);
+				CloseOrganizationTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace PluginRegistrationTool
 			this.m_mainForm.UpdateCurrentOrganization(org);
 		}
 
-		public bool OrganizationHasTab(Guid connectionId, Guid organizationId)
+		public bool OrganizationHasTab(Guid? connectionId, Guid organizationId)
 		{
 			Dictionary<Guid, OrganizationControl> organizationControlMap;
 			if (this.m_orgList.TryGetValue(connectionId, out organizationControlMap))
@@ -131,7 +131,7 @@ namespace PluginRegistrationTool
 			tabOrganizations.SelectedTab = GetTab(connectionId, organizationId);
 		}
 
-		public void CloseOrganizationTab(Guid connectionId, Guid organizationId)
+		public void CloseOrganizationTab(Guid? connectionId, Guid organizationId)
 		{
 			TabPage page = this.GetTab(connectionId, organizationId);
 
@@ -174,7 +174,7 @@ namespace PluginRegistrationTool
 		#endregion
 
 		#region Private Helper Methods
-		private TabPage GetTab(Guid connectionId, Guid organizationId)
+		private TabPage GetTab(Guid? connectionId, Guid organizationId)
 		{
 			if (!this.OrganizationHasTab(connectionId, organizationId))
 			{
