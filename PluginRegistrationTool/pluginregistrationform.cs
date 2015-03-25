@@ -63,15 +63,16 @@ namespace PluginRegistrationTool
 				//If this is a known assembly, check for the default isolation mode for each authentication type
 				if (null != org.ConnectionDetail)
 				{
-                    switch (org.ConnectionDetail.GetDiscoveryService().ServiceConfiguration.AuthenticationType)
-					{
-						case Microsoft.Xrm.Sdk.Client.AuthenticationProviderType.ActiveDirectory:
-							radIsolationNone.Checked = true;
-							break;
-						default:
-							radIsolationSandbox.Checked = true;
-							break;
-					}
+                    // TODO: Come back
+                    //switch (org.ConnectionDetail.GetDiscoveryService().ServiceConfiguration.AuthenticationType)
+                    //{
+                    //    case Microsoft.Xrm.Sdk.Client.AuthenticationProviderType.ActiveDirectory:
+                    //        radIsolationNone.Checked = true;
+                    //        break;
+                    //    default:
+                    //        radIsolationSandbox.Checked = true;
+                    //        break;
+                    //}
 				}
 			}
 			else

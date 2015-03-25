@@ -757,17 +757,18 @@ namespace PluginRegistrationTool
 
 		private string GetOrgClaimValue()
 		{
-			switch (m_org.OrganizationService.ServiceConfiguration.AuthenticationType)
-			{
-				case AuthProviderType.LiveId:
-				case AuthProviderType.OnlineFederation:
-					string s = m_org.WebApplicationUrl;
-					Uri uri = new Uri(s);
-					string host = uri.Host;				
-					return host.ToLower();					
-				default:
-					return m_org.OrganizationUniqueName.ToLower();				
-			}		
+            //switch (m_org.OrganizationService.ServiceConfiguration.AuthenticationType)
+            //{
+            //    case AuthProviderType.LiveId:
+            //    case AuthProviderType.OnlineFederation:
+            //        string s = m_org.WebApplicationUrl;
+            //        Uri uri = new Uri(s);
+            //        string host = uri.Host;				
+            //        return host.ToLower();					
+            //    default:
+            //        return m_org.OrganizationUniqueName.ToLower();				
+            //}		
+            throw new NotImplementedException();
 		}
 
 		private string SelectCertificateFile(string initialDirectory)

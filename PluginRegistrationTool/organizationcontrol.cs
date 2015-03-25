@@ -34,7 +34,7 @@ namespace PluginRegistrationTool
 		private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
 		private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
 		private CrmViewType m_currentView;
-		private CrmConnection m_con;
+		private ConnectionDetail m_con;
 		private CrmOrganization m_org;
 		private MainForm m_mainForm;
 		private static CrmEntitySorter m_entitySorter;
@@ -179,7 +179,7 @@ namespace PluginRegistrationTool
 			#endregion
 
 			this.m_org = org;
-			this.m_con = org.Connection;
+			this.m_con = org.ConnectionDetail;
 			this.m_mainForm = mainForm;
 
 			//Set the view types on the menu items. The Designer's auto code generation keeps overwriting this
@@ -807,7 +807,7 @@ namespace PluginRegistrationTool
 			}
 		}
 
-		public CrmConnection Connection
+		public ConnectionDetail Connection
 		{
 			get
 			{

@@ -1114,7 +1114,7 @@ namespace PluginRegistrationTool
 						con = (CrmConnection)trvConnections[(Guid)nodeId];
 						break;
 					case CrmTreeNodeType.Organization:
-						con = ((CrmOrganization)trvConnections[(Guid)nodeId]).Connection;
+						con = ((CrmConnection)trvConnections[(Guid)nodeId]);//.Connection;
 						break;
 					default:
 						throw new NotImplementedException("NodeType = " + selectedNode.ToString());

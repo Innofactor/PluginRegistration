@@ -75,15 +75,15 @@ namespace PluginRegistrationTool
 			{
 				cmbUserClaim.Items.Add(CrmServiceEndpointUserClaim.None);
 				cmbUserClaim.Items.Add(CrmServiceEndpointUserClaim.UserId);
-				switch (m_org.OrganizationService.ServiceConfiguration.AuthenticationType)
-				{
-					case AuthProviderType.LiveId:
-					case AuthProviderType.OnlineFederation:
-						break;				
-					default:
-						cmbUserClaim.Items.Add(CrmServiceEndpointUserClaim.UserInfo);
-						break;
-				}						
+                //switch (m_org.OrganizationService.ServiceConfiguration.AuthenticationType)
+                //{
+                //    case AuthProviderType.LiveId:
+                //    case AuthProviderType.OnlineFederation:
+                //        break;				
+                //    default:
+                //        cmbUserClaim.Items.Add(CrmServiceEndpointUserClaim.UserInfo);
+                //        break;
+                //}
 				
 				cmbUserClaim.SelectedItem = CrmServiceEndpointUserClaim.None;
 			}

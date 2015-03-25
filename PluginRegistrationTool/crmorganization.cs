@@ -23,6 +23,7 @@ using Microsoft.Xrm.Sdk.Discovery;
 
 using Microsoft.Xrm.Sdk.Client;
 using McTools.Xrm.Connection;
+using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {
@@ -35,7 +36,7 @@ namespace PluginRegistrationTool
 		private string m_uniqueName = null;
 		private Version m_serverBuild = null;
 		private CrmUser m_currentUser = null;
-		private volatile OrganizationServiceProxy m_organizationService = null;
+		private volatile IOrganizationService m_organizationService = null;
 
 		private bool m_connected = false;
 		private Dictionary<Guid, CrmUser> m_userList = new Dictionary<Guid, CrmUser>();
@@ -203,7 +204,7 @@ namespace PluginRegistrationTool
 		}
 
 		[XmlIgnore]
-		internal OrganizationServiceProxy OrganizationService
+		internal IOrganizationService OrganizationService
 		{
 			get
 			{
@@ -1078,10 +1079,10 @@ namespace PluginRegistrationTool
 		{
 			lock (this)
 			{
-                //this.m_organizationService = this.ConnectionDetail.GetOrganizationService();
-				this.m_organizationService = new ManagedTokenOrganizationServiceProxy(new Uri(this.OrganizationServiceUrl),
-					this.Connection.Credentials);
-				this.m_organizationService.EnableProxyTypes();
+                this.m_organizationService = this.ConnectionDetail.GetOrganizationService();
+                //this.m_organizationService = new ManagedTokenOrganizationServiceProxy(new Uri(this.OrganizationServiceUrl),
+                //    this.Connection.Credentials);
+                //this.m_organizationService.EnableProxyTypes();
 			}
 		}
 

@@ -229,7 +229,7 @@ namespace PluginRegistrationTool
 						{
 							if (org != null)
 							{
-								org.Connection = this;
+								/// org.Connection = this;
 								this.m_organizations.Add(org.OrganizationId, org);
 							}
 						}
@@ -340,7 +340,7 @@ namespace PluginRegistrationTool
 
 			lock (this.m_organizations)
 			{
-				org.Connection = this;
+				// org.Connection = this;
 				this.m_organizations.Add(org.OrganizationId, org);
 			}
 		}
