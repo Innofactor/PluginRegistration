@@ -1043,24 +1043,24 @@ namespace PluginRegistrationTool
 				grpOrganizationInformation.Enabled = false;
 				Application.DoEvents();
 
-				try
-				{
-					OrganizationHelper.OpenConnection(org,
-						this.MainForm.LoadMessages(org), this.MainForm.ProgressIndicator);
-				}
-				catch (Exception ex)
-				{
-					ErrorMessage.ShowErrorMessageBox(this, "Unable to the connect to the organization", "Connection Error", ex);
+                //try
+                //{
+                //    OrganizationHelper.OpenConnection(org,
+                //        this.MainForm.LoadMessages(org), this.MainForm.ProgressIndicator);
+                //}
+                //catch (Exception ex)
+                //{
+                //    ErrorMessage.ShowErrorMessageBox(this, "Unable to the connect to the organization", "Connection Error", ex);
 
-					this.MainForm.ProgressIndicator.Complete();
-					return;
-				}
-				finally
-				{
-					trvConnections.Enabled = true;
-					this.MainForm.EnableToolBar(true);
-					grpOrganizationInformation.Enabled = true;
-				}
+                //    this.MainForm.ProgressIndicator.Complete();
+                //    return;
+                //}
+                //finally
+                //{
+                //    trvConnections.Enabled = true;
+                //    this.MainForm.EnableToolBar(true);
+                //    grpOrganizationInformation.Enabled = true;
+                //}
 
 				this.m_orgsForm.CreateOrganizationTab(org);
 			}

@@ -263,13 +263,13 @@ namespace PluginRegistrationTool
 		}
 		#endregion
 
-		public CrmEntityDictionary<CrmMessage> LoadMessages(CrmOrganization org)
+		public static CrmEntityDictionary<CrmMessage> LoadMessages(CrmOrganization org)
 		{
 			lock (m_messageList)
 			{
 				if (m_messageList.Count == 0)
 				{
-					m_messageList = OrganizationHelper.LoadMessages(org, this.ProgressIndicator);
+					m_messageList = OrganizationHelper.LoadMessages(org, null);
 				}
 
 				Dictionary<Guid, CrmMessage> messageList = new Dictionary<Guid, CrmMessage>();

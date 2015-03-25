@@ -63,13 +63,18 @@ namespace PluginRegistrationTool
             {
                 var org = new CrmOrganization(this.ConnectionDetail);
 
-                this.Init(org, new MainForm("Connections.config"));
+                this.Init(org);
             }
         }
 
         public OrganizationControl(CrmOrganization org, MainForm mainForm)
         {
             this.Init(org, mainForm);
+        }
+
+        public void Init(CrmOrganization org)
+        {
+            this.Init(org, null);
         }
 
         public void Init(CrmOrganization org, MainForm mainForm)
@@ -530,26 +535,26 @@ namespace PluginRegistrationTool
 		private void toolRefresh_Click(object sender, EventArgs e)
 		{
 			this.Enabled = false;
-			try
-			{
-				propGridEntity.SelectedObject = null;
+            //try
+            //{
+            //    propGridEntity.SelectedObject = null;
 
-				OrganizationHelper.RefreshConnection(this.m_org,
-					this.m_mainForm.LoadMessages(this.m_org), this.m_mainForm.ProgressIndicator);
+            //    OrganizationHelper.RefreshConnection(this.m_org,
+            //        this.m_mainForm.LoadMessages(this.m_org), this.m_mainForm.ProgressIndicator);
 
-				this.LoadNodes();
-			}
-			catch (Exception ex)
-			{
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
-				((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
-					this.m_org.OrganizationId);
-				return;
-			}
-			finally
-			{
-				this.Enabled = true;
-			}
+            //    this.LoadNodes();
+            //}
+            //catch (Exception ex)
+            //{
+            //    ErrorMessage.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
+            //    ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
+            //        this.m_org.OrganizationId);
+            //    return;
+            //}
+            //finally
+            //{
+            //    this.Enabled = true;
+            //}
 		}
 
 		private void trvPlugins_DoubleClick(object sender, CrmTreeNodeEventArgs e)
