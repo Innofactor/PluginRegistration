@@ -178,8 +178,8 @@ namespace PluginRegistrationTool
 
 		private void mnuHelpAbout_Click(object sender, EventArgs e)
 		{
-			AboutForm aboutForm = new AboutForm();
-			aboutForm.ShowDialog();
+            //AboutForm aboutForm = new AboutForm();
+            //aboutForm.ShowDialog();
 		}
 
 		private void mnuViewAutoExpand_CheckedChanged(object sender, EventArgs e)

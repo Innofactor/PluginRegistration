@@ -99,12 +99,6 @@
     <Compile Include="DeviceIdManager.cs">
       <Link>DeviceIdManager.cs</Link>
     </Compile>
-    <Compile Include="AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutForm.Designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ACM\ACMCommands\Command.cs" />
     <Compile Include="ACM\ACMCommands\CreateCommand.cs" />
     <Compile Include="ACM\ACMCommands\DeleteCommand.cs" />
@@ -279,10 +273,6 @@
     <Content Include="Images\Refresh.gif" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ACSConfigurationForm.resx">
       <DependentUpon>ACSConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
