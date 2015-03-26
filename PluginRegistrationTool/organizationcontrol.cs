@@ -52,12 +52,20 @@ namespace PluginRegistrationTool
 
             // var org = new CrmOrganization(
 
-            this.Enter += OrganizationControl_Enter;
+            this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
+            // this.Enter += OrganizationControl_Enter;
+        }
+
+        void OrganizationControl_ConnectionUpdated(object sender, PluginBase.ConnectionUpdatedEventArgs e)
+        {
+            var org = new CrmOrganization(this.ConnectionDetail);
+
+            this.Init(org);
         }
 
         void OrganizationControl_Enter(object sender, EventArgs e)
         {
-            WebRequest.GetSystemWebProxy();
+            // WebRequest.GetSystemWebProxy();
 
             if (this.ConnectionDetail != null)
             {
