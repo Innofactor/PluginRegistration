@@ -326,7 +326,7 @@ namespace PluginRegistrationTool
 				MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 			{
 				this.Enabled = false;
-				this.MainForm.EnableToolBar(false);
+				// this.MainForm.EnableToolBar(false);
 
 				try
 				{
@@ -354,7 +354,7 @@ namespace PluginRegistrationTool
 					}
 
 					this.Enabled = true;
-					this.MainForm.EnableToolBar(true);
+					// this.MainForm.EnableToolBar(true);
 				}
 
 				trvPlugins.Focus();
