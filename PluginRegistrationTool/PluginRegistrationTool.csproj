@@ -99,49 +99,9 @@
     <Compile Include="DeviceIdManager.cs">
       <Link>DeviceIdManager.cs</Link>
     </Compile>
-    <Compile Include="ACM\ACMCommands\Command.cs" />
-    <Compile Include="ACM\ACMCommands\CreateCommand.cs" />
-    <Compile Include="ACM\ACMCommands\DeleteCommand.cs" />
-    <Compile Include="ACM\ACMCommands\GetAllCommand.cs" />
-    <Compile Include="ACM\ACMCommands\GetCommand.cs" />
-    <Compile Include="ACM\ACMCommands\UpdateCommand.cs" />
-    <Compile Include="ACM\ACMResources\InputClaim.cs" />
-    <Compile Include="ACM\ACMResources\Issuer.cs" />
-    <Compile Include="ACM\ACMResources\OutputClaim.cs" />
-    <Compile Include="ACM\ACMResources\Resource.cs" />
-    <Compile Include="ACM\ACMResources\Rule.cs" />
-    <Compile Include="ACM\ACMResources\Scope.cs" />
-    <Compile Include="ACM\ACMResources\Security.cs" />
-    <Compile Include="ACM\ACMResources\SecuritySetting.cs" />
-    <Compile Include="ACM\ACMResources\TokenPolicy.cs" />
-    <Compile Include="ACM\CommandLineArgument.cs" />
-    <Compile Include="ACM\Constants.cs" />
-    <Compile Include="ACM\Acm.cs" />
-    <Compile Include="ACM\ResourceUri.cs" />
-    <Compile Include="ACM\ResponseMessage.cs" />
-    <Compile Include="ACM\TokenRequestor.cs" />
-    <Compile Include="ACSConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ACSConfigurationForm.Designer.cs">
-      <DependentUpon>ACSConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ACSConfigurationManagementServiceHelperExtensions.cs" />
-    <Compile Include="ACSConfigurationWithManagementService.cs" />
-    <Compile Include="ACSManagement\AccessControlTypes.cs" />
-    <Compile Include="ACSManagement\ManagementServiceExtensions.cs" />
-    <Compile Include="ACSManagement\ManagementServiceHelper.cs" />
-    <Compile Include="ACSManagement\ManagementServiceTypes.cs" />
-    <Compile Include="ACSManagement\SamplesConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="AssemblyResolver.cs" />
-    <Compile Include="ACSAuthenticationStatusForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ACSAuthenticationStatusForm.Designer.cs">
-      <DependentUpon>ACSAuthenticationStatusForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AutoRefreshSecurityToken.cs" />
     <Compile Include="PluginProfileForm.cs" />
     <Compile Include="PluginProfileForm.Designer.cs">
@@ -157,12 +117,6 @@
     <Compile Include="OrganizationServiceExtensions.cs" />
     <Compile Include="ToolServiceProxies.cs" />
     <Compile Include="CrmServiceEndpoint.cs" />
-    <Compile Include="ServiceBusConfigForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ServiceBusConfigForm.designer.cs">
-      <DependentUpon>ServiceBusConfigForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CrmAttributeSelectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -273,23 +227,12 @@
     <Content Include="Images\Refresh.gif" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ACSConfigurationForm.resx">
-      <DependentUpon>ACSConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ACSAuthenticationStatusForm.resx">
-      <DependentUpon>ACSAuthenticationStatusForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="PluginProfileForm.resx">
       <DependentUpon>PluginProfileForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FileBrowserControl.resx">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServiceBusConfigForm.resx">
-      <DependentUpon>ServiceBusConfigForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CrmAttributeSelectionControl.resx">
       <SubType>Designer</SubType>

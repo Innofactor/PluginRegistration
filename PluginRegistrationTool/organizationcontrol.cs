@@ -238,8 +238,8 @@ namespace PluginRegistrationTool
 		}
 		private void toolServiceEndpointRegister_Click(object sender, EventArgs e)
 		{
-			ServiceBusConfigForm serviceBusConfigForm = new ServiceBusConfigForm(this.Organization, this, null);
-			serviceBusConfigForm.ShowDialog();
+            //ServiceBusConfigForm serviceBusConfigForm = new ServiceBusConfigForm(this.Organization, this, null);
+            //serviceBusConfigForm.ShowDialog();
 		}
 		private void toolStepRegister_Click(object sender, EventArgs e)
 		{
@@ -432,8 +432,8 @@ namespace PluginRegistrationTool
 			{
 				case CrmTreeNodeType.ServiceEndpoint:
 					{
-						ServiceBusConfigForm serForm = new ServiceBusConfigForm(this.Organization, this, (CrmServiceEndpoint)trvPlugins.SelectedNode);
-						serForm.ShowDialog();
+                        //ServiceBusConfigForm serForm = new ServiceBusConfigForm(this.Organization, this, (CrmServiceEndpoint)trvPlugins.SelectedNode);
+                        //serForm.ShowDialog();
 					}
 					break;
 				case CrmTreeNodeType.Assembly:
