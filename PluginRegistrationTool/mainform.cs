@@ -29,7 +29,7 @@ namespace PluginRegistrationTool
 {
 	public partial class MainForm : Form
 	{
-		private ConnectionsForm m_connectionsForm;
+		// private ConnectionsForm m_connectionsForm;
 		private OrganizationsForm m_organizationsForm;
 		private ProgressIndicator m_progIndicator;
 		private volatile static List<CrmMessage> m_messageList = new List<CrmMessage>();
@@ -77,19 +77,19 @@ namespace PluginRegistrationTool
 			#endregion
 
 			//Add the Connections form to the Main Window
-			this.m_connectionsForm = new ConnectionsForm(connectionsFile, this);
-			this.m_connectionsForm.MdiParent = this;
-			this.m_connectionsForm.Dock = DockStyle.Left;
-			this.m_connectionsForm.Show();
+            //this.m_connectionsForm = new ConnectionsForm(connectionsFile, this);
+            //this.m_connectionsForm.MdiParent = this;
+            //this.m_connectionsForm.Dock = DockStyle.Left;
+            //this.m_connectionsForm.Show();
 
 			//Create the Organizations container
 			this.m_organizationsForm = new OrganizationsForm(this);
 			this.m_organizationsForm.MdiParent = this;
 
-			this.m_connectionsForm.OrganizationsForm = this.m_organizationsForm;
+			//this.m_connectionsForm.OrganizationsForm = this.m_organizationsForm;
 
 			//Register Resize Event Handlers
-			this.m_connectionsForm.Resize += MainForm_Resize;
+			//this.m_connectionsForm.Resize += MainForm_Resize;
 
 			//Initialize the progress bar
 			this.m_progIndicator = new ProgressIndicator(this.ProgressIndicatorInit, this.ProgressIndicatorComplete,
@@ -130,13 +130,13 @@ namespace PluginRegistrationTool
 		}
 
 		#region Properties
-		public ConnectionsForm ConnectionsForm
-		{
-			get
-			{
-				return this.m_connectionsForm;
-			}
-		}
+        //public ConnectionsForm ConnectionsForm
+        //{
+        //    get
+        //    {
+        //        return this.m_connectionsForm;
+        //    }
+        //}
 
 		public OrganizationsForm OrganizationsForm
 		{
@@ -173,7 +173,7 @@ namespace PluginRegistrationTool
 
 		private void mnuFileConnectionNew_Click(object sender, EventArgs e)
 		{
-			this.ConnectionsForm.NewConnection();
+			// this.ConnectionsForm.NewConnection();
 		}
 
 		private void mnuHelpAbout_Click(object sender, EventArgs e)
@@ -184,10 +184,10 @@ namespace PluginRegistrationTool
 
 		private void mnuViewAutoExpand_CheckedChanged(object sender, EventArgs e)
 		{
-			if (this.ConnectionsForm != null)
-			{
-				this.ConnectionsForm.UpdateAutoExpand(mnuViewAutoExpand.Checked);
-			}
+            //if (this.ConnectionsForm != null)
+            //{
+            //    this.ConnectionsForm.UpdateAutoExpand(mnuViewAutoExpand.Checked);
+            //}
 
 			if (this.OrganizationsForm != null)
 			{
@@ -202,12 +202,12 @@ namespace PluginRegistrationTool
 		{
 			get
 			{
-				return this.ConnectionsForm.Visible;
+                return true; // this.ConnectionsForm.Visible;
 			}
 
 			set
 			{
-				this.ConnectionsForm.Visible = value;
+				// this.ConnectionsForm.Visible = value;
 				mnuViewConnections.Checked = value;
 				toolConnectionNew.Enabled = value;
 				toolConnectionRemove.Enabled = value;
@@ -326,17 +326,17 @@ namespace PluginRegistrationTool
 		#region Toolbar Event Handlers
 		private void toolConnectionNew_Click(object sender, EventArgs e)
 		{
-			this.ConnectionsForm.NewConnection();
+			// this.ConnectionsForm.NewConnection();
 		}
 
 		private void toolConnectionRefresh_Click(object sender, EventArgs e)
 		{
-			this.ConnectionsForm.ReloadConnection();
+			// this.ConnectionsForm.ReloadConnection();
 		}
 
 		private void toolConnectionRemove_Click(object sender, EventArgs e)
 		{
-			this.ConnectionsForm.RemoveConnection();
+			// this.ConnectionsForm.RemoveConnection();
 		}
 
 		private void toolProfilerReplay_Click(object sender, EventArgs e)
@@ -408,7 +408,7 @@ namespace PluginRegistrationTool
 
 				if (this.ConnectionsFormVisible)
 				{
-					this.OrganizationsForm.Left = this.ConnectionsForm.Right + 1;
+					// this.OrganizationsForm.Left = this.ConnectionsForm.Right + 1;
 				}
 				else
 				{

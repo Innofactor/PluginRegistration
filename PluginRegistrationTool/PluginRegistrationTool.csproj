@@ -185,12 +185,6 @@
     <Compile Include="AttributeSelectionForm.designer.cs">
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConnectionsForm.Designer.cs">
-      <DependentUpon>ConnectionsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CrmAttribute.cs" />
     <Compile Include="CrmConnection.cs" />
     <Compile Include="CrmEntityDictionary.cs" />
@@ -322,10 +316,6 @@
     <EmbeddedResource Include="AttributeSelectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConnectionsForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConnectionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CrmTreeControl.resx">
       <SubType>Designer</SubType>
