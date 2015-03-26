@@ -153,10 +153,6 @@
     <Compile Include="PluginProfileForm.Designer.cs">
       <DependentUpon>PluginProfileForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DebugPluginForm.cs" />
-    <Compile Include="DebugPluginForm.Designer.cs">
-      <DependentUpon>DebugPluginForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="FileBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -296,10 +292,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PluginProfileForm.resx">
       <DependentUpon>PluginProfileForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DebugPluginForm.resx">
-      <DependentUpon>DebugPluginForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FileBrowserControl.resx">
