@@ -331,8 +331,7 @@ namespace PluginRegistrationTool
 				try
 				{
 					StringBuilder builder = new StringBuilder();
-					foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(this.m_org,
-						this.MainForm.ProgressIndicator, (ICrmEntity)this.trvPlugins.SelectedNode))
+					foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(this.m_org, (ICrmEntity)this.trvPlugins.SelectedNode))
 					{
 						builder.AppendLine(string.Format("{0} {1} Unregistered Successfully", stat.Value, stat.Key));
 					}
