@@ -206,105 +206,105 @@
             }
         }
 
-        /// <summary>
-        /// 1:N sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
-        /// </summary>
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
-        public System.Collections.Generic.IEnumerable<CrmSdk.SdkMessageProcessingStep> sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
-        {
-            get
-            {
-                return this.GetRelatedEntities<CrmSdk.SdkMessageProcessingStep>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null);
-            }
-            set
-            {
-                this.OnPropertyChanging("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
-                this.SetRelatedEntities<CrmSdk.SdkMessageProcessingStep>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null, value);
-                this.OnPropertyChanged("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
-            }
-        }
+        ///// <summary>
+        ///// 1:N sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
+        //public System.Collections.Generic.IEnumerable<CrmSdk.SdkMessageProcessingStep> sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntities<CrmSdk.SdkMessageProcessingStep>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null);
+        //    }
+        //    set
+        //    {
+        //        this.OnPropertyChanging("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+        //        this.SetRelatedEntities<CrmSdk.SdkMessageProcessingStep>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null, value);
+        //        this.OnPropertyChanged("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+        //    }
+        //}
 
-        /// <summary>
-        /// 1:N userentityinstancedata_sdkmessageprocessingstepsecureconfig
-        /// </summary>
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("userentityinstancedata_sdkmessageprocessingstepsecureconfig")]
-        public System.Collections.Generic.IEnumerable<CrmSdk.UserEntityInstanceData> userentityinstancedata_sdkmessageprocessingstepsecureconfig
-        {
-            get
-            {
-                return this.GetRelatedEntities<CrmSdk.UserEntityInstanceData>("userentityinstancedata_sdkmessageprocessingstepsecureconfig", null);
-            }
-            set
-            {
-                this.OnPropertyChanging("userentityinstancedata_sdkmessageprocessingstepsecureconfig");
-                this.SetRelatedEntities<CrmSdk.UserEntityInstanceData>("userentityinstancedata_sdkmessageprocessingstepsecureconfig", null, value);
-                this.OnPropertyChanged("userentityinstancedata_sdkmessageprocessingstepsecureconfig");
-            }
-        }
+        ///// <summary>
+        ///// 1:N userentityinstancedata_sdkmessageprocessingstepsecureconfig
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("userentityinstancedata_sdkmessageprocessingstepsecureconfig")]
+        //public System.Collections.Generic.IEnumerable<CrmSdk.UserEntityInstanceData> userentityinstancedata_sdkmessageprocessingstepsecureconfig
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntities<CrmSdk.UserEntityInstanceData>("userentityinstancedata_sdkmessageprocessingstepsecureconfig", null);
+        //    }
+        //    set
+        //    {
+        //        this.OnPropertyChanging("userentityinstancedata_sdkmessageprocessingstepsecureconfig");
+        //        this.SetRelatedEntities<CrmSdk.UserEntityInstanceData>("userentityinstancedata_sdkmessageprocessingstepsecureconfig", null, value);
+        //        this.OnPropertyChanged("userentityinstancedata_sdkmessageprocessingstepsecureconfig");
+        //    }
+        //}
 
-        /// <summary>
-        /// N:1 createdby_sdkmessageprocessingstepsecureconfig
-        /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("createdby_sdkmessageprocessingstepsecureconfig")]
-        public CrmSdk.SystemUser createdby_sdkmessageprocessingstepsecureconfig
-        {
-            get
-            {
-                return this.GetRelatedEntity<CrmSdk.SystemUser>("createdby_sdkmessageprocessingstepsecureconfig", null);
-            }
-        }
+        ///// <summary>
+        ///// N:1 createdby_sdkmessageprocessingstepsecureconfig
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("createdby_sdkmessageprocessingstepsecureconfig")]
+        //public CrmSdk.SystemUser createdby_sdkmessageprocessingstepsecureconfig
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntity<CrmSdk.SystemUser>("createdby_sdkmessageprocessingstepsecureconfig", null);
+        //    }
+        //}
 
-        /// <summary>
-        /// N:1 lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby
-        /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby")]
-        public CrmSdk.SystemUser lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby
-        {
-            get
-            {
-                return this.GetRelatedEntity<CrmSdk.SystemUser>("lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby", null);
-            }
-        }
+        ///// <summary>
+        ///// N:1 lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby")]
+        //public CrmSdk.SystemUser lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntity<CrmSdk.SystemUser>("lk_sdkmessageprocessingstepsecureconfig_createdonbehalfby", null);
+        //    }
+        //}
 
-        /// <summary>
-        /// N:1 lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby
-        /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby")]
-        public CrmSdk.SystemUser lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby
-        {
-            get
-            {
-                return this.GetRelatedEntity<CrmSdk.SystemUser>("lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby", null);
-            }
-        }
+        ///// <summary>
+        ///// N:1 lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby")]
+        //public CrmSdk.SystemUser lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntity<CrmSdk.SystemUser>("lk_sdkmessageprocessingstepsecureconfig_modifiedonbehalfby", null);
+        //    }
+        //}
 
-        /// <summary>
-        /// N:1 modifiedby_sdkmessageprocessingstepsecureconfig
-        /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("modifiedby_sdkmessageprocessingstepsecureconfig")]
-        public CrmSdk.SystemUser modifiedby_sdkmessageprocessingstepsecureconfig
-        {
-            get
-            {
-                return this.GetRelatedEntity<CrmSdk.SystemUser>("modifiedby_sdkmessageprocessingstepsecureconfig", null);
-            }
-        }
+        ///// <summary>
+        ///// N:1 modifiedby_sdkmessageprocessingstepsecureconfig
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("modifiedby_sdkmessageprocessingstepsecureconfig")]
+        //public CrmSdk.SystemUser modifiedby_sdkmessageprocessingstepsecureconfig
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntity<CrmSdk.SystemUser>("modifiedby_sdkmessageprocessingstepsecureconfig", null);
+        //    }
+        //}
 
-        /// <summary>
-        /// N:1 organization_sdkmessageprocessingstepsecureconfig
-        /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("organization_sdkmessageprocessingstepsecureconfig")]
-        public CrmSdk.Organization organization_sdkmessageprocessingstepsecureconfig
-        {
-            get
-            {
-                return this.GetRelatedEntity<CrmSdk.Organization>("organization_sdkmessageprocessingstepsecureconfig", null);
-            }
-        }
+        ///// <summary>
+        ///// N:1 organization_sdkmessageprocessingstepsecureconfig
+        ///// </summary>
+        //[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+        //[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("organization_sdkmessageprocessingstepsecureconfig")]
+        //public CrmSdk.Organization organization_sdkmessageprocessingstepsecureconfig
+        //{
+        //    get
+        //    {
+        //        return this.GetRelatedEntity<CrmSdk.Organization>("organization_sdkmessageprocessingstepsecureconfig", null);
+        //    }
+        //}
     }
 }

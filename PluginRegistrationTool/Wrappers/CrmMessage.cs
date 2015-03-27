@@ -449,7 +449,7 @@ namespace PluginRegistrationTool.Wrappers
 		{
 			get
 			{
-				return CrmSdk.SdkMessageFilter.EntityLogicalName;
+				return Entities.SdkMessageFilter.EntityLogicalName;
 			}
 		}
 

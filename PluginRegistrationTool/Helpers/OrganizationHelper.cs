@@ -109,7 +109,7 @@ namespace PluginRegistrationTool.Helpers
 
 			//Generate the query
 			QueryExpression query = new QueryExpression();
-			query.ColumnSet = GetColumnSet(CrmSdk.SdkMessage.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(Entities.SdkMessage.EntityLogicalName);
 			query.Criteria.AddCondition("isprivate", ConditionOperator.Equal, false);
 			query.AddOrder("name", OrderType.Ascending);
 			query.EntityName = SdkMessage.EntityLogicalName;
@@ -278,7 +278,7 @@ namespace PluginRegistrationTool.Helpers
 			}
 
 			QueryExpression query = new QueryExpression();
-			query.ColumnSet = GetColumnSet(CrmSdk.PluginAssembly.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(Entities.PluginAssembly.EntityLogicalName);
 			query.Criteria = CreateAssemblyFilter();
 			query.EntityName = PluginAssembly.EntityLogicalName;
 
@@ -302,9 +302,9 @@ namespace PluginRegistrationTool.Helpers
 			}
 
 			QueryExpression query = new QueryExpression();
-			query.ColumnSet = GetColumnSet(CrmSdk.ServiceEndpoint.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(Entities.ServiceEndpoint.EntityLogicalName);
 			query.Criteria = new FilterExpression();
-			query.EntityName = CrmSdk.ServiceEndpoint.EntityLogicalName;
+            query.EntityName = Entities.ServiceEndpoint.EntityLogicalName;
 
 			//Clear the Service Endpoints list since we are reloading from scratch
 			org.ClearServiceEndpoints();
@@ -523,7 +523,7 @@ namespace PluginRegistrationTool.Helpers
 				throw new ArgumentNullException("assembly");
 			}
 
-			PluginAssembly assemblyRetrievedFromDatabase = (PluginAssembly)org.OrganizationService.Retrieve(CrmSdk.PluginAssembly.EntityLogicalName, assembly.AssemblyId, GetColumnSet(CrmSdk.PluginAssembly.EntityLogicalName));
+            PluginAssembly assemblyRetrievedFromDatabase = (PluginAssembly)org.OrganizationService.Retrieve(Entities.PluginAssembly.EntityLogicalName, assembly.AssemblyId, GetColumnSet(Entities.PluginAssembly.EntityLogicalName));
 			assembly.RefreshFromPluginAssembly(assemblyRetrievedFromDatabase);
 		}
 
@@ -539,7 +539,7 @@ namespace PluginRegistrationTool.Helpers
 				throw new ArgumentNullException("plugin");
 			}
 
-			PluginType pluginRetrievedFromDatabase = (PluginType)org.OrganizationService.Retrieve(CrmSdk.PluginType.EntityLogicalName, plugin.PluginId, GetColumnSet(CrmSdk.PluginType.EntityLogicalName));
+            PluginType pluginRetrievedFromDatabase = (PluginType)org.OrganizationService.Retrieve(Entities.PluginType.EntityLogicalName, plugin.PluginId, GetColumnSet(Entities.PluginType.EntityLogicalName));
 			plugin.RefreshFromPluginType(pluginRetrievedFromDatabase);
 		}
 
@@ -555,7 +555,7 @@ namespace PluginRegistrationTool.Helpers
 				throw new ArgumentNullException("step");
 			}
 
-			SdkMessageProcessingStep stepRetrievedFromDatabase = (SdkMessageProcessingStep)org.OrganizationService.Retrieve(CrmSdk.SdkMessageProcessingStep.EntityLogicalName, step.StepId, GetColumnSet(CrmSdk.SdkMessageProcessingStep.EntityLogicalName));
+            SdkMessageProcessingStep stepRetrievedFromDatabase = (SdkMessageProcessingStep)org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStep.EntityLogicalName, step.StepId, GetColumnSet(Entities.SdkMessageProcessingStep.EntityLogicalName));
 			step.RefreshFromSdkMessageProcessingStep(step.AssemblyId, stepRetrievedFromDatabase, step.SecureConfiguration);
 		}
 
@@ -574,7 +574,7 @@ namespace PluginRegistrationTool.Helpers
 				throw new ArgumentNullException("image");
 			}
 
-			SdkMessageProcessingStepImage imageRetrievedFromDatabase = (SdkMessageProcessingStepImage)org.OrganizationService.Retrieve(CrmSdk.SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(CrmSdk.SdkMessageProcessingStepImage.EntityLogicalName));
+            SdkMessageProcessingStepImage imageRetrievedFromDatabase = (SdkMessageProcessingStepImage)org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(Entities.SdkMessageProcessingStepImage.EntityLogicalName));
 			if (step.IsProfiled && null != imageRetrievedFromDatabase.SdkMessageProcessingStepId)
 			{
 				imageRetrievedFromDatabase.SdkMessageProcessingStepId.Id = step.StepId;
@@ -595,7 +595,7 @@ namespace PluginRegistrationTool.Helpers
 				throw new ArgumentNullException("sep");
 			}
 
-			ServiceEndpoint sepRetrievedFromDatabase = (ServiceEndpoint)org.OrganizationService.Retrieve(CrmSdk.ServiceEndpoint.EntityLogicalName, sep.ServiceEndpointId, GetColumnSet(CrmSdk.ServiceEndpoint.EntityLogicalName));
+            ServiceEndpoint sepRetrievedFromDatabase = (ServiceEndpoint)org.OrganizationService.Retrieve(Entities.ServiceEndpoint.EntityLogicalName, sep.ServiceEndpointId, GetColumnSet(Entities.ServiceEndpoint.EntityLogicalName));
 			sep.RefreshFromServiceEndpoint(sepRetrievedFromDatabase);
 		}
 
@@ -784,7 +784,7 @@ namespace PluginRegistrationTool.Helpers
 			}
 
 			QueryExpression query = new QueryExpression();
-			query.ColumnSet = GetColumnSet(CrmSdk.SdkMessageFilter.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(Entities.SdkMessageFilter.EntityLogicalName);
 			query.Criteria.AddCondition("sdkmessageid", ConditionOperator.In, messageIdList.ToArray());
 			query.Criteria.AddCondition("iscustomprocessingstepallowed", ConditionOperator.Equal, true);
 			query.Criteria.AddCondition("isvisible", ConditionOperator.Equal, true);
@@ -814,7 +814,7 @@ namespace PluginRegistrationTool.Helpers
 
 			//Create the query
 			QueryExpression query = new QueryExpression(PluginType.EntityLogicalName);
-			query.ColumnSet = GetColumnSet(CrmSdk.PluginType.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(Entities.PluginType.EntityLogicalName);
 			query.Criteria = new FilterExpression();
 			query.Criteria.AddCondition("typename", ConditionOperator.NotLike, "Compiled.Workflow%");
 
@@ -1019,7 +1019,7 @@ namespace PluginRegistrationTool.Helpers
 			}
 
 			QueryExpression query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName);
-			query.ColumnSet = GetColumnSet(CrmSdk.SdkMessageProcessingStepImage.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(Entities.SdkMessageProcessingStepImage.EntityLogicalName);
 
 			//Put this extra exclusion because any published Workflows will create
 			//Images (linked to the Step for Workflow Expansion). Since we are using InnerJoin,
@@ -1096,7 +1096,7 @@ namespace PluginRegistrationTool.Helpers
 				ColumnSet cols = new ColumnSet();
 				switch (entityName)
 				{
-					case CrmSdk.ServiceEndpoint.EntityLogicalName:
+                    case Entities.ServiceEndpoint.EntityLogicalName:
 
 						cols.AddColumns("name", "createdon", "modifiedon", "serviceendpointid", "path", "contract", "userclaim", "solutionnamespace", "connectionmode", "description");
 						break;

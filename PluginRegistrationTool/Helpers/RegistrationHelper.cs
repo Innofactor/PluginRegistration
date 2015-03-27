@@ -393,7 +393,7 @@ namespace PluginRegistrationTool.Helpers
 				sdkStep.Attributes.Remove("sdkmessageprocessingstepsecureconfigid");
 				sdkStep.RelatedEntities.Clear();
 			}
-			else if (entityList.ContainsKey(CrmSdk.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
+            else if (entityList.ContainsKey(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
 			{
 				Guid secureConfigId = Guid.NewGuid();
 
@@ -469,11 +469,11 @@ namespace PluginRegistrationTool.Helpers
 				sdkStep.RelatedEntities.Clear();
 				origSecureConfigId = null;
 			}
-			else if (entityList.ContainsKey(CrmSdk.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
+            else if (entityList.ContainsKey(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
 			{
 				if (null == origSecureConfigId)
 				{
-					entityList.Remove(CrmSdk.SdkMessageProcessingStepSecureConfig.EntityLogicalName);
+                    entityList.Remove(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName);
 				}
 				else
 				{
@@ -699,7 +699,7 @@ namespace PluginRegistrationTool.Helpers
 
 			//Retrieve the SDK entity equivalent of the given image
 			Dictionary<string, object> entityList = image.GenerateCrmEntities(step.MessageId, step.MessageEntityId);
-			SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[CrmSdk.SdkMessageProcessingStepImage.EntityLogicalName];
+            SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[Entities.SdkMessageProcessingStepImage.EntityLogicalName];
 
 			//If the step that owns this image is a profiled step, the step will be the original step (the step that is being profiled),
 			//not the profiler step. The Profiler step is what should be set on the server, since that is the step that is actually enabled.
@@ -755,19 +755,19 @@ namespace PluginRegistrationTool.Helpers
 			{
 				switch (entity.EntityType)
 				{
-					case CrmSdk.ServiceEndpoint.EntityLogicalName:
+                    case Entities.ServiceEndpoint.EntityLogicalName:
 						serviceEndpointList.Add(entity.EntityId);
 						break;
-					case PluginAssembly.EntityLogicalName:
+                    case Entities.PluginAssembly.EntityLogicalName:
 						assemblyList.Add(entity.EntityId);
 						break;
-					case PluginType.EntityLogicalName:
+                    case Entities.PluginType.EntityLogicalName:
 						pluginList.Add(entity.EntityId);
 						break;
-					case SdkMessageProcessingStep.EntityLogicalName:
+                    case Entities.SdkMessageProcessingStep.EntityLogicalName:
 						stepList.Add(entity.EntityId);
 						break;
-					case SdkMessageProcessingStepImage.EntityLogicalName:
+                    case Entities.SdkMessageProcessingStepImage.EntityLogicalName:
 						imageList.Add(entity.EntityId);
 						break;
 					default:
@@ -935,7 +935,7 @@ namespace PluginRegistrationTool.Helpers
 				}
 				foreach (Guid serviceEndpointId in serviceEndpointList)
 				{
-					org.OrganizationService.Delete(CrmSdk.ServiceEndpoint.EntityLogicalName, serviceEndpointId);
+					org.OrganizationService.Delete(Entities.ServiceEndpoint.EntityLogicalName, serviceEndpointId);
 					if (prog != null)
 					{
 						prog.Increment();

@@ -140,7 +140,7 @@ namespace PluginRegistrationTool
 		[Browsable(false)]
 		public string EntityType
 		{
-			get { return CrmSdk.ServiceEndpoint.EntityLogicalName; }
+			get { return Entities.ServiceEndpoint.EntityLogicalName; }
 		}
 
 		[Browsable(false)]
