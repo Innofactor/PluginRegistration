@@ -542,26 +542,25 @@ namespace PluginRegistrationTool
 		private void toolRefresh_Click(object sender, EventArgs e)
 		{
 			this.Enabled = false;
-            //try
-            //{
-            //    propGridEntity.SelectedObject = null;
+            try
+            {
+                propGridEntity.SelectedObject = null;
 
-            //    OrganizationHelper.RefreshConnection(this.m_org,
-            //        this.m_mainForm.LoadMessages(this.m_org), this.m_mainForm.ProgressIndicator);
+                OrganizationHelper.RefreshConnection(this.m_org, MainForm.LoadMessages(this.m_org));
 
-            //    this.LoadNodes();
-            //}
-            //catch (Exception ex)
-            //{
-            //    ErrorMessage.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
-            //    ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
-            //        this.m_org.OrganizationId);
-            //    return;
-            //}
-            //finally
-            //{
-            //    this.Enabled = true;
-            //}
+                this.LoadNodes();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
+                ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
+                    this.m_org.OrganizationId);
+                return;
+            }
+            finally
+            {
+                this.Enabled = true;
+            }
 		}
 
 		private void trvPlugins_DoubleClick(object sender, CrmTreeNodeEventArgs e)
