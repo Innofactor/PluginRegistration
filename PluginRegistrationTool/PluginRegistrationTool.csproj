@@ -138,12 +138,6 @@
     <Compile Include="ImageRegistrationForm.Designer.cs">
       <DependentUpon>ImageRegistrationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MessagePropertyNameForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,10 +230,6 @@
     <EmbeddedResource Include="ImageRegistrationForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ImageRegistrationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MessagePropertyNameForm.resx">
       <SubType>Designer</SubType>

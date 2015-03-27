@@ -24,15 +24,15 @@ namespace PluginRegistrationTool
 	public partial class OrganizationsForm : Form
 	{
 		private Dictionary<Guid?, Dictionary<Guid, OrganizationControl>> m_orgList;
-		private MainForm m_mainForm;
+        //private MainForm m_mainForm;
 
-		public OrganizationsForm(MainForm mainForm)
-		{
-			InitializeComponent();
+        //public OrganizationsForm(MainForm mainForm)
+        //{
+        //    InitializeComponent();
 
-			this.m_orgList = new Dictionary<Guid?, Dictionary<Guid, OrganizationControl>>();
-			this.m_mainForm = mainForm;
-		}
+        //    this.m_orgList = new Dictionary<Guid?, Dictionary<Guid, OrganizationControl>>();
+        //    this.m_mainForm = mainForm;
+        //}
 
 		private void lblClose_Click(object sender, EventArgs e)
 		{
@@ -47,62 +47,62 @@ namespace PluginRegistrationTool
 		{
 			if (tabOrganizations.SelectedTab != null)
 			{
-				this.m_mainForm.UpdateCurrentOrganization((CrmOrganization)tabOrganizations.SelectedTab.Tag);
+				// this.m_mainForm.UpdateCurrentOrganization((CrmOrganization)tabOrganizations.SelectedTab.Tag);
 			}
 		}
 
 		#region Public Methods
-		public void CreateOrganizationTab(CrmOrganization org)
-		{
-			if (org == null)
-			{
-				throw new ArgumentNullException("org");
-			}
-            else if (org.ConnectionDetail == null)
-			{
-                throw new ArgumentNullException("org.ConnectionDetail");
-			}
+        //public void CreateOrganizationTab(CrmOrganization org)
+        //{
+        //    if (org == null)
+        //    {
+        //        throw new ArgumentNullException("org");
+        //    }
+        //    else if (org.ConnectionDetail == null)
+        //    {
+        //        throw new ArgumentNullException("org.ConnectionDetail");
+        //    }
 
-			TabPage page;
-			if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId) &&
-				this.m_orgList[org.ConnectionDetail.ConnectionId].ContainsKey(org.OrganizationId))
-			{
-                page = this.GetTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
-			}
-			else
-			{
-                page = new TabPage(string.Format("{0}: {1}", org.ConnectionDetail.ConnectionName, org.OrganizationFriendlyName));
-				page.Tag = org;
-				tabOrganizations.TabPages.Add(page);
+        //    TabPage page;
+        //    if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId) &&
+        //        this.m_orgList[org.ConnectionDetail.ConnectionId].ContainsKey(org.OrganizationId))
+        //    {
+        //        page = this.GetTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
+        //    }
+        //    else
+        //    {
+        //        page = new TabPage(string.Format("{0}: {1}", org.ConnectionDetail.ConnectionName, org.OrganizationFriendlyName));
+        //        page.Tag = org;
+        //        tabOrganizations.TabPages.Add(page);
 
-				OrganizationControl orgControl = new OrganizationControl(org, this.m_mainForm);
-				orgControl.Dock = DockStyle.Fill;
-				orgControl.Location = new Point(0, 0);
+        //        OrganizationControl orgControl = new OrganizationControl(org, this.m_mainForm);
+        //        orgControl.Dock = DockStyle.Fill;
+        //        orgControl.Location = new Point(0, 0);
 
-				page.Controls.Add(orgControl);
+        //        page.Controls.Add(orgControl);
 
-                if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId))
-				{
-                    this.m_orgList[org.ConnectionDetail.ConnectionId].Add(org.OrganizationId, orgControl);
-				}
-				else
-				{
-					Dictionary<Guid, OrganizationControl> orgList = new Dictionary<Guid, OrganizationControl>();
-					orgList.Add(org.OrganizationId, orgControl);
+        //        if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId))
+        //        {
+        //            this.m_orgList[org.ConnectionDetail.ConnectionId].Add(org.OrganizationId, orgControl);
+        //        }
+        //        else
+        //        {
+        //            Dictionary<Guid, OrganizationControl> orgList = new Dictionary<Guid, OrganizationControl>();
+        //            orgList.Add(org.OrganizationId, orgControl);
 
-                    this.m_orgList.Add(org.ConnectionDetail.ConnectionId, orgList);
-				}
-			}
+        //            this.m_orgList.Add(org.ConnectionDetail.ConnectionId, orgList);
+        //        }
+        //    }
 
-			tabOrganizations.SelectedTab = page;
+        //    tabOrganizations.SelectedTab = page;
 
-			if (!this.Visible)
-			{
-				this.Show();
-			}
+        //    if (!this.Visible)
+        //    {
+        //        this.Show();
+        //    }
 
-			this.m_mainForm.UpdateCurrentOrganization(org);
-		}
+        //    this.m_mainForm.UpdateCurrentOrganization(org);
+        //}
 
 		public bool OrganizationHasTab(Guid? connectionId, Guid organizationId)
 		{
@@ -148,7 +148,7 @@ namespace PluginRegistrationTool
 				if (this.m_orgList.Count == 0)
 				{
 					this.Hide();
-					this.m_mainForm.UpdateCurrentOrganization(null);
+					// this.m_mainForm.UpdateCurrentOrganization(null);
 				}
 				else if (tabOrganizations.SelectedTab == null)
 				{
@@ -156,7 +156,7 @@ namespace PluginRegistrationTool
 				}
 				else
 				{
-					this.m_mainForm.UpdateCurrentOrganization((CrmOrganization)tabOrganizations.SelectedTab.Tag);
+					// this.m_mainForm.UpdateCurrentOrganization((CrmOrganization)tabOrganizations.SelectedTab.Tag);
 				}
 			}
 		}

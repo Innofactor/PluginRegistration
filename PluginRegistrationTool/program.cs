@@ -90,7 +90,7 @@ namespace PluginRegistrationTool
 				#endregion
 			} 
 			
-			Application.Run(new MainForm(connectionsFile));
+			// Application.Run(new MainForm(connectionsFile));
 		}
 	}
 }
