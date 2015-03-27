@@ -15,16 +15,12 @@
 //
 // =====================================================================
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Microsoft.Xrm.Sdk.Metadata;
 
 namespace PluginRegistrationTool
 {
-	using CrmSdk;
 
-	public sealed class CrmAttribute
+    public sealed class CrmAttribute
 	{
 		private string m_schemaName;
 		private string m_friendlyName;

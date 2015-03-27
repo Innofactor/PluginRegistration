@@ -18,10 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
-
-using Microsoft.Xrm.Sdk;
-
 using CrmSdk;
+using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {

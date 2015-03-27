@@ -17,9 +17,6 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-
-using Microsoft.Crm.Services.Utility;
-
 using Microsoft.Xrm.Sdk.Client;
 
 namespace PluginRegistrationTool

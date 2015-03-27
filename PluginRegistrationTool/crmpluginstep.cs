@@ -17,13 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-
 using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {
-	using CrmSdk;
-	using System.ComponentModel;
+    using System.ComponentModel;
+    using CrmSdk;
 
 	public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
 	{

@@ -16,20 +16,13 @@
 // =====================================================================
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net;
 using System.Net.Security;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-
-using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Discovery;
 

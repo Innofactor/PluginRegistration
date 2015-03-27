@@ -16,16 +16,13 @@
 // =====================================================================
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
-
 using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {
-	using CrmSdk;
-	using System.Text.RegularExpressions;
-	using System.ComponentModel;
+    using System.ComponentModel;
+    using CrmSdk;
 
 	[Serializable]
 	public sealed class CrmPlugin : ICrmEntity, ICrmTreeNode, ICloneable
