@@ -10,11 +10,11 @@ September 2010
 Contents
 --------
 
-[Overview](#_Overview)
+[Overview](#overview)
 
-[Contents of the Folders](#_Contents_of_the_Download_and_CDs)
+[Contents of the Folders](#contents-of-the-folders)
 
-[Installation Instructions](#_Microsoft_Dynamics_CRM_Connector_fo)
+[Installation Instructions](#installation-instructions)
 
 [Important Notes](#important-notes)
 
