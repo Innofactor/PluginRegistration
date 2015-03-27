@@ -18,7 +18,7 @@
 namespace PluginRegistrationTool.Wrappers
 {
     using System;
-	using CrmSdk;
+    using PluginRegistrationTool.Entities;
 
 	public sealed class CrmUser
 	{
