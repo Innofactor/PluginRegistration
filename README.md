@@ -49,9 +49,7 @@ Installation Instructions
 -------------------------
 
 1.  Download and install [Windows Identity Foundation](http://msdn.microsoft.com/en-us/security/aa570351.aspx).
-
 2.  In Windows Explorer, double-click the PluginRegistrationTool.sln file to open the solution in Visual Studio 2010.
-
 3.  Compile the project by clicking **Build Solution** in the **Build** menu.
 
 Add the Tool to Visual Studio
@@ -60,28 +58,19 @@ Add the Tool to Visual Studio
 You can register the Plug-in Registration Tool as an external tool for Visual Studio 2010.
 
 1.  Open Visual Studio 2010.
-
 2.  Click **Tools**, click **External Tools**, and then click **Add**. If you have not yet added any tools, click [**New Tool 1**].
-
 3.  In the **Title** field, type CRM Plug-in Registration Tool.
-
 4.  In the **Command** field, click the ellipsis (**…**) button and navigate to the PluginRegistration.exe file that you built in the previous task. Click **Open**.
-
 5.  Click **OK** to close the **External Tools** dialog box.
 
 Important Notes
 ---------------
 
 -   The sample files are not intended to be used in a production environment without prior testing. You should deploy an application that makes use of this sample code to a test environment and examine it for interaction or interference with other parts of the system.
-
 -   Before you deploy applications that make use of this sample code to a production environment, make sure that you consider the existing customizations you may have implemented in Microsoft Dynamics CRM 2011.
-
 -   There is no longer any support in the tool for command line parameters.
-
 -   The tool supports registering plug-ins or custom workflow activities for custom entities.
-
 -   A plug-in assembly named Microsoft.Crm.Extensibility.V3CalloutProxyPlugin.dll may be shown in the list view. However, v3.0 callouts are not supported in Microsoft Dynamics CRM 2011 or Microsoft Dynamics CRM Online.
-
 -   This release of the tool supports registering plug-ins compiled with the Microsoft Dynamics CRM 2011 SDK assemblies. To register plug-ins compiled using the 4.0 SDK assemblies, use the Plug-in Registration Tool included in the 4.0 SDK.
 
 Known Problems
