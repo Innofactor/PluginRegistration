@@ -106,7 +106,6 @@
     <Compile Include="Controls\FileBrowserControl.Designer.cs">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedTypes.cs" />
     <Compile Include="OrganizationServiceExtensions.cs" />
     <Compile Include="CrmServiceEndpoint.cs" />
     <Compile Include="Controls\CrmAttributeSelectionControl.cs">
