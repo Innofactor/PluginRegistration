@@ -90,7 +90,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="AssemblyResolver.cs" />
-    <Compile Include="AutoRefreshSecurityToken.cs" />
     <Compile Include="FileBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
