@@ -636,7 +636,7 @@ namespace PluginRegistrationTool.Wrappers
 		{
 			get
 			{
-				return CrmSdk.SdkMessageProcessingStep.EntityLogicalName;
+				return Entities.SdkMessageProcessingStep.EntityLogicalName;
 			}
 		}
 

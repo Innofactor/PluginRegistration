@@ -670,7 +670,7 @@ namespace PluginRegistrationTool.Wrappers
 		{
 			get
 			{
-				return CrmSdk.PluginType.EntityLogicalName;
+				return Entities.PluginType.EntityLogicalName;
 			}
 		}
 
@@ -712,7 +712,7 @@ namespace PluginRegistrationTool.Wrappers
 			plugin.WorkflowActivityGroupName = this.WorkflowActivityGroupName;
 
 			Dictionary<string, object> entityList = new Dictionary<string, object>();
-			entityList.Add(CrmSdk.PluginType.EntityLogicalName, plugin);
+			entityList.Add(Entities.PluginType.EntityLogicalName, plugin);
 
 			return entityList;
 		}

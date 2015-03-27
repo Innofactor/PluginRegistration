@@ -472,7 +472,7 @@ namespace PluginRegistrationTool.Wrappers
 		{
 			get
 			{
-				return CrmSdk.PluginAssembly.EntityLogicalName;
+				return Entities.PluginAssembly.EntityLogicalName;
 			}
 		}
 
