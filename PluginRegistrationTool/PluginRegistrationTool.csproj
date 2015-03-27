@@ -130,10 +130,10 @@
     <Compile Include="ErrorMessage.Designer.cs">
       <DependentUpon>ErrorMessage.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageRegistrationForm.cs">
+    <Compile Include="Forms\ImageRegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImageRegistrationForm.Designer.cs">
+    <Compile Include="Forms\ImageRegistrationForm.Designer.cs">
       <DependentUpon>ImageRegistrationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MessagePropertyNameForm.cs">
@@ -224,7 +224,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>ErrorMessage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImageRegistrationForm.resx">
+    <EmbeddedResource Include="Forms\ImageRegistrationForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ImageRegistrationForm.cs</DependentUpon>
     </EmbeddedResource>

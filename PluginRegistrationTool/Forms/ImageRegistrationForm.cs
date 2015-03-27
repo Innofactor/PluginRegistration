@@ -14,14 +14,15 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using PluginRegistrationTool.Helpers;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Windows.Forms;
+    using PluginRegistrationTool.Helpers;
+
 	public partial class ImageRegistrationForm : Form
 	{
 		private CrmOrganization m_org;
