@@ -14,11 +14,12 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System.Collections.Generic;
-using System.Threading;
 
 namespace PluginRegistrationTool.Helpers
 {
+    using System.Collections.Generic;
+    using System.Threading;
+
 	internal static class CrmWebServiceHelper
 	{
 		private volatile static List<Thread> m_threadList = new List<Thread>(2);
