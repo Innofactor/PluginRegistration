@@ -184,10 +184,10 @@
     </Compile>
     <Compile Include="ProgressIndicator.cs" />
     <Compile Include="Helpers\RegistrationHelper.cs" />
-    <Compile Include="StepRegistrationForm.cs">
+    <Compile Include="Forms\StepRegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StepRegistrationForm.Designer.cs">
+    <Compile Include="Forms\StepRegistrationForm.Designer.cs">
       <DependentUpon>StepRegistrationForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -255,7 +255,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>WebServiceProgressForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StepRegistrationForm.resx">
+    <EmbeddedResource Include="Forms\StepRegistrationForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StepRegistrationForm.cs</DependentUpon>
     </EmbeddedResource>

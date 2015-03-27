@@ -14,16 +14,14 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
 
-// using PluginProfiler.Plugins;
-
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
-	using CrmSdk;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Forms;
+    using CrmSdk;
     using PluginRegistrationTool.Helpers;
 
 	public partial class StepRegistrationForm : Form
