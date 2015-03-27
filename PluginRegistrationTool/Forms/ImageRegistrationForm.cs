@@ -23,7 +23,7 @@ namespace PluginRegistrationTool.Forms
     using System.Windows.Forms;
     using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	public partial class ImageRegistrationForm : Form
 	{

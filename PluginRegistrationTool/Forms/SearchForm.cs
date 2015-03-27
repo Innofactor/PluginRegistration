@@ -25,7 +25,7 @@ namespace PluginRegistrationTool.Forms
     using System.Text;
     using System.Windows.Forms;
     using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	public partial class SearchForm : Form
 	{

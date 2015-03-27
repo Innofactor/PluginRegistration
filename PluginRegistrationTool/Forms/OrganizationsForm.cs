@@ -21,7 +21,7 @@ namespace PluginRegistrationTool.Forms
     using System.Collections.Generic;
     using System.Drawing;
     using System.Windows.Forms;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	public partial class OrganizationsForm : Form
 	{

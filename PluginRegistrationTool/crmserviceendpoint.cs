@@ -24,7 +24,7 @@ namespace PluginRegistrationTool
     using CrmSdk;
     using Microsoft.Xrm.Sdk;
     using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	public sealed class CrmServiceEndpoint : ICrmEntity, ICrmTreeNode
 	{

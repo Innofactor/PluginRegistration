@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.SDK
+namespace PluginRegistrationTool.Wrappers
 {
     using System;
     using System.Collections.Generic;

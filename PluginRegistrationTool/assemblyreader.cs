@@ -22,7 +22,7 @@ namespace PluginRegistrationTool
     using System.Linq;
     using System.Reflection;
     using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	public sealed class AppDomainContext<TProxy> : IDisposable
 		where TProxy : class, new()

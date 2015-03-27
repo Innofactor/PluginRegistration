@@ -27,7 +27,7 @@ using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
-using PluginRegistrationTool.SDK;
+using PluginRegistrationTool.Wrappers;
 
 namespace PluginRegistrationTool.Helpers
 {

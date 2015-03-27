@@ -25,7 +25,7 @@ namespace PluginRegistrationTool.Forms
     using Microsoft.Xrm.Sdk;
     using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	public partial class PluginRegistrationForm : Form
 	{

@@ -25,7 +25,7 @@ namespace PluginRegistrationTool.Controls
     using System.Windows.Forms.Design;
     using PluginRegistrationTool.Forms;
     using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.SDK;
+    using PluginRegistrationTool.Wrappers;
 
 	[Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
 	public partial class CrmAttributeSelectionControl : UserControl
