@@ -1,6 +1,6 @@
 namespace PluginRegistrationTool
 {
-	partial class OrganizationControl
+	partial class MainControl
 	{
 		/// <summary> 
 		/// Required designer variable.

@@ -27,11 +27,11 @@ namespace PluginRegistrationTool.Forms
 	public partial class StepRegistrationForm : Form
 	{
 		private CrmOrganization m_org;
-		private OrganizationControl m_orgControl;
+		private MainControl m_orgControl;
 		private CrmPluginStep m_currentStep;
 		private bool m_secureConfigurationIdIsInvalid = false;
 
-		public StepRegistrationForm(CrmOrganization org, OrganizationControl orgControl, CrmPlugin plugin, CrmPluginStep step, CrmServiceEndpoint serviceEndpoint)
+		public StepRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPlugin plugin, CrmPluginStep step, CrmServiceEndpoint serviceEndpoint)
 		{
 			if (org == null)
 			{

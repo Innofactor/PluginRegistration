@@ -32,12 +32,12 @@ namespace PluginRegistrationTool.Forms
 		private CrmOrganization m_org;
 		private string m_lastAssemblyFileName;
 		private CrmPluginAssembly m_currentAssembly;
-		private OrganizationControl m_orgControl;
+		private MainControl m_orgControl;
 		private ProgressIndicator m_progRegistration;
 		private Dictionary<string, Guid> m_typeIdList;
 		private bool m_assemblyLoaded = false;
 
-		public PluginRegistrationForm(CrmOrganization org, OrganizationControl orgControl, CrmPluginAssembly assembly)
+		public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly)
 		{
 			if (org == null)
 			{

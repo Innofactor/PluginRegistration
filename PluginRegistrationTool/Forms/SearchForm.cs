@@ -30,11 +30,11 @@ namespace PluginRegistrationTool.Forms
 	public partial class SearchForm : Form
 	{
 		private CrmOrganization m_org;
-		private OrganizationControl m_orgControl;
+		private MainControl m_orgControl;
 		private ICrmTreeNode[] m_rootNodes;
 		private bool m_needReload = false;
 
-		public SearchForm(CrmOrganization org, OrganizationControl orgControl,
+		public SearchForm(CrmOrganization org, MainControl orgControl,
 			ICrmTreeNode[] rootNodes, ICrmTreeNode selectedNode)
 		{
 			if (rootNodes == null)

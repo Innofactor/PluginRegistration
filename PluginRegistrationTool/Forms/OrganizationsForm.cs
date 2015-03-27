@@ -25,7 +25,7 @@ namespace PluginRegistrationTool.Forms
 
 	public partial class OrganizationsForm : Form
 	{
-		private Dictionary<Guid?, Dictionary<Guid, OrganizationControl>> m_orgList;
+		private Dictionary<Guid?, Dictionary<Guid, MainControl>> m_orgList;
         //private MainForm m_mainForm;
 
         //public OrganizationsForm(MainForm mainForm)
@@ -108,10 +108,10 @@ namespace PluginRegistrationTool.Forms
 
 		public bool OrganizationHasTab(Guid? connectionId, Guid organizationId)
 		{
-			Dictionary<Guid, OrganizationControl> organizationControlMap;
+			Dictionary<Guid, MainControl> organizationControlMap;
 			if (this.m_orgList.TryGetValue(connectionId, out organizationControlMap))
 			{
-				OrganizationControl control;
+				MainControl control;
 				if (organizationControlMap.TryGetValue(organizationId, out control))
 				{
 					//This will happen if the form was closed
@@ -165,9 +165,9 @@ namespace PluginRegistrationTool.Forms
 
 		public void UpdateAutoExpand(bool newValue)
 		{
-			foreach (Dictionary<Guid, OrganizationControl> connectionList in this.m_orgList.Values)
+			foreach (Dictionary<Guid, MainControl> connectionList in this.m_orgList.Values)
 			{
-				foreach (OrganizationControl control in connectionList.Values)
+				foreach (MainControl control in connectionList.Values)
 				{
 					control.UpdateAutoExpand(newValue);
 				}

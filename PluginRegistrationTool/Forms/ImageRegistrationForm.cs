@@ -28,10 +28,10 @@ namespace PluginRegistrationTool.Forms
 	public partial class ImageRegistrationForm : Form
 	{
 		private CrmOrganization m_org;
-		private OrganizationControl m_orgControl;
+		private MainControl m_orgControl;
 		private CrmPluginImage m_currentImage;
 
-		public ImageRegistrationForm(CrmOrganization org, OrganizationControl orgControl,
+		public ImageRegistrationForm(CrmOrganization org, MainControl orgControl,
 			ICrmTreeNode[] rootNodes, CrmPluginImage image, Guid selectNodeId)
 		{
 			if (org == null)

@@ -34,7 +34,7 @@ namespace PluginRegistrationTool
     using PluginRegistrationTool.Wrappers;
     using XrmToolBox;
 
-	public partial class OrganizationControl : PluginBase
+	public partial class MainControl : PluginBase
 	{
 		private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
 		private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
@@ -48,7 +48,7 @@ namespace PluginRegistrationTool
 		private Dictionary<Guid, Guid> m_viewNodeList = null;
 		private Dictionary<Guid, Guid> m_stepParentList = null;
 
-        public OrganizationControl()
+        public MainControl()
         {
             //        public CrmOrganization(string metadataServiceUrl, string organizationServiceUrl,
             //Guid organizationId, string organizationFriendlyName, string organizationUniqueName, string webApplicationUrl)
@@ -80,7 +80,7 @@ namespace PluginRegistrationTool
             }
         }
 
-        public OrganizationControl(CrmOrganization org, MainForm mainForm)
+        public MainControl(CrmOrganization org, MainForm mainForm)
         {
             this.Init(org, mainForm);
         }

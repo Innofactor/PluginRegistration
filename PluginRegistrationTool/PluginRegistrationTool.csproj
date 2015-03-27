@@ -150,11 +150,11 @@
     <Compile Include="Forms\MessagePropertyNameForm.Designer.cs">
       <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationControl.cs">
+    <Compile Include="MainControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="OrganizationControl.Designer.cs">
-      <DependentUpon>OrganizationControl.cs</DependentUpon>
+    <Compile Include="MainControl.Designer.cs">
+      <DependentUpon>MainControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\OrganizationHelper.cs" />
     <Compile Include="Forms\OrganizationsForm.cs">
@@ -237,9 +237,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrganizationControl.resx">
+    <EmbeddedResource Include="MainControl.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>OrganizationControl.cs</DependentUpon>
+      <DependentUpon>MainControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OrganizationsForm.resx">
       <SubType>Designer</SubType>
