@@ -99,7 +99,6 @@
     </Compile>
     <Compile Include="GeneratedTypes.cs" />
     <Compile Include="OrganizationServiceExtensions.cs" />
-    <Compile Include="ToolServiceProxies.cs" />
     <Compile Include="CrmServiceEndpoint.cs" />
     <Compile Include="CrmAttributeSelectionControl.cs">
       <SubType>UserControl</SubType>
