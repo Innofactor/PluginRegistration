@@ -14,23 +14,24 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.ServiceModel;
-using CrmSdk;
-using Microsoft.Crm.Sdk.Messages;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
-using Microsoft.Xrm.Sdk.Messages;
-using Microsoft.Xrm.Sdk.Metadata;
-using Microsoft.Xrm.Sdk.Query;
-using PluginRegistrationTool.Wrappers;
 
 namespace PluginRegistrationTool.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Reflection;
+    using System.ServiceModel;
+    using Microsoft.Crm.Sdk.Messages;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using Microsoft.Xrm.Sdk.Messages;
+    using Microsoft.Xrm.Sdk.Metadata;
+    using Microsoft.Xrm.Sdk.Query;
+    using PluginRegistrationTool.Entities;
+    using PluginRegistrationTool.Wrappers;
+
 	public static class OrganizationHelper
 	{
 		internal const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
@@ -308,7 +309,7 @@ namespace PluginRegistrationTool.Helpers
 			//Clear the Service Endpoints list since we are reloading from scratch
 			org.ClearServiceEndpoints();
 
-			foreach (CrmSdk.ServiceEndpoint serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
+			foreach (ServiceEndpoint serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
 			{
 				org.AddServiceEndpoint(new CrmServiceEndpoint(org, serviceEndPoint));
 			}

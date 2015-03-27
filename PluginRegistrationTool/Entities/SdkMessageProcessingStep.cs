@@ -548,14 +548,14 @@
         /// Status of the SDK message processing step.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-        public System.Nullable<CrmSdk.SdkMessageProcessingStepState> StateCode
+        public System.Nullable<SdkMessageProcessingStepState> StateCode
         {
             get
             {
                 Microsoft.Xrm.Sdk.OptionSetValue optionSet = this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("statecode");
                 if ((optionSet != null))
                 {
-                    return ((CrmSdk.SdkMessageProcessingStepState)(System.Enum.ToObject(typeof(CrmSdk.SdkMessageProcessingStepState), optionSet.Value)));
+                    return ((SdkMessageProcessingStepState)(System.Enum.ToObject(typeof(SdkMessageProcessingStepState), optionSet.Value)));
                 }
                 else
                 {

@@ -21,9 +21,9 @@ namespace PluginRegistrationTool.Wrappers
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using CrmSdk;
     using Microsoft.Xrm.Sdk;
     using PluginRegistrationTool.Controls;
+    using PluginRegistrationTool.Entities;
 
 	public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
 	{

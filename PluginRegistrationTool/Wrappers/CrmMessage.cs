@@ -21,7 +21,7 @@ namespace PluginRegistrationTool.Wrappers
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using CrmSdk;
+    using PluginRegistrationTool.Entities;
 
 	public sealed class CrmMessage : ICrmEntity
 	{
