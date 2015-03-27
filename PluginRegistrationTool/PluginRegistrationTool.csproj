@@ -155,10 +155,10 @@
     <Compile Include="OrganizationsForm.Designer.cs">
       <DependentUpon>OrganizationsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginRegistrationForm.cs">
+    <Compile Include="Forms\PluginRegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PluginRegistrationForm.Designer.cs">
+    <Compile Include="Forms\PluginRegistrationForm.Designer.cs">
       <DependentUpon>PluginRegistrationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CrmTreeControl.cs">
@@ -240,7 +240,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>OrganizationsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PluginRegistrationForm.resx">
+    <EmbeddedResource Include="Forms\PluginRegistrationForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PluginRegistrationForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -14,17 +14,17 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
 
-using Microsoft.Xrm.Sdk;
-
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
 	using CrmSdk;
     using PluginRegistrationTool.Helpers;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Windows.Forms;
+    using Microsoft.Xrm.Sdk;
+
 
 	public partial class PluginRegistrationForm : Form
 	{

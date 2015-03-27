@@ -1,4 +1,4 @@
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
 	partial class PluginRegistrationForm
 	{
