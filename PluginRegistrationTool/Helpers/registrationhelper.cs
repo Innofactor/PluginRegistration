@@ -14,18 +14,18 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Query;
 
 namespace PluginRegistrationTool.Helpers
 {
-	using CrmSdk;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+    using CrmSdk;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Query;
 
 	public static class RegistrationHelper
 	{
