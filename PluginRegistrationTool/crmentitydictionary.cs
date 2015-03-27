@@ -14,12 +14,13 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
 	public class CrmEntityDictionary<EntityType> : IEnumerable<EntityType>, IEnumerable
 		where EntityType : ICrmEntity
 	{

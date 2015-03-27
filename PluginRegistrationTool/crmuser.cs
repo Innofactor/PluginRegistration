@@ -14,10 +14,10 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
 
 namespace PluginRegistrationTool
 {
+    using System;
 	using CrmSdk;
 
 	public sealed class CrmUser

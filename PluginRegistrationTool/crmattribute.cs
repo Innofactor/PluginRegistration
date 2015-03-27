@@ -14,11 +14,11 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using Microsoft.Xrm.Sdk.Metadata;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using Microsoft.Xrm.Sdk.Metadata;
 
     public sealed class CrmAttribute
 	{

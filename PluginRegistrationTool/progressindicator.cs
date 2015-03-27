@@ -14,10 +14,11 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
 
 namespace PluginRegistrationTool
 {
+    using System;
+
 	public class ProgressIndicator
 	{
 		private ProgressIndicatorInitialize m_init;

@@ -14,14 +14,15 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using PluginRegistrationTool.Helpers;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using PluginRegistrationTool.Helpers;
+
 	public sealed class AppDomainContext<TProxy> : IDisposable
 		where TProxy : class, new()
 	{

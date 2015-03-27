@@ -14,13 +14,14 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Reflection;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Query;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Reflection;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Query;
+
 	public static class OrganizationServiceExtensions
 	{
 		/// <summary>
