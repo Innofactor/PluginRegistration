@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool
+﻿namespace PluginRegistrationTool.Controls
 {
 	partial class FileBrowserControl
 	{

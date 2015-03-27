@@ -56,7 +56,7 @@ namespace PluginRegistrationTool.Forms
 			this.radIsolationSandbox = new System.Windows.Forms.RadioButton();
 			this.radIsolationNone = new System.Windows.Forms.RadioButton();
 			this.trvPlugins = new PluginRegistrationTool.Controls.CrmTreeControl();
-			this.AssemblyPathControl = new PluginRegistrationTool.FileBrowserControl();
+			this.AssemblyPathControl = new PluginRegistrationTool.Controls.FileBrowserControl();
 			this.grpPath.SuspendLayout();
 			this.grpPlugins.SuspendLayout();
 			this.grpRegLoc.SuspendLayout();
@@ -439,6 +439,6 @@ namespace PluginRegistrationTool.Forms
 		private System.Windows.Forms.RadioButton radIsolationNone;
 		private System.Windows.Forms.RadioButton radIsolationSandbox;
 		private System.Windows.Forms.CheckBox chkUpdateAssembly;
-		private FileBrowserControl AssemblyPathControl;
+		private PluginRegistrationTool.Controls.FileBrowserControl AssemblyPathControl;
 	}
 }

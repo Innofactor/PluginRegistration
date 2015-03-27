@@ -90,10 +90,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="AssemblyResolver.cs" />
-    <Compile Include="FileBrowserControl.cs">
+    <Compile Include="Controls\FileBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FileBrowserControl.Designer.cs">
+    <Compile Include="Controls\FileBrowserControl.Designer.cs">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneratedTypes.cs" />
@@ -201,7 +201,7 @@
     <Content Include="Images\Refresh.gif" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FileBrowserControl.resx">
+    <EmbeddedResource Include="Controls\FileBrowserControl.resx">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CrmAttributeSelectionControl.resx">
