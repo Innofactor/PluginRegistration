@@ -23,6 +23,7 @@ namespace PluginRegistrationTool.Forms
     using System.Windows.Forms;
     using CrmSdk;
     using PluginRegistrationTool.Helpers;
+    using PluginRegistrationTool.SDK;
 
 	public partial class StepRegistrationForm : Form
 	{

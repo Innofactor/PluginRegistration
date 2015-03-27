@@ -31,6 +31,7 @@ namespace PluginRegistrationTool
     using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Forms;
     using PluginRegistrationTool.Helpers;
+    using PluginRegistrationTool.SDK;
     using XrmToolBox;
 
 	public partial class OrganizationControl : PluginBase

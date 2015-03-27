@@ -20,6 +20,7 @@ namespace PluginRegistrationTool.Forms
     using System;
     using System.Globalization;
     using System.Windows.Forms;
+    using PluginRegistrationTool.SDK;
 
 	public partial class MessagePropertyNameForm : Form
 	{

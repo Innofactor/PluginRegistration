@@ -27,6 +27,7 @@ namespace PluginRegistrationTool.Helpers
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
     using PluginRegistrationTool.Forms;
+    using PluginRegistrationTool.SDK;
 
 	public static class RegistrationHelper
 	{

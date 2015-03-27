@@ -22,6 +22,7 @@ namespace PluginRegistrationTool.Forms
     using System.Collections.ObjectModel;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk.Metadata;
+    using PluginRegistrationTool.SDK;
 
 	public partial class AttributeSelectionForm : Form
 	{

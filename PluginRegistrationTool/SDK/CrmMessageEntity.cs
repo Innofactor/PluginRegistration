@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.SDK
 {
     using System;
     using System.Collections.Generic;
