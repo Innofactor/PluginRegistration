@@ -167,10 +167,10 @@
     <Compile Include="CrmTreeControl.Designer.cs">
       <DependentUpon>CrmTreeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="SearchForm.cs">
+    <Compile Include="Forms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SearchForm.Designer.cs">
+    <Compile Include="Forms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserCredentialsDialog.cs">
@@ -247,7 +247,7 @@
     <EmbeddedResource Include="Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SearchForm.resx">
+    <EmbeddedResource Include="Forms\SearchForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
