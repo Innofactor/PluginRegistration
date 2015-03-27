@@ -89,7 +89,6 @@
     </Compile>
     <Compile Include="Entities\PluginAssembly.cs" />
     <Compile Include="Entities\PluginType.cs" />
-    <Compile Include="Entities\PluginTypeStatistic.cs" />
     <Compile Include="Entities\SdkMessage.cs" />
     <Compile Include="Entities\SdkMessageFilter.cs" />
     <Compile Include="Entities\SdkMessageProcessingStep.cs" />
