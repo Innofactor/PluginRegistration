@@ -21,9 +21,9 @@ namespace PluginRegistrationTool.Forms
     using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
-    using CrmSdk;
     using Microsoft.Xrm.Sdk;
     using PluginRegistrationTool.Controls;
+    using PluginRegistrationTool.Entities;
     using PluginRegistrationTool.Helpers;
     using PluginRegistrationTool.Wrappers;
 
