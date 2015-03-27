@@ -706,7 +706,7 @@ namespace PluginRegistrationTool.Forms
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this, "Error occurred while registering the step", "Registration Error", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Error occurred while registering the step", "Registration Error", ex);
 				return;
 			}
 			#endregion

@@ -123,11 +123,11 @@
     <Compile Include="CrmResources.cs" />
     <Compile Include="CrmUser.cs" />
     <Compile Include="Helpers\CrmWebServiceHelper.cs" />
-    <Compile Include="ErrorMessage.cs">
+    <Compile Include="Forms\ErrorMessageForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ErrorMessage.Designer.cs">
-      <DependentUpon>ErrorMessage.cs</DependentUpon>
+    <Compile Include="Forms\ErrorMessageForm.Designer.cs">
+      <DependentUpon>ErrorMessageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ImageRegistrationForm.cs">
       <SubType>Form</SubType>
@@ -219,9 +219,9 @@
     <EmbeddedResource Include="CrmTreeControlDefaults.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErrorMessage.resx">
+    <EmbeddedResource Include="Forms\ErrorMessageForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>ErrorMessage.cs</DependentUpon>
+      <DependentUpon>ErrorMessageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImageRegistrationForm.resx">
       <SubType>Designer</SubType>

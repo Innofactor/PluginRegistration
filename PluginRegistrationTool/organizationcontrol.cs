@@ -344,7 +344,7 @@ namespace PluginRegistrationTool
 				}
 				catch (Exception ex)
 				{
-					ErrorMessage.ShowErrorMessageBox(this, "Unable to unregister this item an error occurred.", "Unregister Error", ex);
+					ErrorMessageForm.ShowErrorMessageBox(this, "Unable to unregister this item an error occurred.", "Unregister Error", ex);
 				}
 				finally
 				{
@@ -412,7 +412,7 @@ namespace PluginRegistrationTool
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this,
+				ErrorMessageForm.ShowErrorMessageBox(this,
 					string.Format("Unable to {0} this item at ths time. An error occurred.", messageItem),
 					string.Format("{0} Step", captionItem), ex);
 			}
@@ -554,7 +554,7 @@ namespace PluginRegistrationTool
             }
             catch (Exception ex)
             {
-                ErrorMessage.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
+                ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
                 ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
                     this.m_org.OrganizationId);
                 return;
@@ -673,7 +673,7 @@ namespace PluginRegistrationTool
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to Update the Assembly /Plugin due to an error.", "Update", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Unable to Update the Assembly /Plugin due to an error.", "Update", ex);
 			}
 		}
 
@@ -1393,7 +1393,7 @@ namespace PluginRegistrationTool
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to change the view", "View Error", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Unable to change the view", "View Error", ex);
 			}
 			finally
 			{

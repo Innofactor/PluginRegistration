@@ -181,7 +181,7 @@ namespace PluginRegistrationTool
 
 				if (this.Organization.AttributeLoadException != null)
 				{
-					ErrorMessage.ShowErrorMessageBox(this, "Unable to load attribute list", "Attribute List Error",
+					ErrorMessageForm.ShowErrorMessageBox(this, "Unable to load attribute list", "Attribute List Error",
 						this.Organization.AttributeLoadException);
 					return;
 				}

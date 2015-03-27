@@ -1,6 +1,6 @@
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
-    partial class ErrorMessage
+    partial class ErrorMessageForm
     {
         /// <summary>
         /// Required designer variable.

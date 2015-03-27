@@ -161,7 +161,7 @@ namespace PluginRegistrationTool.Forms
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to load the specified Plugin Assembly", "Plugins", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Unable to load the specified Plugin Assembly", "Plugins", ex);
 				return;
 			}
 
@@ -307,7 +307,7 @@ namespace PluginRegistrationTool.Forms
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to load the specified Plugin Assembly", "Plugins", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Unable to load the specified Plugin Assembly", "Plugins", ex);
 				return;
 			}
 
@@ -440,7 +440,7 @@ namespace PluginRegistrationTool.Forms
 			{
 				this.m_progRegistration.Increment("ERROR: Occurred while checking whether the assembly exists");
 
-				ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 				this.m_progRegistration.Complete(false);
 				return;
@@ -460,7 +460,7 @@ namespace PluginRegistrationTool.Forms
 				{
 					this.m_progRegistration.Increment("ERROR: Error occurred while registering the assembly");
 
-					ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+					ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 					this.m_progRegistration.Complete(false);
 					return;
@@ -501,7 +501,7 @@ namespace PluginRegistrationTool.Forms
 				{
 					this.m_progRegistration.Increment("ERROR: Error occurred while updating the Main form for the assembly");
 
-					ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+					ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 					this.m_progRegistration.Complete(false);
 					return;
@@ -572,7 +572,7 @@ namespace PluginRegistrationTool.Forms
 					this.m_progRegistration.Increment(string.Format("ERROR: Occurred while checking if {0} is already registered.",
 						reg.TypeName));
 
-					ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+					ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 					this.m_progRegistration.Complete(false);
 					return;
@@ -604,7 +604,7 @@ namespace PluginRegistrationTool.Forms
 						this.m_progRegistration.Increment(2, string.Format("ERROR: Occurred while registering {0}.",
 							reg.TypeName));
 
-						ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+						ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 						errorsPlugins++;
 						continue;
@@ -636,7 +636,7 @@ namespace PluginRegistrationTool.Forms
 						this.m_progRegistration.Increment(string.Format("ERROR: Occurred while updating the Main form for {0}.",
 							reg.TypeName));
 
-						ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+						ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 						this.m_progRegistration.Complete(false);
 						return;
@@ -667,7 +667,7 @@ namespace PluginRegistrationTool.Forms
 					this.m_progRegistration.Increment(3, string.Format("ERROR: Occurred while unregistering {0}.",
 						reg.TypeName));
 
-					ErrorMessage.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
+					ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
 					errorsPlugins++;
 				}
@@ -683,7 +683,7 @@ namespace PluginRegistrationTool.Forms
 			{
 				this.m_progRegistration.Increment("ERROR: Unable to update Created On / Modified On dates");
 
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to update Created On / Modified On dates", "Update Error", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Unable to update Created On / Modified On dates", "Update Error", ex);
 			}
 			#endregion
 

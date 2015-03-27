@@ -259,7 +259,7 @@ namespace PluginRegistrationTool.Forms
 			}
 			catch (Exception ex)
 			{
-				ErrorMessage.ShowErrorMessageBox(this, "Unable to register the Image due to an error.", "Registration", ex);
+				ErrorMessageForm.ShowErrorMessageBox(this, "Unable to register the Image due to an error.", "Registration", ex);
 				return;
 			}
 			#endregion
