@@ -31,7 +31,7 @@ namespace PluginRegistrationTool.Forms
 			this.btnSelect = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.txtSearch = new System.Windows.Forms.TextBox();
-			this.trvPlugins = new PluginRegistrationTool.CrmTreeControl();
+            this.trvPlugins = new PluginRegistrationTool.Controls.CrmTreeControl();
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
@@ -78,7 +78,7 @@ namespace PluginRegistrationTool.Forms
 			this.trvPlugins.SelectedNode = null;
 			this.trvPlugins.Size = new System.Drawing.Size(511, 249);
 			this.trvPlugins.TabIndex = 1;
-			this.trvPlugins.SelectionChanged += new System.EventHandler<PluginRegistrationTool.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
+            this.trvPlugins.SelectionChanged += new System.EventHandler<PluginRegistrationTool.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
 			this.trvPlugins.Leave += new System.EventHandler(this.trvPlugins_Leave);
 			this.trvPlugins.Enter += new System.EventHandler(this.trvPlugins_Enter);
 			// 
@@ -116,7 +116,7 @@ namespace PluginRegistrationTool.Forms
 
 		#endregion
 
-		private CrmTreeControl trvPlugins;
+		private PluginRegistrationTool.Controls.CrmTreeControl trvPlugins;
 		private System.Windows.Forms.Button btnSelect;
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.TextBox txtSearch;

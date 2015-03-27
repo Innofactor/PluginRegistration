@@ -14,15 +14,17 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Xml.Serialization;
-using CrmSdk;
-using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Xml.Serialization;
+    using CrmSdk;
+    using Microsoft.Xrm.Sdk;
+    using PluginRegistrationTool.Controls;
+
 	public sealed class CrmServiceEndpoint : ICrmEntity, ICrmTreeNode
 	{
 		public readonly Guid ServiceBusPlugin = new Guid("EF521E63-CD2B-4170-99F6-447466A7161E");

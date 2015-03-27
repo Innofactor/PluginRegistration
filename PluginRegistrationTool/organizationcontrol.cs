@@ -14,23 +14,25 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Windows.Forms;
-using Microsoft.Xrm.Sdk.Client;
-using Microsoft.Xrm.Sdk.Discovery;
-using XrmToolBox;
-using McTools.Xrm.Connection;
-using PluginRegistrationTool.Helpers;
-using PluginRegistrationTool.Forms;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Drawing;
+    using System.Net;
+    using System.Reflection;
+    using System.Text;
+    using System.Windows.Forms;
+    using McTools.Xrm.Connection;
+    using Microsoft.Xrm.Sdk.Client;
+    using Microsoft.Xrm.Sdk.Discovery;
+    using PluginRegistrationTool.Controls;
+    using PluginRegistrationTool.Forms;
+    using PluginRegistrationTool.Helpers;
+    using XrmToolBox;
+
 	public partial class OrganizationControl : PluginBase
 	{
 		private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";

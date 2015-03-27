@@ -29,7 +29,7 @@ namespace PluginRegistrationTool.Forms
 		private void InitializeComponent()
 		{
 			this.grpSteps = new System.Windows.Forms.GroupBox();
-			this.trvPlugins = new PluginRegistrationTool.CrmTreeControl();
+            this.trvPlugins = new PluginRegistrationTool.Controls.CrmTreeControl();
 			this.grpImageType = new System.Windows.Forms.GroupBox();
 			this.chkImageTypePost = new System.Windows.Forms.CheckBox();
 			this.chkImageTypePre = new System.Windows.Forms.CheckBox();
@@ -67,7 +67,7 @@ namespace PluginRegistrationTool.Forms
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.trvPlugins.AutoExpand = false;
 			this.trvPlugins.CrmTreeNodeSorter = null;
-			this.trvPlugins.ExcludeTypes = PluginRegistrationTool.CrmTreeNodeType.Image;
+			this.trvPlugins.ExcludeTypes = PluginRegistrationTool.Controls.CrmTreeNodeType.Image;
 			this.trvPlugins.LabelEdit = false;
 			this.trvPlugins.Location = new System.Drawing.Point(9, 19);
 			this.trvPlugins.Name = "trvPlugins";
@@ -75,7 +75,7 @@ namespace PluginRegistrationTool.Forms
 			this.trvPlugins.ShowNodeToolTips = false;
 			this.trvPlugins.Size = new System.Drawing.Size(535, 347);
 			this.trvPlugins.TabIndex = 0;
-			this.trvPlugins.SelectionChanged += new System.EventHandler<PluginRegistrationTool.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
+            this.trvPlugins.SelectionChanged += new System.EventHandler<PluginRegistrationTool.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
 			// 
 			// grpImageType
 			// 
@@ -240,7 +240,7 @@ namespace PluginRegistrationTool.Forms
 		#endregion
 
 		private System.Windows.Forms.GroupBox grpSteps;
-		private CrmTreeControl trvPlugins;
+		private PluginRegistrationTool.Controls.CrmTreeControl trvPlugins;
 		private System.Windows.Forms.GroupBox grpImageType;
 		private System.Windows.Forms.CheckBox chkImageTypePost;
 		private System.Windows.Forms.CheckBox chkImageTypePre;

@@ -14,16 +14,18 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Xml.Serialization;
-using CrmSdk;
-using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Xml.Serialization;
+    using CrmSdk;
+    using Microsoft.Xrm.Sdk;
+    using PluginRegistrationTool.Controls;
+
 	public sealed class CrmPluginImage : ICrmEntity, ICrmTreeNode, ICloneable
 	{
 		private CrmOrganization m_org;

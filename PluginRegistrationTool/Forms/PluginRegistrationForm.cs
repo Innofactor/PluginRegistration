@@ -17,14 +17,14 @@
 
 namespace PluginRegistrationTool.Forms
 {
-	using CrmSdk;
-    using PluginRegistrationTool.Helpers;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
+    using CrmSdk;
     using Microsoft.Xrm.Sdk;
-
+    using PluginRegistrationTool.Controls;
+    using PluginRegistrationTool.Helpers;
 
 	public partial class PluginRegistrationForm : Form
 	{

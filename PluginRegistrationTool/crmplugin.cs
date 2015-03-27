@@ -14,15 +14,16 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using Microsoft.Xrm.Sdk;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Xml.Serialization;
     using CrmSdk;
+    using Microsoft.Xrm.Sdk;
+    using PluginRegistrationTool.Controls;
 
 	[Serializable]
 	public sealed class CrmPlugin : ICrmEntity, ICrmTreeNode, ICloneable

@@ -14,17 +14,19 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Serialization;
-using McTools.Xrm.Connection;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Discovery;
-using PluginRegistrationTool.Helpers;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using McTools.Xrm.Connection;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Discovery;
+    using PluginRegistrationTool.Controls;
+    using PluginRegistrationTool.Helpers;
+
 	public sealed class CrmOrganization : ICrmTreeNode
 	{
 		// private CrmConnection m_connection = null;

@@ -21,6 +21,7 @@ namespace PluginRegistrationTool.Forms
     using System.Collections.Generic;
     using System.Text;
     using System.Windows.Forms;
+    using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Helpers;
 
 	public partial class ImageRegistrationForm : Form

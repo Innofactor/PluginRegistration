@@ -160,10 +160,10 @@
     <Compile Include="Forms\PluginRegistrationForm.Designer.cs">
       <DependentUpon>PluginRegistrationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CrmTreeControl.cs">
+    <Compile Include="Controls\CrmTreeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CrmTreeControl.Designer.cs">
+    <Compile Include="Controls\CrmTreeControl.Designer.cs">
       <DependentUpon>CrmTreeControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchForm.cs">
@@ -212,7 +212,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CrmTreeControl.resx">
+    <EmbeddedResource Include="Controls\CrmTreeControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CrmTreeControl.cs</DependentUpon>
     </EmbeddedResource>

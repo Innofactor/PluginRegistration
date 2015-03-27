@@ -55,7 +55,7 @@ namespace PluginRegistrationTool.Forms
 			this.lblIsolated = new System.Windows.Forms.Label();
 			this.radIsolationSandbox = new System.Windows.Forms.RadioButton();
 			this.radIsolationNone = new System.Windows.Forms.RadioButton();
-			this.trvPlugins = new PluginRegistrationTool.CrmTreeControl();
+			this.trvPlugins = new PluginRegistrationTool.Controls.CrmTreeControl();
 			this.AssemblyPathControl = new PluginRegistrationTool.FileBrowserControl();
 			this.grpPath.SuspendLayout();
 			this.grpPlugins.SuspendLayout();
@@ -363,7 +363,7 @@ namespace PluginRegistrationTool.Forms
 			this.trvPlugins.ShowNodeToolTips = false;
 			this.trvPlugins.Size = new System.Drawing.Size(604, 129);
 			this.trvPlugins.TabIndex = 1;
-			this.trvPlugins.CheckStateChanged += new System.EventHandler<PluginRegistrationTool.CrmTreeNodeEventArgs>(this.trvPlugins_CheckStateChanged);
+			this.trvPlugins.CheckStateChanged += new System.EventHandler<PluginRegistrationTool.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_CheckStateChanged);
 			// 
 			// AssemblyPathControl
 			// 
@@ -433,7 +433,7 @@ namespace PluginRegistrationTool.Forms
 		private System.Windows.Forms.GroupBox grpProgress;
 		private System.Windows.Forms.TextBox txtProgress;
 		private System.Windows.Forms.ProgressBar barRegistration;
-		private CrmTreeControl trvPlugins;
+		private PluginRegistrationTool.Controls.CrmTreeControl trvPlugins;
 		private System.Windows.Forms.GroupBox grpIsolationMode;
 		private System.Windows.Forms.Label lblIsolated;
 		private System.Windows.Forms.RadioButton radIsolationNone;

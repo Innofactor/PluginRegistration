@@ -14,14 +14,16 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Reflection;
-using System.Resources;
 
 namespace PluginRegistrationTool
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Reflection;
+    using System.Resources;
+    using PluginRegistrationTool.Controls;
+
 	public static class CrmResources
 	{
 		private const string TREE_RESOURCE_NAME = "CrmTreeControlDefaults";

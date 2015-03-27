@@ -14,20 +14,21 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.ComponentModel.Design;
+    using System.Data;
+    using System.Drawing;
+    using System.Text;
+    using System.Windows.Forms;
+    using System.Windows.Forms.Design;
+
 	[Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
 	[DefaultEvent("SelectionChanged")]
 	public partial class CrmTreeControl : UserControl, IRootDesigner
