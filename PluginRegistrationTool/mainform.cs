@@ -16,14 +16,10 @@
 // =====================================================================
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Globalization;
-using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
-using System.Resources;
 using PluginRegistrationTool.Helpers;
 
 namespace PluginRegistrationTool
