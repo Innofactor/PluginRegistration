@@ -18,13 +18,9 @@
 namespace PluginRegistrationTool.Controls
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.ComponentModel.Design;
-    using System.Data;
-    using System.Drawing;
-    using System.Text;
     using System.Windows.Forms;
     using System.Windows.Forms.Design;
     using PluginRegistrationTool.Forms;
