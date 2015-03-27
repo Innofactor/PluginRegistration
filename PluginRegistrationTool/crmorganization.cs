@@ -97,7 +97,7 @@ namespace PluginRegistrationTool
 
             this.Init(response.Detail);
 
-            OrganizationHelper.OpenConnection(this, MainForm.LoadMessages(this), null);
+            OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), null);
         }
 
 		public CrmOrganization(OrganizationDetail detail)

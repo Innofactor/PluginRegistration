@@ -547,7 +547,7 @@ namespace PluginRegistrationTool
             {
                 propGridEntity.SelectedObject = null;
 
-                OrganizationHelper.RefreshConnection(this.m_org, MainForm.LoadMessages(this.m_org));
+                OrganizationHelper.RefreshConnection(this.m_org, OrganizationHelper.LoadMessages(this.m_org));
 
                 this.LoadNodes();
             }

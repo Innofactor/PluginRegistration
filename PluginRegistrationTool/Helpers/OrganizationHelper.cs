@@ -35,6 +35,7 @@ namespace PluginRegistrationTool.Helpers
 		internal const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
 
 		private static Dictionary<string, ColumnSet> m_entityColumns = new Dictionary<string, ColumnSet>();
+        private volatile static List<CrmMessage> m_messageList = new List<CrmMessage>();
 
 		public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages)
 		{
@@ -54,14 +55,37 @@ namespace PluginRegistrationTool.Helpers
 			OpenConnection(org, messages, prog);
 		}
 
-		/// <summary>
-		/// Retrieve the Message entities for the organization. This will be the same for each deployment and organization.
-		/// </summary>
-		/// <param name="org">Organization to be used</param>
-		public static List<CrmMessage> LoadMessages(CrmOrganization org)
-		{
-			return LoadMessages(org, null);
-		}
+        ///// <summary>
+        ///// Retrieve the Message entities for the organization. This will be the same for each deployment and organization.
+        ///// </summary>
+        ///// <param name="org">Organization to be used</param>
+        //public static List<CrmMessage> LoadMessages(CrmOrganization org)
+        //{
+        //    return LoadMessages(org, null);
+        //}
+
+        public static CrmEntityDictionary<CrmMessage> LoadMessages(CrmOrganization org)
+        {
+            lock (m_messageList)
+            {
+                if (m_messageList.Count == 0)
+                {
+                    m_messageList = OrganizationHelper.LoadMessages(org, null);
+                }
+
+                Dictionary<Guid, CrmMessage> messageList = new Dictionary<Guid, CrmMessage>();
+                foreach (CrmMessage msg in m_messageList)
+                {
+                    CrmMessage newMessage = new CrmMessage(null, msg.MessageId, msg.Name,
+                        msg.SupportsFilteredAttributes, msg.CustomizationLevel, msg.CreatedOn, msg.ModifiedOn,
+                        msg.ImageMessagePropertyNames);
+
+                    messageList.Add(newMessage.MessageId, newMessage);
+                }
+
+                return new CrmEntityDictionary<CrmMessage>(messageList);
+            }
+        }
 
 		/// <summary>
 		/// Retrieve the Message entities for the organization. This will be the same for each deployment and organization.

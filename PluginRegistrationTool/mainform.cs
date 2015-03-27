@@ -260,28 +260,28 @@ namespace PluginRegistrationTool
 		}
 		#endregion
 
-		public static CrmEntityDictionary<CrmMessage> LoadMessages(CrmOrganization org)
-		{
-			lock (m_messageList)
-			{
-				if (m_messageList.Count == 0)
-				{
-					m_messageList = OrganizationHelper.LoadMessages(org, null);
-				}
+        //public static CrmEntityDictionary<CrmMessage> LoadMessages(CrmOrganization org)
+        //{
+        //    lock (m_messageList)
+        //    {
+        //        if (m_messageList.Count == 0)
+        //        {
+        //            m_messageList = OrganizationHelper.LoadMessages(org, null);
+        //        }
 
-				Dictionary<Guid, CrmMessage> messageList = new Dictionary<Guid, CrmMessage>();
-				foreach (CrmMessage msg in m_messageList)
-				{
-					CrmMessage newMessage = new CrmMessage(null, msg.MessageId, msg.Name,
-						msg.SupportsFilteredAttributes, msg.CustomizationLevel, msg.CreatedOn, msg.ModifiedOn,
-						msg.ImageMessagePropertyNames);
+        //        Dictionary<Guid, CrmMessage> messageList = new Dictionary<Guid, CrmMessage>();
+        //        foreach (CrmMessage msg in m_messageList)
+        //        {
+        //            CrmMessage newMessage = new CrmMessage(null, msg.MessageId, msg.Name,
+        //                msg.SupportsFilteredAttributes, msg.CustomizationLevel, msg.CreatedOn, msg.ModifiedOn,
+        //                msg.ImageMessagePropertyNames);
 
-					messageList.Add(newMessage.MessageId, newMessage);
-				}
+        //            messageList.Add(newMessage.MessageId, newMessage);
+        //        }
 
-				return new CrmEntityDictionary<CrmMessage>(messageList);
-			}
-		}
+        //        return new CrmEntityDictionary<CrmMessage>(messageList);
+        //    }
+        //}
 
 		public void EnableToolBar(bool enabled)
 		{
