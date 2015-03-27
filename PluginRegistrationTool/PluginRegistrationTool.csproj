@@ -99,10 +99,10 @@
     <Compile Include="GeneratedTypes.cs" />
     <Compile Include="OrganizationServiceExtensions.cs" />
     <Compile Include="CrmServiceEndpoint.cs" />
-    <Compile Include="CrmAttributeSelectionControl.cs">
+    <Compile Include="Controls\CrmAttributeSelectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CrmAttributeSelectionControl.Designer.cs">
+    <Compile Include="Controls\CrmAttributeSelectionControl.Designer.cs">
       <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AttributeSelectionForm.cs">
@@ -201,7 +201,7 @@
     <EmbeddedResource Include="Controls\FileBrowserControl.resx">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CrmAttributeSelectionControl.resx">
+    <EmbeddedResource Include="Controls\CrmAttributeSelectionControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
     </EmbeddedResource>

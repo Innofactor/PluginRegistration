@@ -33,7 +33,7 @@ namespace PluginRegistrationTool.Forms
 			this.grpGeneral = new System.Windows.Forms.GroupBox();
 			this.cmbServiceEndpoint = new System.Windows.Forms.ComboBox();
 			this.cmbPlugins = new System.Windows.Forms.ComboBox();
-			this.crmFilteringAttributes = new PluginRegistrationTool.CrmAttributeSelectionControl();
+			this.crmFilteringAttributes = new PluginRegistrationTool.Controls.CrmAttributeSelectionControl();
 			this.lblFilteringAttributes = new System.Windows.Forms.Label();
 			this.lblEventHandler = new System.Windows.Forms.Label();
 			this.txtRank = new System.Windows.Forms.TextBox();
@@ -737,7 +737,7 @@ namespace PluginRegistrationTool.Forms
 		private System.Windows.Forms.TextBox txtUnsecureConfiguration;
 		private System.Windows.Forms.Label lblAccessDenied;
 		private System.Windows.Forms.PictureBox picAccessDenied;
-		private CrmAttributeSelectionControl crmFilteringAttributes;
+		private PluginRegistrationTool.Controls.CrmAttributeSelectionControl crmFilteringAttributes;
 		private System.Windows.Forms.Label lblFilteringAttributes;
 		private System.Windows.Forms.RadioButton radStagePostOperation;
 		private System.Windows.Forms.RadioButton radStagePreOperation;

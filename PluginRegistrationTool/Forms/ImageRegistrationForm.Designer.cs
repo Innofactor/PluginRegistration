@@ -36,7 +36,7 @@ namespace PluginRegistrationTool.Forms
 			this.grpEntityAlias = new System.Windows.Forms.GroupBox();
 			this.txtName = new System.Windows.Forms.TextBox();
 			this.lblName = new System.Windows.Forms.Label();
-			this.crmParameters = new PluginRegistrationTool.CrmAttributeSelectionControl();
+			this.crmParameters = new PluginRegistrationTool.Controls.CrmAttributeSelectionControl();
 			this.lblImageParameters = new System.Windows.Forms.Label();
 			this.txtEntityAlias = new System.Windows.Forms.TextBox();
 			this.lblEntityAlias = new System.Windows.Forms.Label();
@@ -250,7 +250,7 @@ namespace PluginRegistrationTool.Forms
 		private System.Windows.Forms.Label lblImageParameters;
 		private System.Windows.Forms.Button btnRegister;
 		private System.Windows.Forms.Button btnCancel;
-		private CrmAttributeSelectionControl crmParameters;
+		private PluginRegistrationTool.Controls.CrmAttributeSelectionControl crmParameters;
 		private System.Windows.Forms.TextBox txtName;
 		private System.Windows.Forms.Label lblName;
 	}

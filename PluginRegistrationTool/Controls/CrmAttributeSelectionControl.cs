@@ -14,21 +14,22 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using PluginRegistrationTool.Forms;
-using PluginRegistrationTool.Helpers;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.ComponentModel.Design;
+    using System.Data;
+    using System.Drawing;
+    using System.Text;
+    using System.Windows.Forms;
+    using System.Windows.Forms.Design;
+    using PluginRegistrationTool.Forms;
+    using PluginRegistrationTool.Helpers;
+
 	[Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
 	public partial class CrmAttributeSelectionControl : UserControl
 	{
