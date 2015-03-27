@@ -91,10 +91,6 @@
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="AssemblyResolver.cs" />
     <Compile Include="AutoRefreshSecurityToken.cs" />
-    <Compile Include="PluginProfileForm.cs" />
-    <Compile Include="PluginProfileForm.Designer.cs">
-      <DependentUpon>PluginProfileForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="FileBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -215,10 +211,6 @@
     <Content Include="Images\Refresh.gif" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PluginProfileForm.resx">
-      <DependentUpon>PluginProfileForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="FileBrowserControl.resx">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
