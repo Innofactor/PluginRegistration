@@ -169,7 +169,6 @@
     <Compile Include="CrmTreeControl.Designer.cs">
       <DependentUpon>CrmTreeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
