@@ -172,9 +172,6 @@
     <Compile Include="Forms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserCredentialsDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\WebServiceProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>
