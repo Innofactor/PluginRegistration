@@ -111,17 +111,17 @@
     <Compile Include="Forms\AttributeSelectionForm.Designer.cs">
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SDK\CrmAttribute.cs" />
-    <Compile Include="SDK\CrmEntityDictionary.cs" />
-    <Compile Include="SDK\CrmMessageEntity.cs" />
-    <Compile Include="SDK\CrmPluginAssembly.cs" />
-    <Compile Include="SDK\CrmPluginImage.cs" />
-    <Compile Include="SDK\CrmMessage.cs" />
-    <Compile Include="SDK\CrmOrganization.cs" />
-    <Compile Include="SDK\CrmPlugin.cs" />
-    <Compile Include="SDK\CrmPluginStep.cs" />
+    <Compile Include="Wrappers\CrmAttribute.cs" />
+    <Compile Include="Wrappers\CrmEntityDictionary.cs" />
+    <Compile Include="Wrappers\CrmMessageEntity.cs" />
+    <Compile Include="Wrappers\CrmPluginAssembly.cs" />
+    <Compile Include="Wrappers\CrmPluginImage.cs" />
+    <Compile Include="Wrappers\CrmMessage.cs" />
+    <Compile Include="Wrappers\CrmOrganization.cs" />
+    <Compile Include="Wrappers\CrmPlugin.cs" />
+    <Compile Include="Wrappers\CrmPluginStep.cs" />
     <Compile Include="CrmResources.cs" />
-    <Compile Include="SDK\CrmUser.cs" />
+    <Compile Include="Wrappers\CrmUser.cs" />
     <Compile Include="Helpers\CrmWebServiceHelper.cs" />
     <Compile Include="Forms\ErrorMessageForm.cs">
       <SubType>Form</SubType>
