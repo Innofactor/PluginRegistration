@@ -23,9 +23,9 @@ namespace PluginRegistrationTool.Helpers
     using System.Globalization;
     using System.IO;
     using System.Text;
-    using CrmSdk;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
+    using PluginRegistrationTool.Entities;
     using PluginRegistrationTool.Forms;
     using PluginRegistrationTool.Wrappers;
 

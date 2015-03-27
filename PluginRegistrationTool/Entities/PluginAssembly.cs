@@ -474,16 +474,16 @@
         /// 1:N pluginassembly_plugintype
         /// </summary>
         [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("pluginassembly_plugintype")]
-        public System.Collections.Generic.IEnumerable<CrmSdk.PluginType> pluginassembly_plugintype
+        public System.Collections.Generic.IEnumerable<PluginType> pluginassembly_plugintype
         {
             get
             {
-                return this.GetRelatedEntities<CrmSdk.PluginType>("pluginassembly_plugintype", null);
+                return this.GetRelatedEntities<PluginType>("pluginassembly_plugintype", null);
             }
             set
             {
                 this.OnPropertyChanging("pluginassembly_plugintype");
-                this.SetRelatedEntities<CrmSdk.PluginType>("pluginassembly_plugintype", null, value);
+                this.SetRelatedEntities<PluginType>("pluginassembly_plugintype", null, value);
                 this.OnPropertyChanged("pluginassembly_plugintype");
             }
         }
