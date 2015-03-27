@@ -21,13 +21,10 @@ namespace PluginRegistrationTool
     using System.Collections.Generic;
     using System.Data;
     using System.Drawing;
-    using System.Net;
     using System.Reflection;
     using System.Text;
     using System.Windows.Forms;
     using McTools.Xrm.Connection;
-    using Microsoft.Xrm.Sdk.Client;
-    using Microsoft.Xrm.Sdk.Discovery;
     using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Forms;
     using PluginRegistrationTool.Helpers;
