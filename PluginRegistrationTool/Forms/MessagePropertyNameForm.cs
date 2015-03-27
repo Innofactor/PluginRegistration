@@ -14,12 +14,13 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Globalization;
-using System.Windows.Forms;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
+    using System;
+    using System.Globalization;
+    using System.Windows.Forms;
+
 	public partial class MessagePropertyNameForm : Form
 	{
 		private CrmMessage _message;
