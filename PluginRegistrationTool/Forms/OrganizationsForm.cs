@@ -14,13 +14,14 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Windows.Forms;
+
 	public partial class OrganizationsForm : Form
 	{
 		private Dictionary<Guid?, Dictionary<Guid, OrganizationControl>> m_orgList;
