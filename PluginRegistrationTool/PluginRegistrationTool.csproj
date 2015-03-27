@@ -114,7 +114,6 @@
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CrmAttribute.cs" />
-    <Compile Include="CrmConnection.cs" />
     <Compile Include="CrmEntityDictionary.cs" />
     <Compile Include="CrmMessageEntity.cs" />
     <Compile Include="CrmPluginAssembly.cs" />

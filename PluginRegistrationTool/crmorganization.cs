@@ -27,7 +27,7 @@ namespace PluginRegistrationTool
 {
 	public sealed class CrmOrganization : ICrmTreeNode
 	{
-		private CrmConnection m_connection = null;
+		// private CrmConnection m_connection = null;
 		private string m_organizationServiceUrl = null;
 		private string m_friendlyName = null;
 		private Guid m_organizationId = Guid.Empty;
