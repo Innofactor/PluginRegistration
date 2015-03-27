@@ -24,6 +24,7 @@ using Microsoft.Xrm.Sdk.Discovery;
 using Microsoft.Xrm.Sdk.Client;
 using McTools.Xrm.Connection;
 using Microsoft.Xrm.Sdk;
+using PluginRegistrationTool.Helpers;
 
 namespace PluginRegistrationTool
 {

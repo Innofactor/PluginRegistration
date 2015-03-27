@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Collections.ObjectModel;
+using PluginRegistrationTool.Helpers;
 
 namespace PluginRegistrationTool
 {

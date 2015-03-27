@@ -24,6 +24,7 @@ using System.Windows.Forms;
 namespace PluginRegistrationTool
 {
 	using CrmSdk;
+    using PluginRegistrationTool.Helpers;
 
 	public partial class StepRegistrationForm : Form
 	{

@@ -24,6 +24,7 @@ using Microsoft.Xrm.Sdk;
 namespace PluginRegistrationTool
 {
 	using CrmSdk;
+    using PluginRegistrationTool.Helpers;
 
 	public partial class PluginRegistrationForm : Form
 	{

@@ -24,7 +24,7 @@ using System.Text;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Helpers
 {
 	using CrmSdk;
 

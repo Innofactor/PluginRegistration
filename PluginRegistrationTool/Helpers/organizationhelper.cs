@@ -35,7 +35,7 @@ using Microsoft.Xrm.Sdk.Query;
 
 using CrmSdk;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Helpers
 {
 	public static class OrganizationHelper
 	{

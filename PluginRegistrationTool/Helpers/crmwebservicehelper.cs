@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Helpers
 {
 	internal static class CrmWebServiceHelper
 	{

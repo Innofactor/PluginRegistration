@@ -141,7 +141,7 @@
     <Compile Include="CrmPluginStep.cs" />
     <Compile Include="CrmResources.cs" />
     <Compile Include="CrmUser.cs" />
-    <Compile Include="CrmWebServiceHelper.cs" />
+    <Compile Include="Helpers\CrmWebServiceHelper.cs" />
     <Compile Include="ErrorMessage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,7 +172,7 @@
     <Compile Include="OrganizationControl.Designer.cs">
       <DependentUpon>OrganizationControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationHelper.cs" />
+    <Compile Include="Helpers\OrganizationHelper.cs" />
     <Compile Include="OrganizationsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -208,7 +208,7 @@
       <DependentUpon>WebServiceProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgressIndicator.cs" />
-    <Compile Include="RegistrationHelper.cs" />
+    <Compile Include="Helpers\RegistrationHelper.cs" />
     <Compile Include="StepRegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
