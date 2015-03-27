@@ -106,10 +106,10 @@
     <Compile Include="CrmAttributeSelectionControl.Designer.cs">
       <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="AttributeSelectionForm.cs">
+    <Compile Include="Forms\AttributeSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AttributeSelectionForm.designer.cs">
+    <Compile Include="Forms\AttributeSelectionForm.Designer.cs">
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CrmAttribute.cs" />
@@ -209,7 +209,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AttributeSelectionForm.resx">
+    <EmbeddedResource Include="Forms\AttributeSelectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </EmbeddedResource>

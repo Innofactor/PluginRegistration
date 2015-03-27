@@ -14,21 +14,14 @@
 //  PARTICULAR PURPOSE.
 //
 // =====================================================================
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
-using Microsoft.Xrm.Sdk.Metadata;
-
-namespace PluginRegistrationTool
+namespace PluginRegistrationTool.Forms
 {
-	using CrmSdk;
+    using System;
+    using System.Collections;
+    using System.Collections.ObjectModel;
+    using System.Windows.Forms;
+    using Microsoft.Xrm.Sdk.Metadata;
 
 	public partial class AttributeSelectionForm : Form
 	{
