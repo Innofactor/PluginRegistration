@@ -38,7 +38,6 @@ namespace PluginRegistrationTool
 		private CrmViewType m_currentView;
 		private ConnectionDetail m_con;
 		private CrmOrganization m_org;
-		private MainForm m_mainForm;
 		private static CrmEntitySorter m_entitySorter;
 		private Dictionary<Guid, Guid> m_stepEntityMap = new Dictionary<Guid, Guid>();
 		private Dictionary<string, CrmTreeNode> m_rootNodeList = null;
@@ -778,14 +777,6 @@ namespace PluginRegistrationTool
 			get
 			{
 				return m_entitySorter;
-			}
-		}
-
-		public MainForm MainForm
-		{
-			get
-			{
-				return this.m_mainForm;
 			}
 		}
 
