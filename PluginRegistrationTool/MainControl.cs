@@ -179,7 +179,7 @@ namespace PluginRegistrationTool
         void OrganizationControl_ConnectionUpdated(object sender, PluginBase.ConnectionUpdatedEventArgs e)
         {
             this.WorkAsync(
-                "Loading assemblies information",
+                "Loading assemblies information...",
                 a =>
                 {
                     a.Result = new CrmOrganization(this.ConnectionDetail);
