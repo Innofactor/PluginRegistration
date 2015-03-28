@@ -48,12 +48,146 @@ namespace PluginRegistrationTool
         {
             InitializeComponent();
 
+            #region Load the Images & Icons from the Resource File
+            Dictionary<CrmTreeNodeImageType, Image> nodeImageList = null;
+            try
+            {
+                nodeImageList = CrmResources.LoadImage(
+                    CrmTreeNodeImageType.Assembly, CrmTreeNodeImageType.Image,
+                    CrmTreeNodeImageType.Message, CrmTreeNodeImageType.MessageEntity,
+                    CrmTreeNodeImageType.StepDisabled, CrmTreeNodeImageType.StepEnabled,
+                    CrmTreeNodeImageType.ServiceEndpoint);
+
+                toolServiceEndpointRegister.Image = nodeImageList[CrmTreeNodeImageType.ServiceEndpoint];
+                mnuContextNodeServiceEndpointRegister.Image = toolServiceEndpointRegister.Image;
+                mnuContextGeneralServiceEndpointRegister.Image = toolServiceEndpointRegister.Image;
+
+                toolAssemblyRegister.Image = nodeImageList[CrmTreeNodeImageType.Assembly];
+                mnuContextNodeAssemblyRegister.Image = toolAssemblyRegister.Image;
+                mnuContextGeneralAssemblyRegister.Image = toolAssemblyRegister.Image;
+
+                toolStepRegister.Image = nodeImageList[CrmTreeNodeImageType.StepEnabled];
+                mnuContextNodeStepRegister.Image = toolStepRegister.Image;
+                mnuContextGeneralStepRegister.Image = toolStepRegister.Image;
+
+                toolImageRegister.Image = nodeImageList[CrmTreeNodeImageType.Image];
+                mnuContextNodeImageRegister.Image = toolImageRegister.Image;
+                mnuContextGeneralImageRegister.Image = toolImageRegister.Image;
+
+                toolViewAssembly.Image = toolAssemblyRegister.Image;
+                toolViewEntity.Image = nodeImageList[CrmTreeNodeImageType.MessageEntity];
+                toolViewMessage.Image = nodeImageList[CrmTreeNodeImageType.Message];
+
+                imlEnableImages.Images.Add("enableStep", nodeImageList[CrmTreeNodeImageType.StepEnabled]);
+                imlEnableImages.Images.Add("disableStep", nodeImageList[CrmTreeNodeImageType.StepDisabled]);
+
+                this.UpdateEnableButton(true);
+            }
+            catch (Exception)
+            {
+                if (nodeImageList != null)
+                {
+                    foreach (Image img in nodeImageList.Values)
+                    {
+                        if (img != null)
+                        {
+                            img.Dispose();
+                        }
+                    }
+                }
+
+                throw;
+            }
+
+            Dictionary<string, Image> imageList = null;
+            try
+            {
+                imageList = CrmResources.LoadImage("ImportExport", "EditLabel", "Update", "Register", "Refresh", "Delete",
+                    "Import", "Export", "View", "Search", "Errors", "InstallProfiler", "EnableProfiler", "DisableProfiler",
+                    "UninstallProfiler", "Debug");
+
+                toolRegister.Image = imageList["Register"];
+                toolView.Image = imageList["View"];
+
+                toolUpdate.Image = imageList["Update"];
+                mnuContextNodeUpdate.Image = toolUpdate.Image;
+
+                toolUnregister.Image = imageList["Delete"];
+                mnuContextNodeUnregister.Image = toolUnregister.Image;
+
+                toolSearch.Image = imageList["Search"];
+                mnuContextNodeSearch.Image = toolSearch.Image;
+                mnuContextGeneralSearch.Image = toolSearch.Image;
+
+                toolRefresh.Image = imageList["Refresh"];
+                mnuContextNodeRefresh.Image = toolRefresh.Image;
+                mnuContextGeneralRefresh.Image = toolRefresh.Image;
+
+                toolProfilerDebug.Image = imageList["Debug"];
+
+                imlEnableImages.Images.Add("installProfiler", imageList["InstallProfiler"]);
+                imlEnableImages.Images.Add("enableProfiler", imageList["EnableProfiler"]);
+                imlEnableImages.Images.Add("disableProfiler", imageList["DisableProfiler"]);
+                imlEnableImages.Images.Add("uninstallProfiler", imageList["UninstallProfiler"]);
+            }
+            catch (Exception)
+            {
+                foreach (Image img in imageList.Values)
+                {
+                    img.Dispose();
+                }
+
+                throw;
+            }
+            #endregion
+
+            //Set the view types on the menu items. The Designer's auto code generation keeps overwriting this
+            toolViewAssembly.Tag = CrmViewType.Assembly;
+            toolViewEntity.Tag = CrmViewType.Entity;
+            toolViewMessage.Tag = CrmViewType.Message;
+
+            if (m_entitySorter == null)
+            {
+                m_entitySorter = new CrmEntitySorter();
+            }
+            trvPlugins.CrmTreeNodeSorter = m_entitySorter;
+
+            //this.RefreshProfilerGeneralMenu();
+
+            //Update the shortcut keys
+            mnuContextNodeAssemblyRegister.ShortcutKeys = toolAssemblyRegister.ShortcutKeys;
+            mnuContextGeneralAssemblyRegister.ShortcutKeys = toolAssemblyRegister.ShortcutKeys;
+
+            mnuContextNodeStepRegister.ShortcutKeys = toolStepRegister.ShortcutKeys;
+            mnuContextGeneralStepRegister.ShortcutKeys = toolStepRegister.ShortcutKeys;
+
+            mnuContextNodeImageRegister.ShortcutKeys = toolImageRegister.ShortcutKeys;
+            mnuContextGeneralImageRegister.ShortcutKeys = toolImageRegister.ShortcutKeys;
+
+            mnuContextNodeRefresh.ShortcutKeys = mnuContextGeneralRefresh.ShortcutKeys;
+
+            mnuContextNodeSearch.ShortcutKeys = mnuContextGeneralSearch.ShortcutKeys;
+
+            mnuContextNodeSearch.ShortcutKeys = mnuContextGeneralSearch.ShortcutKeys;
+
+            //Setup splitter panel 2 min distance because form designer keeps putting properties in incorrect order
+            splitterDisplay.Panel2MinSize = 230;
+
             this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
         }
 
         void OrganizationControl_ConnectionUpdated(object sender, PluginBase.ConnectionUpdatedEventArgs e)
         {
-            this.Init(new CrmOrganization(this.ConnectionDetail));
+            this.WorkAsync(
+                "Loading assemblies information",
+                a =>
+                {
+                    a.Result = new CrmOrganization(this.ConnectionDetail);
+                },
+                a =>
+                {
+                    this.Init((CrmOrganization)a.Result);
+                });
         }
 
         public void Init(CrmOrganization org)
@@ -67,135 +201,10 @@ namespace PluginRegistrationTool
 				throw new ArgumentNullException("org.ConnectionDetail");
 			}
 
-			#region Load the Images & Icons from the Resource File
-			Dictionary<CrmTreeNodeImageType, Image> nodeImageList = null;
-			try
-			{
-				nodeImageList = CrmResources.LoadImage(
-					CrmTreeNodeImageType.Assembly, CrmTreeNodeImageType.Image,
-					CrmTreeNodeImageType.Message, CrmTreeNodeImageType.MessageEntity,
-					CrmTreeNodeImageType.StepDisabled, CrmTreeNodeImageType.StepEnabled,
-					CrmTreeNodeImageType.ServiceEndpoint);
-
-				toolServiceEndpointRegister.Image = nodeImageList[CrmTreeNodeImageType.ServiceEndpoint];
-				mnuContextNodeServiceEndpointRegister.Image = toolServiceEndpointRegister.Image;
-				mnuContextGeneralServiceEndpointRegister.Image = toolServiceEndpointRegister.Image;
-
-				toolAssemblyRegister.Image = nodeImageList[CrmTreeNodeImageType.Assembly];
-				mnuContextNodeAssemblyRegister.Image = toolAssemblyRegister.Image;
-				mnuContextGeneralAssemblyRegister.Image = toolAssemblyRegister.Image;
-
-				toolStepRegister.Image = nodeImageList[CrmTreeNodeImageType.StepEnabled];
-				mnuContextNodeStepRegister.Image = toolStepRegister.Image;
-				mnuContextGeneralStepRegister.Image = toolStepRegister.Image;
-
-				toolImageRegister.Image = nodeImageList[CrmTreeNodeImageType.Image];
-				mnuContextNodeImageRegister.Image = toolImageRegister.Image;
-				mnuContextGeneralImageRegister.Image = toolImageRegister.Image;
-
-				toolViewAssembly.Image = toolAssemblyRegister.Image;
-				toolViewEntity.Image = nodeImageList[CrmTreeNodeImageType.MessageEntity];
-				toolViewMessage.Image = nodeImageList[CrmTreeNodeImageType.Message];
-
-				imlEnableImages.Images.Add("enableStep", nodeImageList[CrmTreeNodeImageType.StepEnabled]);
-				imlEnableImages.Images.Add("disableStep", nodeImageList[CrmTreeNodeImageType.StepDisabled]);
-
-				this.UpdateEnableButton(true);
-			}
-			catch (Exception)
-			{
-				if (nodeImageList != null)
-				{
-					foreach (Image img in nodeImageList.Values)
-					{
-						if (img != null)
-						{
-							img.Dispose();
-						}
-					}
-				}
-
-				throw;
-			}
-
-			Dictionary<string, Image> imageList = null;
-			try
-			{
-				imageList = CrmResources.LoadImage("ImportExport", "EditLabel", "Update", "Register", "Refresh", "Delete",
-					"Import", "Export", "View", "Search", "Errors", "InstallProfiler", "EnableProfiler", "DisableProfiler",
-					"UninstallProfiler", "Debug");
-
-				toolRegister.Image = imageList["Register"];
-				toolView.Image = imageList["View"];
-
-				toolUpdate.Image = imageList["Update"];
-				mnuContextNodeUpdate.Image = toolUpdate.Image;
-
-				toolUnregister.Image = imageList["Delete"];
-				mnuContextNodeUnregister.Image = toolUnregister.Image;
-
-				toolSearch.Image = imageList["Search"];
-				mnuContextNodeSearch.Image = toolSearch.Image;
-				mnuContextGeneralSearch.Image = toolSearch.Image;
-
-				toolRefresh.Image = imageList["Refresh"];
-				mnuContextNodeRefresh.Image = toolRefresh.Image;
-				mnuContextGeneralRefresh.Image = toolRefresh.Image;
-
-				toolProfilerDebug.Image = imageList["Debug"];
-
-				imlEnableImages.Images.Add("installProfiler", imageList["InstallProfiler"]);
-				imlEnableImages.Images.Add("enableProfiler", imageList["EnableProfiler"]);
-				imlEnableImages.Images.Add("disableProfiler", imageList["DisableProfiler"]);
-				imlEnableImages.Images.Add("uninstallProfiler", imageList["UninstallProfiler"]);
-			}
-			catch (Exception)
-			{
-				foreach (Image img in imageList.Values)
-				{
-					img.Dispose();
-				}
-
-				throw;
-			}
-			#endregion
-
-			this.m_org = org;
-			this.m_con = org.ConnectionDetail;
-
-			//Set the view types on the menu items. The Designer's auto code generation keeps overwriting this
-			toolViewAssembly.Tag = CrmViewType.Assembly;
-			toolViewEntity.Tag = CrmViewType.Entity;
-			toolViewMessage.Tag = CrmViewType.Message;
-
-			if (m_entitySorter == null)
-			{
-				m_entitySorter = new CrmEntitySorter();
-			}
-			trvPlugins.CrmTreeNodeSorter = m_entitySorter;
-
+            this.m_org = org;
+            this.m_con = org.ConnectionDetail;
             this.m_currentView = CrmViewType.Assembly;
             this.LoadNodes();
-            this.RefreshProfilerGeneralMenu();
-
-			//Update the shortcut keys
-			mnuContextNodeAssemblyRegister.ShortcutKeys = toolAssemblyRegister.ShortcutKeys;
-			mnuContextGeneralAssemblyRegister.ShortcutKeys = toolAssemblyRegister.ShortcutKeys;
-
-			mnuContextNodeStepRegister.ShortcutKeys = toolStepRegister.ShortcutKeys;
-			mnuContextGeneralStepRegister.ShortcutKeys = toolStepRegister.ShortcutKeys;
-
-			mnuContextNodeImageRegister.ShortcutKeys = toolImageRegister.ShortcutKeys;
-			mnuContextGeneralImageRegister.ShortcutKeys = toolImageRegister.ShortcutKeys;
-
-			mnuContextNodeRefresh.ShortcutKeys = mnuContextGeneralRefresh.ShortcutKeys;
-
-			mnuContextNodeSearch.ShortcutKeys = mnuContextGeneralSearch.ShortcutKeys;
-
-			mnuContextNodeSearch.ShortcutKeys = mnuContextGeneralSearch.ShortcutKeys;
-
-			//Setup splitter panel 2 min distance because form designer keeps putting properties in incorrect order
-			splitterDisplay.Panel2MinSize = 230;
 		}
 
 		#region Control Event Handlers
