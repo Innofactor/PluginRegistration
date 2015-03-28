@@ -7,8 +7,8 @@ using XrmToolBox.Attributes;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyCompany("Microsoft Corporation and contributors")]
-[assembly: AssemblyTitle("Plugin Registration Tool")]
-[assembly: AssemblyDescription("Classic tool adopted to use with XrmToolBox")]
+[assembly: AssemblyTitle("Plugin Registration")]
+[assembly: AssemblyDescription("Classic tool in XrmToolBox plugin form")]
 [assembly: AssemblyProduct("PluginRegistrationTool")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
