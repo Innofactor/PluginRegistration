@@ -47,15 +47,7 @@ namespace PluginRegistrationTool
 
         public MainControl()
         {
-            //        public CrmOrganization(string metadataServiceUrl, string organizationServiceUrl,
-            //Guid organizationId, string organizationFriendlyName, string organizationUniqueName, string webApplicationUrl)
-
-            // var org = new CrmOrganization(string.Empty, this.ConnectionDetail.OrganizationServiceUrl, this.ConnectionDetail.
-
-            // var org = new CrmOrganization(
-
             this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
-            // this.Enter += OrganizationControl_Enter;
         }
 
         void OrganizationControl_ConnectionUpdated(object sender, PluginBase.ConnectionUpdatedEventArgs e)
@@ -65,29 +57,7 @@ namespace PluginRegistrationTool
             this.Init(org);
         }
 
-        void OrganizationControl_Enter(object sender, EventArgs e)
-        {
-            // WebRequest.GetSystemWebProxy();
-
-            if (this.ConnectionDetail != null)
-            {
-                var org = new CrmOrganization(this.ConnectionDetail);
-
-                this.Init(org);
-            }
-        }
-
-        public MainControl(CrmOrganization org, MainForm mainForm)
-        {
-            this.Init(org, mainForm);
-        }
-
         public void Init(CrmOrganization org)
-        {
-            this.Init(org, null);
-        }
-
-        public void Init(CrmOrganization org, MainForm mainForm)
 		{
 			if (org == null)
 			{
@@ -195,7 +165,6 @@ namespace PluginRegistrationTool
 
 			this.m_org = org;
 			this.m_con = org.ConnectionDetail;
-			this.m_mainForm = mainForm;
 
 			//Set the view types on the menu items. The Designer's auto code generation keeps overwriting this
 			toolViewAssembly.Tag = CrmViewType.Assembly;
