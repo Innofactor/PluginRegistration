@@ -22,8 +22,8 @@ Contents
 
 [Copyright](#copyright)
 
-<span id="_Contents_of_the_Download_and_CDs" class="anchor"><span id="_Overview" class="anchor"></span></span>Overview
-----------------------------------------------------------------------------------------------------------------------
+Overview
+--------
 
 The Plug-in Registration sample tool (version 5.0) provides a graphical user interface to register Microsoft Dynamics CRM plug-ins and custom workflow activities. The tool supports the following feature set on the
 indicated Microsoft Dynamics CRM deployments.
@@ -43,7 +43,7 @@ The source code to the program is provided to demonstrate how to use the registr
 Contents of the Folders
 -----------------------
 
-<span id="_Microsoft_Dynamics_CRM_Connector_fo" class="anchor"><span id="_Installation_Instructions" class="anchor"></span></span>The PluginRegistration folder contains the complete source code and Microsoft Visual Studio 2010 project files for the sample program. The images folder contains bitmap files for the icons used in the program.
+The PluginRegistration folder contains the complete source code and Microsoft Visual Studio 2010 project files for the sample program. The images folder contains bitmap files for the icons used in the program.
 
 Installation Instructions
 -------------------------
