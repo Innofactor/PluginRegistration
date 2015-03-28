@@ -86,18 +86,20 @@ namespace PluginRegistrationTool.Wrappers
 
         public CrmOrganization(ConnectionDetail detail)
         {
-            this.ConnectionDetail = detail;
-
-            var service = detail.GetDiscoveryService();
-
-            var request = new RetrieveOrganizationRequest
+            if (detail == null)
             {
-                UniqueName = detail.Organization
-            };
+                throw new ArgumentNullException("detail");
+            }
 
-            var response = (RetrieveOrganizationResponse)service.Execute(request);
+            this.OrganizationServiceUrl = detail.OrganizationServiceUrl;
+            this.WebApplicationUrl = detail.WebApplicationUrl;
 
-            this.Init(response.Detail);
+            // this.OrganizationId = detail.;
+            this.OrganizationFriendlyName = detail.OrganizationFriendlyName;
+            this.OrganizationUniqueName = detail.Organization;
+            this.ServerBuild = new Version(detail.OrganizationVersion);
+
+            this.ConnectionDetail = detail;
 
             OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), null);
         }
