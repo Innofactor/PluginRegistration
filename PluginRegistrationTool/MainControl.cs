@@ -46,14 +46,14 @@ namespace PluginRegistrationTool
 
         public MainControl()
         {
+            InitializeComponent();
+
             this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
         }
 
         void OrganizationControl_ConnectionUpdated(object sender, PluginBase.ConnectionUpdatedEventArgs e)
         {
-            var org = new CrmOrganization(this.ConnectionDetail);
-
-            this.Init(org);
+            this.Init(new CrmOrganization(this.ConnectionDetail));
         }
 
         public void Init(CrmOrganization org)
@@ -66,8 +66,6 @@ namespace PluginRegistrationTool
 			{
 				throw new ArgumentNullException("org.ConnectionDetail");
 			}
-
-			InitializeComponent();
 
 			#region Load the Images & Icons from the Resource File
 			Dictionary<CrmTreeNodeImageType, Image> nodeImageList = null;
@@ -176,9 +174,9 @@ namespace PluginRegistrationTool
 			}
 			trvPlugins.CrmTreeNodeSorter = m_entitySorter;
 
-			this.m_currentView = CrmViewType.Assembly;
-			this.LoadNodes();
-			this.RefreshProfilerGeneralMenu();
+            this.m_currentView = CrmViewType.Assembly;
+            this.LoadNodes();
+            this.RefreshProfilerGeneralMenu();
 
 			//Update the shortcut keys
 			mnuContextNodeAssemblyRegister.ShortcutKeys = toolAssemblyRegister.ShortcutKeys;
