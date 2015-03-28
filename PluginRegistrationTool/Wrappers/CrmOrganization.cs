@@ -29,7 +29,6 @@ namespace PluginRegistrationTool.Wrappers
 
 	public sealed class CrmOrganization : ICrmTreeNode
 	{
-		// private CrmConnection m_connection = null;
 		private string m_organizationServiceUrl = null;
 		private string m_friendlyName = null;
 		private Guid m_organizationId = Guid.Empty;
@@ -71,19 +70,6 @@ namespace PluginRegistrationTool.Wrappers
 
 		#endregion
 
-		public CrmOrganization()
-			: this(null, null, Guid.Empty, null, null, null)
-		{
-		}
-
-		public CrmOrganization(CrmEntityDictionary<CrmMessage> messages, CrmEntityDictionary<CrmMessageEntity> messageEntity, Dictionary<Guid, CrmUser> users)
-			: this(null, null, Guid.Empty, null, null, null)
-		{
-			m_messageReadOnlyList = messages;
-			m_messageEntityReadOnlyList = messageEntity;
-			m_userList = users;
-		}
-
         public CrmOrganization(ConnectionDetail detail)
         {
             if (detail == null)
@@ -104,51 +90,8 @@ namespace PluginRegistrationTool.Wrappers
             OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), null);
         }
 
-		public CrmOrganization(OrganizationDetail detail)
-		{
-            this.Init(detail);
-		}
-
-        private void Init(OrganizationDetail detail)
-        {
-            if (detail == null)
-            {
-                throw new ArgumentNullException("detail");
-            }
-
-            this.OrganizationServiceUrl = detail.Endpoints[EndpointType.OrganizationService];
-            this.WebApplicationUrl = detail.Endpoints[EndpointType.WebApplication];
-
-            this.OrganizationId = detail.OrganizationId;
-            this.OrganizationFriendlyName = detail.FriendlyName;
-            this.OrganizationUniqueName = detail.UniqueName;
-            this.ServerBuild = new Version(detail.OrganizationVersion);
-        }
-
-		public CrmOrganization(string metadataServiceUrl, string organizationServiceUrl,
-			Guid organizationId, string organizationFriendlyName, string organizationUniqueName, string webApplicationUrl)
-		{
-			this.OrganizationServiceUrl = organizationServiceUrl;
-
-			this.OrganizationId = organizationId;
-			this.OrganizationFriendlyName = organizationFriendlyName;
-			this.OrganizationUniqueName = organizationUniqueName;
-			this.WebApplicationUrl = webApplicationUrl;
-		}
 
 		#region Properties
-        //[XmlIgnore]
-        //public CrmConnection Connection
-        //{
-        //    get
-        //    {
-        //        return this.m_connection;
-        //    }
-        //    set
-        //    {
-        //        this.m_connection = value;
-        //    }
-        //}
 
 		[XmlElement(ElementName = "CrmServiceUrl", Type = typeof(string), IsNullable = false)]
 		public string OrganizationServiceUrl
@@ -168,18 +111,18 @@ namespace PluginRegistrationTool.Wrappers
 		[XmlIgnore]
 		public string WebApplicationUrl { get; set; }
 
-		[XmlElement(ElementName = "OrganizationId", IsNullable = false)]
-		public Guid OrganizationId
-		{
-			get
-			{
-				return this.m_organizationId;
-			}
-			set
-			{
-				this.m_organizationId = value;
-			}
-		}
+        [XmlElement(ElementName = "OrganizationId", IsNullable = false)]
+        public Guid OrganizationId
+        {
+            get
+            {
+                return this.m_organizationId;
+            }
+            set
+            {
+                this.m_organizationId = value;
+            }
+        }
 
 		[XmlElement(ElementName = "OrganizationFriendlyName", Type = typeof(string), IsNullable = false)]
 		public string OrganizationFriendlyName
