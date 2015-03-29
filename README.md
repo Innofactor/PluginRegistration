@@ -1,3 +1,22 @@
+#Project description
+
+This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of [XrmToolBox](http://www.xrmtoolbox.com/) plugin and itended to work with the same set of the CRM versions supported by main application.
+
+#Project status
+
+* All main operations are working (but still use carefully on production environments!);
+* Azure-related code was stripped away;
+* Plugin might 'freeze' for couple seconds during calls to CRM backend (user should be notified about operation performed in `XrmToolBox`-like way);
+
+#Project needs
+
+* Your bug-reports;
+* Your pull-requests;
+* Your features suggestions;
+
+Context of oroginal CRM SDK `readme.docx` follows bellow:
+---------------------------------------------------------
+
 Microsoft Dynamics CRM 2011 SDK
 ===============================
 
@@ -30,11 +49,11 @@ indicated Microsoft Dynamics CRM deployments.
 
 Microsoft Dynamics CRM 2011
 
-• Register plug-ins and custom workflow activities
+* Register plug-ins and custom workflow activities
 
 Microsoft Dynamics CRM Online
 
-• Register plug-ins
+* Register plug-ins
 
 In addition to these features, the tool provides an easy and interactive method to configure [Windows Azure AppFabric](http://www.microsoft.com/windowsazure/appfabric/) ACS for integration with Microsoft Dynamics CRM. Afterwards, you can register a standard plug-in provided with Microsoft Dynamics CRM to post the current platform operation to the AppFabric Service Bus.
 
