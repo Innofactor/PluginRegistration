@@ -26,15 +26,6 @@ namespace PluginRegistrationTool.Forms
 	public partial class OrganizationsForm : Form
 	{
 		private Dictionary<Guid?, Dictionary<Guid, MainControl>> m_orgList;
-        //private MainForm m_mainForm;
-
-        //public OrganizationsForm(MainForm mainForm)
-        //{
-        //    InitializeComponent();
-
-        //    this.m_orgList = new Dictionary<Guid?, Dictionary<Guid, OrganizationControl>>();
-        //    this.m_mainForm = mainForm;
-        //}
 
 		private void lblClose_Click(object sender, EventArgs e)
 		{
@@ -54,57 +45,6 @@ namespace PluginRegistrationTool.Forms
 		}
 
 		#region Public Methods
-        //public void CreateOrganizationTab(CrmOrganization org)
-        //{
-        //    if (org == null)
-        //    {
-        //        throw new ArgumentNullException("org");
-        //    }
-        //    else if (org.ConnectionDetail == null)
-        //    {
-        //        throw new ArgumentNullException("org.ConnectionDetail");
-        //    }
-
-        //    TabPage page;
-        //    if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId) &&
-        //        this.m_orgList[org.ConnectionDetail.ConnectionId].ContainsKey(org.OrganizationId))
-        //    {
-        //        page = this.GetTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
-        //    }
-        //    else
-        //    {
-        //        page = new TabPage(string.Format("{0}: {1}", org.ConnectionDetail.ConnectionName, org.OrganizationFriendlyName));
-        //        page.Tag = org;
-        //        tabOrganizations.TabPages.Add(page);
-
-        //        OrganizationControl orgControl = new OrganizationControl(org, this.m_mainForm);
-        //        orgControl.Dock = DockStyle.Fill;
-        //        orgControl.Location = new Point(0, 0);
-
-        //        page.Controls.Add(orgControl);
-
-        //        if (this.m_orgList.ContainsKey(org.ConnectionDetail.ConnectionId))
-        //        {
-        //            this.m_orgList[org.ConnectionDetail.ConnectionId].Add(org.OrganizationId, orgControl);
-        //        }
-        //        else
-        //        {
-        //            Dictionary<Guid, OrganizationControl> orgList = new Dictionary<Guid, OrganizationControl>();
-        //            orgList.Add(org.OrganizationId, orgControl);
-
-        //            this.m_orgList.Add(org.ConnectionDetail.ConnectionId, orgList);
-        //        }
-        //    }
-
-        //    tabOrganizations.SelectedTab = page;
-
-        //    if (!this.Visible)
-        //    {
-        //        this.Show();
-        //    }
-
-        //    this.m_mainForm.UpdateCurrentOrganization(org);
-        //}
 
 		public bool OrganizationHasTab(Guid? connectionId, Guid organizationId)
 		{
