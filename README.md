@@ -1,20 +1,21 @@
-#Project description
+#####Project description
 
 This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of [XrmToolBox](http://www.xrmtoolbox.com/) plugin and itended to work with the same set of the CRM versions supported by main application.
 
-#Project status
+#####Project status
 
 * All main operations are working (but still use carefully on production environments!);
 * Azure-related code was stripped away;
 * Plugin might 'freeze' for couple seconds during calls to CRM backend (user should be notified about operation performed in `XrmToolBox`-like way);
 
-#Project needs
+#####Project needs
 
 * Your bug-reports;
 * Your pull-requests;
 * Your features suggestions;
 
-Context of oroginal CRM SDK `readme.docx` follows bellow:
+Context of original CRM SDK `readme.docx` follows bellow:
+
 ---------------------------------------------------------
 
 Microsoft Dynamics CRM 2011 SDK
