@@ -19,200 +19,200 @@ namespace PluginRegistrationTool
 {
     using System;
 
-	public class ProgressIndicator
-	{
-		private ProgressIndicatorInitialize m_init;
-		private ProgressIndicatorSetValue m_setValue;
-		private ProgressIndicatorIncrement m_increment;
-		private ProgressIndicatorAppendStatusText m_appendText;
-		private ProgressIndicatorSetStatusText m_setText;
-		private ProgressIndicatorComplete m_complete;
+    public class ProgressIndicator
+    {
+        private ProgressIndicatorInitialize m_init;
+        private ProgressIndicatorSetValue m_setValue;
+        private ProgressIndicatorIncrement m_increment;
+        private ProgressIndicatorAppendStatusText m_appendText;
+        private ProgressIndicatorSetStatusText m_setText;
+        private ProgressIndicatorComplete m_complete;
 
-		private enum MethodType
-		{
-			Initialize,
-			SetValue,
-			Increment,
-			AppendStatusText,
-			SetStatusText,
-			Complete
-		}
+        private enum MethodType
+        {
+            Initialize,
+            SetValue,
+            Increment,
+            AppendStatusText,
+            SetStatusText,
+            Complete
+        }
 
-		public ProgressIndicator(ProgressIndicatorInitialize init, ProgressIndicatorComplete complete,
-			ProgressIndicatorAppendStatusText appendText, ProgressIndicatorSetStatusText setText,
-			ProgressIndicatorIncrement increment, ProgressIndicatorSetValue setValue)
-		{
-			if (init == null)
-			{
-				throw new ArgumentNullException("init");
-			}
+        public ProgressIndicator(ProgressIndicatorInitialize init, ProgressIndicatorComplete complete,
+            ProgressIndicatorAppendStatusText appendText, ProgressIndicatorSetStatusText setText,
+            ProgressIndicatorIncrement increment, ProgressIndicatorSetValue setValue)
+        {
+            if (init == null)
+            {
+                throw new ArgumentNullException("init");
+            }
 
-			this.m_init = init;
-			this.m_appendText = appendText;
-			this.m_setText = setText;
-			this.m_setValue = setValue;
-			this.m_increment = increment;
-			this.m_complete = complete;
-		}
+            this.m_init = init;
+            this.m_appendText = appendText;
+            this.m_setText = setText;
+            this.m_setValue = setValue;
+            this.m_increment = increment;
+            this.m_complete = complete;
+        }
 
-		#region Overloaded Methods
-		public void Initialize(int max)
-		{
-			Initialize(max, (string)null);
-		}
+        #region Overloaded Methods
+        public void Initialize(int max)
+        {
+            Initialize(max, (string)null);
+        }
 
-		public void Initialize(int max, string initialStatusText)
-		{
-			Initialize(0, max, null, initialStatusText);
-		}
+        public void Initialize(int max, string initialStatusText)
+        {
+            Initialize(0, max, null, initialStatusText);
+        }
 
-		public void Initialize(int max, int? initialValue)
-		{
-			Initialize(0, max, initialValue);
-		}
+        public void Initialize(int max, int? initialValue)
+        {
+            Initialize(0, max, initialValue);
+        }
 
-		public void Initialize(int min, int max, int? initialValue)
-		{
-			Initialize(min, max, initialValue, null);
-		}
+        public void Initialize(int min, int max, int? initialValue)
+        {
+            Initialize(min, max, initialValue, null);
+        }
 
-		public void Increment()
-		{
-			Increment(1, null);
-		}
+        public void Increment()
+        {
+            Increment(1, null);
+        }
 
-		public void Increment(string message)
-		{
-			Increment(1, message);
-		}
+        public void Increment(string message)
+        {
+            Increment(1, message);
+        }
 
-		public void Increment(int value)
-		{
-			Increment(value, null);
-		}
+        public void Increment(int value)
+        {
+            Increment(value, null);
+        }
 
-		public void Complete()
-		{
-			Complete(false);
-		}
-		#endregion
+        public void Complete()
+        {
+            Complete(false);
+        }
+        #endregion
 
-		#region Methods
-		public void Initialize(int min, int max, int? initialValue, string initialStatusText)
-		{
-			if (min > max)
-			{
-				throw new ArgumentOutOfRangeException("Minimum cannot be greater than maximum");
-			}
-			else if (initialValue != null && (initialValue < min || initialValue > max))
-			{
-				throw new ArgumentOutOfRangeException("Cannot be less than Minimum or greater than Maximum", "initialValue");
-			}
+        #region Methods
+        public void Initialize(int min, int max, int? initialValue, string initialStatusText)
+        {
+            if (min > max)
+            {
+                throw new ArgumentOutOfRangeException("Minimum cannot be greater than maximum");
+            }
+            else if (initialValue != null && (initialValue < min || initialValue > max))
+            {
+                throw new ArgumentOutOfRangeException("Cannot be less than Minimum or greater than Maximum", "initialValue");
+            }
 
-			int value;
-			if (initialValue == null)
-			{
-				value = min;
-			}
-			else
-			{
-				value = (int)initialValue;
-			}
+            int value;
+            if (initialValue == null)
+            {
+                value = min;
+            }
+            else
+            {
+                value = (int)initialValue;
+            }
 
-			this.m_init(min, max, value);
+            this.m_init(min, max, value);
 
-			if (initialStatusText != null)
-			{
-				SetText(initialStatusText);
-			}
+            if (initialStatusText != null)
+            {
+                SetText(initialStatusText);
+            }
 
-			//UI doesn't always refresh properly. This will allow the UI to refresh
-			System.Windows.Forms.Application.DoEvents();
-		}
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
 
-		public void AppendText(string text)
-		{
-			if (this.m_setText == null && this.m_appendText == null)
-			{
-				return;
-			}
+        public void AppendText(string text)
+        {
+            if (this.m_setText == null && this.m_appendText == null)
+            {
+                return;
+            }
 
-			if (this.m_appendText != null && !string.IsNullOrEmpty(text))
-			{
-				this.m_appendText(text);
-			}
-			else if (this.m_setText != null)
-			{
-				this.m_setText(text);
-			}
+            if (this.m_appendText != null && !string.IsNullOrEmpty(text))
+            {
+                this.m_appendText(text);
+            }
+            else if (this.m_setText != null)
+            {
+                this.m_setText(text);
+            }
 
-			//UI doesn't always refresh properly. This will allow the UI to refresh
-			System.Windows.Forms.Application.DoEvents();
-		}
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
 
-		public void SetText(string text)
-		{
-			if (this.m_setText == null && this.m_appendText == null)
-			{
-				return;
-			}
+        public void SetText(string text)
+        {
+            if (this.m_setText == null && this.m_appendText == null)
+            {
+                return;
+            }
 
-			if (this.m_setText != null)
-			{
-				this.m_setText(text);
-			}
-			else if (null != this.m_appendText && !string.IsNullOrEmpty(text))
-			{
-				this.m_appendText(text);
-			}
+            if (this.m_setText != null)
+            {
+                this.m_setText(text);
+            }
+            else if (null != this.m_appendText && !string.IsNullOrEmpty(text))
+            {
+                this.m_appendText(text);
+            }
 
-			//UI doesn't always refresh properly. This will allow the UI to refresh
-			System.Windows.Forms.Application.DoEvents();
-		}
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
 
-		public void ClearText()
-		{
-			this.SetText(string.Empty);
-		}
+        public void ClearText()
+        {
+            this.SetText(string.Empty);
+        }
 
-		public void Increment(int value, string message)
-		{
-			if (this.m_increment != null)
-			{
-				this.m_increment(value);
-			}
+        public void Increment(int value, string message)
+        {
+            if (this.m_increment != null)
+            {
+                this.m_increment(value);
+            }
 
-			if (message != null)
-			{
-				AppendText(message);
-			}
+            if (message != null)
+            {
+                AppendText(message);
+            }
 
-			//UI doesn't always refresh properly. This will allow the UI to refresh
-			System.Windows.Forms.Application.DoEvents();
-		}
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
 
-		public void Complete(bool clearStatusText)
-		{
-			if (clearStatusText)
-			{
-				this.SetText(string.Empty);
-			}
+        public void Complete(bool clearStatusText)
+        {
+            if (clearStatusText)
+            {
+                this.SetText(string.Empty);
+            }
 
-			if (m_complete != null)
-			{
-				this.m_complete();
-			}
+            if (m_complete != null)
+            {
+                this.m_complete();
+            }
 
-			//UI doesn't always refresh properly. This will allow the UI to refresh
-			System.Windows.Forms.Application.DoEvents();
-		}
-		#endregion
-	}
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
+        #endregion
+    }
 
-	public delegate void ProgressIndicatorInitialize(int min, int max, int initialValue);
-	public delegate void ProgressIndicatorSetValue(int value);
-	public delegate void ProgressIndicatorIncrement(int incrementBy);
-	public delegate void ProgressIndicatorAppendStatusText(string text);
-	public delegate void ProgressIndicatorSetStatusText(string text);
-	public delegate void ProgressIndicatorComplete();
+    public delegate void ProgressIndicatorInitialize(int min, int max, int initialValue);
+    public delegate void ProgressIndicatorSetValue(int value);
+    public delegate void ProgressIndicatorIncrement(int incrementBy);
+    public delegate void ProgressIndicatorAppendStatusText(string text);
+    public delegate void ProgressIndicatorSetStatusText(string text);
+    public delegate void ProgressIndicatorComplete();
 }

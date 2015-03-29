@@ -20,48 +20,48 @@ namespace PluginRegistrationTool.Helpers
     using System.Collections.Generic;
     using System.Threading;
 
-	internal static class CrmWebServiceHelper
-	{
-		private volatile static List<Thread> m_threadList = new List<Thread>(2);
+    internal static class CrmWebServiceHelper
+    {
+        private volatile static List<Thread> m_threadList = new List<Thread>(2);
 
-		public static void InitializeWebServices()
-		{
-			lock (m_threadList)
-			{
-				m_threadList.Add(new Thread(new ThreadStart(InitializeCrmService)));
-				m_threadList.Add(new Thread(new ThreadStart(InitializeDiscoveryService)));
+        public static void InitializeWebServices()
+        {
+            lock (m_threadList)
+            {
+                m_threadList.Add(new Thread(new ThreadStart(InitializeCrmService)));
+                m_threadList.Add(new Thread(new ThreadStart(InitializeDiscoveryService)));
 
-				for (int i = 0; i < m_threadList.Count; i++)
-				{
-					m_threadList[i].Start();
-				}
-			}
-		}
+                for (int i = 0; i < m_threadList.Count; i++)
+                {
+                    m_threadList[i].Start();
+                }
+            }
+        }
 
-		public static void CancelInitialization()
-		{
-			lock (m_threadList)
-			{
-				for (int i = 0; i < m_threadList.Count; i++)
-				{
-					m_threadList[i].Abort();
-					m_threadList[i].Join();
-				}
+        public static void CancelInitialization()
+        {
+            lock (m_threadList)
+            {
+                for (int i = 0; i < m_threadList.Count; i++)
+                {
+                    m_threadList[i].Abort();
+                    m_threadList[i].Join();
+                }
 
-				m_threadList.Clear();
-			}
-		}
+                m_threadList.Clear();
+            }
+        }
 
-		#region Private Methods
-		private static void InitializeCrmService()
-		{
-			//Microsoft.Xrm.Sdk.IOrganizationService service = new Microsoft.Xrm.Sdk.IOrganizationService();
-		}
+        #region Private Methods
+        private static void InitializeCrmService()
+        {
+            //Microsoft.Xrm.Sdk.IOrganizationService service = new Microsoft.Xrm.Sdk.IOrganizationService();
+        }
 
-		private static void InitializeDiscoveryService()
-		{
-			//Microsoft.Xrm.Sdk.Discovery.IDiscoveryService service = new Microsoft.Xrm.Sdk.Discovery.IDiscoveryService();
-		}
-		#endregion
-	}
+        private static void InitializeDiscoveryService()
+        {
+            //Microsoft.Xrm.Sdk.Discovery.IDiscoveryService service = new Microsoft.Xrm.Sdk.Discovery.IDiscoveryService();
+        }
+        #endregion
+    }
 }

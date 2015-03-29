@@ -20,76 +20,76 @@ namespace PluginRegistrationTool.Wrappers
     using System;
     using PluginRegistrationTool.Entities;
 
-	public sealed class CrmUser
-	{
-		private CrmOrganization m_org;
+    public sealed class CrmUser
+    {
+        private CrmOrganization m_org;
 
-		public CrmUser(CrmOrganization org)
-		{
-			if (org == null)
-			{
-				throw new ArgumentNullException("org");
-			}
+        public CrmUser(CrmOrganization org)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
 
-			this.m_org = org;
-		}
+            this.m_org = org;
+        }
 
-		public CrmUser(CrmOrganization org, SystemUser user)
-			: this(org)
-		{
-			if (user.SystemUserId != null)
-			{
-				this.UserId = user.SystemUserId.Value;
-			}
+        public CrmUser(CrmOrganization org, SystemUser user)
+            : this(org)
+        {
+            if (user.SystemUserId != null)
+            {
+                this.UserId = user.SystemUserId.Value;
+            }
 
-			this.Name = user.FullName;
+            this.Name = user.FullName;
 
-			if (user.IsDisabled != null && (user.IsDisabled.HasValue))
-			{
-				this.Enabled = !user.IsDisabled.Value;
-			}
+            if (user.IsDisabled != null && (user.IsDisabled.HasValue))
+            {
+                this.Enabled = !user.IsDisabled.Value;
+            }
 
-			this.DomainName = user.DomainName;
-			this.InternalEmailAddress = user.InternalEMailAddress;
-		}
+            this.DomainName = user.DomainName;
+            this.InternalEmailAddress = user.InternalEMailAddress;
+        }
 
-		#region Properties
-		public CrmOrganization Organization
-		{
-			get
-			{
-				return this.m_org;
-			}
-		}
+        #region Properties
+        public CrmOrganization Organization
+        {
+            get
+            {
+                return this.m_org;
+            }
+        }
 
-		public Guid UserId { get; set; }
+        public Guid UserId { get; set; }
 
-		public string Name { get; set; }
+        public string Name { get; set; }
 
-		public string DomainName { get; set; }
+        public string DomainName { get; set; }
 
-		public string InternalEmailAddress { get; set; }
+        public string InternalEmailAddress { get; set; }
 
-		public bool Enabled { get; set; }
+        public bool Enabled { get; set; }
 
-		public override string ToString()
-		{
-			if (this.Enabled)
-			{
-				if (null != this.Name)
-				{
-					return this.Name;
-				}
-				else
-				{
-					return string.Format("null {0}", this.DomainName);
-				}
-			}
-			else
-			{
-				return string.Format("{0} (Disabled)", this.Name);
-			}
-		}
-		#endregion
-	}
+        public override string ToString()
+        {
+            if (this.Enabled)
+            {
+                if (null != this.Name)
+                {
+                    return this.Name;
+                }
+                else
+                {
+                    return string.Format("null {0}", this.DomainName);
+                }
+            }
+            else
+            {
+                return string.Format("{0} (Disabled)", this.Name);
+            }
+        }
+        #endregion
+    }
 }
