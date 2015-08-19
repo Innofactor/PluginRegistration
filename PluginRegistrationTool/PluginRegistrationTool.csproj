@@ -150,9 +150,7 @@
     <Compile Include="Forms\MessagePropertyNameForm.Designer.cs">
       <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="MainControl.cs" />
     <Compile Include="MainControl.Designer.cs">
       <DependentUpon>MainControl.cs</DependentUpon>
     </Compile>
