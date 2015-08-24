@@ -30,8 +30,11 @@ namespace PluginRegistrationTool
     using PluginRegistrationTool.Helpers;
     using PluginRegistrationTool.Wrappers;
     using XrmToolBox;
+    using XrmToolBox.Extensibility;
+    using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginBase
+    public partial class MainControl : PluginControlBase //, IGitHubPlugin, IMessageBusHost, IHelpPlugin
+
     {
         private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
         private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
@@ -176,7 +179,7 @@ namespace PluginRegistrationTool
             this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
         }
 
-        void OrganizationControl_ConnectionUpdated(object sender, PluginBase.ConnectionUpdatedEventArgs e)
+        void OrganizationControl_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
             this.WorkAsync(
                 "Loading assemblies information...",

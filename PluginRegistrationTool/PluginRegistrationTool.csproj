@@ -150,7 +150,9 @@
     <Compile Include="Forms\MessagePropertyNameForm.Designer.cs">
       <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainControl.cs" />
+    <Compile Include="MainControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MainControl.Designer.cs">
       <DependentUpon>MainControl.cs</DependentUpon>
     </Compile>
@@ -334,9 +336,9 @@
       <Project>{c3824c2c-6e2e-4fde-a2aa-229bbc7c3b1f}</Project>
       <Name>McTools.Xrm.Connection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XrmToolBox\XrmToolBox\XrmToolBox.csproj">
-      <Project>{328d55be-8b9a-4087-a5c2-9fbaf623f54b}</Project>
-      <Name>XrmToolBox</Name>
+    <ProjectReference Include="..\XrmToolBox\XrmToolBox.Extensibility\XrmToolBox.Extensibility.csproj">
+      <Project>{df77aea3-43f7-403c-91af-3023a3bb06ec}</Project>
+      <Name>XrmToolBox.Extensibility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
