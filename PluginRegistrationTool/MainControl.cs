@@ -587,7 +587,8 @@ namespace PluginRegistrationTool
 
         private void toolSearch_Click(object sender, EventArgs e)
         {
-            SearchForm searchForm = new SearchForm(Organization, this, trvPlugins.RootNodes, trvPlugins.SelectedNode);
+            var searchForm = new SearchForm(Organization, this, trvPlugins.RootNodes, trvPlugins.SelectedNode);
+            searchForm.StartPosition = FormStartPosition.CenterParent;
             searchForm.ShowDialog(this);
         }
 
