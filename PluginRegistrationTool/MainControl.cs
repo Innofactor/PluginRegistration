@@ -34,7 +34,6 @@ namespace PluginRegistrationTool
     using XrmToolBox.Extensibility.Interfaces;
 
     public partial class MainControl : PluginControlBase //, IGitHubPlugin, IMessageBusHost, IHelpPlugin
-
     {
         private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
         private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
@@ -521,26 +520,28 @@ namespace PluginRegistrationTool
 
         private void toolRefresh_Click(object sender, EventArgs e)
         {
-            this.Enabled = false;
-            try
-            {
-                propGridEntity.SelectedObject = null;
-
-                OrganizationHelper.RefreshConnection(this.m_org, OrganizationHelper.LoadMessages(this.m_org));
-
-                this.LoadNodes();
-            }
-            catch (Exception ex)
-            {
-                ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
-                ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId,
-                    this.m_org.OrganizationId);
-                return;
-            }
-            finally
-            {
-                this.Enabled = true;
-            }
+            this.WorkAsync("Refreshing assemblies information...",
+                (x) =>
+                {
+                    try
+                    {
+                        propGridEntity.SelectedObject = null;
+                        OrganizationHelper.RefreshConnection(this.m_org, OrganizationHelper.LoadMessages(this.m_org));
+                        this.Invoke(new Action(() =>
+                            {
+                                this.LoadNodes();
+                            }));
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
+                        ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId, this.m_org.OrganizationId);
+                        return;
+                    }
+                },
+                (x) =>
+                {
+                });
         }
 
         private void trvPlugins_DoubleClick(object sender, CrmTreeNodeEventArgs e)
