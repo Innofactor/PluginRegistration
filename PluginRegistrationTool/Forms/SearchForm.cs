@@ -27,76 +27,76 @@ namespace PluginRegistrationTool.Forms
     using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Wrappers;
 
-	public partial class SearchForm : Form
-	{
-		private CrmOrganization m_org;
-		private MainControl m_orgControl;
-		private ICrmTreeNode[] m_rootNodes;
-		private bool m_needReload = false;
+    public partial class SearchForm : Form
+    {
+        private CrmOrganization m_org;
+        private MainControl m_orgControl;
+        private ICrmTreeNode[] m_rootNodes;
+        private bool m_needReload = false;
 
-		public SearchForm(CrmOrganization org, MainControl orgControl,
-			ICrmTreeNode[] rootNodes, ICrmTreeNode selectedNode)
-		{
-			if (rootNodes == null)
-			{
-				throw new ArgumentNullException("rootNodes");
-			}
-			else if (org == null)
-			{
-				throw new ArgumentNullException("org");
-			}
-			else if (orgControl == null)
-			{
-				throw new ArgumentNullException("orgControl");
-			}
+        public SearchForm(CrmOrganization org, MainControl orgControl,
+            ICrmTreeNode[] rootNodes, ICrmTreeNode selectedNode)
+        {
+            if (rootNodes == null)
+            {
+                throw new ArgumentNullException("rootNodes");
+            }
+            else if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (orgControl == null)
+            {
+                throw new ArgumentNullException("orgControl");
+            }
 
-			InitializeComponent();
+            InitializeComponent();
 
-			this.m_org = org;
-			this.m_orgControl = orgControl;
-			this.m_rootNodes = rootNodes;
+            this.m_org = org;
+            this.m_orgControl = orgControl;
+            this.m_rootNodes = rootNodes;
 
-			trvPlugins.AutoExpand = this.m_orgControl.IsAutoExpanded;
-			trvPlugins.LoadNodes(rootNodes);
-			trvPlugins.SelectedNode = selectedNode;
-			btnSelect.Enabled = (trvPlugins.SelectedNode != null);
+            trvPlugins.AutoExpand = this.m_orgControl.IsAutoExpanded;
+            trvPlugins.LoadNodes(rootNodes);
+            trvPlugins.SelectedNode = selectedNode;
+            btnSelect.Enabled = (trvPlugins.SelectedNode != null);
 
-			txtSearch.AutoCompleteCustomSource = trvPlugins.NodeAutoCompleteCollection;
-		}
+            txtSearch.AutoCompleteCustomSource = trvPlugins.NodeAutoCompleteCollection;
+        }
 
-		private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
-		{
-			btnSelect.Enabled = (e.Node != null);
-		}
+        private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
+        {
+            btnSelect.Enabled = (e.Node != null);
+        }
 
-		private void trvPlugins_Leave(object sender, EventArgs e)
-		{
-			this.AcceptButton = btnSearch;
-		}
+        private void trvPlugins_Leave(object sender, EventArgs e)
+        {
+            this.AcceptButton = btnSearch;
+        }
 
-		private void trvPlugins_Enter(object sender, EventArgs e)
-		{
-			this.AcceptButton = btnSelect;
-		}
+        private void trvPlugins_Enter(object sender, EventArgs e)
+        {
+            this.AcceptButton = btnSelect;
+        }
 
-		private void btnSearch_Click(object sender, EventArgs e)
-		{
-			if (this.m_needReload)
-			{
-				trvPlugins.LoadNodes(this.m_rootNodes);
-			}
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (this.m_needReload)
+            {
+                trvPlugins.LoadNodes(this.m_rootNodes);
+            }
 
-			trvPlugins.SearchAndRemove(txtSearch.Text);
-			trvPlugins.Expand();
-			trvPlugins.Focus();
+            trvPlugins.SearchAndRemove(txtSearch.Text);
+            trvPlugins.Expand();
+            trvPlugins.Focus();
 
-			this.m_needReload = true;
-		}
+            this.m_needReload = true;
+        }
 
-		private void btnSelect_Click(object sender, EventArgs e)
-		{
-			this.m_orgControl.SelectNode(trvPlugins.SelectedNode.NodeId);
-			this.Close();
-		}
-	}
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            this.m_orgControl.SelectNode(trvPlugins.SelectedNode.NodeId);
+            this.Close();
+        }
+    }
 }

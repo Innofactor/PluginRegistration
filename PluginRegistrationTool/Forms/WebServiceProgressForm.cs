@@ -25,70 +25,70 @@ namespace PluginRegistrationTool.Forms
     using System.Text;
     using System.Windows.Forms;
 
-	public partial class WebServiceProgressForm : Form
-	{
-		private ProgressIndicator m_progIndicator;
-		private IWin32Window m_owner;
+    public partial class WebServiceProgressForm : Form
+    {
+        private ProgressIndicator m_progIndicator;
+        private IWin32Window m_owner;
 
-		public WebServiceProgressForm(IWin32Window owner)
-		{
-			if (owner == null)
-			{
-				throw new ArgumentNullException("owner");
-			}
+        public WebServiceProgressForm(IWin32Window owner)
+        {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
 
-			InitializeComponent();
+            InitializeComponent();
 
-			this.m_progIndicator = new ProgressIndicator(this.ProgressIndicatorInit, this.ProgressIndicatorComplete,
-				null, this.ProgressIndicatorSetText, null, null);
-			this.m_owner = owner;
-		}
+            this.m_progIndicator = new ProgressIndicator(this.ProgressIndicatorInit, this.ProgressIndicatorComplete,
+                null, this.ProgressIndicatorSetText, null, null);
+            this.m_owner = owner;
+        }
 
-		public ProgressIndicator ProgressIndicator
-		{
-			get
-			{
-				return this.m_progIndicator;
-			}
-		}
+        public ProgressIndicator ProgressIndicator
+        {
+            get
+            {
+                return this.m_progIndicator;
+            }
+        }
 
-		#region ProgressIndicator Implementation
-		private void ProgressIndicatorInit(int min, int waitMilliseconds, int initialValue)
-		{
-			barRegistration.Minimum = min;
-			barRegistration.Value = initialValue;
-			barRegistration.Maximum = waitMilliseconds;
+        #region ProgressIndicator Implementation
+        private void ProgressIndicatorInit(int min, int waitMilliseconds, int initialValue)
+        {
+            barRegistration.Minimum = min;
+            barRegistration.Value = initialValue;
+            barRegistration.Maximum = waitMilliseconds;
 
-			tmrWait.Enabled = true;
-		}
+            tmrWait.Enabled = true;
+        }
 
-		private void ProgressIndicatorSetText(string text)
-		{
-			lblStatus.Text = text;
+        private void ProgressIndicatorSetText(string text)
+        {
+            lblStatus.Text = text;
 
-			this.ShowDialog(this.m_owner);
-		}
+            this.ShowDialog(this.m_owner);
+        }
 
-		private void ProgressIndicatorComplete()
-		{
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
-		#endregion
+        private void ProgressIndicatorComplete()
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+        #endregion
 
-		private void tmrWait_Tick(object sender, EventArgs e)
-		{
-			if (barRegistration.Value == barRegistration.Maximum)
-			{
-				this.DialogResult = DialogResult.Abort;
-				this.Close();
-			}
-			else
-			{
-				barRegistration.Increment(tmrWait.Interval);
-			}
+        private void tmrWait_Tick(object sender, EventArgs e)
+        {
+            if (barRegistration.Value == barRegistration.Maximum)
+            {
+                this.DialogResult = DialogResult.Abort;
+                this.Close();
+            }
+            else
+            {
+                barRegistration.Increment(tmrWait.Interval);
+            }
 
-			Application.DoEvents();
-		}
-	}
+            Application.DoEvents();
+        }
+    }
 }
