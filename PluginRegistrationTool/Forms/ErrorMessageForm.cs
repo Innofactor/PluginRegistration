@@ -94,9 +94,12 @@ namespace PluginRegistrationTool.Forms
 			if (MessageBox.Show(owner, boxMessage, caption, MessageBoxButtons.YesNo,
 				MessageBoxIcon.Error, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
 			{
-				ErrorMessageForm dlg = new ErrorMessageForm();
-				dlg.Message = exceptionMessage;
-				dlg.ShowDialog();
+                var dlg = new ErrorMessageForm();
+                
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.Message = exceptionMessage;
+                dlg.ShowDialog();
+                dlg.BringToFront();
 			}
 		}
 
