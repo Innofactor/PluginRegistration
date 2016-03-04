@@ -17,23 +17,20 @@
 
 namespace PluginRegistrationTool
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Drawing;
-    using System.Reflection;
-    using System.Text;
-    using System.Windows.Forms;
     using McTools.Xrm.Connection;
     using PluginRegistrationTool.Controls;
     using PluginRegistrationTool.Forms;
     using PluginRegistrationTool.Helpers;
     using PluginRegistrationTool.Wrappers;
-    using XrmToolBox;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Drawing;
+    using System.Text;
+    using System.Windows.Forms;
     using XrmToolBox.Extensibility;
-    using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginControlBase //, IGitHubPlugin, IMessageBusHost, IHelpPlugin
+    public partial class MainControl : PluginControlBase
     {
         private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
         private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
@@ -501,7 +498,7 @@ namespace PluginRegistrationTool
             // TODO : Ajith
             // Do Validations if the Image is valid on the Step -Message and then Launch the Wizard
 
-            ImageRegistrationForm regForm = new ImageRegistrationForm(this.m_org, this, trvPlugins.RootNodes, null, nodeId);
+            var regForm = new ImageRegistrationForm(this.m_org, this, trvPlugins.RootNodes, null, nodeId);
             regForm.ShowDialog();
         }
 
@@ -1245,7 +1242,7 @@ namespace PluginRegistrationTool
             {
                 if (item.Tag != null && item.Tag.GetType() == typeof(CrmViewType))
                 {
-                    PropertyInfo checkedProp = item.GetType().GetProperty("Checked", typeof(bool));
+                    var checkedProp = item.GetType().GetProperty("Checked", typeof(bool));
                     if (checkedProp != null)
                     {
                         if ((bool)checkedProp.GetValue(item, null))
@@ -1265,7 +1262,7 @@ namespace PluginRegistrationTool
                 }
             }
 
-            //Create the new view
+            // Create the new view
             this.Enabled = false;
             try
             {
@@ -1330,19 +1327,18 @@ namespace PluginRegistrationTool
                             }
 
                             //Retrieve the of steps
-                            foreach (CrmPluginStep step in this.Organization.Steps)
+                            foreach (var step in this.Organization.Steps)
                             {
                                 if (step.MessageId != Guid.Empty)
                                 {
-                                    CrmTreeNode parentNode = this.CreateCrmTreeNodes(view,
-                                        step.MessageId, step.MessageEntityId, false);
+                                    CrmTreeNode parentNode = this.CreateCrmTreeNodes(view, step.MessageId, step.MessageEntityId, false);
 
                                     parentNode.AddChild(step);
                                     this.m_stepParentList.Add(step.StepId, parentNode.NodeId);
                                 }
                             }
 
-                            CrmTreeNode[] nodeList = new CrmTreeNode[this.m_rootNodeList.Count];
+                            var nodeList = new CrmTreeNode[this.m_rootNodeList.Count];
                             this.m_rootNodeList.Values.CopyTo(nodeList, 0);
 
                             trvPlugins.LoadNodes(nodeList);

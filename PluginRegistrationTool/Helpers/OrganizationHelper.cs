@@ -31,7 +31,7 @@ namespace PluginRegistrationTool.Helpers
     using Microsoft.Xrm.Sdk.Query;
     using PluginRegistrationTool.Entities;
     using PluginRegistrationTool.Wrappers;
-
+    
     public static class OrganizationHelper
     {
         internal const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
@@ -166,8 +166,7 @@ namespace PluginRegistrationTool.Helpers
         /// <param name="org">Organization that should be opened</param>
         /// <param name="messages">List of messages</param>
         /// <param name="prog">ProgressIndicator that will show the progress as the object is loaded</param>
-        public static void OpenConnection(CrmOrganization org,
-            CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
+        public static void OpenConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
         {
             if (org == null)
             {
@@ -277,8 +276,8 @@ namespace PluginRegistrationTool.Helpers
                 throw new ArgumentNullException("org");
             }
 
-            QueryExpression query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(Entities.PluginAssembly.EntityLogicalName);
+            var query = new QueryExpression();
+            query.ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName);
             query.Criteria = CreateAssemblyFilter();
             query.EntityName = PluginAssembly.EntityLogicalName;
 
@@ -783,7 +782,7 @@ namespace PluginRegistrationTool.Helpers
                 messageIdList.Add(message.MessageId);
             }
 
-            QueryExpression query = new QueryExpression();
+            var query = new QueryExpression();
             query.ColumnSet = GetColumnSet(Entities.SdkMessageFilter.EntityLogicalName);
             query.Criteria.AddCondition("sdkmessageid", ConditionOperator.In, messageIdList.ToArray());
             query.Criteria.AddCondition("iscustomprocessingstepallowed", ConditionOperator.Equal, true);
@@ -837,6 +836,7 @@ namespace PluginRegistrationTool.Helpers
             //Initialize the map
             bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
             typeList = new Dictionary<Guid, CrmPlugin>();
+            
             foreach (PluginType plugin in results.Entities)
             {
                 CrmPluginAssembly assembly = org.Assemblies[plugin.PluginAssemblyId.Id];
@@ -867,8 +867,7 @@ namespace PluginRegistrationTool.Helpers
             }
         }
 
-        private static void LoadSteps(CrmOrganization org, Dictionary<Guid, CrmPlugin> typeList,
-            out Dictionary<Guid, CrmPluginStep> crmStepList)
+        private static void LoadSteps(CrmOrganization org, Dictionary<Guid, CrmPlugin> typeList, out Dictionary<Guid, CrmPluginStep> crmStepList)
         {
             if (org == null)
             {
@@ -983,8 +982,7 @@ namespace PluginRegistrationTool.Helpers
 
                     crmStep.SecureConfigurationRecordIdInvalid = invalidSecureConfigurationId;
 
-                    crmStepList.Add(step.SdkMessageProcessingStepId.Value,
-                        plugin.Steps[step.SdkMessageProcessingStepId.Value]);
+                    crmStepList.Add(step.SdkMessageProcessingStepId.Value, plugin.Steps[step.SdkMessageProcessingStepId.Value]);
                 }
             }
 
@@ -1018,15 +1016,14 @@ namespace PluginRegistrationTool.Helpers
                 throw new ArgumentNullException("org");
             }
 
-            QueryExpression query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName);
+            var query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName);
             query.ColumnSet = GetColumnSet(Entities.SdkMessageProcessingStepImage.EntityLogicalName);
 
             //Put this extra exclusion because any published Workflows will create
             //Images (linked to the Step for Workflow Expansion). Since we are using InnerJoin,
             //any images that reference invalid steps will be excluded. This is okay, because
             //images without steps will have no effect in the system.
-            LinkEntity parentLink = query.AddLink(SdkMessageProcessingStep.EntityLogicalName, "sdkmessageprocessingstepid",
-                "sdkmessageprocessingstepid");
+            var parentLink = query.AddLink(SdkMessageProcessingStep.EntityLogicalName, "sdkmessageprocessingstepid", "sdkmessageprocessingstepid");
             parentLink.LinkCriteria = CreateStepFilter();
 
             //Execute the query
@@ -1061,13 +1058,13 @@ namespace PluginRegistrationTool.Helpers
 
         private static FilterExpression CreateAssemblyFilter()
         {
-            FilterExpression criteria = new FilterExpression();
+            var criteria = new FilterExpression();
 
             //Exclude all compiled workflow assemblies that may remain after upgrade
             criteria.AddCondition("name", ConditionOperator.NotLike, "CompiledWorkflow%");
 
             //Exclude any system assemblies that shouldn't be included
-            FilterExpression systemAssemblyFilter = criteria.AddFilter(LogicalOperator.Or);
+            var systemAssemblyFilter = criteria.AddFilter(LogicalOperator.Or);
             systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.Null);
             systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.NotEqual, 0);
             systemAssemblyFilter.AddCondition("name", ConditionOperator.In, "Microsoft.Crm.ObjectModel", "Microsoft.Crm.ServiceBus");
@@ -1077,7 +1074,7 @@ namespace PluginRegistrationTool.Helpers
 
         private static FilterExpression CreateStepFilter()
         {
-            FilterExpression criteria = new FilterExpression();
+            var criteria = new FilterExpression();
 
             //Exclude all steps that are not in the supported stages
             criteria.AddCondition("stage", ConditionOperator.In, "10", "20", "40", "50");
@@ -1096,42 +1093,117 @@ namespace PluginRegistrationTool.Helpers
                 ColumnSet cols = new ColumnSet();
                 switch (entityName)
                 {
-                    case Entities.ServiceEndpoint.EntityLogicalName:
-
-                        cols.AddColumns("name", "createdon", "modifiedon", "serviceendpointid", "path", "contract", "userclaim", "solutionnamespace", "connectionmode", "description");
+                    case ServiceEndpoint.EntityLogicalName:
+                        cols.AddColumns(
+                            "name", 
+                            "createdon", 
+                            "modifiedon", 
+                            "serviceendpointid", 
+                            "path", 
+                            "contract", 
+                            "userclaim", 
+                            "solutionnamespace", 
+                            "connectionmode", 
+                            "description");
                         break;
 
                     case PluginAssembly.EntityLogicalName:
-
-                        cols.AddColumns("name", "createdon", "modifiedon", "customizationlevel", "pluginassemblyid", "sourcetype", "path", "version", "publickeytoken", "culture", "isolationmode", "description");
+                        cols.AddColumns(
+                            "name", 
+                            "createdon", 
+                            "modifiedon", 
+                            "customizationlevel", 
+                            "pluginassemblyid", 
+                            "sourcetype", 
+                            "path", 
+                            "version", 
+                            "publickeytoken", 
+                            "culture", 
+                            "isolationmode", 
+                            "description");
                         break;
+
                     case PluginType.EntityLogicalName:
-
-                        cols.AddColumns("plugintypeid", "friendlyname", "createdon", "modifiedon", "customizationlevel", "assemblyname", "typename", "pluginassemblyid", "isworkflowactivity", "name", "description", "workflowactivitygroupname");
+                        cols.AddColumns(
+                            "plugintypeid", 
+                            "friendlyname", 
+                            "createdon", 
+                            "modifiedon", 
+                            "customizationlevel", 
+                            "assemblyname", 
+                            "typename", 
+                            "pluginassemblyid", 
+                            "isworkflowactivity", 
+                            "name", 
+                            "description", 
+                            "workflowactivitygroupname");
                         break;
+
                     case SdkMessage.EntityLogicalName:
-
-                        cols.AddColumns("sdkmessageid", "createdon", "modifiedon", "name", "customizationlevel");
+                        cols.AddColumns(
+                            "sdkmessageid", 
+                            "createdon", 
+                            "modifiedon", 
+                            "name", 
+                            "customizationlevel");
                         break;
+
                     case SdkMessageFilter.EntityLogicalName:
-
-                        cols.AddColumns("sdkmessagefilterid", "createdon", "modifiedon", "sdkmessageid", "primaryobjecttypecode", "secondaryobjecttypecode", "customizationlevel", "availability");
+                        cols.AddColumns(
+                            "sdkmessagefilterid", 
+                            "createdon", 
+                            "modifiedon", 
+                            "sdkmessageid", 
+                            "primaryobjecttypecode", 
+                            "secondaryobjecttypecode", 
+                            "customizationlevel", 
+                            "availability");
                         break;
+
                     case SdkMessageProcessingStep.EntityLogicalName:
-
-                        cols.AddColumns("name", "mode", "customizationlevel", "stage", "rank", "sdkmessageid",
-                            "sdkmessagefilterid", "plugintypeid", "supporteddeployment", "description", "asyncautodelete",
-                            "impersonatinguserid", "configuration", "sdkmessageprocessingstepsecureconfigid",
-                            "statecode", "invocationsource", "modifiedon", "createdon", "filteringattributes", "eventhandler");
+                        cols.AddColumns(
+                            "name", 
+                            "mode", 
+                            "customizationlevel", 
+                            "stage", 
+                            "rank", 
+                            "sdkmessageid",
+                            "sdkmessagefilterid", 
+                            "plugintypeid", 
+                            "supporteddeployment", 
+                            "description", 
+                            "asyncautodelete",
+                            "impersonatinguserid", 
+                            "configuration", 
+                            "sdkmessageprocessingstepsecureconfigid",
+                            "statecode", 
+                            "invocationsource", 
+                            "modifiedon", 
+                            "createdon", 
+                            "filteringattributes", 
+                            "eventhandler");
                         break;
+
                     case SdkMessageProcessingStepImage.EntityLogicalName:
-
-                        cols.AddColumns("name", "attributes", "customizationlevel", "entityalias", "createdon", "modifiedon", "imagetype", "sdkmessageprocessingstepid", "messagepropertyname", "relatedattributename");
+                        cols.AddColumns(
+                            "name", 
+                            "attributes", 
+                            "customizationlevel", 
+                            "entityalias", 
+                            "createdon", 
+                            "modifiedon", 
+                            "imagetype", 
+                            "sdkmessageprocessingstepid", 
+                            "messagepropertyname", 
+                            "relatedattributename");
                         break;
+
                     case SdkMessageProcessingStepSecureConfig.EntityLogicalName:
-
-                        cols.AddColumns("sdkmessageprocessingstepsecureconfigid", "secureconfig");
+                        cols.AddColumns(
+                            "sdkmessageprocessingstepsecureconfigid", 
+                            "secureconfig");
                         break;
+
                     default:
                         throw new NotImplementedException(entityName.ToString());
                 }
