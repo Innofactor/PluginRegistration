@@ -7,13 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginRegistrationTool", "P
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug Without GemBox|Any CPU = Debug Without GemBox|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug Without GemBox|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug Without GemBox|Any CPU.Build.0 = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
