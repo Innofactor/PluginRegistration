@@ -494,15 +494,9 @@ namespace PluginRegistrationTool.Wrappers
             }
             else
             {
-                try
-                {
-                    new Guid(newName);
-                    ignoreFriendlyName = true;
-                }
-                catch
-                {
-                    ignoreFriendlyName = false;
-                }
+                // Checking if name should be ignored 
+                var guidOutput = Guid.Empty;
+                ignoreFriendlyName = Guid.TryParse(newName, out guidOutput);
 
                 return newName;
             }
