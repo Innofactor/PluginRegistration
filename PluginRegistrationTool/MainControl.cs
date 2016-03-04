@@ -525,17 +525,20 @@ namespace PluginRegistrationTool
                 {
                     try
                     {
-                        propGridEntity.SelectedObject = null;
                         OrganizationHelper.RefreshConnection(this.m_org, OrganizationHelper.LoadMessages(this.m_org));
                         this.Invoke(new Action(() =>
                             {
+                                propGridEntity.SelectedObject = null;
                                 this.LoadNodes();
                             }));
                     }
                     catch (Exception ex)
                     {
-                        ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
-                        ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId, this.m_org.OrganizationId);
+                        this.Invoke(new Action(() =>
+                        {
+                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
+                            ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId, this.m_org.OrganizationId);
+                        }));
                         return;
                     }
                 },
