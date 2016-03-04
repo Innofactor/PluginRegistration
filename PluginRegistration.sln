@@ -1,17 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XrmToolBox", "XrmToolBox\XrmToolBox\XrmToolBox.csproj", "{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prerequisites", "Prerequisites", "{8C70AE56-CFCF-4285-9EFB-028095897ACC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McTools.Xrm.Connection.WinForms", "XrmToolBox\Connection Projects\McTools.Xrm.Connection.WinForms\McTools.Xrm.Connection.WinForms.csproj", "{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McTools.Xrm.Connection", "XrmToolBox\Connection Projects\McTools.Xrm.Connection\McTools.Xrm.Connection.csproj", "{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}"
-EndProject
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginRegistrationTool", "PluginRegistrationTool\PluginRegistrationTool.csproj", "{2E450060-2AC3-40A5-B6E5-2FD642886E18}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XrmToolBox.Extensibility", "XrmToolBox\XrmToolBox.Extensibility\XrmToolBox.Extensibility.csproj", "{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,44 +12,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}.Debug Without GemBox|Any CPU.ActiveCfg = Debug Without GemBox|Any CPU
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}.Debug Without GemBox|Any CPU.Build.0 = Debug Without GemBox|Any CPU
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}.Debug Without GemBox|Any CPU.ActiveCfg = Debug Without GemBox|Any CPU
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}.Debug Without GemBox|Any CPU.Build.0 = Debug Without GemBox|Any CPU
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}.Debug Without GemBox|Any CPU.ActiveCfg = Debug Without GemBox|Any CPU
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}.Debug Without GemBox|Any CPU.Build.0 = Debug Without GemBox|Any CPU
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug Without GemBox|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug Without GemBox|Any CPU.Build.0 = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E450060-2AC3-40A5-B6E5-2FD642886E18}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}.Debug Without GemBox|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}.Debug Without GemBox|Any CPU.Build.0 = Debug|Any CPU
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{328D55BE-8B9A-4087-A5C2-9FBAF623F54B} = {8C70AE56-CFCF-4285-9EFB-028095897ACC}
-		{EEB5C09F-CEC6-4FB5-87B5-AE61AE89C9EB} = {8C70AE56-CFCF-4285-9EFB-028095897ACC}
-		{C3824C2C-6E2E-4FDE-A2AA-229BBC7C3B1F} = {8C70AE56-CFCF-4285-9EFB-028095897ACC}
-		{DF77AEA3-43F7-403C-91AF-3023A3BB06EC} = {8C70AE56-CFCF-4285-9EFB-028095897ACC}
 	EndGlobalSection
 EndGlobal
