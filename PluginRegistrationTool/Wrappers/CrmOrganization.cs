@@ -1026,7 +1026,7 @@ namespace PluginRegistrationTool.Wrappers
         {
             lock (this)
             {
-                this.m_organizationService = this.ConnectionDetail.GetOrganizationService();
+                this.m_organizationService = this.ConnectionDetail.GetCrmServiceClient().OrganizationServiceProxy;
             }
         }
 
