@@ -101,9 +101,24 @@ namespace PluginRegistrationTool
             Dictionary<string, Image> imageList = null;
             try
             {
-                imageList = CrmResources.LoadImage("ImportExport", "EditLabel", "Update", "Register", "Refresh", "Delete",
-                    "Import", "Export", "View", "Search", "Errors", "InstallProfiler", "EnableProfiler", "DisableProfiler",
-                    "UninstallProfiler", "Debug");
+                imageList = CrmResources.LoadImage(
+                    "ImportExport", 
+                    "EditLabel", 
+                    "Update", 
+                    "Register", 
+                    "Refresh", 
+                    "Delete",
+                    "Import", 
+                    "Export", 
+                    "View", 
+                    "Search", 
+                    "Errors", 
+                    "InstallProfiler", 
+                    "EnableProfiler", 
+                    "DisableProfiler",
+                    "UninstallProfiler", 
+                    "Debug", 
+                    "Close");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -123,6 +138,7 @@ namespace PluginRegistrationTool
                 mnuContextGeneralRefresh.Image = toolRefresh.Image;
 
                 toolProfilerDebug.Image = imageList["Debug"];
+                toolClose.Image = imageList["Close"];
 
                 imlEnableImages.Images.Add("installProfiler", imageList["InstallProfiler"]);
                 imlEnableImages.Images.Add("enableProfiler", imageList["EnableProfiler"]);
@@ -2069,5 +2085,10 @@ namespace PluginRegistrationTool
             #endregion
         }
         #endregion
+
+        private void toolClose_Click(object sender, EventArgs e)
+        {
+            CloseTool();
+        }
     }
 }

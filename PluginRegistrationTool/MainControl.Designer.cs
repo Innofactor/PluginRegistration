@@ -67,8 +67,8 @@ namespace PluginRegistrationTool
             this.toolViewMessage = new System.Windows.Forms.ToolStripMenuItem();
             this.toolProfilerSep = new System.Windows.Forms.ToolStripSeparator();
             this.toolProfilerInstall = new System.Windows.Forms.ToolStripButton();
-            this.toolProfilerEnable = new System.Windows.Forms.ToolStripButton();
             this.toolProfilerDebug = new System.Windows.Forms.ToolStripButton();
+            this.toolProfilerEnable = new System.Windows.Forms.ToolStripButton();
             this.toolSepCommon1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolUpdate = new System.Windows.Forms.ToolStripButton();
             this.toolEnable = new System.Windows.Forms.ToolStripButton();
@@ -76,6 +76,8 @@ namespace PluginRegistrationTool
             this.toolCommonSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolSearch = new System.Windows.Forms.ToolStripButton();
+            this.toolCommonSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolClose = new System.Windows.Forms.ToolStripButton();
             this.toolDisplayTester = new System.Windows.Forms.ToolStripButton();
             this.imlEnableImages = new System.Windows.Forms.ImageList(this.components);
             this.splitterDisplay = new System.Windows.Forms.SplitContainer();
@@ -280,8 +282,8 @@ namespace PluginRegistrationTool
             // 
             // grpGrid
             // 
-            this.grpGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpGrid.Controls.Add(this.grvData);
             this.grpGrid.Location = new System.Drawing.Point(0, 479);
             this.grpGrid.Name = "grpGrid";
@@ -294,9 +296,9 @@ namespace PluginRegistrationTool
             this.grvData.AllowUserToAddRows = false;
             this.grvData.AllowUserToDeleteRows = false;
             this.grvData.AllowUserToOrderColumns = true;
-            this.grvData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grvData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grvData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.grvData.BackgroundColor = System.Drawing.SystemColors.Window;
             this.grvData.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -330,6 +332,8 @@ namespace PluginRegistrationTool
             this.toolCommonSep2,
             this.toolRefresh,
             this.toolSearch,
+            this.toolCommonSep3,
+            this.toolClose,
             this.toolDisplayTester});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
             this.toolBar.Name = "toolBar";
@@ -395,8 +399,8 @@ namespace PluginRegistrationTool
             // toolViewAssembly
             // 
             this.toolViewAssembly.Name = "toolViewAssembly";
-            this.toolViewAssembly.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.A)));
+            this.toolViewAssembly.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.A)));
             this.toolViewAssembly.Size = new System.Drawing.Size(256, 22);
             this.toolViewAssembly.Text = "Display by &Assembly";
             this.toolViewAssembly.Click += new System.EventHandler(this.toolView_Click);
@@ -404,8 +408,8 @@ namespace PluginRegistrationTool
             // toolViewEntity
             // 
             this.toolViewEntity.Name = "toolViewEntity";
-            this.toolViewEntity.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.E)));
+            this.toolViewEntity.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.E)));
             this.toolViewEntity.Size = new System.Drawing.Size(256, 22);
             this.toolViewEntity.Text = "Display by &Entity";
             this.toolViewEntity.Click += new System.EventHandler(this.toolView_Click);
@@ -413,8 +417,8 @@ namespace PluginRegistrationTool
             // toolViewMessage
             // 
             this.toolViewMessage.Name = "toolViewMessage";
-            this.toolViewMessage.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.M)));
+            this.toolViewMessage.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.M)));
             this.toolViewMessage.Size = new System.Drawing.Size(256, 22);
             this.toolViewMessage.Text = "Display by &Message";
             this.toolViewMessage.Click += new System.EventHandler(this.toolView_Click);
@@ -433,14 +437,6 @@ namespace PluginRegistrationTool
             this.toolProfilerInstall.Visible = false;
             this.toolProfilerInstall.Click += new System.EventHandler(this.toolProfilerInstall_Click);
             // 
-            // toolProfilerEnable
-            // 
-            this.toolProfilerEnable.Name = "toolProfilerEnable";
-            this.toolProfilerEnable.Size = new System.Drawing.Size(87, 22);
-            this.toolProfilerEnable.Text = "Enable Pro&filer";
-            this.toolProfilerEnable.Visible = false;
-            this.toolProfilerEnable.Click += new System.EventHandler(this.toolProfilerEnable_Click);
-            // 
             // toolProfilerDebug
             // 
             this.toolProfilerDebug.Name = "toolProfilerDebug";
@@ -448,6 +444,14 @@ namespace PluginRegistrationTool
             this.toolProfilerDebug.Text = "D&ebug";
             this.toolProfilerDebug.Visible = false;
             this.toolProfilerDebug.Click += new System.EventHandler(this.toolProfilerDebug_Click);
+            // 
+            // toolProfilerEnable
+            // 
+            this.toolProfilerEnable.Name = "toolProfilerEnable";
+            this.toolProfilerEnable.Size = new System.Drawing.Size(87, 22);
+            this.toolProfilerEnable.Text = "Enable Pro&filer";
+            this.toolProfilerEnable.Visible = false;
+            this.toolProfilerEnable.Click += new System.EventHandler(this.toolProfilerEnable_Click);
             // 
             // toolSepCommon1
             // 
@@ -501,6 +505,20 @@ namespace PluginRegistrationTool
             this.toolSearch.Text = "&Search";
             this.toolSearch.Click += new System.EventHandler(this.toolSearch_Click);
             // 
+            // toolCommonSep3
+            // 
+            this.toolCommonSep3.Name = "toolCommonSep3";
+            this.toolCommonSep3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolClose
+            // 
+            this.toolClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolClose.Name = "toolClose";
+            this.toolClose.Size = new System.Drawing.Size(40, 22);
+            this.toolClose.Text = "Clos&e";
+            this.toolClose.ToolTipText = "Close Tool (Ctrl+F4)";
+            this.toolClose.Click += new System.EventHandler(this.toolClose_Click);
+            // 
             // toolDisplayTester
             // 
             this.toolDisplayTester.Name = "toolDisplayTester";
@@ -514,9 +532,9 @@ namespace PluginRegistrationTool
             // 
             // splitterDisplay
             // 
-            this.splitterDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitterDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitterDisplay.Location = new System.Drawing.Point(0, 28);
             this.splitterDisplay.Name = "splitterDisplay";
             // 
@@ -534,9 +552,9 @@ namespace PluginRegistrationTool
             // 
             // grpPlugins
             // 
-            this.grpPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPlugins.Controls.Add(this.trvPlugins);
             this.grpPlugins.Location = new System.Drawing.Point(0, 0);
             this.grpPlugins.Name = "grpPlugins";
@@ -547,9 +565,9 @@ namespace PluginRegistrationTool
             // 
             // trvPlugins
             // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trvPlugins.AutoExpand = false;
             this.trvPlugins.ContextMenuStrip = this.mnuContextNode;
             this.trvPlugins.CrmTreeNodeSorter = null;
@@ -578,15 +596,15 @@ namespace PluginRegistrationTool
             // 
             // propGridEntity
             // 
-            this.propGridEntity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.propGridEntity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.propGridEntity.Location = new System.Drawing.Point(0, 0);
             this.propGridEntity.Name = "propGridEntity";
             this.propGridEntity.Size = new System.Drawing.Size(278, 407);
             this.propGridEntity.TabIndex = 4;
             // 
-            // OrganizationControl
+            // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -594,7 +612,7 @@ namespace PluginRegistrationTool
             this.Controls.Add(this.splitterDisplay);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.grpGrid);
-            this.Name = "OrganizationControl";
+            this.Name = "MainControl";
             this.Size = new System.Drawing.Size(851, 697);
             this.mnuContextNode.ResumeLayout(false);
             this.mnuContextGeneral.ResumeLayout(false);
@@ -668,6 +686,7 @@ namespace PluginRegistrationTool
         private System.Windows.Forms.ToolStripSeparator toolProfilerSep;
         private System.Windows.Forms.ToolStripButton toolProfilerEnable;
         private System.Windows.Forms.ToolStripButton toolProfilerDebug;
-
+        private System.Windows.Forms.ToolStripSeparator toolCommonSep3;
+        private System.Windows.Forms.ToolStripButton toolClose;
     }
 }
