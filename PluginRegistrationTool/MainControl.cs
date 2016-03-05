@@ -177,16 +177,20 @@ namespace PluginRegistrationTool
 
         void OrganizationControl_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
-            this.WorkAsync(
-                "Loading assemblies information...",
-                a =>
+            var instruction = new WorkAsyncInfo()
+            {
+                Message = "Loading assemblies information...",
+                Work = (worker, argument) =>
                 {
-                    a.Result = new CrmOrganization(this.ConnectionDetail);
+                    argument.Result = new CrmOrganization(this.ConnectionDetail);
                 },
-                a =>
+                PostWorkCallBack = (argument) =>
                 {
-                    this.Init((CrmOrganization)a.Result);
-                });
+                    Init((CrmOrganization)argument.Result);
+                }
+            };
+            
+            WorkAsync(instruction);
         }
 
         public void Init(CrmOrganization org)
@@ -517,31 +521,30 @@ namespace PluginRegistrationTool
 
         private void toolRefresh_Click(object sender, EventArgs e)
         {
-            this.WorkAsync("Refreshing assemblies information...",
-                (x) =>
+            var instruction = new WorkAsyncInfo()
+            {
+                Message = "Refreshing assemblies information...",
+                Work = (worker, argument) =>
                 {
                     try
                     {
                         OrganizationHelper.RefreshConnection(this.m_org, OrganizationHelper.LoadMessages(this.m_org));
-                        this.Invoke(new Action(() =>
-                            {
-                                propGridEntity.SelectedObject = null;
-                                this.LoadNodes();
-                            }));
+                        Invoke(new Action(() =>
+                        {
+                            propGridEntity.SelectedObject = null;
+                            LoadNodes();
+                        }));
                     }
                     catch (Exception ex)
                     {
-                        this.Invoke(new Action(() =>
+                        Invoke(new Action(() =>
                         {
                             ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
-                            ((OrganizationsForm)this.ParentForm).CloseOrganizationTab(this.m_org.ConnectionDetail.ConnectionId, this.m_org.OrganizationId);
                         }));
-                        return;
                     }
-                },
-                (x) =>
-                {
-                });
+                }
+            };
+            WorkAsync(instruction);
         }
 
         private void trvPlugins_DoubleClick(object sender, CrmTreeNodeEventArgs e)
