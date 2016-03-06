@@ -77,15 +77,15 @@ namespace PluginRegistrationTool.Wrappers
                 throw new ArgumentNullException("detail");
             }
 
-            this.OrganizationServiceUrl = detail.OrganizationServiceUrl;
-            this.WebApplicationUrl = detail.WebApplicationUrl;
+            OrganizationServiceUrl = detail.OrganizationServiceUrl;
+            WebApplicationUrl = detail.WebApplicationUrl;
 
             // this.OrganizationId = detail.;
-            this.OrganizationFriendlyName = detail.OrganizationFriendlyName;
-            this.OrganizationUniqueName = detail.Organization;
-            this.ServerBuild = new Version(detail.OrganizationVersion);
+            OrganizationFriendlyName = detail.OrganizationFriendlyName;
+            OrganizationUniqueName = detail.Organization;
+            ServerBuild = new Version(detail.OrganizationVersion);
 
-            this.ConnectionDetail = detail;
+            ConnectionDetail = detail;
 
             OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), null);
         }

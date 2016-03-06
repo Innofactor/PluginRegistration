@@ -202,7 +202,7 @@ namespace PluginRegistrationTool
                 Message = "Loading assemblies information...",
                 Work = (worker, argument) =>
                 {
-                    argument.Result = new CrmOrganization(this.ConnectionDetail);
+                    argument.Result = new CrmOrganization(ConnectionDetail);
                 },
                 PostWorkCallBack = (argument) =>
                 {
