@@ -267,7 +267,6 @@
     <Content Include="Images\InstallProfiler.gif" />
     <Content Include="Images\PluginProfiler.gif" />
     <Content Include="Images\Refresh.gif" />
-    <None Include="Resources\Close.bmp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\FileBrowserControl.resx">
