@@ -29,8 +29,10 @@ namespace PluginRegistrationTool
     using System.Text;
     using System.Windows.Forms;
     using XrmToolBox.Extensibility;
+    using XrmToolBox.Extensibility.Interfaces;
+    using XrmToolBox.Extensibility.Args;
 
-    public partial class MainControl : PluginControlBase
+    public partial class MainControl : PluginControlBase, IStatusBarMessager
     {
         private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
         private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
@@ -190,6 +192,8 @@ namespace PluginRegistrationTool
 
             this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
         }
+
+        public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
 
         void OrganizationControl_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
