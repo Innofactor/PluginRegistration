@@ -28,7 +28,10 @@ namespace PluginRegistrationTool
         private ProgressIndicatorAppendStatusText m_appendText;
         private ProgressIndicatorSetStatusText m_setText;
         private ProgressIndicatorComplete m_complete;
-        private Action<StatusBarMessageEventArgs> action;
+
+        public int Min { get; private set; }
+        public int Max { get; private set; }
+        public int Initial { get; private set; }
 
         private enum MethodType
         {
@@ -59,7 +62,19 @@ namespace PluginRegistrationTool
 
         public ProgressIndicator(Action<StatusBarMessageEventArgs> action)
         {
-            this.action = action;
+            m_init = delegate(int min, int max, int initial)
+            {
+                if (min < 0 || max < 0)
+                {
+                    return;
+                }
+
+                Min = (min > 100) ? 100 : min;
+                Max = (max > 100) ? 100 : max;
+                Initial = (int)Math.Round((decimal)initial / max * 100);
+
+                action(new StatusBarMessageEventArgs(Initial));
+            };
         }
 
         #region Overloaded Methods
