@@ -18,6 +18,7 @@
 namespace PluginRegistrationTool
 {
     using System;
+    using XrmToolBox.Extensibility.Args;
 
     public class ProgressIndicator
     {
@@ -27,6 +28,7 @@ namespace PluginRegistrationTool
         private ProgressIndicatorAppendStatusText m_appendText;
         private ProgressIndicatorSetStatusText m_setText;
         private ProgressIndicatorComplete m_complete;
+        private Action<StatusBarMessageEventArgs> action;
 
         private enum MethodType
         {
@@ -53,6 +55,11 @@ namespace PluginRegistrationTool
             this.m_setValue = setValue;
             this.m_increment = increment;
             this.m_complete = complete;
+        }
+
+        public ProgressIndicator(Action<StatusBarMessageEventArgs> action)
+        {
+            this.action = action;
         }
 
         #region Overloaded Methods

@@ -190,7 +190,15 @@ namespace PluginRegistrationTool
             //Setup splitter panel 2 min distance because form designer keeps putting properties in incorrect order
             splitterDisplay.Panel2MinSize = 230;
 
-            this.ConnectionUpdated += OrganizationControl_ConnectionUpdated;
+            ConnectionUpdated += OrganizationControl_ConnectionUpdated;
+
+            this.ProgressIndicator = new ProgressIndicator(new Action<StatusBarMessageEventArgs>((message) =>
+            {
+                if (SendMessageToStatusBar != null)
+                {
+                    SendMessageToStatusBar(this, message);
+                }
+            }));
         }
 
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
@@ -202,7 +210,7 @@ namespace PluginRegistrationTool
                 Message = "Loading assemblies information...",
                 Work = (worker, argument) =>
                 {
-                    argument.Result = new CrmOrganization(ConnectionDetail);
+                    argument.Result = new CrmOrganization(ConnectionDetail, ProgressIndicator);
                 },
                 PostWorkCallBack = (argument) =>
                 {
@@ -838,6 +846,8 @@ namespace PluginRegistrationTool
                 return this.trvPlugins.AutoExpand;
             }
         }
+
+        public ProgressIndicator ProgressIndicator { get; private set; }
         #endregion
 
         #region Public Methods

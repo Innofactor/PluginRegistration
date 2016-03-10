@@ -67,10 +67,10 @@ namespace PluginRegistrationTool.Wrappers
 
         private CrmEntityDictionary<CrmServiceEndpoint> m_serviceEndpointReadOnlyList = null;
         private Dictionary<Guid, CrmServiceEndpoint> m_serviceEndpointList = new Dictionary<Guid, CrmServiceEndpoint>();
-
+        
         #endregion
 
-        public CrmOrganization(ConnectionDetail detail)
+        public CrmOrganization(ConnectionDetail detail, ProgressIndicator prog)
         {
             if (detail == null)
             {
@@ -80,16 +80,14 @@ namespace PluginRegistrationTool.Wrappers
             OrganizationServiceUrl = detail.OrganizationServiceUrl;
             WebApplicationUrl = detail.WebApplicationUrl;
 
-            // this.OrganizationId = detail.;
             OrganizationFriendlyName = detail.OrganizationFriendlyName;
             OrganizationUniqueName = detail.Organization;
             ServerBuild = new Version(detail.OrganizationVersion);
 
             ConnectionDetail = detail;
 
-            OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), null);
+            OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), prog);
         }
-
 
         #region Properties
 

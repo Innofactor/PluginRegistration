@@ -44,8 +44,7 @@ namespace PluginRegistrationTool.Helpers
             RefreshConnection(org, messages, null);
         }
 
-        public static void RefreshConnection(CrmOrganization org,
-            CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
+        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
         {
             if (org == null)
             {
