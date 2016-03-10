@@ -31,6 +31,7 @@ namespace PluginRegistrationTool
 
         public int Min { get; private set; }
         public int Max { get; private set; }
+        public int Step { get; private set; }
         public int Initial { get; private set; }
 
         private enum MethodType
@@ -69,11 +70,22 @@ namespace PluginRegistrationTool
                     return;
                 }
 
-                Min = (min > 100) ? 100 : min;
-                Max = (max > 100) ? 100 : max;
+                Min = 0;
+                Max = 100;
+                Step = (int)Math.Floor((decimal)100 / max);
                 Initial = (int)Math.Round((decimal)initial / max * 100);
 
                 action(new StatusBarMessageEventArgs(Initial));
+            };
+
+            m_setText = delegate(string message)
+            {
+                action(new StatusBarMessageEventArgs(message));
+            };
+
+            m_complete = delegate ()
+            {
+                action(new StatusBarMessageEventArgs(string.Empty));
             };
         }
 
@@ -100,12 +112,12 @@ namespace PluginRegistrationTool
 
         public void Increment()
         {
-            Increment(1, null);
+            Increment(Step, null);
         }
 
         public void Increment(string message)
         {
-            Increment(1, message);
+            Increment(Step, message);
         }
 
         public void Increment(int value)
