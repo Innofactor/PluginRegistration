@@ -44,6 +44,7 @@ namespace PluginRegistrationTool
         private Dictionary<string, CrmTreeNode> m_rootNodeList = null;
         private Dictionary<Guid, Guid> m_viewNodeList = null;
         private Dictionary<Guid, Guid> m_stepParentList = null;
+        private ProgressIndicator m_progressIndicator = null;
 
         public MainControl()
         {
@@ -192,7 +193,7 @@ namespace PluginRegistrationTool
 
             ConnectionUpdated += OrganizationControl_ConnectionUpdated;
 
-            this.ProgressIndicator = new ProgressIndicator(new Action<StatusBarMessageEventArgs>((message) =>
+            m_progressIndicator = new ProgressIndicator(new Action<StatusBarMessageEventArgs>((message) =>
             {
                 if (SendMessageToStatusBar != null)
                 {
@@ -210,7 +211,7 @@ namespace PluginRegistrationTool
                 Message = "Loading assemblies information...",
                 Work = (worker, argument) =>
                 {
-                    argument.Result = new CrmOrganization(ConnectionDetail, ProgressIndicator);
+                    argument.Result = new CrmOrganization(ConnectionDetail, m_progressIndicator);
                 },
                 PostWorkCallBack = (argument) =>
                 {
@@ -556,7 +557,7 @@ namespace PluginRegistrationTool
                 {
                     try
                     {
-                        OrganizationHelper.RefreshConnection(this.m_org, OrganizationHelper.LoadMessages(this.m_org));
+                        OrganizationHelper.RefreshConnection(m_org, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
                         Invoke(new Action(() =>
                         {
                             propGridEntity.SelectedObject = null;
@@ -847,7 +848,6 @@ namespace PluginRegistrationTool
             }
         }
 
-        public ProgressIndicator ProgressIndicator { get; private set; }
         #endregion
 
         #region Public Methods
