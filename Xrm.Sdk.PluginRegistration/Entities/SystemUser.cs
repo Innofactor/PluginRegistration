@@ -1,11 +1,16 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System.CodeDom.Compiler;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Person with access to the Microsoft CRM system and who owns objects in the Microsoft CRM database.
     /// </summary>
-    [System.Runtime.Serialization.DataContractAttribute()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("systemuser")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [DataContract()]
+    [EntityLogicalName("systemuser")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SystemUser : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 
@@ -27,1636 +32,1636 @@
 
         private void OnPropertyChanged(string propertyName)
         {
-            if ((this.PropertyChanged != null))
+            if ((PropertyChanged != null))
             {
-                this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
 
         private void OnPropertyChanging(string propertyName)
         {
-            if ((this.PropertyChanging != null))
+            if ((PropertyChanging != null))
             {
-                this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
             }
         }
 
         /// <summary>
         /// Type of user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("accessmode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue AccessMode
+        [AttributeLogicalName("accessmode")]
+        public OptionSetValue AccessMode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("accessmode");
+                return GetAttributeValue<OptionSetValue>("accessmode");
             }
             set
             {
-                this.OnPropertyChanging("AccessMode");
-                this.SetAttributeValue("accessmode", value);
-                this.OnPropertyChanged("AccessMode");
+                OnPropertyChanging("AccessMode");
+                SetAttributeValue("accessmode", value);
+                OnPropertyChanged("AccessMode");
             }
         }
 
         /// <summary>
         /// Unique identifier for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_addressid")]
+        [AttributeLogicalName("address1_addressid")]
         public System.Nullable<System.Guid> Address1_AddressId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("address1_addressid");
+                return GetAttributeValue<System.Nullable<System.Guid>>("address1_addressid");
             }
             set
             {
-                this.OnPropertyChanging("Address1_AddressId");
-                this.SetAttributeValue("address1_addressid", value);
-                this.OnPropertyChanged("Address1_AddressId");
+                OnPropertyChanging("Address1_AddressId");
+                SetAttributeValue("address1_addressid", value);
+                OnPropertyChanged("Address1_AddressId");
             }
         }
 
         /// <summary>
         /// Type of address for address 1, such as billing, shipping, or primary address.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_addresstypecode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Address1_AddressTypeCode
+        [AttributeLogicalName("address1_addresstypecode")]
+        public OptionSetValue Address1_AddressTypeCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("address1_addresstypecode");
+                return GetAttributeValue<OptionSetValue>("address1_addresstypecode");
             }
             set
             {
-                this.OnPropertyChanging("Address1_AddressTypeCode");
-                this.SetAttributeValue("address1_addresstypecode", value);
-                this.OnPropertyChanged("Address1_AddressTypeCode");
+                OnPropertyChanging("Address1_AddressTypeCode");
+                SetAttributeValue("address1_addresstypecode", value);
+                OnPropertyChanged("Address1_AddressTypeCode");
             }
         }
 
         /// <summary>
         /// City name for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_city")]
+        [AttributeLogicalName("address1_city")]
         public string Address1_City
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_city");
+                return GetAttributeValue<string>("address1_city");
             }
             set
             {
-                this.OnPropertyChanging("Address1_City");
-                this.SetAttributeValue("address1_city", value);
-                this.OnPropertyChanged("Address1_City");
+                OnPropertyChanging("Address1_City");
+                SetAttributeValue("address1_city", value);
+                OnPropertyChanged("Address1_City");
             }
         }
 
         /// <summary>
         /// Country/region name in address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_country")]
+        [AttributeLogicalName("address1_country")]
         public string Address1_Country
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_country");
+                return GetAttributeValue<string>("address1_country");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Country");
-                this.SetAttributeValue("address1_country", value);
-                this.OnPropertyChanged("Address1_Country");
+                OnPropertyChanging("Address1_Country");
+                SetAttributeValue("address1_country", value);
+                OnPropertyChanged("Address1_Country");
             }
         }
 
         /// <summary>
         /// County name for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_county")]
+        [AttributeLogicalName("address1_county")]
         public string Address1_County
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_county");
+                return GetAttributeValue<string>("address1_county");
             }
             set
             {
-                this.OnPropertyChanging("Address1_County");
-                this.SetAttributeValue("address1_county", value);
-                this.OnPropertyChanged("Address1_County");
+                OnPropertyChanging("Address1_County");
+                SetAttributeValue("address1_county", value);
+                OnPropertyChanged("Address1_County");
             }
         }
 
         /// <summary>
         /// Fax number for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_fax")]
+        [AttributeLogicalName("address1_fax")]
         public string Address1_Fax
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_fax");
+                return GetAttributeValue<string>("address1_fax");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Fax");
-                this.SetAttributeValue("address1_fax", value);
-                this.OnPropertyChanged("Address1_Fax");
+                OnPropertyChanging("Address1_Fax");
+                SetAttributeValue("address1_fax", value);
+                OnPropertyChanged("Address1_Fax");
             }
         }
 
         /// <summary>
         /// Latitude for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_latitude")]
+        [AttributeLogicalName("address1_latitude")]
         public System.Nullable<double> Address1_Latitude
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<double>>("address1_latitude");
+                return GetAttributeValue<System.Nullable<double>>("address1_latitude");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Latitude");
-                this.SetAttributeValue("address1_latitude", value);
-                this.OnPropertyChanged("Address1_Latitude");
+                OnPropertyChanging("Address1_Latitude");
+                SetAttributeValue("address1_latitude", value);
+                OnPropertyChanged("Address1_Latitude");
             }
         }
 
         /// <summary>
         /// First line for entering address 1 information.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_line1")]
+        [AttributeLogicalName("address1_line1")]
         public string Address1_Line1
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_line1");
+                return GetAttributeValue<string>("address1_line1");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Line1");
-                this.SetAttributeValue("address1_line1", value);
-                this.OnPropertyChanged("Address1_Line1");
+                OnPropertyChanging("Address1_Line1");
+                SetAttributeValue("address1_line1", value);
+                OnPropertyChanged("Address1_Line1");
             }
         }
 
         /// <summary>
         /// Second line for entering address 1 information.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_line2")]
+        [AttributeLogicalName("address1_line2")]
         public string Address1_Line2
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_line2");
+                return GetAttributeValue<string>("address1_line2");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Line2");
-                this.SetAttributeValue("address1_line2", value);
-                this.OnPropertyChanged("Address1_Line2");
+                OnPropertyChanging("Address1_Line2");
+                SetAttributeValue("address1_line2", value);
+                OnPropertyChanged("Address1_Line2");
             }
         }
 
         /// <summary>
         /// Third line for entering address 1 information.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_line3")]
+        [AttributeLogicalName("address1_line3")]
         public string Address1_Line3
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_line3");
+                return GetAttributeValue<string>("address1_line3");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Line3");
-                this.SetAttributeValue("address1_line3", value);
-                this.OnPropertyChanged("Address1_Line3");
+                OnPropertyChanging("Address1_Line3");
+                SetAttributeValue("address1_line3", value);
+                OnPropertyChanged("Address1_Line3");
             }
         }
 
         /// <summary>
         /// Longitude for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_longitude")]
+        [AttributeLogicalName("address1_longitude")]
         public System.Nullable<double> Address1_Longitude
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<double>>("address1_longitude");
+                return GetAttributeValue<System.Nullable<double>>("address1_longitude");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Longitude");
-                this.SetAttributeValue("address1_longitude", value);
-                this.OnPropertyChanged("Address1_Longitude");
+                OnPropertyChanging("Address1_Longitude");
+                SetAttributeValue("address1_longitude", value);
+                OnPropertyChanged("Address1_Longitude");
             }
         }
 
         /// <summary>
         /// Name to enter for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_name")]
+        [AttributeLogicalName("address1_name")]
         public string Address1_Name
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_name");
+                return GetAttributeValue<string>("address1_name");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Name");
-                this.SetAttributeValue("address1_name", value);
-                this.OnPropertyChanged("Address1_Name");
+                OnPropertyChanging("Address1_Name");
+                SetAttributeValue("address1_name", value);
+                OnPropertyChanged("Address1_Name");
             }
         }
 
         /// <summary>
         /// ZIP Code or postal code for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_postalcode")]
+        [AttributeLogicalName("address1_postalcode")]
         public string Address1_PostalCode
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_postalcode");
+                return GetAttributeValue<string>("address1_postalcode");
             }
             set
             {
-                this.OnPropertyChanging("Address1_PostalCode");
-                this.SetAttributeValue("address1_postalcode", value);
-                this.OnPropertyChanged("Address1_PostalCode");
+                OnPropertyChanging("Address1_PostalCode");
+                SetAttributeValue("address1_postalcode", value);
+                OnPropertyChanged("Address1_PostalCode");
             }
         }
 
         /// <summary>
         /// Post office box number for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_postofficebox")]
+        [AttributeLogicalName("address1_postofficebox")]
         public string Address1_PostOfficeBox
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_postofficebox");
+                return GetAttributeValue<string>("address1_postofficebox");
             }
             set
             {
-                this.OnPropertyChanging("Address1_PostOfficeBox");
-                this.SetAttributeValue("address1_postofficebox", value);
-                this.OnPropertyChanged("Address1_PostOfficeBox");
+                OnPropertyChanging("Address1_PostOfficeBox");
+                SetAttributeValue("address1_postofficebox", value);
+                OnPropertyChanged("Address1_PostOfficeBox");
             }
         }
 
         /// <summary>
         /// Method of shipment for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_shippingmethodcode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Address1_ShippingMethodCode
+        [AttributeLogicalName("address1_shippingmethodcode")]
+        public OptionSetValue Address1_ShippingMethodCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("address1_shippingmethodcode");
+                return GetAttributeValue<OptionSetValue>("address1_shippingmethodcode");
             }
             set
             {
-                this.OnPropertyChanging("Address1_ShippingMethodCode");
-                this.SetAttributeValue("address1_shippingmethodcode", value);
-                this.OnPropertyChanged("Address1_ShippingMethodCode");
+                OnPropertyChanging("Address1_ShippingMethodCode");
+                SetAttributeValue("address1_shippingmethodcode", value);
+                OnPropertyChanged("Address1_ShippingMethodCode");
             }
         }
 
         /// <summary>
         /// State or province for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_stateorprovince")]
+        [AttributeLogicalName("address1_stateorprovince")]
         public string Address1_StateOrProvince
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_stateorprovince");
+                return GetAttributeValue<string>("address1_stateorprovince");
             }
             set
             {
-                this.OnPropertyChanging("Address1_StateOrProvince");
-                this.SetAttributeValue("address1_stateorprovince", value);
-                this.OnPropertyChanged("Address1_StateOrProvince");
+                OnPropertyChanging("Address1_StateOrProvince");
+                SetAttributeValue("address1_stateorprovince", value);
+                OnPropertyChanged("Address1_StateOrProvince");
             }
         }
 
         /// <summary>
         /// First telephone number associated with address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_telephone1")]
+        [AttributeLogicalName("address1_telephone1")]
         public string Address1_Telephone1
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_telephone1");
+                return GetAttributeValue<string>("address1_telephone1");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Telephone1");
-                this.SetAttributeValue("address1_telephone1", value);
-                this.OnPropertyChanged("Address1_Telephone1");
+                OnPropertyChanging("Address1_Telephone1");
+                SetAttributeValue("address1_telephone1", value);
+                OnPropertyChanged("Address1_Telephone1");
             }
         }
 
         /// <summary>
         /// Second telephone number associated with address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_telephone2")]
+        [AttributeLogicalName("address1_telephone2")]
         public string Address1_Telephone2
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_telephone2");
+                return GetAttributeValue<string>("address1_telephone2");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Telephone2");
-                this.SetAttributeValue("address1_telephone2", value);
-                this.OnPropertyChanged("Address1_Telephone2");
+                OnPropertyChanging("Address1_Telephone2");
+                SetAttributeValue("address1_telephone2", value);
+                OnPropertyChanged("Address1_Telephone2");
             }
         }
 
         /// <summary>
         /// Third telephone number associated with address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_telephone3")]
+        [AttributeLogicalName("address1_telephone3")]
         public string Address1_Telephone3
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_telephone3");
+                return GetAttributeValue<string>("address1_telephone3");
             }
             set
             {
-                this.OnPropertyChanging("Address1_Telephone3");
-                this.SetAttributeValue("address1_telephone3", value);
-                this.OnPropertyChanged("Address1_Telephone3");
+                OnPropertyChanging("Address1_Telephone3");
+                SetAttributeValue("address1_telephone3", value);
+                OnPropertyChanged("Address1_Telephone3");
             }
         }
 
         /// <summary>
         /// United Parcel Service (UPS) zone for address 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_upszone")]
+        [AttributeLogicalName("address1_upszone")]
         public string Address1_UPSZone
         {
             get
             {
-                return this.GetAttributeValue<string>("address1_upszone");
+                return GetAttributeValue<string>("address1_upszone");
             }
             set
             {
-                this.OnPropertyChanging("Address1_UPSZone");
-                this.SetAttributeValue("address1_upszone", value);
-                this.OnPropertyChanged("Address1_UPSZone");
+                OnPropertyChanging("Address1_UPSZone");
+                SetAttributeValue("address1_upszone", value);
+                OnPropertyChanged("Address1_UPSZone");
             }
         }
 
         /// <summary>
         /// UTC offset for address 1. This is the difference between local time and standard Coordinated Universal Time.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_utcoffset")]
+        [AttributeLogicalName("address1_utcoffset")]
         public System.Nullable<int> Address1_UTCOffset
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("address1_utcoffset");
+                return GetAttributeValue<System.Nullable<int>>("address1_utcoffset");
             }
             set
             {
-                this.OnPropertyChanging("Address1_UTCOffset");
-                this.SetAttributeValue("address1_utcoffset", value);
-                this.OnPropertyChanged("Address1_UTCOffset");
+                OnPropertyChanging("Address1_UTCOffset");
+                SetAttributeValue("address1_utcoffset", value);
+                OnPropertyChanged("Address1_UTCOffset");
             }
         }
 
         /// <summary>
         /// Unique identifier for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_addressid")]
+        [AttributeLogicalName("address2_addressid")]
         public System.Nullable<System.Guid> Address2_AddressId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("address2_addressid");
+                return GetAttributeValue<System.Nullable<System.Guid>>("address2_addressid");
             }
             set
             {
-                this.OnPropertyChanging("Address2_AddressId");
-                this.SetAttributeValue("address2_addressid", value);
-                this.OnPropertyChanged("Address2_AddressId");
+                OnPropertyChanging("Address2_AddressId");
+                SetAttributeValue("address2_addressid", value);
+                OnPropertyChanged("Address2_AddressId");
             }
         }
 
         /// <summary>
         /// Type of address for address 2, such as billing, shipping, or primary address.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_addresstypecode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Address2_AddressTypeCode
+        [AttributeLogicalName("address2_addresstypecode")]
+        public OptionSetValue Address2_AddressTypeCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("address2_addresstypecode");
+                return GetAttributeValue<OptionSetValue>("address2_addresstypecode");
             }
             set
             {
-                this.OnPropertyChanging("Address2_AddressTypeCode");
-                this.SetAttributeValue("address2_addresstypecode", value);
-                this.OnPropertyChanged("Address2_AddressTypeCode");
+                OnPropertyChanging("Address2_AddressTypeCode");
+                SetAttributeValue("address2_addresstypecode", value);
+                OnPropertyChanged("Address2_AddressTypeCode");
             }
         }
 
         /// <summary>
         /// City name for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_city")]
+        [AttributeLogicalName("address2_city")]
         public string Address2_City
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_city");
+                return GetAttributeValue<string>("address2_city");
             }
             set
             {
-                this.OnPropertyChanging("Address2_City");
-                this.SetAttributeValue("address2_city", value);
-                this.OnPropertyChanged("Address2_City");
+                OnPropertyChanging("Address2_City");
+                SetAttributeValue("address2_city", value);
+                OnPropertyChanged("Address2_City");
             }
         }
 
         /// <summary>
         /// Country/region name in address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_country")]
+        [AttributeLogicalName("address2_country")]
         public string Address2_Country
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_country");
+                return GetAttributeValue<string>("address2_country");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Country");
-                this.SetAttributeValue("address2_country", value);
-                this.OnPropertyChanged("Address2_Country");
+                OnPropertyChanging("Address2_Country");
+                SetAttributeValue("address2_country", value);
+                OnPropertyChanged("Address2_Country");
             }
         }
 
         /// <summary>
         /// County name for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_county")]
+        [AttributeLogicalName("address2_county")]
         public string Address2_County
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_county");
+                return GetAttributeValue<string>("address2_county");
             }
             set
             {
-                this.OnPropertyChanging("Address2_County");
-                this.SetAttributeValue("address2_county", value);
-                this.OnPropertyChanged("Address2_County");
+                OnPropertyChanging("Address2_County");
+                SetAttributeValue("address2_county", value);
+                OnPropertyChanged("Address2_County");
             }
         }
 
         /// <summary>
         /// Fax number for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_fax")]
+        [AttributeLogicalName("address2_fax")]
         public string Address2_Fax
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_fax");
+                return GetAttributeValue<string>("address2_fax");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Fax");
-                this.SetAttributeValue("address2_fax", value);
-                this.OnPropertyChanged("Address2_Fax");
+                OnPropertyChanging("Address2_Fax");
+                SetAttributeValue("address2_fax", value);
+                OnPropertyChanged("Address2_Fax");
             }
         }
 
         /// <summary>
         /// Latitude for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_latitude")]
+        [AttributeLogicalName("address2_latitude")]
         public System.Nullable<double> Address2_Latitude
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<double>>("address2_latitude");
+                return GetAttributeValue<System.Nullable<double>>("address2_latitude");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Latitude");
-                this.SetAttributeValue("address2_latitude", value);
-                this.OnPropertyChanged("Address2_Latitude");
+                OnPropertyChanging("Address2_Latitude");
+                SetAttributeValue("address2_latitude", value);
+                OnPropertyChanged("Address2_Latitude");
             }
         }
 
         /// <summary>
         /// First line for entering address 2 information.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_line1")]
+        [AttributeLogicalName("address2_line1")]
         public string Address2_Line1
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_line1");
+                return GetAttributeValue<string>("address2_line1");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Line1");
-                this.SetAttributeValue("address2_line1", value);
-                this.OnPropertyChanged("Address2_Line1");
+                OnPropertyChanging("Address2_Line1");
+                SetAttributeValue("address2_line1", value);
+                OnPropertyChanged("Address2_Line1");
             }
         }
 
         /// <summary>
         /// Second line for entering address 2 information.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_line2")]
+        [AttributeLogicalName("address2_line2")]
         public string Address2_Line2
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_line2");
+                return GetAttributeValue<string>("address2_line2");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Line2");
-                this.SetAttributeValue("address2_line2", value);
-                this.OnPropertyChanged("Address2_Line2");
+                OnPropertyChanging("Address2_Line2");
+                SetAttributeValue("address2_line2", value);
+                OnPropertyChanged("Address2_Line2");
             }
         }
 
         /// <summary>
         /// Third line for entering address 2 information.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_line3")]
+        [AttributeLogicalName("address2_line3")]
         public string Address2_Line3
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_line3");
+                return GetAttributeValue<string>("address2_line3");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Line3");
-                this.SetAttributeValue("address2_line3", value);
-                this.OnPropertyChanged("Address2_Line3");
+                OnPropertyChanging("Address2_Line3");
+                SetAttributeValue("address2_line3", value);
+                OnPropertyChanged("Address2_Line3");
             }
         }
 
         /// <summary>
         /// Longitude for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_longitude")]
+        [AttributeLogicalName("address2_longitude")]
         public System.Nullable<double> Address2_Longitude
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<double>>("address2_longitude");
+                return GetAttributeValue<System.Nullable<double>>("address2_longitude");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Longitude");
-                this.SetAttributeValue("address2_longitude", value);
-                this.OnPropertyChanged("Address2_Longitude");
+                OnPropertyChanging("Address2_Longitude");
+                SetAttributeValue("address2_longitude", value);
+                OnPropertyChanged("Address2_Longitude");
             }
         }
 
         /// <summary>
         /// Name to enter for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_name")]
+        [AttributeLogicalName("address2_name")]
         public string Address2_Name
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_name");
+                return GetAttributeValue<string>("address2_name");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Name");
-                this.SetAttributeValue("address2_name", value);
-                this.OnPropertyChanged("Address2_Name");
+                OnPropertyChanging("Address2_Name");
+                SetAttributeValue("address2_name", value);
+                OnPropertyChanged("Address2_Name");
             }
         }
 
         /// <summary>
         /// ZIP Code or postal code for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_postalcode")]
+        [AttributeLogicalName("address2_postalcode")]
         public string Address2_PostalCode
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_postalcode");
+                return GetAttributeValue<string>("address2_postalcode");
             }
             set
             {
-                this.OnPropertyChanging("Address2_PostalCode");
-                this.SetAttributeValue("address2_postalcode", value);
-                this.OnPropertyChanged("Address2_PostalCode");
+                OnPropertyChanging("Address2_PostalCode");
+                SetAttributeValue("address2_postalcode", value);
+                OnPropertyChanged("Address2_PostalCode");
             }
         }
 
         /// <summary>
         /// Post office box number for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_postofficebox")]
+        [AttributeLogicalName("address2_postofficebox")]
         public string Address2_PostOfficeBox
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_postofficebox");
+                return GetAttributeValue<string>("address2_postofficebox");
             }
             set
             {
-                this.OnPropertyChanging("Address2_PostOfficeBox");
-                this.SetAttributeValue("address2_postofficebox", value);
-                this.OnPropertyChanged("Address2_PostOfficeBox");
+                OnPropertyChanging("Address2_PostOfficeBox");
+                SetAttributeValue("address2_postofficebox", value);
+                OnPropertyChanged("Address2_PostOfficeBox");
             }
         }
 
         /// <summary>
         /// Method of shipment for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_shippingmethodcode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Address2_ShippingMethodCode
+        [AttributeLogicalName("address2_shippingmethodcode")]
+        public OptionSetValue Address2_ShippingMethodCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("address2_shippingmethodcode");
+                return GetAttributeValue<OptionSetValue>("address2_shippingmethodcode");
             }
             set
             {
-                this.OnPropertyChanging("Address2_ShippingMethodCode");
-                this.SetAttributeValue("address2_shippingmethodcode", value);
-                this.OnPropertyChanged("Address2_ShippingMethodCode");
+                OnPropertyChanging("Address2_ShippingMethodCode");
+                SetAttributeValue("address2_shippingmethodcode", value);
+                OnPropertyChanged("Address2_ShippingMethodCode");
             }
         }
 
         /// <summary>
         /// State or province for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_stateorprovince")]
+        [AttributeLogicalName("address2_stateorprovince")]
         public string Address2_StateOrProvince
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_stateorprovince");
+                return GetAttributeValue<string>("address2_stateorprovince");
             }
             set
             {
-                this.OnPropertyChanging("Address2_StateOrProvince");
-                this.SetAttributeValue("address2_stateorprovince", value);
-                this.OnPropertyChanged("Address2_StateOrProvince");
+                OnPropertyChanging("Address2_StateOrProvince");
+                SetAttributeValue("address2_stateorprovince", value);
+                OnPropertyChanged("Address2_StateOrProvince");
             }
         }
 
         /// <summary>
         /// First telephone number associated with address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_telephone1")]
+        [AttributeLogicalName("address2_telephone1")]
         public string Address2_Telephone1
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_telephone1");
+                return GetAttributeValue<string>("address2_telephone1");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Telephone1");
-                this.SetAttributeValue("address2_telephone1", value);
-                this.OnPropertyChanged("Address2_Telephone1");
+                OnPropertyChanging("Address2_Telephone1");
+                SetAttributeValue("address2_telephone1", value);
+                OnPropertyChanged("Address2_Telephone1");
             }
         }
 
         /// <summary>
         /// Second telephone number associated with address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_telephone2")]
+        [AttributeLogicalName("address2_telephone2")]
         public string Address2_Telephone2
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_telephone2");
+                return GetAttributeValue<string>("address2_telephone2");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Telephone2");
-                this.SetAttributeValue("address2_telephone2", value);
-                this.OnPropertyChanged("Address2_Telephone2");
+                OnPropertyChanging("Address2_Telephone2");
+                SetAttributeValue("address2_telephone2", value);
+                OnPropertyChanged("Address2_Telephone2");
             }
         }
 
         /// <summary>
         /// Third telephone number associated with address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_telephone3")]
+        [AttributeLogicalName("address2_telephone3")]
         public string Address2_Telephone3
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_telephone3");
+                return GetAttributeValue<string>("address2_telephone3");
             }
             set
             {
-                this.OnPropertyChanging("Address2_Telephone3");
-                this.SetAttributeValue("address2_telephone3", value);
-                this.OnPropertyChanged("Address2_Telephone3");
+                OnPropertyChanging("Address2_Telephone3");
+                SetAttributeValue("address2_telephone3", value);
+                OnPropertyChanged("Address2_Telephone3");
             }
         }
 
         /// <summary>
         /// United Parcel Service (UPS) zone for address 2.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_upszone")]
+        [AttributeLogicalName("address2_upszone")]
         public string Address2_UPSZone
         {
             get
             {
-                return this.GetAttributeValue<string>("address2_upszone");
+                return GetAttributeValue<string>("address2_upszone");
             }
             set
             {
-                this.OnPropertyChanging("Address2_UPSZone");
-                this.SetAttributeValue("address2_upszone", value);
-                this.OnPropertyChanged("Address2_UPSZone");
+                OnPropertyChanging("Address2_UPSZone");
+                SetAttributeValue("address2_upszone", value);
+                OnPropertyChanged("Address2_UPSZone");
             }
         }
 
         /// <summary>
         /// UTC offset for address 2. This is the difference between local time and standard Coordinated Universal Time.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_utcoffset")]
+        [AttributeLogicalName("address2_utcoffset")]
         public System.Nullable<int> Address2_UTCOffset
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("address2_utcoffset");
+                return GetAttributeValue<System.Nullable<int>>("address2_utcoffset");
             }
             set
             {
-                this.OnPropertyChanging("Address2_UTCOffset");
-                this.SetAttributeValue("address2_utcoffset", value);
-                this.OnPropertyChanged("Address2_UTCOffset");
+                OnPropertyChanging("Address2_UTCOffset");
+                SetAttributeValue("address2_utcoffset", value);
+                OnPropertyChanged("Address2_UTCOffset");
             }
         }
 
         /// <summary>
         /// Unique identifier of the business unit with which the user is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("businessunitid")]
-        public Microsoft.Xrm.Sdk.EntityReference BusinessUnitId
+        [AttributeLogicalName("businessunitid")]
+        public EntityReference BusinessUnitId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("businessunitid");
+                return GetAttributeValue<EntityReference>("businessunitid");
             }
             set
             {
-                this.OnPropertyChanging("BusinessUnitId");
-                this.SetAttributeValue("businessunitid", value);
-                this.OnPropertyChanged("BusinessUnitId");
+                OnPropertyChanging("BusinessUnitId");
+                SetAttributeValue("businessunitid", value);
+                OnPropertyChanged("BusinessUnitId");
             }
         }
 
         /// <summary>
         /// Fiscal calendar associated with the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("calendarid")]
-        public Microsoft.Xrm.Sdk.EntityReference CalendarId
+        [AttributeLogicalName("calendarid")]
+        public EntityReference CalendarId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("calendarid");
+                return GetAttributeValue<EntityReference>("calendarid");
             }
             set
             {
-                this.OnPropertyChanging("CalendarId");
-                this.SetAttributeValue("calendarid", value);
-                this.OnPropertyChanged("CalendarId");
+                OnPropertyChanging("CalendarId");
+                SetAttributeValue("calendarid", value);
+                OnPropertyChanged("CalendarId");
             }
         }
 
         /// <summary>
         /// License type of user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("caltype")]
-        public Microsoft.Xrm.Sdk.OptionSetValue CALType
+        [AttributeLogicalName("caltype")]
+        public OptionSetValue CALType
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("caltype");
+                return GetAttributeValue<OptionSetValue>("caltype");
             }
             set
             {
-                this.OnPropertyChanging("CALType");
-                this.SetAttributeValue("caltype", value);
-                this.OnPropertyChanged("CALType");
+                OnPropertyChanging("CALType");
+                SetAttributeValue("caltype", value);
+                OnPropertyChanged("CALType");
             }
         }
 
         /// <summary>
         /// Unique identifier of the user who created the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        [AttributeLogicalName("createdby")]
+        public EntityReference CreatedBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
         /// <summary>
         /// Date and time when the user was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-        public System.Nullable<System.DateTime> CreatedOn
+        [AttributeLogicalName("createdon")]
+        public System.DateTime? CreatedOn
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+                return GetAttributeValue<System.DateTime?>("createdon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who created the systemuser.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        [AttributeLogicalName("createdonbehalfby")]
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
         /// <summary>
         /// Indicates if default outlook filters have been populated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("defaultfilterspopulated")]
+        [AttributeLogicalName("defaultfilterspopulated")]
         public System.Nullable<bool> DefaultFiltersPopulated
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("defaultfilterspopulated");
+                return GetAttributeValue<System.Nullable<bool>>("defaultfilterspopulated");
             }
         }
 
         /// <summary>
         /// Reason for disabling the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("disabledreason")]
+        [AttributeLogicalName("disabledreason")]
         public string DisabledReason
         {
             get
             {
-                return this.GetAttributeValue<string>("disabledreason");
+                return GetAttributeValue<string>("disabledreason");
             }
         }
 
         /// <summary>
         /// Whether to display the user in service views.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("displayinserviceviews")]
+        [AttributeLogicalName("displayinserviceviews")]
         public System.Nullable<bool> DisplayInServiceViews
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("displayinserviceviews");
+                return GetAttributeValue<System.Nullable<bool>>("displayinserviceviews");
             }
             set
             {
-                this.OnPropertyChanging("DisplayInServiceViews");
-                this.SetAttributeValue("displayinserviceviews", value);
-                this.OnPropertyChanged("DisplayInServiceViews");
+                OnPropertyChanging("DisplayInServiceViews");
+                SetAttributeValue("displayinserviceviews", value);
+                OnPropertyChanged("DisplayInServiceViews");
             }
         }
 
         /// <summary>
         /// Active Directory domain of which the user is a member.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("domainname")]
+        [AttributeLogicalName("domainname")]
         public string DomainName
         {
             get
             {
-                return this.GetAttributeValue<string>("domainname");
+                return GetAttributeValue<string>("domainname");
             }
             set
             {
-                this.OnPropertyChanging("DomainName");
-                this.SetAttributeValue("domainname", value);
-                this.OnPropertyChanged("DomainName");
+                OnPropertyChanging("DomainName");
+                SetAttributeValue("domainname", value);
+                OnPropertyChanged("DomainName");
             }
         }
 
         /// <summary>
         /// Shows the status of the primary e-mail address.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("emailrouteraccessapproval")]
-        public Microsoft.Xrm.Sdk.OptionSetValue EmailRouterAccessApproval
+        [AttributeLogicalName("emailrouteraccessapproval")]
+        public OptionSetValue EmailRouterAccessApproval
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("emailrouteraccessapproval");
+                return GetAttributeValue<OptionSetValue>("emailrouteraccessapproval");
             }
             set
             {
-                this.OnPropertyChanging("EmailRouterAccessApproval");
-                this.SetAttributeValue("emailrouteraccessapproval", value);
-                this.OnPropertyChanged("EmailRouterAccessApproval");
+                OnPropertyChanging("EmailRouterAccessApproval");
+                SetAttributeValue("emailrouteraccessapproval", value);
+                OnPropertyChanged("EmailRouterAccessApproval");
             }
         }
 
         /// <summary>
         /// Employee identifier for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("employeeid")]
+        [AttributeLogicalName("employeeid")]
         public string EmployeeId
         {
             get
             {
-                return this.GetAttributeValue<string>("employeeid");
+                return GetAttributeValue<string>("employeeid");
             }
             set
             {
-                this.OnPropertyChanging("EmployeeId");
-                this.SetAttributeValue("employeeid", value);
-                this.OnPropertyChanged("EmployeeId");
+                OnPropertyChanging("EmployeeId");
+                SetAttributeValue("employeeid", value);
+                OnPropertyChanged("EmployeeId");
             }
         }
 
         /// <summary>
         /// Exchange rate for the currency associated with the systemuser with respect to the base currency.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("exchangerate")]
-        public System.Nullable<decimal> ExchangeRate
+        [AttributeLogicalName("exchangerate")]
+        public decimal? ExchangeRate
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<decimal>>("exchangerate");
+                return GetAttributeValue<System.Nullable<decimal>>("exchangerate");
             }
         }
 
         /// <summary>
         /// First name of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("firstname")]
+        [AttributeLogicalName("firstname")]
         public string FirstName
         {
             get
             {
-                return this.GetAttributeValue<string>("firstname");
+                return GetAttributeValue<string>("firstname");
             }
             set
             {
-                this.OnPropertyChanging("FirstName");
-                this.SetAttributeValue("firstname", value);
-                this.OnPropertyChanged("FirstName");
+                OnPropertyChanging("FirstName");
+                SetAttributeValue("firstname", value);
+                OnPropertyChanged("FirstName");
             }
         }
 
         /// <summary>
         /// Full name of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("fullname")]
+        [AttributeLogicalName("fullname")]
         public string FullName
         {
             get
             {
-                return this.GetAttributeValue<string>("fullname");
+                return GetAttributeValue<string>("fullname");
             }
         }
 
         /// <summary>
         /// Government identifier for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("governmentid")]
+        [AttributeLogicalName("governmentid")]
         public string GovernmentId
         {
             get
             {
-                return this.GetAttributeValue<string>("governmentid");
+                return GetAttributeValue<string>("governmentid");
             }
             set
             {
-                this.OnPropertyChanging("GovernmentId");
-                this.SetAttributeValue("governmentid", value);
-                this.OnPropertyChanged("GovernmentId");
+                OnPropertyChanging("GovernmentId");
+                SetAttributeValue("governmentid", value);
+                OnPropertyChanged("GovernmentId");
             }
         }
 
         /// <summary>
         /// Home phone number for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("homephone")]
+        [AttributeLogicalName("homephone")]
         public string HomePhone
         {
             get
             {
-                return this.GetAttributeValue<string>("homephone");
+                return GetAttributeValue<string>("homephone");
             }
             set
             {
-                this.OnPropertyChanging("HomePhone");
-                this.SetAttributeValue("homephone", value);
-                this.OnPropertyChanged("HomePhone");
+                OnPropertyChanging("HomePhone");
+                SetAttributeValue("homephone", value);
+                OnPropertyChanged("HomePhone");
             }
         }
 
         /// <summary>
         /// Unique identifier of the data import or data migration that created this record.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("importsequencenumber")]
+        [AttributeLogicalName("importsequencenumber")]
         public System.Nullable<int> ImportSequenceNumber
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("importsequencenumber");
+                return GetAttributeValue<System.Nullable<int>>("importsequencenumber");
             }
             set
             {
-                this.OnPropertyChanging("ImportSequenceNumber");
-                this.SetAttributeValue("importsequencenumber", value);
-                this.OnPropertyChanged("ImportSequenceNumber");
+                OnPropertyChanging("ImportSequenceNumber");
+                SetAttributeValue("importsequencenumber", value);
+                OnPropertyChanged("ImportSequenceNumber");
             }
         }
 
         /// <summary>
         /// Incoming e-mail delivery method for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("incomingemaildeliverymethod")]
-        public Microsoft.Xrm.Sdk.OptionSetValue IncomingEmailDeliveryMethod
+        [AttributeLogicalName("incomingemaildeliverymethod")]
+        public OptionSetValue IncomingEmailDeliveryMethod
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("incomingemaildeliverymethod");
+                return GetAttributeValue<OptionSetValue>("incomingemaildeliverymethod");
             }
             set
             {
-                this.OnPropertyChanging("IncomingEmailDeliveryMethod");
-                this.SetAttributeValue("incomingemaildeliverymethod", value);
-                this.OnPropertyChanged("IncomingEmailDeliveryMethod");
+                OnPropertyChanging("IncomingEmailDeliveryMethod");
+                SetAttributeValue("incomingemaildeliverymethod", value);
+                OnPropertyChanged("IncomingEmailDeliveryMethod");
             }
         }
 
         /// <summary>
         /// Internal e-mail address for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("internalemailaddress")]
+        [AttributeLogicalName("internalemailaddress")]
         public string InternalEMailAddress
         {
             get
             {
-                return this.GetAttributeValue<string>("internalemailaddress");
+                return GetAttributeValue<string>("internalemailaddress");
             }
             set
             {
-                this.OnPropertyChanging("InternalEMailAddress");
-                this.SetAttributeValue("internalemailaddress", value);
-                this.OnPropertyChanged("InternalEMailAddress");
+                OnPropertyChanging("InternalEMailAddress");
+                SetAttributeValue("internalemailaddress", value);
+                OnPropertyChanged("InternalEMailAddress");
             }
         }
 
         /// <summary>
         /// User invitation status.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("invitestatuscode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue InviteStatusCode
+        [AttributeLogicalName("invitestatuscode")]
+        public OptionSetValue InviteStatusCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("invitestatuscode");
+                return GetAttributeValue<OptionSetValue>("invitestatuscode");
             }
             set
             {
-                this.OnPropertyChanging("InviteStatusCode");
-                this.SetAttributeValue("invitestatuscode", value);
-                this.OnPropertyChanged("InviteStatusCode");
+                OnPropertyChanging("InviteStatusCode");
+                SetAttributeValue("invitestatuscode", value);
+                OnPropertyChanged("InviteStatusCode");
             }
         }
 
         /// <summary>
         /// Information about whether the user is enabled.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isdisabled")]
+        [AttributeLogicalName("isdisabled")]
         public System.Nullable<bool> IsDisabled
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("isdisabled");
+                return GetAttributeValue<System.Nullable<bool>>("isdisabled");
             }
         }
 
         /// <summary>
         /// Check if user is an integration user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isintegrationuser")]
+        [AttributeLogicalName("isintegrationuser")]
         public System.Nullable<bool> IsIntegrationUser
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("isintegrationuser");
+                return GetAttributeValue<System.Nullable<bool>>("isintegrationuser");
             }
             set
             {
-                this.OnPropertyChanging("IsIntegrationUser");
-                this.SetAttributeValue("isintegrationuser", value);
-                this.OnPropertyChanged("IsIntegrationUser");
+                OnPropertyChanging("IsIntegrationUser");
+                SetAttributeValue("isintegrationuser", value);
+                OnPropertyChanged("IsIntegrationUser");
             }
         }
 
         /// <summary>
         /// Information about whether the user is licensed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("islicensed")]
+        [AttributeLogicalName("islicensed")]
         public System.Nullable<bool> IsLicensed
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("islicensed");
+                return GetAttributeValue<System.Nullable<bool>>("islicensed");
             }
             set
             {
-                this.OnPropertyChanging("IsLicensed");
-                this.SetAttributeValue("islicensed", value);
-                this.OnPropertyChanged("IsLicensed");
+                OnPropertyChanging("IsLicensed");
+                SetAttributeValue("islicensed", value);
+                OnPropertyChanged("IsLicensed");
             }
         }
 
         /// <summary>
         /// Information about whether the user is synced with the directory.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("issyncwithdirectory")]
+        [AttributeLogicalName("issyncwithdirectory")]
         public System.Nullable<bool> IsSyncWithDirectory
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("issyncwithdirectory");
+                return GetAttributeValue<System.Nullable<bool>>("issyncwithdirectory");
             }
             set
             {
-                this.OnPropertyChanging("IsSyncWithDirectory");
-                this.SetAttributeValue("issyncwithdirectory", value);
-                this.OnPropertyChanged("IsSyncWithDirectory");
+                OnPropertyChanging("IsSyncWithDirectory");
+                SetAttributeValue("issyncwithdirectory", value);
+                OnPropertyChanged("IsSyncWithDirectory");
             }
         }
 
         /// <summary>
         /// Job title of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("jobtitle")]
+        [AttributeLogicalName("jobtitle")]
         public string JobTitle
         {
             get
             {
-                return this.GetAttributeValue<string>("jobtitle");
+                return GetAttributeValue<string>("jobtitle");
             }
             set
             {
-                this.OnPropertyChanging("JobTitle");
-                this.SetAttributeValue("jobtitle", value);
-                this.OnPropertyChanged("JobTitle");
+                OnPropertyChanging("JobTitle");
+                SetAttributeValue("jobtitle", value);
+                OnPropertyChanged("JobTitle");
             }
         }
 
         /// <summary>
         /// Last name of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("lastname")]
+        [AttributeLogicalName("lastname")]
         public string LastName
         {
             get
             {
-                return this.GetAttributeValue<string>("lastname");
+                return GetAttributeValue<string>("lastname");
             }
             set
             {
-                this.OnPropertyChanging("LastName");
-                this.SetAttributeValue("lastname", value);
-                this.OnPropertyChanged("LastName");
+                OnPropertyChanging("LastName");
+                SetAttributeValue("lastname", value);
+                OnPropertyChanged("LastName");
             }
         }
 
         /// <summary>
         /// Middle name of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("middlename")]
+        [AttributeLogicalName("middlename")]
         public string MiddleName
         {
             get
             {
-                return this.GetAttributeValue<string>("middlename");
+                return GetAttributeValue<string>("middlename");
             }
             set
             {
-                this.OnPropertyChanging("MiddleName");
-                this.SetAttributeValue("middlename", value);
-                this.OnPropertyChanged("MiddleName");
+                OnPropertyChanging("MiddleName");
+                SetAttributeValue("middlename", value);
+                OnPropertyChanged("MiddleName");
             }
         }
 
         /// <summary>
         /// Mobile alert e-mail address for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mobilealertemail")]
+        [AttributeLogicalName("mobilealertemail")]
         public string MobileAlertEMail
         {
             get
             {
-                return this.GetAttributeValue<string>("mobilealertemail");
+                return GetAttributeValue<string>("mobilealertemail");
             }
             set
             {
-                this.OnPropertyChanging("MobileAlertEMail");
-                this.SetAttributeValue("mobilealertemail", value);
-                this.OnPropertyChanged("MobileAlertEMail");
+                OnPropertyChanging("MobileAlertEMail");
+                SetAttributeValue("mobilealertemail", value);
+                OnPropertyChanged("MobileAlertEMail");
             }
         }
 
         /// <summary>
         /// Mobile phone number for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mobilephone")]
+        [AttributeLogicalName("mobilephone")]
         public string MobilePhone
         {
             get
             {
-                return this.GetAttributeValue<string>("mobilephone");
+                return GetAttributeValue<string>("mobilephone");
             }
             set
             {
-                this.OnPropertyChanging("MobilePhone");
-                this.SetAttributeValue("mobilephone", value);
-                this.OnPropertyChanged("MobilePhone");
+                OnPropertyChanging("MobilePhone");
+                SetAttributeValue("mobilephone", value);
+                OnPropertyChanged("MobilePhone");
             }
         }
 
         /// <summary>
         /// Unique identifier of the user who last modified the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<EntityReference>("modifiedby");
             }
         }
 
         /// <summary>
         /// Date and time when the user was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-        public System.Nullable<System.DateTime> ModifiedOn
+        [AttributeLogicalName("modifiedon")]
+        public System.DateTime? ModifiedOn
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+                return GetAttributeValue<System.DateTime?>("modifiedon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who last modified the systemuser.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<EntityReference>("modifiedonbehalfby");
             }
         }
 
         /// <summary>
         /// Nickname of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("nickname")]
+        [AttributeLogicalName("nickname")]
         public string NickName
         {
             get
             {
-                return this.GetAttributeValue<string>("nickname");
+                return GetAttributeValue<string>("nickname");
             }
             set
             {
-                this.OnPropertyChanging("NickName");
-                this.SetAttributeValue("nickname", value);
-                this.OnPropertyChanged("NickName");
+                OnPropertyChanging("NickName");
+                SetAttributeValue("nickname", value);
+                OnPropertyChanged("NickName");
             }
         }
 
         /// <summary>
         /// Unique identifier of the organization associated with the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+        [AttributeLogicalName("organizationid")]
         public System.Nullable<System.Guid> OrganizationId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("organizationid");
+                return GetAttributeValue<System.Nullable<System.Guid>>("organizationid");
             }
         }
 
         /// <summary>
         /// Outgoing e-mail delivery method for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("outgoingemaildeliverymethod")]
-        public Microsoft.Xrm.Sdk.OptionSetValue OutgoingEmailDeliveryMethod
+        [AttributeLogicalName("outgoingemaildeliverymethod")]
+        public OptionSetValue OutgoingEmailDeliveryMethod
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("outgoingemaildeliverymethod");
+                return GetAttributeValue<OptionSetValue>("outgoingemaildeliverymethod");
             }
             set
             {
-                this.OnPropertyChanging("OutgoingEmailDeliveryMethod");
-                this.SetAttributeValue("outgoingemaildeliverymethod", value);
-                this.OnPropertyChanged("OutgoingEmailDeliveryMethod");
+                OnPropertyChanging("OutgoingEmailDeliveryMethod");
+                SetAttributeValue("outgoingemaildeliverymethod", value);
+                OnPropertyChanged("OutgoingEmailDeliveryMethod");
             }
         }
 
         /// <summary>
         /// Date and time that the record was migrated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overriddencreatedon")]
-        public System.Nullable<System.DateTime> OverriddenCreatedOn
+        [AttributeLogicalName("overriddencreatedon")]
+        public System.DateTime? OverriddenCreatedOn
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("overriddencreatedon");
+                return GetAttributeValue<System.DateTime?>("overriddencreatedon");
             }
             set
             {
-                this.OnPropertyChanging("OverriddenCreatedOn");
-                this.SetAttributeValue("overriddencreatedon", value);
-                this.OnPropertyChanged("OverriddenCreatedOn");
+                OnPropertyChanging("OverriddenCreatedOn");
+                SetAttributeValue("overriddencreatedon", value);
+                OnPropertyChanged("OverriddenCreatedOn");
             }
         }
 
         /// <summary>
         /// Unique identifier of the manager of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("parentsystemuserid")]
-        public Microsoft.Xrm.Sdk.EntityReference ParentSystemUserId
+        [AttributeLogicalName("parentsystemuserid")]
+        public EntityReference ParentSystemUserId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("parentsystemuserid");
+                return GetAttributeValue<EntityReference>("parentsystemuserid");
             }
             set
             {
-                this.OnPropertyChanging("ParentSystemUserId");
-                this.SetAttributeValue("parentsystemuserid", value);
-                this.OnPropertyChanged("ParentSystemUserId");
+                OnPropertyChanging("ParentSystemUserId");
+                SetAttributeValue("parentsystemuserid", value);
+                OnPropertyChanged("ParentSystemUserId");
             }
         }
 
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("passporthi")]
+        [AttributeLogicalName("passporthi")]
         public System.Nullable<int> PassportHi
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("passporthi");
+                return GetAttributeValue<System.Nullable<int>>("passporthi");
             }
             set
             {
-                this.OnPropertyChanging("PassportHi");
-                this.SetAttributeValue("passporthi", value);
-                this.OnPropertyChanged("PassportHi");
+                OnPropertyChanging("PassportHi");
+                SetAttributeValue("passporthi", value);
+                OnPropertyChanged("PassportHi");
             }
         }
 
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("passportlo")]
+        [AttributeLogicalName("passportlo")]
         public System.Nullable<int> PassportLo
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("passportlo");
+                return GetAttributeValue<System.Nullable<int>>("passportlo");
             }
             set
             {
-                this.OnPropertyChanging("PassportLo");
-                this.SetAttributeValue("passportlo", value);
-                this.OnPropertyChanged("PassportLo");
+                OnPropertyChanging("PassportLo");
+                SetAttributeValue("passportlo", value);
+                OnPropertyChanged("PassportLo");
             }
         }
 
         /// <summary>
         /// Personal e-mail address of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("personalemailaddress")]
+        [AttributeLogicalName("personalemailaddress")]
         public string PersonalEMailAddress
         {
             get
             {
-                return this.GetAttributeValue<string>("personalemailaddress");
+                return GetAttributeValue<string>("personalemailaddress");
             }
             set
             {
-                this.OnPropertyChanging("PersonalEMailAddress");
-                this.SetAttributeValue("personalemailaddress", value);
-                this.OnPropertyChanged("PersonalEMailAddress");
+                OnPropertyChanging("PersonalEMailAddress");
+                SetAttributeValue("personalemailaddress", value);
+                OnPropertyChanged("PersonalEMailAddress");
             }
         }
 
         /// <summary>
         /// URL for the Web site on which a photo of the user is located.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("photourl")]
+        [AttributeLogicalName("photourl")]
         public string PhotoUrl
         {
             get
             {
-                return this.GetAttributeValue<string>("photourl");
+                return GetAttributeValue<string>("photourl");
             }
             set
             {
-                this.OnPropertyChanging("PhotoUrl");
-                this.SetAttributeValue("photourl", value);
-                this.OnPropertyChanged("PhotoUrl");
+                OnPropertyChanging("PhotoUrl");
+                SetAttributeValue("photourl", value);
+                OnPropertyChanged("PhotoUrl");
             }
         }
 
         /// <summary>
         /// Preferred address for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredaddresscode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue PreferredAddressCode
+        [AttributeLogicalName("preferredaddresscode")]
+        public OptionSetValue PreferredAddressCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("preferredaddresscode");
+                return GetAttributeValue<OptionSetValue>("preferredaddresscode");
             }
             set
             {
-                this.OnPropertyChanging("PreferredAddressCode");
-                this.SetAttributeValue("preferredaddresscode", value);
-                this.OnPropertyChanged("PreferredAddressCode");
+                OnPropertyChanging("PreferredAddressCode");
+                SetAttributeValue("preferredaddresscode", value);
+                OnPropertyChanged("PreferredAddressCode");
             }
         }
 
         /// <summary>
         /// Preferred e-mail address for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredemailcode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue PreferredEmailCode
+        [AttributeLogicalName("preferredemailcode")]
+        public OptionSetValue PreferredEmailCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("preferredemailcode");
+                return GetAttributeValue<OptionSetValue>("preferredemailcode");
             }
             set
             {
-                this.OnPropertyChanging("PreferredEmailCode");
-                this.SetAttributeValue("preferredemailcode", value);
-                this.OnPropertyChanged("PreferredEmailCode");
+                OnPropertyChanging("PreferredEmailCode");
+                SetAttributeValue("preferredemailcode", value);
+                OnPropertyChanged("PreferredEmailCode");
             }
         }
 
         /// <summary>
         /// Preferred phone number for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredphonecode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue PreferredPhoneCode
+        [AttributeLogicalName("preferredphonecode")]
+        public OptionSetValue PreferredPhoneCode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("preferredphonecode");
+                return GetAttributeValue<OptionSetValue>("preferredphonecode");
             }
             set
             {
-                this.OnPropertyChanging("PreferredPhoneCode");
-                this.SetAttributeValue("preferredphonecode", value);
-                this.OnPropertyChanged("PreferredPhoneCode");
+                OnPropertyChanging("PreferredPhoneCode");
+                SetAttributeValue("preferredphonecode", value);
+                OnPropertyChanged("PreferredPhoneCode");
             }
         }
 
         /// <summary>
         /// Unique identifier of the default queue for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("queueid")]
-        public Microsoft.Xrm.Sdk.EntityReference QueueId
+        [AttributeLogicalName("queueid")]
+        public EntityReference QueueId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("queueid");
+                return GetAttributeValue<EntityReference>("queueid");
             }
             set
             {
-                this.OnPropertyChanging("QueueId");
-                this.SetAttributeValue("queueid", value);
-                this.OnPropertyChanged("QueueId");
+                OnPropertyChanging("QueueId");
+                SetAttributeValue("queueid", value);
+                OnPropertyChanged("QueueId");
             }
         }
 
         /// <summary>
         /// Salutation for correspondence with the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("salutation")]
+        [AttributeLogicalName("salutation")]
         public string Salutation
         {
             get
             {
-                return this.GetAttributeValue<string>("salutation");
+                return GetAttributeValue<string>("salutation");
             }
             set
             {
-                this.OnPropertyChanging("Salutation");
-                this.SetAttributeValue("salutation", value);
-                this.OnPropertyChanged("Salutation");
+                OnPropertyChanging("Salutation");
+                SetAttributeValue("salutation", value);
+                OnPropertyChanged("Salutation");
             }
         }
 
         /// <summary>
         /// Check if user is a setup user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("setupuser")]
+        [AttributeLogicalName("setupuser")]
         public System.Nullable<bool> SetupUser
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("setupuser");
+                return GetAttributeValue<System.Nullable<bool>>("setupuser");
             }
             set
             {
-                this.OnPropertyChanging("SetupUser");
-                this.SetAttributeValue("setupuser", value);
-                this.OnPropertyChanged("SetupUser");
+                OnPropertyChanging("SetupUser");
+                SetAttributeValue("setupuser", value);
+                OnPropertyChanged("SetupUser");
             }
         }
 
         /// <summary>
         /// Site at which the user is located.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("siteid")]
-        public Microsoft.Xrm.Sdk.EntityReference SiteId
+        [AttributeLogicalName("siteid")]
+        public EntityReference SiteId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("siteid");
+                return GetAttributeValue<EntityReference>("siteid");
             }
             set
             {
-                this.OnPropertyChanging("SiteId");
-                this.SetAttributeValue("siteid", value);
-                this.OnPropertyChanged("SiteId");
+                OnPropertyChanging("SiteId");
+                SetAttributeValue("siteid", value);
+                OnPropertyChanged("SiteId");
             }
         }
 
         /// <summary>
         /// Skill set of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("skills")]
+        [AttributeLogicalName("skills")]
         public string Skills
         {
             get
             {
-                return this.GetAttributeValue<string>("skills");
+                return GetAttributeValue<string>("skills");
             }
             set
             {
-                this.OnPropertyChanging("Skills");
-                this.SetAttributeValue("skills", value);
-                this.OnPropertyChanged("Skills");
+                OnPropertyChanging("Skills");
+                SetAttributeValue("skills", value);
+                OnPropertyChanged("Skills");
             }
         }
 
         /// <summary>
         /// Unique identifier for the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("systemuserid")]
+        [AttributeLogicalName("systemuserid")]
         public System.Nullable<System.Guid> SystemUserId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("systemuserid");
+                return GetAttributeValue<System.Nullable<System.Guid>>("systemuserid");
             }
             set
             {
-                this.OnPropertyChanging("SystemUserId");
-                this.SetAttributeValue("systemuserid", value);
+                OnPropertyChanging("SystemUserId");
+                SetAttributeValue("systemuserid", value);
                 if (value.HasValue)
                 {
                     base.Id = value.Value;
@@ -1665,11 +1670,11 @@
                 {
                     base.Id = System.Guid.Empty;
                 }
-                this.OnPropertyChanged("SystemUserId");
+                OnPropertyChanged("SystemUserId");
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("systemuserid")]
+        [AttributeLogicalName("systemuserid")]
         public override System.Guid Id
         {
             get
@@ -1678,193 +1683,193 @@
             }
             set
             {
-                this.SystemUserId = value;
+                SystemUserId = value;
             }
         }
 
         /// <summary>
         /// Unique identifier of the territory to which the user is assigned.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("territoryid")]
-        public Microsoft.Xrm.Sdk.EntityReference TerritoryId
+        [AttributeLogicalName("territoryid")]
+        public EntityReference TerritoryId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("territoryid");
+                return GetAttributeValue<EntityReference>("territoryid");
             }
             set
             {
-                this.OnPropertyChanging("TerritoryId");
-                this.SetAttributeValue("territoryid", value);
-                this.OnPropertyChanged("TerritoryId");
+                OnPropertyChanging("TerritoryId");
+                SetAttributeValue("territoryid", value);
+                OnPropertyChanged("TerritoryId");
             }
         }
 
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("timezoneruleversionnumber")]
+        [AttributeLogicalName("timezoneruleversionnumber")]
         public System.Nullable<int> TimeZoneRuleVersionNumber
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("timezoneruleversionnumber");
+                return GetAttributeValue<System.Nullable<int>>("timezoneruleversionnumber");
             }
             set
             {
-                this.OnPropertyChanging("TimeZoneRuleVersionNumber");
-                this.SetAttributeValue("timezoneruleversionnumber", value);
-                this.OnPropertyChanged("TimeZoneRuleVersionNumber");
+                OnPropertyChanging("TimeZoneRuleVersionNumber");
+                SetAttributeValue("timezoneruleversionnumber", value);
+                OnPropertyChanged("TimeZoneRuleVersionNumber");
             }
         }
 
         /// <summary>
         /// Title of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("title")]
+        [AttributeLogicalName("title")]
         public string Title
         {
             get
             {
-                return this.GetAttributeValue<string>("title");
+                return GetAttributeValue<string>("title");
             }
             set
             {
-                this.OnPropertyChanging("Title");
-                this.SetAttributeValue("title", value);
-                this.OnPropertyChanged("Title");
+                OnPropertyChanging("Title");
+                SetAttributeValue("title", value);
+                OnPropertyChanged("Title");
             }
         }
 
         /// <summary>
         /// Unique identifier of the currency associated with the systemuser.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyid")]
-        public Microsoft.Xrm.Sdk.EntityReference TransactionCurrencyId
+        [AttributeLogicalName("transactioncurrencyid")]
+        public EntityReference TransactionCurrencyId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("transactioncurrencyid");
+                return GetAttributeValue<EntityReference>("transactioncurrencyid");
             }
             set
             {
-                this.OnPropertyChanging("TransactionCurrencyId");
-                this.SetAttributeValue("transactioncurrencyid", value);
-                this.OnPropertyChanged("TransactionCurrencyId");
+                OnPropertyChanging("TransactionCurrencyId");
+                SetAttributeValue("transactioncurrencyid", value);
+                OnPropertyChanged("TransactionCurrencyId");
             }
         }
 
         /// <summary>
         /// Time zone code that was in use when the record was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
+        [AttributeLogicalName("utcconversiontimezonecode")]
         public System.Nullable<int> UTCConversionTimeZoneCode
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("utcconversiontimezonecode");
+                return GetAttributeValue<System.Nullable<int>>("utcconversiontimezonecode");
             }
             set
             {
-                this.OnPropertyChanging("UTCConversionTimeZoneCode");
-                this.SetAttributeValue("utcconversiontimezonecode", value);
-                this.OnPropertyChanged("UTCConversionTimeZoneCode");
+                OnPropertyChanging("UTCConversionTimeZoneCode");
+                SetAttributeValue("utcconversiontimezonecode", value);
+                OnPropertyChanged("UTCConversionTimeZoneCode");
             }
         }
 
         /// <summary>
         /// Version number of the user.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+        [AttributeLogicalName("versionnumber")]
         public System.Nullable<long> VersionNumber
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+                return GetAttributeValue<System.Nullable<long>>("versionnumber");
             }
         }
 
         /// <summary>
         /// Windows Live ID
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("windowsliveid")]
+        [AttributeLogicalName("windowsliveid")]
         public string WindowsLiveID
         {
             get
             {
-                return this.GetAttributeValue<string>("windowsliveid");
+                return GetAttributeValue<string>("windowsliveid");
             }
             set
             {
-                this.OnPropertyChanging("WindowsLiveID");
-                this.SetAttributeValue("windowsliveid", value);
-                this.OnPropertyChanged("WindowsLiveID");
+                OnPropertyChanging("WindowsLiveID");
+                SetAttributeValue("windowsliveid", value);
+                OnPropertyChanged("WindowsLiveID");
             }
         }
 
         /// <summary>
         /// Pronunciation of the first name of the user, written in phonetic hiragana or katakana characters.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("yomifirstname")]
+        [AttributeLogicalName("yomifirstname")]
         public string YomiFirstName
         {
             get
             {
-                return this.GetAttributeValue<string>("yomifirstname");
+                return GetAttributeValue<string>("yomifirstname");
             }
             set
             {
-                this.OnPropertyChanging("YomiFirstName");
-                this.SetAttributeValue("yomifirstname", value);
-                this.OnPropertyChanged("YomiFirstName");
+                OnPropertyChanging("YomiFirstName");
+                SetAttributeValue("yomifirstname", value);
+                OnPropertyChanged("YomiFirstName");
             }
         }
 
         /// <summary>
         /// Pronunciation of the full name of the user, written in phonetic hiragana or katakana characters.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("yomifullname")]
+        [AttributeLogicalName("yomifullname")]
         public string YomiFullName
         {
             get
             {
-                return this.GetAttributeValue<string>("yomifullname");
+                return GetAttributeValue<string>("yomifullname");
             }
         }
 
         /// <summary>
         /// Pronunciation of the last name of the user, written in phonetic hiragana or katakana characters.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("yomilastname")]
+        [AttributeLogicalName("yomilastname")]
         public string YomiLastName
         {
             get
             {
-                return this.GetAttributeValue<string>("yomilastname");
+                return GetAttributeValue<string>("yomilastname");
             }
             set
             {
-                this.OnPropertyChanging("YomiLastName");
-                this.SetAttributeValue("yomilastname", value);
-                this.OnPropertyChanged("YomiLastName");
+                OnPropertyChanging("YomiLastName");
+                SetAttributeValue("yomilastname", value);
+                OnPropertyChanged("YomiLastName");
             }
         }
 
         /// <summary>
         /// Pronunciation of the middle name of the user, written in phonetic hiragana or katakana characters.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("yomimiddlename")]
+        [AttributeLogicalName("yomimiddlename")]
         public string YomiMiddleName
         {
             get
             {
-                return this.GetAttributeValue<string>("yomimiddlename");
+                return GetAttributeValue<string>("yomimiddlename");
             }
             set
             {
-                this.OnPropertyChanging("YomiMiddleName");
-                this.SetAttributeValue("yomimiddlename", value);
-                this.OnPropertyChanged("YomiMiddleName");
+                OnPropertyChanging("YomiMiddleName");
+                SetAttributeValue("yomimiddlename", value);
+                OnPropertyChanged("YomiMiddleName");
             }
         }
     }

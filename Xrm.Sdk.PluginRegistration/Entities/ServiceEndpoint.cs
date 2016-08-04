@@ -1,11 +1,16 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System.CodeDom.Compiler;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Service endpoint that can be contacted.
     /// </summary>
-    [System.Runtime.Serialization.DataContractAttribute()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("serviceendpoint")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [DataContract()]
+    [EntityLogicalNameAttribute("serviceendpoint")]
+    [GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
     public partial class ServiceEndpoint : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 
@@ -27,262 +32,262 @@
 
         private void OnPropertyChanged(string propertyName)
         {
-            if ((this.PropertyChanged != null))
+            if ((PropertyChanged != null))
             {
-                this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
 
         private void OnPropertyChanging(string propertyName)
         {
-            if ((this.PropertyChanging != null))
+            if ((PropertyChanging != null))
             {
-                this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
             }
         }
 
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-        public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+        [AttributeLogicalName("componentstate")]
+        public OptionSetValue ComponentState
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+                return GetAttributeValue<OptionSetValue>("componentstate");
             }
         }
 
         /// <summary>
         /// Connection mode to contact the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("connectionmode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue ConnectionMode
+        [AttributeLogicalName("connectionmode")]
+        public OptionSetValue ConnectionMode
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("connectionmode");
+                return GetAttributeValue<OptionSetValue>("connectionmode");
             }
             set
             {
-                this.OnPropertyChanging("ConnectionMode");
-                this.SetAttributeValue("connectionmode", value);
-                this.OnPropertyChanged("ConnectionMode");
+                OnPropertyChanging("ConnectionMode");
+                SetAttributeValue("connectionmode", value);
+                OnPropertyChanged("ConnectionMode");
             }
         }
 
         /// <summary>
         /// Type of the endpoint contract.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("contract")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Contract
+        [AttributeLogicalName("contract")]
+        public OptionSetValue Contract
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("contract");
+                return GetAttributeValue<OptionSetValue>("contract");
             }
             set
             {
-                this.OnPropertyChanging("Contract");
-                this.SetAttributeValue("contract", value);
-                this.OnPropertyChanged("Contract");
+                OnPropertyChanging("Contract");
+                SetAttributeValue("contract", value);
+                OnPropertyChanged("Contract");
             }
         }
 
         /// <summary>
         /// Unique identifier of the user who created the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        [AttributeLogicalName("createdby")]
+        public EntityReference CreatedBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
         /// <summary>
         /// Date and time when the service endpoint was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-        public System.Nullable<System.DateTime> CreatedOn
+        [AttributeLogicalName("createdon")]
+        public System.DateTime? CreatedOn
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+                return GetAttributeValue<System.DateTime?>("createdon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who created the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        [AttributeLogicalName("createdonbehalfby")]
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
         /// <summary>
         /// Description of the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+        [AttributeLogicalName("description")]
         public string Description
         {
             get
             {
-                return this.GetAttributeValue<string>("description");
+                return GetAttributeValue<string>("description");
             }
             set
             {
-                this.OnPropertyChanging("Description");
-                this.SetAttributeValue("description", value);
-                this.OnPropertyChanged("Description");
+                OnPropertyChanging("Description");
+                SetAttributeValue("description", value);
+                OnPropertyChanged("Description");
             }
         }
 
         /// <summary>
         /// Information that specifies whether this component can be customized.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("iscustomizable")]
+        [AttributeLogicalName("iscustomizable")]
         public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
+                return GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
             }
             set
             {
-                this.OnPropertyChanging("IsCustomizable");
-                this.SetAttributeValue("iscustomizable", value);
-                this.OnPropertyChanged("IsCustomizable");
+                OnPropertyChanging("IsCustomizable");
+                SetAttributeValue("iscustomizable", value);
+                OnPropertyChanged("IsCustomizable");
             }
         }
 
         /// <summary>
         /// Information that specifies whether this component is managed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+        [AttributeLogicalName("ismanaged")]
         public System.Nullable<bool> IsManaged
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+                return GetAttributeValue<System.Nullable<bool>>("ismanaged");
             }
         }
 
         /// <summary>
         /// Unique identifier of the user who last modified the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<EntityReference>("modifiedby");
             }
         }
 
         /// <summary>
         /// Date and time when the service endpoint was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-        public System.Nullable<System.DateTime> ModifiedOn
+        [AttributeLogicalName("modifiedon")]
+        public System.DateTime? ModifiedOn
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+                return GetAttributeValue<System.DateTime?>("modifiedon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who modified the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<EntityReference>("modifiedonbehalfby");
             }
         }
 
         /// <summary>
         /// Name of Service end point.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+        [AttributeLogicalName("name")]
         public string Name
         {
             get
             {
-                return this.GetAttributeValue<string>("name");
+                return GetAttributeValue<string>("name");
             }
             set
             {
-                this.OnPropertyChanging("Name");
-                this.SetAttributeValue("name", value);
-                this.OnPropertyChanged("Name");
+                OnPropertyChanging("Name");
+                SetAttributeValue("name", value);
+                OnPropertyChanged("Name");
             }
         }
 
         /// <summary>
         /// Unique identifier of the organization with which the service endpoint is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
-        public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+        [AttributeLogicalName("organizationid")]
+        public EntityReference OrganizationId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+                return GetAttributeValue<EntityReference>("organizationid");
             }
         }
 
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
-        public System.Nullable<System.DateTime> OverwriteTime
+        [AttributeLogicalName("overwritetime")]
+        public System.DateTime? OverwriteTime
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
+                return GetAttributeValue<System.DateTime?>("overwritetime");
             }
         }
 
         /// <summary>
         /// Path to the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("path")]
+        [AttributeLogicalName("path")]
         public string Path
         {
             get
             {
-                return this.GetAttributeValue<string>("path");
+                return GetAttributeValue<string>("path");
             }
             set
             {
-                this.OnPropertyChanging("Path");
-                this.SetAttributeValue("path", value);
-                this.OnPropertyChanged("Path");
+                OnPropertyChanging("Path");
+                SetAttributeValue("path", value);
+                OnPropertyChanged("Path");
             }
         }
 
         /// <summary>
         /// Unique identifier of the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("serviceendpointid")]
+        [AttributeLogicalName("serviceendpointid")]
         public System.Nullable<System.Guid> ServiceEndpointId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("serviceendpointid");
+                return GetAttributeValue<System.Nullable<System.Guid>>("serviceendpointid");
             }
             set
             {
-                this.OnPropertyChanging("ServiceEndpointId");
-                this.SetAttributeValue("serviceendpointid", value);
+                OnPropertyChanging("ServiceEndpointId");
+                SetAttributeValue("serviceendpointid", value);
                 if (value.HasValue)
                 {
                     base.Id = value.Value;
@@ -291,11 +296,11 @@
                 {
                     base.Id = System.Guid.Empty;
                 }
-                this.OnPropertyChanged("ServiceEndpointId");
+                OnPropertyChanged("ServiceEndpointId");
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("serviceendpointid")]
+        [AttributeLogicalName("serviceendpointid")]
         public override System.Guid Id
         {
             get
@@ -304,67 +309,67 @@
             }
             set
             {
-                this.ServiceEndpointId = value;
+                ServiceEndpointId = value;
             }
         }
 
         /// <summary>
         /// Unique identifier of the service endpoint.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("serviceendpointidunique")]
+        [AttributeLogicalName("serviceendpointidunique")]
         public System.Nullable<System.Guid> ServiceEndpointIdUnique
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("serviceendpointidunique");
+                return GetAttributeValue<System.Nullable<System.Guid>>("serviceendpointidunique");
             }
         }
 
         /// <summary>
         /// Unique identifier of the associated solution.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+        [AttributeLogicalName("solutionid")]
         public System.Nullable<System.Guid> SolutionId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+                return GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
             }
         }
 
         /// <summary>
         /// Namespace of the App Fabric solution.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionnamespace")]
+        [AttributeLogicalName("solutionnamespace")]
         public string SolutionNamespace
         {
             get
             {
-                return this.GetAttributeValue<string>("solutionnamespace");
+                return GetAttributeValue<string>("solutionnamespace");
             }
             set
             {
-                this.OnPropertyChanging("SolutionNamespace");
-                this.SetAttributeValue("solutionnamespace", value);
-                this.OnPropertyChanged("SolutionNamespace");
+                OnPropertyChanging("SolutionNamespace");
+                SetAttributeValue("solutionnamespace", value);
+                OnPropertyChanged("SolutionNamespace");
             }
         }
 
         /// <summary>
         /// Additional user claim value type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("userclaim")]
-        public Microsoft.Xrm.Sdk.OptionSetValue UserClaim
+        [AttributeLogicalName("userclaim")]
+        public OptionSetValue UserClaim
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("userclaim");
+                return GetAttributeValue<OptionSetValue>("userclaim");
             }
             set
             {
-                this.OnPropertyChanging("UserClaim");
-                this.SetAttributeValue("userclaim", value);
-                this.OnPropertyChanged("UserClaim");
+                OnPropertyChanging("UserClaim");
+                SetAttributeValue("userclaim", value);
+                OnPropertyChanged("UserClaim");
             }
         }
     }

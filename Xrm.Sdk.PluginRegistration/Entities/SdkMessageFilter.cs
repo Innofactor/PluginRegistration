@@ -3,7 +3,7 @@
     /// <summary>
     /// Filter that defines which SDK messages are valid for each type of entity.
     /// </summary>
-    [System.Runtime.Serialization.DataContractAttribute()]
+    [System.Runtime.Serialization.DataContract()]
     [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessagefilter")]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageFilter : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
@@ -44,7 +44,7 @@
         /// <summary>
         /// Identifies where a method will be exposed. 0 - Server, 1 - Client, 2 - both.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("availability")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("availability")]
         public System.Nullable<int> Availability
         {
             get
@@ -62,7 +62,7 @@
         /// <summary>
         /// Unique identifier of the user who created the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdby")]
         public Microsoft.Xrm.Sdk.EntityReference CreatedBy
         {
             get
@@ -74,8 +74,8 @@
         /// <summary>
         /// Date and time when the SDK message filter was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-        public System.Nullable<System.DateTime> CreatedOn
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdon")]
+        public System.DateTime? CreatedOn
         {
             get
             {
@@ -86,7 +86,7 @@
         /// <summary>
         /// Unique identifier of the delegate user who created the sdkmessagefilter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdonbehalfby")]
         public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
         {
             get
@@ -98,7 +98,7 @@
         /// <summary>
         /// Customization level of the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
         public System.Nullable<int> CustomizationLevel
         {
             get
@@ -110,7 +110,7 @@
         /// <summary>
         /// Indicates whether a custom SDK message processing step is allowed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("iscustomprocessingstepallowed")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("iscustomprocessingstepallowed")]
         public System.Nullable<bool> IsCustomProcessingStepAllowed
         {
             get
@@ -128,7 +128,7 @@
         /// <summary>
         /// Indicates whether the filter should be visible.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isvisible")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("isvisible")]
         public System.Nullable<bool> IsVisible
         {
             get
@@ -140,7 +140,7 @@
         /// <summary>
         /// Unique identifier of the user who last modified the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedby")]
         public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
         {
             get
@@ -152,8 +152,8 @@
         /// <summary>
         /// Date and time when the SDK message filter was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-        public System.Nullable<System.DateTime> ModifiedOn
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedon")]
+        public System.DateTime? ModifiedOn
         {
             get
             {
@@ -164,7 +164,7 @@
         /// <summary>
         /// Unique identifier of the delegate user who last modified the sdkmessagefilter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedonbehalfby")]
         public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
         {
             get
@@ -176,7 +176,7 @@
         /// <summary>
         /// Unique identifier of the organization with which the SDK message filter is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
         public Microsoft.Xrm.Sdk.EntityReference OrganizationId
         {
             get
@@ -188,7 +188,7 @@
         /// <summary>
         /// Type of entity with which the SDK message filter is primarily associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("primaryobjecttypecode")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("primaryobjecttypecode")]
         public string PrimaryObjectTypeCode
         {
             get
@@ -200,7 +200,7 @@
         /// <summary>
         /// Unique identifier of the SDK message filter entity.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessagefilterid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilterid")]
         public System.Nullable<System.Guid> SdkMessageFilterId
         {
             get
@@ -223,7 +223,7 @@
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessagefilterid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilterid")]
         public override System.Guid Id
         {
             get
@@ -239,7 +239,7 @@
         /// <summary>
         /// Unique identifier of the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessagefilteridunique")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilteridunique")]
         public System.Nullable<System.Guid> SdkMessageFilterIdUnique
         {
             get
@@ -251,7 +251,7 @@
         /// <summary>
         /// Unique identifier of the related SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageid")]
         public Microsoft.Xrm.Sdk.EntityReference SdkMessageId
         {
             get
@@ -269,7 +269,7 @@
         /// <summary>
         /// Type of entity with which the SDK message filter is secondarily associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("secondaryobjecttypecode")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("secondaryobjecttypecode")]
         public string SecondaryObjectTypeCode
         {
             get
@@ -281,7 +281,7 @@
         /// <summary>
         /// 
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("versionnumber")]
         public System.Nullable<long> VersionNumber
         {
             get

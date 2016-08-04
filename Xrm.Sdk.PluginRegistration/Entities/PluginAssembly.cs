@@ -49,7 +49,7 @@
         /// For internal use only.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-        public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+        public OptionSetValue ComponentState
         {
             get
             {
@@ -79,7 +79,7 @@
         /// Unique identifier of the user who created the plug-in assembly.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        public EntityReference CreatedBy
         {
             get
             {
@@ -91,7 +91,7 @@
         /// Date and time when the plug-in assembly was created.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-        public System.Nullable<System.DateTime> CreatedOn
+        public System.DateTime? CreatedOn
         {
             get
             {
@@ -103,7 +103,7 @@
         /// Unique identifier of the delegate user who created the pluginassembly.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
@@ -193,7 +193,7 @@
         /// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isolationmode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue IsolationMode
+        public OptionSetValue IsolationMode
         {
             get
             {
@@ -222,7 +222,7 @@
         /// <summary>
         /// Minor of the assembly version.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("minor")]
+        [AttributeLogicalName("minor")]
         public System.Nullable<int> Minor
         {
             get
@@ -234,8 +234,8 @@
         /// <summary>
         /// Unique identifier of the user who last modified the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
@@ -247,7 +247,7 @@
         /// Date and time when the plug-in assembly was last modified.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-        public System.Nullable<System.DateTime> ModifiedOn
+        public System.DateTime? ModifiedOn
         {
             get
             {
@@ -258,8 +258,8 @@
         /// <summary>
         /// Unique identifier of the delegate user who last modified the pluginassembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
@@ -270,7 +270,7 @@
         /// <summary>
         /// Name of the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+        [AttributeLogicalName("name")]
         public string Name
         {
             get
@@ -288,8 +288,8 @@
         /// <summary>
         /// Unique identifier of the organization with which the plug-in assembly is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
-        public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+        [AttributeLogicalName("organizationid")]
+        public EntityReference OrganizationId
         {
             get
             {
@@ -300,8 +300,8 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("overwritetime")]
-        public System.Nullable<System.DateTime> OverwriteTime
+        [AttributeLogicalName("overwritetime")]
+        public System.DateTime? OverwriteTime
         {
             get
             {
@@ -312,7 +312,7 @@
         /// <summary>
         /// File name of the plug-in assembly. Used when the source type is set to 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("path")]
+        [AttributeLogicalName("path")]
         public string Path
         {
             get
@@ -430,7 +430,7 @@
         /// Location of the assembly, for example 0=database, 1=on-disk.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcetype")]
-        public Microsoft.Xrm.Sdk.OptionSetValue SourceType
+        public OptionSetValue SourceType
         {
             get
             {

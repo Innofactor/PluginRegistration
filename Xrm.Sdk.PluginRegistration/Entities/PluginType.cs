@@ -1,14 +1,19 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Type that inherits from the IPlugin interface and is contained within a plug-in assembly.
     /// </summary>
-    [System.Runtime.Serialization.DataContractAttribute()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("plugintype")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [DataContract()]
+    [EntityLogicalNameAttribute("plugintype")]
+    [GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
     public partial class PluginType : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
-
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -44,7 +49,7 @@
         /// <summary>
         /// Full path name of the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("assemblyname")]
+        [AttributeLogicalName("assemblyname")]
         public string AssemblyName
         {
             get
@@ -56,68 +61,68 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-        public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+        [AttributeLogicalName("componentstate")]
+        public OptionSetValue ComponentState
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+                return GetAttributeValue<OptionSetValue>("componentstate");
             }
         }
 
         /// <summary>
         /// Unique identifier of the user who created the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        [AttributeLogicalName("createdby")]
+        public EntityReference CreatedBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
         /// <summary>
         /// Date and time when the plug-in type was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-        public System.Nullable<System.DateTime> CreatedOn
+        [AttributeLogicalName("createdon")]
+        public DateTime? CreatedOn
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+                return GetAttributeValue<DateTime?>("createdon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who created the plugintype.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        [AttributeLogicalName("createdonbehalfby")]
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
         /// <summary>
         /// Culture code for the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("culture")]
+        [AttributeLogicalName("culture")]
         public string Culture
         {
             get
             {
-                return this.GetAttributeValue<string>("culture");
+                return GetAttributeValue<string>("culture");
             }
         }
 
         /// <summary>
         /// Customization level of the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
-        public System.Nullable<int> CustomizationLevel
+        [AttributeLogicalName("customizationlevel")]
+        public int? CustomizationLevel
         {
             get
             {
@@ -128,7 +133,7 @@
         /// <summary>
         /// Description of the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+        [AttributeLogicalName("description")]
         public string Description
         {
             get
@@ -146,7 +151,7 @@
         /// <summary>
         /// User friendly name for the plug-in.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("friendlyname")]
+        [AttributeLogicalName("friendlyname")]
         public string FriendlyName
         {
             get
@@ -162,14 +167,14 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+        [AttributeLogicalName("ismanaged")]
         public System.Nullable<bool> IsManaged
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+                return GetAttributeValue<bool?>("ismanaged");
             }
         }
 
@@ -177,19 +182,19 @@
         /// Indicates if the plug-in is a custom activity for workflows.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isworkflowactivity")]
-        public System.Nullable<bool> IsWorkflowActivity
+        public bool? IsWorkflowActivity
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("isworkflowactivity");
+                return GetAttributeValue<bool?>("isworkflowactivity");
             }
         }
 
         /// <summary>
         /// Major of the version number of the assembly for the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("major")]
-        public System.Nullable<int> Major
+        [AttributeLogicalName("major")]
+        public int? Major
         {
             get
             {
@@ -200,20 +205,20 @@
         /// <summary>
         /// Minor of the version number of the assembly for the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("minor")]
-        public System.Nullable<int> Minor
+        [AttributeLogicalName("minor")]
+        public int? Minor
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("minor");
+                return GetAttributeValue<int?>("minor");
             }
         }
 
         /// <summary>
         /// Unique identifier of the user who last modified the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
@@ -224,8 +229,8 @@
         /// <summary>
         /// Date and time when the plug-in type was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-        public System.Nullable<System.DateTime> ModifiedOn
+        [AttributeLogicalName("modifiedon")]
+        public DateTime? ModifiedOn
         {
             get
             {
@@ -236,8 +241,8 @@
         /// <summary>
         /// Unique identifier of the delegate user who last modified the plugintype.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
@@ -248,7 +253,7 @@
         /// <summary>
         /// Name of the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+        [AttributeLogicalName("name")]
         public string Name
         {
             get
@@ -266,8 +271,8 @@
         /// <summary>
         /// Unique identifier of the organization with which the plug-in type is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
-        public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+        [AttributeLogicalName("organizationid")]
+        public EntityReference OrganizationId
         {
             get
             {
@@ -278,8 +283,8 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
-        public System.Nullable<System.DateTime> OverwriteTime
+        [AttributeLogicalName("overwritetime")]
+        public DateTime? OverwriteTime
         {
             get
             {
@@ -290,12 +295,12 @@
         /// <summary>
         /// Unique identifier of the plug-in assembly that contains this plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
-        public Microsoft.Xrm.Sdk.EntityReference PluginAssemblyId
+        [AttributeLogicalName("pluginassemblyid")]
+        public EntityReference PluginAssemblyId
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("pluginassemblyid");
+                return GetAttributeValue<EntityReference>("pluginassemblyid");
             }
             set
             {
@@ -308,12 +313,12 @@
         /// <summary>
         /// Unique identifier of the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
-        public System.Nullable<System.Guid> PluginTypeId
+        [AttributeLogicalName("plugintypeid")]
+        public Guid? PluginTypeId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("plugintypeid");
+                return GetAttributeValue<Guid?>("plugintypeid");
             }
             set
             {
@@ -331,8 +336,8 @@
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
-        public override System.Guid Id
+        [AttributeLogicalName("plugintypeid")]
+        public override Guid Id
         {
             get
             {
@@ -347,8 +352,8 @@
         /// <summary>
         /// Unique identifier of the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeidunique")]
-        public System.Nullable<System.Guid> PluginTypeIdUnique
+        [AttributeLogicalName("plugintypeidunique")]
+        public Guid? PluginTypeIdUnique
         {
             get
             {
@@ -359,62 +364,62 @@
         /// <summary>
         /// Public key token of the assembly for the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("publickeytoken")]
+        [AttributeLogicalName("publickeytoken")]
         public string PublicKeyToken
         {
             get
             {
-                return this.GetAttributeValue<string>("publickeytoken");
+                return GetAttributeValue<string>("publickeytoken");
             }
         }
 
         /// <summary>
         /// Unique identifier of the associated solution.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
-        public System.Nullable<System.Guid> SolutionId
+        [AttributeLogicalName("solutionid")]
+        public Guid? SolutionId
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+                return GetAttributeValue<Guid?>("solutionid");
             }
         }
 
         /// <summary>
         /// Fully qualified type name of the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("typename")]
+        [AttributeLogicalName("typename")]
         public string TypeName
         {
             get
             {
-                return this.GetAttributeValue<string>("typename");
+                return GetAttributeValue<string>("typename");
             }
             set
             {
-                this.OnPropertyChanging("TypeName");
-                this.SetAttributeValue("typename", value);
-                this.OnPropertyChanged("TypeName");
+                OnPropertyChanging("TypeName");
+                SetAttributeValue("typename", value);
+                OnPropertyChanged("TypeName");
             }
         }
 
         /// <summary>
         /// Version number of the assembly for the plug-in type.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("version")]
+        [AttributeLogicalName("version")]
         public string Version
         {
             get
             {
-                return this.GetAttributeValue<string>("version");
+                return GetAttributeValue<string>("version");
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
-        public System.Nullable<long> VersionNumber
+        [AttributeLogicalName("versionnumber")]
+        public long? VersionNumber
         {
             get
             {
@@ -425,12 +430,12 @@
         /// <summary>
         /// Group name of workflow custom activity.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("workflowactivitygroupname")]
+        [AttributeLogicalName("workflowactivitygroupname")]
         public string WorkflowActivityGroupName
         {
             get
             {
-                return this.GetAttributeValue<string>("workflowactivitygroupname");
+                return GetAttributeValue<string>("workflowactivitygroupname");
             }
             set
             {

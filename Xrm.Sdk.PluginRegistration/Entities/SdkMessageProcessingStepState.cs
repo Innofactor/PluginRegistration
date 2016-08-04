@@ -1,6 +1,6 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
-    [System.Runtime.Serialization.DataContractAttribute()]
+    [System.Runtime.Serialization.DataContract()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
     public enum SdkMessageProcessingStepState
     {

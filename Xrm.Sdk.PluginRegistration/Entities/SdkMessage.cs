@@ -3,7 +3,7 @@
     /// <summary>
     /// Message that is supported by the SDK.
     /// </summary>
-    [System.Runtime.Serialization.DataContractAttribute()]
+    [System.Runtime.Serialization.DataContract()]
     [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessage")]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessage : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
@@ -44,7 +44,7 @@
         /// <summary>
         /// Information about whether the SDK message is automatically transacted.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("autotransact")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("autotransact")]
         public System.Nullable<bool> AutoTransact
         {
             get
@@ -62,7 +62,7 @@
         /// <summary>
         /// Identifies where a method will be exposed. 0 - Server, 1 - Client, 2 - both.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("availability")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("availability")]
         public System.Nullable<int> Availability
         {
             get
@@ -80,7 +80,7 @@
         /// <summary>
         /// If this is a categorized method, this is the name, otherwise None.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("categoryname")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("categoryname")]
         public string CategoryName
         {
             get
@@ -98,7 +98,7 @@
         /// <summary>
         /// Unique identifier of the user who created the SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdby")]
         public Microsoft.Xrm.Sdk.EntityReference CreatedBy
         {
             get
@@ -110,8 +110,8 @@
         /// <summary>
         /// Date and time when the SDK message was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-        public System.Nullable<System.DateTime> CreatedOn
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdon")]
+        public System.DateTime? CreatedOn
         {
             get
             {
@@ -122,7 +122,7 @@
         /// <summary>
         /// Unique identifier of the delegate user who created the sdkmessage.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdonbehalfby")]
         public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
         {
             get
@@ -134,7 +134,7 @@
         /// <summary>
         /// Customization level of the SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
         public System.Nullable<int> CustomizationLevel
         {
             get
@@ -146,7 +146,7 @@
         /// <summary>
         /// Indicates whether the SDK message should have its requests expanded per primary entity defined in its filters.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("expand")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("expand")]
         public System.Nullable<bool> Expand
         {
             get
@@ -164,7 +164,7 @@
         /// <summary>
         /// Indicates whether the SDK message is private.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isprivate")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("isprivate")]
         public System.Nullable<bool> IsPrivate
         {
             get
@@ -182,7 +182,7 @@
         /// <summary>
         /// Unique identifier of the user who last modified the SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedby")]
         public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
         {
             get
@@ -194,8 +194,8 @@
         /// <summary>
         /// Date and time when the SDK message was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-        public System.Nullable<System.DateTime> ModifiedOn
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedon")]
+        public System.DateTime? ModifiedOn
         {
             get
             {
@@ -206,7 +206,7 @@
         /// <summary>
         /// Unique identifier of the delegate user who last modified the sdkmessage.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedonbehalfby")]
         public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
         {
             get
@@ -218,7 +218,7 @@
         /// <summary>
         /// Name of the SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("name")]
         public string Name
         {
             get
@@ -236,7 +236,7 @@
         /// <summary>
         /// Unique identifier of the organization with which the SDK message is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
         public Microsoft.Xrm.Sdk.EntityReference OrganizationId
         {
             get
@@ -248,7 +248,7 @@
         /// <summary>
         /// Unique identifier of the SDK message entity.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageid")]
         public System.Nullable<System.Guid> SdkMessageId
         {
             get
@@ -271,7 +271,7 @@
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageid")]
         public override System.Guid Id
         {
             get
@@ -287,7 +287,7 @@
         /// <summary>
         /// Unique identifier of the SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageidunique")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageidunique")]
         public System.Nullable<System.Guid> SdkMessageIdUnique
         {
             get
@@ -299,7 +299,7 @@
         /// <summary>
         /// Indicates whether the SDK message is a template.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("template")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("template")]
         public System.Nullable<bool> Template
         {
             get
@@ -317,7 +317,7 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("throttlesettings")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("throttlesettings")]
         public string ThrottleSettings
         {
             get
@@ -329,7 +329,7 @@
         /// <summary>
         /// Number that identifies a specific revision of the SDK message. 
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("versionnumber")]
         public System.Nullable<long> VersionNumber
         {
             get
