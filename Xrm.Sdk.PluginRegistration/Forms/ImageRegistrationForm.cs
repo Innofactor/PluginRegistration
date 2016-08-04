@@ -49,15 +49,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this.m_org = org;
-            this.m_orgControl = orgControl;
-            this.m_currentImage = image;
+            m_org = org;
+            m_orgControl = orgControl;
+            m_currentImage = image;
 
             crmParameters.Organization = org;
 
             trvPlugins.CrmTreeNodeSorter = orgControl.CrmTreeNodeSorter;
 
-            trvPlugins.AutoExpand = this.m_orgControl.IsAutoExpanded;
+            trvPlugins.AutoExpand = m_orgControl.IsAutoExpanded;
             trvPlugins.LoadNodes(rootNodes);
 
             if (image != null)
@@ -70,7 +70,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 txtEntityAlias.Text = image.EntityAlias;
                 txtName.Text = image.Name;
 
-                CrmPluginStep step = this.m_org[image.AssemblyId][image.PluginId][image.StepId];
+                CrmPluginStep step = m_org[image.AssemblyId][image.PluginId][image.StepId];
                 if (step.MessageEntityId == Guid.Empty)
                 {
                     crmParameters.EntityName = "none";
@@ -78,7 +78,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
                 else
                 {
-                    crmParameters.EntityName = this.m_org.Messages[step.MessageId][step.MessageEntityId].PrimaryEntity;
+                    crmParameters.EntityName = m_org.Messages[step.MessageId][step.MessageEntityId].PrimaryEntity;
                     crmParameters.Attributes = image.Attributes;
                 }
 
@@ -100,15 +100,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         throw new NotImplementedException("ImageType = " + image.ImageType.ToString());
                 }
 
-                this.Text = "Update Existing Image";
+                Text = "Update Existing Image";
                 btnRegister.Text = "Update";
 
                 trvPlugins.Visible = false;
 
                 int difference = grpEntityAlias.Top - grpSteps.Top;
 
-                this.grpSteps.Visible = false;
-                this.Height -= difference;
+                grpSteps.Visible = false;
+                Height -= difference;
 
                 crmParameters.Enabled = true;
                 btnRegister.Enabled = true;
@@ -125,11 +125,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            CrmPluginImage image = new CrmPluginImage(this.m_org);
+            CrmPluginImage image = new CrmPluginImage(m_org);
 
             #region Extract Information
             if (trvPlugins.SelectedNode == null ||
-                (this.m_currentImage == null && trvPlugins.SelectedNode.NodeType != CrmTreeNodeType.Step))
+                (m_currentImage == null && trvPlugins.SelectedNode.NodeType != CrmTreeNodeType.Step))
             {
                 MessageBox.Show("A Step must be selected when registering an image",
                     "Registration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -156,24 +156,24 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             //Retrieve the step for this image
             CrmPluginStep step;
-            if (this.m_currentImage == null)
+            if (m_currentImage == null)
             {
                 step = (CrmPluginStep)trvPlugins.SelectedNode;
 
                 //Verify that the step is not a system item
                 if (step.IsSystemCrmEntity)
                 {
-                    this.m_orgControl.ShowSystemItemError("Cannot register image on this step");
+                    m_orgControl.ShowSystemItemError("Cannot register image on this step");
                     return;
                 }
             }
             else
             {
-                step = this.m_org[this.m_currentImage.AssemblyId][this.m_currentImage.PluginId][this.m_currentImage.StepId];
+                step = m_org[m_currentImage.AssemblyId][m_currentImage.PluginId][m_currentImage.StepId];
             }
 
             //Retrieve the message
-            CrmMessage message = this.m_org.Messages[step.MessageId];
+            CrmMessage message = m_org.Messages[step.MessageId];
 
             //Verify that this step can have images
             if (0 == message.ImageMessagePropertyNames.Count)
@@ -181,7 +181,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 //Create a list of the messages that can have images
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("Only steps registered on the following messages can have images:");
-                foreach (CrmMessage item in this.m_org.Messages.Values)
+                foreach (CrmMessage item in m_org.Messages.Values)
                 {
                     if (0 != item.ImageMessagePropertyNames.Count)
                     {
@@ -227,36 +227,36 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             #region Register the Image
             try
             {
-                if (this.m_currentImage == null)
+                if (m_currentImage == null)
                 {
-                    image.ImageId = RegistrationHelper.RegisterImage(this.m_org, image);
+                    image.ImageId = RegistrationHelper.RegisterImage(m_org, image);
 
                     List<ICrmEntity> entityList = new List<ICrmEntity>(new ICrmEntity[] { image });
-                    OrganizationHelper.UpdateDates(this.m_org, entityList);
+                    OrganizationHelper.UpdateDates(m_org, entityList);
 
                     step.AddImage(image);
-                    this.m_orgControl.AddImage(image);
+                    m_orgControl.AddImage(image);
                 }
                 else
                 {
-                    image.ImageId = this.m_currentImage.ImageId;
-                    RegistrationHelper.UpdateImage(this.m_org, image);
+                    image.ImageId = m_currentImage.ImageId;
+                    RegistrationHelper.UpdateImage(m_org, image);
 
-                    this.m_currentImage.AssemblyId = step.AssemblyId;
-                    this.m_currentImage.PluginId = step.PluginId;
-                    this.m_currentImage.StepId = step.StepId;
-                    this.m_currentImage.ImageId = image.ImageId;
-                    this.m_currentImage.Attributes = image.Attributes;
-                    this.m_currentImage.EntityAlias = image.EntityAlias;
-                    this.m_currentImage.MessagePropertyName = image.MessagePropertyName;
-                    this.m_currentImage.ImageType = image.ImageType;
+                    m_currentImage.AssemblyId = step.AssemblyId;
+                    m_currentImage.PluginId = step.PluginId;
+                    m_currentImage.StepId = step.StepId;
+                    m_currentImage.ImageId = image.ImageId;
+                    m_currentImage.Attributes = image.Attributes;
+                    m_currentImage.EntityAlias = image.EntityAlias;
+                    m_currentImage.MessagePropertyName = image.MessagePropertyName;
+                    m_currentImage.ImageType = image.ImageType;
 
-                    image = this.m_currentImage;
+                    image = m_currentImage;
 
                     List<ICrmEntity> entityList = new List<ICrmEntity>(new ICrmEntity[] { image });
-                    OrganizationHelper.UpdateDates(this.m_org, entityList);
+                    OrganizationHelper.UpdateDates(m_org, entityList);
 
-                    this.m_orgControl.RefreshImage(this.m_currentImage);
+                    m_orgControl.RefreshImage(m_currentImage);
                 }
             }
             catch (Exception ex)
@@ -266,14 +266,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             #endregion
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
         {
-            if ((this.m_currentImage == null && e.Node.NodeType == CrmTreeNodeType.Step) ||
-                (this.m_currentImage != null && e.Node.NodeType == CrmTreeNodeType.Image))
+            if ((m_currentImage == null && e.Node.NodeType == CrmTreeNodeType.Step) ||
+                (m_currentImage != null && e.Node.NodeType == CrmTreeNodeType.Image))
             {
                 CrmPluginStep step;
                 switch (e.Node.NodeType)
@@ -282,14 +282,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         step = (CrmPluginStep)e.Node;
                         break;
                     case CrmTreeNodeType.Image:
-                        step = this.m_org.Steps[((CrmPluginImage)e.Node).StepId];
+                        step = m_org.Steps[((CrmPluginImage)e.Node).StepId];
                         break;
                     default:
                         throw new NotImplementedException("NodeType = " + e.Node.NodeType.ToString());
                 }
                 if (step.MessageEntityId != Guid.Empty)
                 {
-                    crmParameters.EntityName = this.m_org.Messages[step.MessageId][step.MessageEntityId].PrimaryEntity;
+                    crmParameters.EntityName = m_org.Messages[step.MessageId][step.MessageEntityId].PrimaryEntity;
                 }
                 else
                 {

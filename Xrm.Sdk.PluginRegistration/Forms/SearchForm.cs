@@ -52,11 +52,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this.m_org = org;
-            this.m_orgControl = orgControl;
-            this.m_rootNodes = rootNodes;
+            m_org = org;
+            m_orgControl = orgControl;
+            m_rootNodes = rootNodes;
 
-            trvPlugins.AutoExpand = this.m_orgControl.IsAutoExpanded;
+            trvPlugins.AutoExpand = m_orgControl.IsAutoExpanded;
             trvPlugins.LoadNodes(rootNodes);
             trvPlugins.SelectedNode = selectedNode;
             btnSelect.Enabled = (trvPlugins.SelectedNode != null);
@@ -71,32 +71,32 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void trvPlugins_Leave(object sender, EventArgs e)
         {
-            this.AcceptButton = btnSearch;
+            AcceptButton = btnSearch;
         }
 
         private void trvPlugins_Enter(object sender, EventArgs e)
         {
-            this.AcceptButton = btnSelect;
+            AcceptButton = btnSelect;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (this.m_needReload)
+            if (m_needReload)
             {
-                trvPlugins.LoadNodes(this.m_rootNodes);
+                trvPlugins.LoadNodes(m_rootNodes);
             }
 
             trvPlugins.SearchAndRemove(txtSearch.Text);
             trvPlugins.Expand();
             trvPlugins.Focus();
 
-            this.m_needReload = true;
+            m_needReload = true;
         }
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            this.m_orgControl.SelectNode(trvPlugins.SelectedNode.NodeId);
-            this.Close();
+            m_orgControl.SelectNode(trvPlugins.SelectedNode.NodeId);
+            Close();
         }
     }
 }

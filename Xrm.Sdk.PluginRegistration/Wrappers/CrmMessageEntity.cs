@@ -30,26 +30,26 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         private CrmMessageEntity(CrmOrganization org)
         {
-            this.m_org = org;
+            m_org = org;
         }
 
         public CrmMessageEntity(CrmOrganization org, Guid messageId, Guid messageEntityId,
             string primaryEntity, string secondaryEntity, CrmPluginStepDeployment availability, DateTime? createdOn, DateTime? modifiedOn)
             : this(org)
         {
-            this.MessageEntityId = messageEntityId;
-            this.MessageId = messageId;
-            this.PrimaryEntity = primaryEntity;
-            this.SecondaryEntity = secondaryEntity;
-            this.CreatedOn = createdOn;
-            this.ModifiedOn = modifiedOn;
-            this.Availability = availability;
+            MessageEntityId = messageEntityId;
+            MessageId = messageId;
+            PrimaryEntity = primaryEntity;
+            SecondaryEntity = secondaryEntity;
+            CreatedOn = createdOn;
+            ModifiedOn = modifiedOn;
+            Availability = availability;
         }
 
         public CrmMessageEntity(CrmOrganization org, SdkMessageFilter filter)
             : this(org)
         {
-            this.RefreshFromSdkMessageFilter(filter);
+            RefreshFromSdkMessageFilter(filter);
         }
 
         #region Properties
@@ -67,7 +67,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
@@ -75,7 +75,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentNullException();
                 }
-                else if (this.m_org == null)
+                else if (m_org == null)
                 {
                     m_org = value;
                 }
@@ -134,47 +134,47 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (filter.SdkMessageFilterId != null)
             {
-                this.MessageEntityId = filter.SdkMessageFilterId.Value;
+                MessageEntityId = filter.SdkMessageFilterId.Value;
             }
 
             if (filter.SdkMessageId != null)
             {
-                this.MessageId = filter.SdkMessageId.Id;
+                MessageId = filter.SdkMessageId.Id;
             }
 
             if (!string.IsNullOrEmpty(filter.PrimaryObjectTypeCode))
             {
-                this.PrimaryEntity = filter.PrimaryObjectTypeCode;
+                PrimaryEntity = filter.PrimaryObjectTypeCode;
             }
 
             if (!string.IsNullOrEmpty(filter.SecondaryObjectTypeCode))
             {
-                this.SecondaryEntity = filter.SecondaryObjectTypeCode;
+                SecondaryEntity = filter.SecondaryObjectTypeCode;
             }
 
             if (filter.CustomizationLevel != null)
             {
-                this.CustomizationLevel = filter.CustomizationLevel.Value;
+                CustomizationLevel = filter.CustomizationLevel.Value;
             }
 
-            if ((string.IsNullOrWhiteSpace(this.PrimaryEntity) || this.PrimaryEntity.Equals("none")) &&
-                (string.IsNullOrWhiteSpace(this.SecondaryEntity) || this.SecondaryEntity.Equals("none")))
+            if ((string.IsNullOrWhiteSpace(PrimaryEntity) || PrimaryEntity.Equals("none")) &&
+                (string.IsNullOrWhiteSpace(SecondaryEntity) || SecondaryEntity.Equals("none")))
             {
-                this.Availability = CrmPluginStepDeployment.Both;
+                Availability = CrmPluginStepDeployment.Both;
             }
             else
             {
-                this.Availability = (CrmPluginStepDeployment)Enum.ToObject(typeof(CrmPluginStepDeployment),
+                Availability = (CrmPluginStepDeployment)Enum.ToObject(typeof(CrmPluginStepDeployment),
                     filter.Availability.GetValueOrDefault());
             }
 
-            this.CreatedOn = filter.CreatedOn;
-            this.ModifiedOn = filter.ModifiedOn;
+            CreatedOn = filter.CreatedOn;
+            ModifiedOn = filter.ModifiedOn;
         }
 
         public override string ToString()
         {
-            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "(Entity) {0}", this.PrimaryEntity);
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "(Entity) {0}", PrimaryEntity);
         }
         #endregion
 
@@ -198,7 +198,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return (this.CustomizationLevel == 0);
+                return (CustomizationLevel == 0);
             }
         }
 
@@ -216,7 +216,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.MessageEntityId;
+                return MessageEntityId;
             }
         }
 
@@ -225,10 +225,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             Dictionary<string, object> entityList = new Dictionary<string, object>();
 
             SdkMessageFilter entity = new SdkMessageFilter();
-            entity["sdkmessagefilterid"] = this.MessageEntityId;
-            entity.SdkMessageId = new EntityReference(SdkMessage.EntityLogicalName, this.MessageId);
-            entity["primaryobjecttypecode"] = this.PrimaryEntity;
-            entity["secondaryobjecttypecode"] = this.SecondaryEntity;
+            entity["sdkmessagefilterid"] = MessageEntityId;
+            entity.SdkMessageId = new EntityReference(SdkMessage.EntityLogicalName, MessageId);
+            entity["primaryobjecttypecode"] = PrimaryEntity;
+            entity["secondaryobjecttypecode"] = SecondaryEntity;
 
             entityList.Add(SdkMessageFilter.EntityLogicalName, entity);
 
@@ -241,9 +241,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.MessageEntityId);
-                valueList.Add("PrimaryEntity", ConvertNullStringToEmpty(this.PrimaryEntity));
-                valueList.Add("SecondaryEntity", ConvertNullStringToEmpty(this.SecondaryEntity));
+                valueList.Add("Id", MessageEntityId);
+                valueList.Add("PrimaryEntity", ConvertNullStringToEmpty(PrimaryEntity));
+                valueList.Add("SecondaryEntity", ConvertNullStringToEmpty(SecondaryEntity));
 
                 return valueList;
             }
@@ -253,12 +253,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (createdOn != null)
             {
-                this.CreatedOn = createdOn;
+                CreatedOn = createdOn;
             }
 
             if (modifiedOn != null)
             {
-                this.ModifiedOn = modifiedOn;
+                ModifiedOn = modifiedOn;
             }
         }
         #endregion

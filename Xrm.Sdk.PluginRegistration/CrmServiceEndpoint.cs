@@ -37,13 +37,13 @@ namespace Xrm.Sdk.PluginRegistration
 
         public CrmServiceEndpoint(CrmOrganization org)
         {
-            this.m_org = org;
+            m_org = org;
         }
 
         public CrmServiceEndpoint(CrmOrganization org, ServiceEndpoint serviceEndpoint)
             : this(org)
         {
-            this.RefreshFromServiceEndpoint(serviceEndpoint);
+            RefreshFromServiceEndpoint(serviceEndpoint);
         }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
@@ -160,23 +160,23 @@ namespace Xrm.Sdk.PluginRegistration
             Dictionary<string, object> entityList = new Dictionary<string, object>();
 
             ServiceEndpoint serviceEndPoint = new ServiceEndpoint();
-            if (this.ServiceEndpointId != Guid.Empty)
+            if (ServiceEndpointId != Guid.Empty)
             {
-                serviceEndPoint.Id = this.ServiceEndpointId;
+                serviceEndPoint.Id = ServiceEndpointId;
             }
 
             serviceEndPoint.ConnectionMode = new OptionSetValue();
-            serviceEndPoint.ConnectionMode.Value = (int)this.ConnectionMode;
+            serviceEndPoint.ConnectionMode.Value = (int)ConnectionMode;
 
             serviceEndPoint.Contract = new OptionSetValue();
-            serviceEndPoint.Contract.Value = (int)this.Contract;
+            serviceEndPoint.Contract.Value = (int)Contract;
 
-            serviceEndPoint.UserClaim = new OptionSetValue((int)this.UserClaim);
+            serviceEndPoint.UserClaim = new OptionSetValue((int)UserClaim);
 
-            serviceEndPoint.Description = this.Description;
-            serviceEndPoint.Name = this.Name;
-            serviceEndPoint.Path = this.Path;
-            serviceEndPoint.SolutionNamespace = this.SolutionNamespace;
+            serviceEndPoint.Description = Description;
+            serviceEndPoint.Name = Name;
+            serviceEndPoint.Path = Path;
+            serviceEndPoint.SolutionNamespace = SolutionNamespace;
 
             entityList.Add(ServiceEndpoint.EntityLogicalName, serviceEndPoint);
 
@@ -190,39 +190,39 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("serviceEndPoint");
             }
 
-            this.Name = serviceEndPoint.Name;
-            this.Description = serviceEndPoint.Description;
-            this.Path = serviceEndPoint.Path;
-            this.SolutionNamespace = serviceEndPoint.SolutionNamespace;
+            Name = serviceEndPoint.Name;
+            Description = serviceEndPoint.Description;
+            Path = serviceEndPoint.Path;
+            SolutionNamespace = serviceEndPoint.SolutionNamespace;
 
             if (serviceEndPoint.ServiceEndpointId != Guid.Empty)
             {
-                this.ServiceEndpointId = serviceEndPoint.ServiceEndpointId.Value;
+                ServiceEndpointId = serviceEndPoint.ServiceEndpointId.Value;
             }
 
             if (serviceEndPoint.CreatedOn != null && (serviceEndPoint.CreatedOn.HasValue))
             {
-                this.CreatedOn = serviceEndPoint.CreatedOn.Value;
+                CreatedOn = serviceEndPoint.CreatedOn.Value;
             }
 
             if (serviceEndPoint.ModifiedOn != null && (serviceEndPoint.ModifiedOn.HasValue))
             {
-                this.ModifiedOn = serviceEndPoint.ModifiedOn.Value;
+                ModifiedOn = serviceEndPoint.ModifiedOn.Value;
             }
 
             if (serviceEndPoint.ConnectionMode != null)
             {
-                this.ConnectionMode = (CrmServiceEndpointConnectionMode)Enum.ToObject(typeof(CrmServiceEndpointConnectionMode), serviceEndPoint.ConnectionMode.Value);
+                ConnectionMode = (CrmServiceEndpointConnectionMode)Enum.ToObject(typeof(CrmServiceEndpointConnectionMode), serviceEndPoint.ConnectionMode.Value);
             }
 
             if (serviceEndPoint.Contract != null)
             {
-                this.Contract = (CrmServiceEndpointContract)Enum.ToObject(typeof(CrmServiceEndpointContract),
+                Contract = (CrmServiceEndpointContract)Enum.ToObject(typeof(CrmServiceEndpointContract),
                     serviceEndPoint.Contract.Value);
             }
             if (serviceEndPoint.UserClaim != null)
             {
-                this.UserClaim = (CrmServiceEndpointUserClaim)Enum.ToObject(typeof(CrmServiceEndpointUserClaim),
+                UserClaim = (CrmServiceEndpointUserClaim)Enum.ToObject(typeof(CrmServiceEndpointUserClaim),
                     serviceEndPoint.UserClaim.Value);
             }
         }
@@ -262,16 +262,16 @@ namespace Xrm.Sdk.PluginRegistration
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.ServiceEndpointId.ToString());
-                valueList.Add("Name", this.Name);
-                valueList.Add("Description", this.Description);
-                valueList.Add("SolutionNamespace", this.SolutionNamespace);
-                valueList.Add("Path", this.Path);
-                valueList.Add("Contract", this.Contract.ToString());
-                valueList.Add("UserClaim", this.UserClaim.ToString());
-                valueList.Add("ConnectionMode", this.ConnectionMode.ToString());
-                valueList.Add("ModifiedOn", this.ModifiedOn);
-                valueList.Add("CreatedOn", this.CreatedOn);
+                valueList.Add("Id", ServiceEndpointId.ToString());
+                valueList.Add("Name", Name);
+                valueList.Add("Description", Description);
+                valueList.Add("SolutionNamespace", SolutionNamespace);
+                valueList.Add("Path", Path);
+                valueList.Add("Contract", Contract.ToString());
+                valueList.Add("UserClaim", UserClaim.ToString());
+                valueList.Add("ConnectionMode", ConnectionMode.ToString());
+                valueList.Add("ModifiedOn", ModifiedOn);
+                valueList.Add("CreatedOn", CreatedOn);
                 return valueList;
             }
         }
@@ -298,7 +298,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                 foreach (CrmPluginStep step in m_org.Steps.Values)
                 {
-                    if (step.ServiceBusConfigurationId == this.ServiceEndpointId)
+                    if (step.ServiceBusConfigurationId == ServiceEndpointId)
                     {
                         steps.Add(step.StepId, step);
                     }
@@ -338,7 +338,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                 foreach (CrmPluginStep step in m_org.Steps.Values)
                 {
-                    if (step.ServiceBusConfigurationId == this.ServiceEndpointId)
+                    if (step.ServiceBusConfigurationId == ServiceEndpointId)
                     {
                         steps.Add(step);
                     }
@@ -352,7 +352,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             get
             {
-                return string.Format("({0}) {1}", this.NodeTypeLabel, string.IsNullOrWhiteSpace(this.Name) ? this.Description : this.Name);
+                return string.Format("({0}) {1}", NodeTypeLabel, string.IsNullOrWhiteSpace(Name) ? Description : Name);
             }
         }
 

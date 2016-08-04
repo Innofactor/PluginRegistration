@@ -49,7 +49,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         public bool OrganizationHasTab(Guid? connectionId, Guid organizationId)
         {
             Dictionary<Guid, MainControl> organizationControlMap;
-            if (this.m_orgList.TryGetValue(connectionId, out organizationControlMap))
+            if (m_orgList.TryGetValue(connectionId, out organizationControlMap))
             {
                 MainControl control;
                 if (organizationControlMap.TryGetValue(organizationId, out control))
@@ -75,21 +75,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         public void CloseOrganizationTab(Guid? connectionId, Guid organizationId)
         {
-            TabPage page = this.GetTab(connectionId, organizationId);
+            TabPage page = GetTab(connectionId, organizationId);
 
             {
                 tabOrganizations.TabPages.Remove(page);
-                this.m_orgList[connectionId][organizationId].Organization.Connected = false;
-                this.m_orgList[connectionId].Remove(organizationId);
+                m_orgList[connectionId][organizationId].Organization.Connected = false;
+                m_orgList[connectionId].Remove(organizationId);
 
-                if (this.m_orgList[connectionId].Count == 0)
+                if (m_orgList[connectionId].Count == 0)
                 {
-                    this.m_orgList.Remove(connectionId);
+                    m_orgList.Remove(connectionId);
                 }
 
-                if (this.m_orgList.Count == 0)
+                if (m_orgList.Count == 0)
                 {
-                    this.Hide();
+                    Hide();
                     // this.m_mainForm.UpdateCurrentOrganization(null);
                 }
                 else if (tabOrganizations.SelectedTab == null)
@@ -105,7 +105,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         public void UpdateAutoExpand(bool newValue)
         {
-            foreach (Dictionary<Guid, MainControl> connectionList in this.m_orgList.Values)
+            foreach (Dictionary<Guid, MainControl> connectionList in m_orgList.Values)
             {
                 foreach (MainControl control in connectionList.Values)
                 {
@@ -118,12 +118,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         #region Private Helper Methods
         private TabPage GetTab(Guid? connectionId, Guid organizationId)
         {
-            if (!this.OrganizationHasTab(connectionId, organizationId))
+            if (!OrganizationHasTab(connectionId, organizationId))
             {
                 throw new ArgumentException("Invalid organization id");
             }
 
-            return (TabPage)this.m_orgList[connectionId][organizationId].Parent;
+            return (TabPage)m_orgList[connectionId][organizationId].Parent;
         }
         #endregion
     }

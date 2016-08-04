@@ -39,7 +39,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public CrmMessage(CrmOrganization org)
         {
-            this.m_org = org;
+            m_org = org;
         }
 
         public CrmMessage(CrmOrganization org, Guid messageId, string messageName, bool supportsFilteredAttributes,
@@ -47,19 +47,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             List<ImageMessagePropertyName> imageMessagePropertyNames)
             : this(org)
         {
-            this.MessageId = messageId;
-            this.Name = messageName;
-            this.CustomizationLevel = customizationLevel;
-            this.SupportsFilteredAttributes = supportsFilteredAttributes;
-            this.UpdateDates(createdOn, modifiedOn);
+            MessageId = messageId;
+            Name = messageName;
+            CustomizationLevel = customizationLevel;
+            SupportsFilteredAttributes = supportsFilteredAttributes;
+            UpdateDates(createdOn, modifiedOn);
 
-            this.m_messagePropertyNames = imageMessagePropertyNames;
+            m_messagePropertyNames = imageMessagePropertyNames;
         }
 
         public CrmMessage(CrmOrganization org, SdkMessage msg)
             : this(org)
         {
-            this.RefreshFromSdkMessage(msg);
+            RefreshFromSdkMessage(msg);
         }
 
         #region Properties
@@ -71,7 +71,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_createdOn;
+                return m_createdOn;
             }
         }
 
@@ -83,7 +83,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_modifiedOn;
+                return m_modifiedOn;
             }
         }
 
@@ -92,7 +92,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
@@ -100,13 +100,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentNullException();
                 }
-                else if (this.m_org == null)
+                else if (m_org == null)
                 {
-                    this.m_org = value;
+                    m_org = value;
 
-                    foreach (CrmMessageEntity entity in this.m_filterList.Values)
+                    foreach (CrmMessageEntity entity in m_filterList.Values)
                     {
-                        this.Organization.AddMessageEntity(this, entity);
+                        Organization.AddMessageEntity(this, entity);
                     }
                 }
                 else
@@ -121,12 +121,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_messageId;
+                return m_messageId;
             }
 
             set
             {
-                this.m_messageId = value;
+                m_messageId = value;
             }
         }
 
@@ -135,12 +135,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_messageName;
+                return m_messageName;
             }
 
             set
             {
-                this.m_messageName = value;
+                m_messageName = value;
             }
         }
 
@@ -149,11 +149,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_customizationLevel;
+                return m_customizationLevel;
             }
             set
             {
-                this.m_customizationLevel = value;
+                m_customizationLevel = value;
             }
         }
 
@@ -162,12 +162,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_supportsFilteredAttributes;
+                return m_supportsFilteredAttributes;
             }
 
             set
             {
-                this.m_supportsFilteredAttributes = value;
+                m_supportsFilteredAttributes = value;
             }
         }
 
@@ -176,12 +176,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (null == this.m_messagePropertyNames)
+                if (null == m_messagePropertyNames)
                 {
-                    this.m_messagePropertyNames = new List<ImageMessagePropertyName>();
+                    m_messagePropertyNames = new List<ImageMessagePropertyName>();
                 }
 
-                return this.m_messagePropertyNames;
+                return m_messagePropertyNames;
             }
         }
 
@@ -190,7 +190,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_filterList[filterId];
+                return m_filterList[filterId];
             }
         }
 
@@ -199,12 +199,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_filterReadOnlyList == null)
+                if (m_filterReadOnlyList == null)
                 {
-                    this.m_filterReadOnlyList = new CrmEntityDictionary<CrmMessageEntity>(this.m_filterList);
+                    m_filterReadOnlyList = new CrmEntityDictionary<CrmMessageEntity>(m_filterList);
                 }
 
-                return this.m_filterReadOnlyList;
+                return m_filterReadOnlyList;
             }
         }
 
@@ -237,27 +237,27 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (msg.SdkMessageId != null)
             {
-                this.MessageId = msg.SdkMessageId.Value;
+                MessageId = msg.SdkMessageId.Value;
             }
 
             if (msg.Name != null)
             {
-                this.Name = msg.Name;
+                Name = msg.Name;
             }
 
             if (msg.CustomizationLevel != null)
             {
-                this.CustomizationLevel = msg.CustomizationLevel.Value;
+                CustomizationLevel = msg.CustomizationLevel.Value;
             }
 
             if (msg.CreatedOn != null && (msg.CreatedOn.HasValue))
             {
-                this.m_createdOn = msg.CreatedOn.Value;
+                m_createdOn = msg.CreatedOn.Value;
             }
 
             if (msg.ModifiedOn != null && (msg.ModifiedOn.HasValue))
             {
-                this.m_modifiedOn = msg.ModifiedOn.Value;
+                m_modifiedOn = msg.ModifiedOn.Value;
             }
         }
 
@@ -271,7 +271,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 return null;
             }
-            List<CrmMessageEntity> matchList = this.FindMessageEntities(primaryEntity, secondaryEntity, true);
+            List<CrmMessageEntity> matchList = FindMessageEntities(primaryEntity, secondaryEntity, true);
             if (matchList == null || matchList.Count == 0)
             {
                 return null;
@@ -288,12 +288,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         /// <returns>Returns all CrmMessageEntity that match the criteria</returns>
         public CrmMessageEntity[] FindMessageEntities(string primaryEntity, string secondaryEntity)
         {
-            return this.FindMessageEntities(primaryEntity, secondaryEntity, true).ToArray();
+            return FindMessageEntities(primaryEntity, secondaryEntity, true).ToArray();
         }
 
         public override string ToString()
         {
-            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "(Message) {0}", this.Name);
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "(Message) {0}", Name);
         }
 
         #region Management Methods
@@ -304,33 +304,33 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("entity");
             }
 
-            this.m_filterList.Add(entity.MessageEntityId, entity);
+            m_filterList.Add(entity.MessageEntityId, entity);
 
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                this.Organization.AddMessageEntity(this, entity);
+                Organization.AddMessageEntity(this, entity);
             }
         }
 
         public void ClearMessageEntities()
         {
-            this.m_filterList.Clear();
+            m_filterList.Clear();
 
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                this.Organization.ClearMessageEntities(this.MessageId);
+                Organization.ClearMessageEntities(MessageId);
             }
         }
 
         public void RemoveMessageEntity(Guid messageEntityId)
         {
-            if (this.m_filterList.ContainsKey(messageEntityId))
+            if (m_filterList.ContainsKey(messageEntityId))
             {
-                this.m_filterList.Remove(messageEntityId);
+                m_filterList.Remove(messageEntityId);
 
-                if (this.Organization != null)
+                if (Organization != null)
                 {
-                    this.Organization.RemoveMessageEntity(this, messageEntityId);
+                    Organization.RemoveMessageEntity(this, messageEntityId);
                 }
             }
             else
@@ -370,7 +370,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 // Get all the MessageEntities and add 'none', 'none'
 
-                foreach (CrmMessageEntity msg in this.m_filterList.Values)
+                foreach (CrmMessageEntity msg in m_filterList.Values)
                 {
                     if (!hasNoneNone && msg.PrimaryEntity == "none" && msg.SecondaryEntity == "none")
                     {
@@ -391,7 +391,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     secondaryEntity = secondaryEntity.Trim();
                 }
 
-                foreach (CrmMessageEntity msg in this.m_filterList.Values)
+                foreach (CrmMessageEntity msg in m_filterList.Values)
                 {
                     if (!string.IsNullOrEmpty(primaryEntity) && !primaryEntity.Equals(msg.PrimaryEntity, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -425,7 +425,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (!hasNoneNone)
             {
-                msgList.Add(new CrmMessageEntity(this.Organization, this.MessageId, Guid.Empty, "none", "none",
+                msgList.Add(new CrmMessageEntity(Organization, MessageId, Guid.Empty, "none", "none",
                     CrmPluginStepDeployment.Both, null, null));
             }
 
@@ -440,7 +440,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return (this.m_customizationLevel == 0);
+                return (m_customizationLevel == 0);
             }
         }
 
@@ -458,7 +458,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.MessageId;
+                return MessageId;
             }
         }
 
@@ -469,11 +469,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             SdkMessage entity = new SdkMessage();
 
             entity.SdkMessageId = new Guid?();
-            entity["sdkmessageid"] = this.MessageId;
+            entity["sdkmessageid"] = MessageId;
 
-            if (!string.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                entity.Name = this.Name;
+                entity.Name = Name;
             }
 
             entityList.Add(SdkMessage.EntityLogicalName, entity);
@@ -487,8 +487,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.MessageId);
-                valueList.Add("Name", this.Name);
+                valueList.Add("Id", MessageId);
+                valueList.Add("Name", Name);
 
                 return valueList;
             }
@@ -498,12 +498,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (createdOn != null)
             {
-                this.m_createdOn = createdOn;
+                m_createdOn = createdOn;
             }
 
             if (modifiedOn != null)
             {
-                this.m_modifiedOn = modifiedOn;
+                m_modifiedOn = modifiedOn;
             }
         }
         #endregion
@@ -532,16 +532,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("label");
             }
 
-            this._name = name;
-            this._label = label;
-            this._description = description;
+            _name = name;
+            _label = label;
+            _description = description;
         }
 
         public string Name
         {
             get
             {
-                return this._name;
+                return _name;
             }
         }
 
@@ -549,7 +549,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this._label;
+                return _label;
             }
         }
 
@@ -557,7 +557,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this._description;
+                return _description;
             }
         }
     }

@@ -47,12 +47,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
-                this.m_org = value;
-                btnSelect.Enabled = (this.m_org != null && this.m_entityName != null);
+                m_org = value;
+                btnSelect.Enabled = (m_org != null && m_entityName != null);
             }
         }
 
@@ -89,14 +89,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_entityName;
+                return m_entityName;
             }
             set
             {
-                if (!string.Equals(this.m_entityName, value, StringComparison.CurrentCulture))
+                if (!string.Equals(m_entityName, value, StringComparison.CurrentCulture))
                 {
-                    this.m_entityName = value;
-                    btnSelect.Enabled = (this.m_org != null && this.m_entityName != null);
+                    m_entityName = value;
+                    btnSelect.Enabled = (m_org != null && m_entityName != null);
                 }
             }
         }
@@ -106,30 +106,30 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                if (this.m_allAttributes)
+                if (m_allAttributes)
                 {
                     return null;
                 }
                 else
                 {
-                    return this.AttributeString;
+                    return AttributeString;
                 }
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.m_allAttributes = true;
-                    this.m_attributeList.Clear();
+                    m_allAttributes = true;
+                    m_attributeList.Clear();
 
                     txtAttributes.Text = "All Attributes";
                 }
                 else
                 {
-                    this.m_allAttributes = false;
-                    this.AttributeString = value;
+                    m_allAttributes = false;
+                    AttributeString = value;
 
-                    txtAttributes.Text = string.Join(", ", this.AttributeCollectionToArray());
+                    txtAttributes.Text = string.Join(", ", AttributeCollectionToArray());
                 }
             }
         }
@@ -139,7 +139,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_allAttributes;
+                return m_allAttributes;
             }
         }
 
@@ -148,7 +148,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return (this.m_allAttributes || this.m_attributeList.Count != 0);
+                return (m_allAttributes || m_attributeList.Count != 0);
             }
         }
 
@@ -166,40 +166,40 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             set
             {
                 txtDisabledMessage.Text = value;
-                this.DisplayDisabledMessage();
+                DisplayDisabledMessage();
             }
         }
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            if (!this.Organization.IsEntityAttributesLoaded(this.EntityName))
+            if (!Organization.IsEntityAttributesLoaded(EntityName))
             {
                 WebServiceProgressForm progForm = new WebServiceProgressForm(this);
-                OrganizationHelper.LoadAttributeList(this.Organization, this.EntityName, progForm.ProgressIndicator);
+                OrganizationHelper.LoadAttributeList(Organization, EntityName, progForm.ProgressIndicator);
 
-                if (this.Organization.AttributeLoadException != null)
+                if (Organization.AttributeLoadException != null)
                 {
                     ErrorMessageForm.ShowErrorMessageBox(this, "Unable to load attribute list", "Attribute List Error",
-                        this.Organization.AttributeLoadException);
+                        Organization.AttributeLoadException);
                     return;
                 }
             }
 
-            AttributeSelectionForm selectorForm = new AttributeSelectionForm(this.UpdateParameters, this.m_org,
-                this.Organization.RetrieveEntityAttributes(this.EntityName), this.m_attributeList, this.m_allAttributes);
+            AttributeSelectionForm selectorForm = new AttributeSelectionForm(UpdateParameters, m_org,
+                Organization.RetrieveEntityAttributes(EntityName), m_attributeList, m_allAttributes);
             selectorForm.ShowDialog();
         }
 
         private void CrmAttributeSelectionControl_EnabledChanged(object sender, EventArgs e)
         {
-            this.DisplayDisabledMessage();
+            DisplayDisabledMessage();
         }
 
         #region Public Helper Methods
 
         public void ClearAttributes()
         {
-            this.UpdateParameters(null, false);
+            UpdateParameters(null, false);
         }
 
         #endregion Public Helper Methods
@@ -210,18 +210,18 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                if (this.m_attributeList.Count == 0)
+                if (m_attributeList.Count == 0)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return string.Join(",", this.AttributeCollectionToArray());
+                    return string.Join(",", AttributeCollectionToArray());
                 }
             }
             set
             {
-                this.m_attributeList.Clear();
+                m_attributeList.Clear();
                 if (!string.IsNullOrEmpty(value))
                 {
                     string[] attributeList = value.Split(',');
@@ -229,7 +229,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     {
                         if (!string.IsNullOrEmpty(attribute))
                         {
-                            this.m_attributeList.Add(attribute.Trim());
+                            m_attributeList.Add(attribute.Trim());
                         }
                     }
                 }
@@ -238,7 +238,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
         private string[] AttributeCollectionToArray()
         {
-            return this.AttributeCollectionToArray(this.m_attributeList);
+            return AttributeCollectionToArray(m_attributeList);
         }
 
         private string[] AttributeCollectionToArray(Collection<string> attributes)
@@ -262,38 +262,38 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             if (allAttributes)
             {
                 newText = "All Attributes";
-                this.m_allAttributes = true;
+                m_allAttributes = true;
             }
             else
             {
-                newText = string.Join(", ", this.AttributeCollectionToArray(attributes));
-                this.m_allAttributes = false;
+                newText = string.Join(", ", AttributeCollectionToArray(attributes));
+                m_allAttributes = false;
             }
 
-            if (allAttributes != this.AllAttributes || !string.Equals(this.txtAttributes.Text, newText, StringComparison.CurrentCulture))
+            if (allAttributes != AllAttributes || !string.Equals(txtAttributes.Text, newText, StringComparison.CurrentCulture))
             {
                 txtAttributes.Text = newText;
-                this.m_allAttributes = allAttributes;
+                m_allAttributes = allAttributes;
 
-                this.m_attributeList.Clear();
+                m_attributeList.Clear();
                 if (attributes != null && attributes.Count != 0)
                 {
                     foreach (string attribute in attributes)
                     {
-                        this.m_attributeList.Add(attribute);
+                        m_attributeList.Add(attribute);
                     }
                 }
 
-                if (this.AttributesChanged != null)
+                if (AttributesChanged != null)
                 {
-                    this.AttributesChanged(this, new EventArgs());
+                    AttributesChanged(this, new EventArgs());
                 }
             }
         }
 
         private void DisplayDisabledMessage()
         {
-            bool visibleDisabledMessage = !(this.Enabled || txtDisabledMessage.TextLength == 0);
+            bool visibleDisabledMessage = !(Enabled || txtDisabledMessage.TextLength == 0);
 
             txtDisabledMessage.Visible = visibleDisabledMessage;
             txtAttributes.Visible = !visibleDisabledMessage;

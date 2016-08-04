@@ -46,23 +46,27 @@ namespace Xrm.Sdk.PluginRegistration
             AppDomainSetup setup = new AppDomainSetup();
             setup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
 
-            this._domain = AppDomain.CreateDomain(domainName, null, setup);
+            _domain = AppDomain.CreateDomain(domainName, null, setup);
 
             //Create the proxy in the AppDomain so that all assemblies that are loaded do not stay loaded in the AppDomain
-            this.Proxy = (TProxy)this._domain.CreateInstanceFromAndUnwrap(typeof(TProxy).Assembly.Location, typeof(TProxy).FullName);
+            Proxy = (TProxy)_domain.CreateInstanceFromAndUnwrap(typeof(TProxy).Assembly.Location, typeof(TProxy).FullName);
 
             //Attach the resolver so that assemblies can be resolved correctly
-            AssemblyResolver.AttachResolver(this._domain);
+            AssemblyResolver.AttachResolver(_domain);
         }
 
         ~AppDomainContext()
         {
-            this.Dispose(false);
+            Dispose(false);
         }
 
         #region Properties
 
-        public TProxy Proxy { get; private set; }
+        public TProxy Proxy
+        {
+            get;
+            private set;
+        }
 
         #endregion Properties
 
@@ -70,7 +74,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -80,21 +84,21 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void Dispose(bool disposing)
         {
-            if (this._disposed)
+            if (_disposed)
             {
                 return;
             }
 
-            if (null != this._domain)
+            if (null != _domain)
             {
-                AppDomain.Unload(this._domain);
-                this._domain = null;
-                this.Proxy = null;
+                AppDomain.Unload(_domain);
+                _domain = null;
+                Proxy = null;
             }
 
             if (disposing)
             {
-                this._disposed = true;
+                _disposed = true;
             }
         }
 
@@ -114,7 +118,7 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentException("Path does not point to an existing file");
             }
 
-            return this.RetrieveAssemblyProperties(this.LoadAssembly(path), path);
+            return RetrieveAssemblyProperties(LoadAssembly(path), path);
         }
 
         public CrmPluginAssembly RetrievePluginsFromAssembly(string path)
@@ -129,12 +133,12 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             //Load the assembly
-            Assembly assembly = this.LoadAssembly(path);
+            Assembly assembly = LoadAssembly(path);
             AssemblyName assemblyName = assembly.GetName();
             string defaultGroupName = RegistrationHelper.GenerateDefaultGroupName(assemblyName.Name, assemblyName.Version);
 
             //Retrieve the assembly properties
-            CrmPluginAssembly pluginAssembly = this.RetrieveAssemblyProperties(assembly, path);
+            CrmPluginAssembly pluginAssembly = RetrieveAssemblyProperties(assembly, path);
 
             //Loop through each type and process it
             List<string> errorList = new List<string>();

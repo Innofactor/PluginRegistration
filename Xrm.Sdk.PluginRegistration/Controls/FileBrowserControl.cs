@@ -27,32 +27,32 @@
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-            if (DialogResult.OK == this.Dialog.ShowDialog())
+            if (DialogResult.OK == Dialog.ShowDialog())
             {
-                PathBox.Text = this.Dialog.FileName;
+                PathBox.Text = Dialog.FileName;
 
                 //Execute the same behavior as if the path had been entered manually
                 PathBox_Leave(sender, e);
 
                 //Indicate that the browse has been completed.
-                if (null != this.BrowseCompleted)
+                if (null != BrowseCompleted)
                 {
-                    this.BrowseCompleted(sender, e);
+                    BrowseCompleted(sender, e);
                 }
             }
         }
 
         private void PathBox_Leave(object sender, EventArgs e)
         {
-            if (this._isPathChanged)
+            if (_isPathChanged)
             {
                 //Ensure that the flag is unset before calling into the event to ensure that any behavior of the event handler
                 //does not unintentionally use the old value of this flag.
-                this._isPathChanged = false;
+                _isPathChanged = false;
 
-                if (null != this.PathChanged)
+                if (null != PathChanged)
                 {
-                    this.PathChanged(sender, e);
+                    PathChanged(sender, e);
                 }
             }
         }
@@ -62,7 +62,7 @@
             //The content of the box has changed. The next time that the text box loses focus, it the PathChanged event
             //will need to be fired. The event should only be fired when text has changed, not when the box receives and loses focus
             //without a change.
-            this._isPathChanged = true;
+            _isPathChanged = true;
         }
 
         #endregion Events Handlers
@@ -73,12 +73,12 @@
         {
             get
             {
-                return this.Dialog.Title;
+                return Dialog.Title;
             }
 
             set
             {
-                this.Dialog.Title = value;
+                Dialog.Title = value;
             }
         }
 
@@ -86,12 +86,12 @@
         {
             get
             {
-                return this.Dialog.DefaultExt;
+                return Dialog.DefaultExt;
             }
 
             set
             {
-                this.Dialog.DefaultExt = value;
+                Dialog.DefaultExt = value;
             }
         }
 
@@ -99,12 +99,12 @@
         {
             get
             {
-                return this.Dialog.InitialDirectory;
+                return Dialog.InitialDirectory;
             }
 
             set
             {
-                this.Dialog.InitialDirectory = value;
+                Dialog.InitialDirectory = value;
             }
         }
 
@@ -112,12 +112,12 @@
         {
             get
             {
-                return this.Dialog.Filter;
+                return Dialog.Filter;
             }
 
             set
             {
-                this.Dialog.Filter = value;
+                Dialog.Filter = value;
             }
         }
 
@@ -126,18 +126,18 @@
         {
             get
             {
-                return this.PathBox.Text;
+                return PathBox.Text;
             }
 
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    this.PathBox.Clear();
+                    PathBox.Clear();
                 }
                 else
                 {
-                    this.PathBox.Text = value.Trim();
+                    PathBox.Text = value.Trim();
                 }
             }
         }
@@ -156,7 +156,7 @@
         {
             get
             {
-                return (this.HasFileName && File.Exists(this.FileName));
+                return (HasFileName && File.Exists(FileName));
             }
         }
 

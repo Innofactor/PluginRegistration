@@ -53,12 +53,12 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("init");
             }
 
-            this.m_init = init;
-            this.m_appendText = appendText;
-            this.m_setText = setText;
-            this.m_setValue = setValue;
-            this.m_increment = increment;
-            this.m_complete = complete;
+            m_init = init;
+            m_appendText = appendText;
+            m_setText = setText;
+            m_setValue = setValue;
+            m_increment = increment;
+            m_complete = complete;
         }
 
         public ProgressIndicator(Action<StatusBarMessageEventArgs> action)
@@ -153,7 +153,7 @@ namespace Xrm.Sdk.PluginRegistration
                 value = (int)initialValue;
             }
 
-            this.m_init(min, max, value);
+            m_init(min, max, value);
 
             if (initialStatusText != null)
             {
@@ -166,18 +166,18 @@ namespace Xrm.Sdk.PluginRegistration
 
         public void AppendText(string text)
         {
-            if (this.m_setText == null && this.m_appendText == null)
+            if (m_setText == null && m_appendText == null)
             {
                 return;
             }
 
-            if (this.m_appendText != null && !string.IsNullOrEmpty(text))
+            if (m_appendText != null && !string.IsNullOrEmpty(text))
             {
-                this.m_appendText(text);
+                m_appendText(text);
             }
-            else if (this.m_setText != null)
+            else if (m_setText != null)
             {
-                this.m_setText(text);
+                m_setText(text);
             }
 
             //UI doesn't always refresh properly. This will allow the UI to refresh
@@ -186,18 +186,18 @@ namespace Xrm.Sdk.PluginRegistration
 
         public void SetText(string text)
         {
-            if (this.m_setText == null && this.m_appendText == null)
+            if (m_setText == null && m_appendText == null)
             {
                 return;
             }
 
-            if (this.m_setText != null)
+            if (m_setText != null)
             {
-                this.m_setText(text);
+                m_setText(text);
             }
-            else if (null != this.m_appendText && !string.IsNullOrEmpty(text))
+            else if (null != m_appendText && !string.IsNullOrEmpty(text))
             {
-                this.m_appendText(text);
+                m_appendText(text);
             }
 
             //UI doesn't always refresh properly. This will allow the UI to refresh
@@ -206,14 +206,14 @@ namespace Xrm.Sdk.PluginRegistration
 
         public void ClearText()
         {
-            this.SetText(string.Empty);
+            SetText(string.Empty);
         }
 
         public void Increment(int value, string message)
         {
-            if (this.m_increment != null)
+            if (m_increment != null)
             {
-                this.m_increment(value);
+                m_increment(value);
             }
 
             if (message != null)
@@ -229,12 +229,12 @@ namespace Xrm.Sdk.PluginRegistration
         {
             if (clearStatusText)
             {
-                this.SetText(string.Empty);
+                SetText(string.Empty);
             }
 
             if (m_complete != null)
             {
-                this.m_complete();
+                m_complete();
             }
 
             //UI doesn't always refresh properly. This will allow the UI to refresh

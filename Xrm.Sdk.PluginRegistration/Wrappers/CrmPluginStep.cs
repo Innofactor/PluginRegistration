@@ -44,12 +44,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public CrmPluginStep(CrmOrganization org)
         {
-            this.m_org = org;
-            this.Enabled = true;
-            this.Mode = CrmPluginStepMode.Synchronous;
-            this.Stage = CrmPluginStepStage.PostOperationDeprecated;
-            this.Rank = 1;
-            this.Deployment = CrmPluginStepDeployment.ServerOnly;
+            m_org = org;
+            Enabled = true;
+            Mode = CrmPluginStepMode.Synchronous;
+            Stage = CrmPluginStepStage.PostOperationDeprecated;
+            Rank = 1;
+            Deployment = CrmPluginStepDeployment.ServerOnly;
         }
 
         public CrmPluginStep(CrmOrganization org, Guid assemblyId, Guid pluginId, Guid stepId, Guid messageId, Guid messageEntityId,
@@ -59,27 +59,27 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             int customizationLevel, DateTime? createdOn, DateTime? modifiedOn, string filteringAttributes, Guid serviceBusConfigurationId)
             : this(org)
         {
-            this.AssemblyId = assemblyId;
-            this.Deployment = deployment;
-            this.Name = name;
-            this.Enabled = enabled;
-            this.ImpersonatingUserId = impersonatingUserId;
-            this.InvocationSource = invocationSource;
-            this.MessageEntityId = messageEntityId;
-            this.MessageId = messageId;
-            this.Mode = mode;
-            this.PluginId = pluginId;
-            this.Rank = rank;
-            this.SecureConfigurationId = secureConfigurationId;
-            this.SecureConfiguration = secureConfiguration;
-            this.Stage = stage;
-            this.StepId = stepId;
-            this.CustomizationLevel = customizationLevel;
-            this.UnsecureConfiguration = unsecureConfiguration;
-            this.FilteringAttributes = filteringAttributes;
-            this.m_createdOn = createdOn;
-            this.m_modifiedOn = modifiedOn;
-            this.m_serviceBusConfigurationId = serviceBusConfigurationId;
+            AssemblyId = assemblyId;
+            Deployment = deployment;
+            Name = name;
+            Enabled = enabled;
+            ImpersonatingUserId = impersonatingUserId;
+            InvocationSource = invocationSource;
+            MessageEntityId = messageEntityId;
+            MessageId = messageId;
+            Mode = mode;
+            PluginId = pluginId;
+            Rank = rank;
+            SecureConfigurationId = secureConfigurationId;
+            SecureConfiguration = secureConfiguration;
+            Stage = stage;
+            StepId = stepId;
+            CustomizationLevel = customizationLevel;
+            UnsecureConfiguration = unsecureConfiguration;
+            FilteringAttributes = filteringAttributes;
+            m_createdOn = createdOn;
+            m_modifiedOn = modifiedOn;
+            m_serviceBusConfigurationId = serviceBusConfigurationId;
         }
 
         public CrmPluginStep(CrmOrganization org, Guid assemblyId, SdkMessageProcessingStep step, string secureConfig)
@@ -90,7 +90,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("step");
             }
 
-            this.RefreshFromSdkMessageProcessingStep(assemblyId, step, secureConfig);
+            RefreshFromSdkMessageProcessingStep(assemblyId, step, secureConfig);
         }
 
         #region Properties
@@ -102,7 +102,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_createdOn;
+                return m_createdOn;
             }
         }
 
@@ -114,7 +114,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_modifiedOn;
+                return m_modifiedOn;
             }
         }
 
@@ -123,7 +123,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
@@ -131,10 +131,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentNullException();
                 }
-                else if (this.m_org == null)
+                else if (m_org == null)
                 {
                     m_org = value;
-                    foreach (CrmPluginImage image in this.m_imageList.Values)
+                    foreach (CrmPluginImage image in m_imageList.Values)
                     {
                         if (image.Organization == null)
                         {
@@ -155,21 +155,21 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_assemblyId;
+                return m_assemblyId;
             }
 
             set
             {
-                if (value == this.m_assemblyId)
+                if (value == m_assemblyId)
                 {
                     return;
                 }
 
-                this.m_assemblyId = value;
+                m_assemblyId = value;
 
-                if (this.m_imageList != null)
+                if (m_imageList != null)
                 {
-                    foreach (CrmPluginImage image in this.m_imageList.Values)
+                    foreach (CrmPluginImage image in m_imageList.Values)
                     {
                         image.AssemblyId = value;
                     }
@@ -182,21 +182,21 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginId;
+                return m_pluginId;
             }
 
             set
             {
-                if (value == this.m_pluginId)
+                if (value == m_pluginId)
                 {
                     return;
                 }
 
-                this.m_pluginId = value;
+                m_pluginId = value;
 
-                if (this.m_imageList != null)
+                if (m_imageList != null)
                 {
-                    foreach (CrmPluginImage image in this.m_imageList.Values)
+                    foreach (CrmPluginImage image in m_imageList.Values)
                     {
                         image.PluginId = value;
                     }
@@ -212,12 +212,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_serviceBusConfigurationId;
+                return m_serviceBusConfigurationId;
             }
 
             set
             {
-                this.m_serviceBusConfigurationId = value;
+                m_serviceBusConfigurationId = value;
             }
         }
 
@@ -277,7 +277,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_customizationLevel;
+                return m_customizationLevel;
             }
 
             set
@@ -287,7 +287,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     throw new ArgumentException("Invalid CustomizationLevel specified");
                 }
 
-                this.m_customizationLevel = value;
+                m_customizationLevel = value;
             }
         }
 
@@ -296,7 +296,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_imageList[imageId];
+                return m_imageList[imageId];
             }
         }
 
@@ -305,12 +305,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_imageReadOnlyList == null)
+                if (m_imageReadOnlyList == null)
                 {
-                    this.m_imageReadOnlyList = new CrmEntityDictionary<CrmPluginImage>(this.m_imageList);
+                    m_imageReadOnlyList = new CrmEntityDictionary<CrmPluginImage>(m_imageList);
                 }
 
-                return this.m_imageReadOnlyList;
+                return m_imageReadOnlyList;
             }
         }
 
@@ -323,7 +323,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return (null != this.ProfilerStepId);
+                return (null != ProfilerStepId);
             }
         }
 
@@ -347,122 +347,122 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (step.SupportedDeployment != null)
             {
-                this.Deployment = (CrmPluginStepDeployment)Enum.ToObject(typeof(CrmPluginStepDeployment), step.SupportedDeployment.Value);
+                Deployment = (CrmPluginStepDeployment)Enum.ToObject(typeof(CrmPluginStepDeployment), step.SupportedDeployment.Value);
             }
 
             if (step.StateCode != null)
             {
-                this.Enabled = (step.StateCode.Value == SdkMessageProcessingStepState.Enabled);
+                Enabled = (step.StateCode.Value == SdkMessageProcessingStepState.Enabled);
             }
 
             if (step.ImpersonatingUserId != null)
             {
-                this.ImpersonatingUserId = step.ImpersonatingUserId.Id;
+                ImpersonatingUserId = step.ImpersonatingUserId.Id;
             }
 
 #pragma warning disable 0612
             if (step.InvocationSource != null)
             {
-                this.InvocationSource = (CrmPluginStepInvocationSource)Enum.ToObject(typeof(CrmPluginStepInvocationSource), step.InvocationSource.Value);
+                InvocationSource = (CrmPluginStepInvocationSource)Enum.ToObject(typeof(CrmPluginStepInvocationSource), step.InvocationSource.Value);
             }
 #pragma warning restore 0612
 
             if (step.SdkMessageFilterId != null)
             {
-                this.MessageEntityId = step.SdkMessageFilterId.Id;
+                MessageEntityId = step.SdkMessageFilterId.Id;
             }
 
             if (step.SdkMessageId != null)
             {
-                this.MessageId = step.SdkMessageId.Id;
+                MessageId = step.SdkMessageId.Id;
             }
 
             if (step.Mode != null)
             {
-                this.Mode = (CrmPluginStepMode)Enum.ToObject(typeof(CrmPluginStepMode), step.Mode.Value);
+                Mode = (CrmPluginStepMode)Enum.ToObject(typeof(CrmPluginStepMode), step.Mode.Value);
             }
 
             if (step.CreatedOn != null && (step.CreatedOn.HasValue))
             {
-                this.m_createdOn = step.CreatedOn.Value;
+                m_createdOn = step.CreatedOn.Value;
             }
 
             if (step.ModifiedOn != null && (step.ModifiedOn.HasValue))
             {
-                this.m_modifiedOn = step.ModifiedOn.Value;
+                m_modifiedOn = step.ModifiedOn.Value;
             }
 
 #pragma warning disable 0612
             if (step.PluginTypeId != null)
             {
-                this.PluginId = step.PluginTypeId.Id;
+                PluginId = step.PluginTypeId.Id;
             }
 #pragma warning restore 0612
 
             if (step.Rank != null && (step.Rank.HasValue))
             {
-                this.Rank = step.Rank.Value;
+                Rank = step.Rank.Value;
             }
 
             if (step.SdkMessageProcessingStepSecureConfigId != null)
             {
-                this.SecureConfigurationId = step.SdkMessageProcessingStepSecureConfigId.Id;
-                this.SecureConfiguration = secureConfig;
+                SecureConfigurationId = step.SdkMessageProcessingStepSecureConfigId.Id;
+                SecureConfiguration = secureConfig;
             }
             else
             {
-                this.SecureConfiguration = null;
-                this.SecureConfigurationId = Guid.Empty;
+                SecureConfiguration = null;
+                SecureConfigurationId = Guid.Empty;
             }
 
             // Step can be unregistered as ExchangeRate plugin Can be replaced to ISV Plugin. So 'customizationlevel' logic is no longer valid here.
-            this.CustomizationLevel = 1;
+            CustomizationLevel = 1;
 
             if (step.Stage != null)
             {
-                this.Stage = (CrmPluginStepStage)Enum.ToObject(typeof(CrmPluginStepStage), step.Stage.Value);
+                Stage = (CrmPluginStepStage)Enum.ToObject(typeof(CrmPluginStepStage), step.Stage.Value);
             }
 
-            this.AssemblyId = assemblyId;
+            AssemblyId = assemblyId;
 
             if (step.SdkMessageProcessingStepId != null)
             {
-                this.StepId = step.SdkMessageProcessingStepId.Value;
+                StepId = step.SdkMessageProcessingStepId.Value;
             }
 
             if (step.Configuration != null)
             {
-                this.UnsecureConfiguration = step.Configuration;
+                UnsecureConfiguration = step.Configuration;
             }
             else
             {
-                this.UnsecureConfiguration = null;
+                UnsecureConfiguration = null;
             }
 
             if (step.EventHandler != null)
             {
-                this.EventHandler = step.EventHandler;
+                EventHandler = step.EventHandler;
                 if (EventHandler.LogicalName == ServiceEndpoint.EntityLogicalName)
                 {
-                    this.ServiceBusConfigurationId = step.EventHandler.Id;
+                    ServiceBusConfigurationId = step.EventHandler.Id;
                 }
             }
 
-            this.Name = step.Name;
+            Name = step.Name;
 
-            this.Description = step.Description;
+            Description = step.Description;
 
-            this.FilteringAttributes = step.FilteringAttributes;
+            FilteringAttributes = step.FilteringAttributes;
 
             if (step.AsyncAutoDelete != null)
             {
-                this.DeleteAsyncOperationIfSuccessful = (bool)step.AsyncAutoDelete;
+                DeleteAsyncOperationIfSuccessful = (bool)step.AsyncAutoDelete;
             }
         }
 
         public override string ToString()
         {
-            return this.NodeText;
+            return NodeText;
         }
 
         #region Management Methods
@@ -473,33 +473,33 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("image");
             }
 
-            this.m_imageList.Add(image.ImageId, image);
+            m_imageList.Add(image.ImageId, image);
 
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                this.Organization.AddImage(this, image);
+                Organization.AddImage(this, image);
             }
         }
 
         public void ClearImages()
         {
-            this.m_imageList.Clear();
+            m_imageList.Clear();
 
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                this.Organization.ClearImages(this.StepId);
+                Organization.ClearImages(StepId);
             }
         }
 
         public void RemoveImage(Guid imageId)
         {
-            if (this.m_imageList.ContainsKey(imageId))
+            if (m_imageList.ContainsKey(imageId))
             {
-                this.m_imageList.Remove(imageId);
+                m_imageList.Remove(imageId);
 
-                if (this.Organization != null)
+                if (Organization != null)
                 {
-                    this.Organization.RemoveImage(this, imageId);
+                    Organization.RemoveImage(this, imageId);
                 }
             }
             else
@@ -531,7 +531,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return string.Format("({0}) {1}", this.NodeTypeLabel, string.IsNullOrWhiteSpace(this.Name) ? this.Description : this.Name);
+                return string.Format("({0}) {1}", NodeTypeLabel, string.IsNullOrWhiteSpace(Name) ? Description : Name);
             }
         }
 
@@ -541,7 +541,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.StepId;
+                return StepId;
             }
         }
 
@@ -551,14 +551,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_imageList == null || this.m_imageList.Count == 0)
+                if (m_imageList == null || m_imageList.Count == 0)
                 {
                     return new CrmPluginImage[0];
                 }
                 else
                 {
-                    CrmPluginImage[] children = new CrmPluginImage[this.m_imageList.Count];
-                    this.m_imageList.Values.CopyTo(children, 0);
+                    CrmPluginImage[] children = new CrmPluginImage[m_imageList.Count];
+                    m_imageList.Values.CopyTo(children, 0);
 
                     return children;
                 }
@@ -571,11 +571,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.IsProfiled)
+                if (IsProfiled)
                 {
                     return CrmTreeNodeImageType.StepProfiled;
                 }
-                else if (this.Enabled)
+                else if (Enabled)
                 {
                     return CrmTreeNodeImageType.StepEnabled;
                 }
@@ -592,11 +592,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.IsProfiled)
+                if (IsProfiled)
                 {
                     return CrmTreeNodeImageType.StepProfiledSelected;
                 }
-                else if (this.Enabled)
+                else if (Enabled)
                 {
                     return CrmTreeNodeImageType.StepEnabledSelected;
                 }
@@ -646,7 +646,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.StepId;
+                return StepId;
             }
         }
 
@@ -655,9 +655,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             Dictionary<string, object> entityList = new Dictionary<string, object>();
             //Check for Permissions denied
             bool saveSecureConfiguration = true;
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                saveSecureConfiguration = !this.Organization.SecureConfigurationPermissionDenied;
+                saveSecureConfiguration = !Organization.SecureConfigurationPermissionDenied;
             }
 
             //Create the secure configuration entity
@@ -665,56 +665,56 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             // For Create cases, SecureConfig != null , SecureConfigurationId = null
 
             //For Update cases SecureConfigurationId != null , SecureConfig=null
-            if (!string.IsNullOrEmpty(this.SecureConfiguration))
+            if (!string.IsNullOrEmpty(SecureConfiguration))
             {
                 SdkMessageProcessingStepSecureConfig sdkSecureConfig = new SdkMessageProcessingStepSecureConfig();
-                if (this.SecureConfigurationId != Guid.Empty)
+                if (SecureConfigurationId != Guid.Empty)
                 {
                     sdkSecureConfig.SdkMessageProcessingStepSecureConfigId = new Guid?();
-                    sdkSecureConfig["sdkmessageprocessingstepsecureconfigid"] = this.SecureConfigurationId;
+                    sdkSecureConfig["sdkmessageprocessingstepsecureconfigid"] = SecureConfigurationId;
 
                     sdkStep.SdkMessageProcessingStepSecureConfigId = new EntityReference();
                     sdkStep.SdkMessageProcessingStepSecureConfigId.LogicalName = SdkMessageProcessingStepSecureConfig.EntityLogicalName;
-                    sdkStep.SdkMessageProcessingStepSecureConfigId.Id = this.SecureConfigurationId;
+                    sdkStep.SdkMessageProcessingStepSecureConfigId.Id = SecureConfigurationId;
                 }
 
-                sdkSecureConfig.SecureConfig = this.SecureConfiguration;
+                sdkSecureConfig.SecureConfig = SecureConfiguration;
 
                 entityList.Add(SdkMessageProcessingStepSecureConfig.EntityLogicalName, sdkSecureConfig);
             }
 
             //Create the main entity
-            if (this.StepId != Guid.Empty)
+            if (StepId != Guid.Empty)
             {
                 sdkStep.SdkMessageProcessingStepId = new Guid?();
-                sdkStep["sdkmessageprocessingstepid"] = this.StepId;
+                sdkStep["sdkmessageprocessingstepid"] = StepId;
             }
 
-            sdkStep.Configuration = this.UnsecureConfiguration;
+            sdkStep.Configuration = UnsecureConfiguration;
 
 
-            if (this.ServiceBusConfigurationId == Guid.Empty)
+            if (ServiceBusConfigurationId == Guid.Empty)
             {
-                sdkStep.EventHandler = new EntityReference(PluginType.EntityLogicalName, this.PluginId);
+                sdkStep.EventHandler = new EntityReference(PluginType.EntityLogicalName, PluginId);
             }
             else
             {
-                sdkStep.EventHandler = new EntityReference(ServiceEndpoint.EntityLogicalName, this.ServiceBusConfigurationId);
+                sdkStep.EventHandler = new EntityReference(ServiceEndpoint.EntityLogicalName, ServiceBusConfigurationId);
             }
 
-            sdkStep.Name = this.Name;
+            sdkStep.Name = Name;
 
 
             sdkStep.Mode = new OptionSetValue();
-            sdkStep.Mode.Value = (int)this.Mode;
+            sdkStep.Mode.Value = (int)Mode;
 
             sdkStep.Rank = new int?();
-            sdkStep["rank"] = this.Rank;
+            sdkStep["rank"] = Rank;
 
-            if (null != this.InvocationSource)
+            if (null != InvocationSource)
             {
 #pragma warning disable 0612
-                sdkStep.InvocationSource = new OptionSetValue((int)this.InvocationSource);
+                sdkStep.InvocationSource = new OptionSetValue((int)InvocationSource);
 #pragma warning restore 0612
             }
 
@@ -724,28 +724,28 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             sdkStep.SdkMessageFilterId = new EntityReference();
             sdkStep.SdkMessageFilterId.LogicalName = SdkMessageFilter.EntityLogicalName;
 
-            if (this.MessageId == Guid.Empty)
+            if (MessageId == Guid.Empty)
             {
                 sdkStep.SdkMessageId = null;
             }
             else
             {
-                sdkStep.SdkMessageId.Id = this.MessageId;
+                sdkStep.SdkMessageId.Id = MessageId;
             }
-            if (this.MessageEntityId == Guid.Empty)
+            if (MessageEntityId == Guid.Empty)
             {
                 sdkStep.SdkMessageFilterId = null;
             }
             else
             {
-                sdkStep.SdkMessageFilterId.Id = this.MessageEntityId;
+                sdkStep.SdkMessageFilterId.Id = MessageEntityId;
             }
             sdkStep.ImpersonatingUserId = new EntityReference();
             sdkStep.ImpersonatingUserId.LogicalName = SystemUser.EntityLogicalName;
 
-            if (this.ImpersonatingUserId != Guid.Empty)
+            if (ImpersonatingUserId != Guid.Empty)
             {
-                sdkStep.ImpersonatingUserId.Id = this.ImpersonatingUserId;
+                sdkStep.ImpersonatingUserId.Id = ImpersonatingUserId;
             }
             else
             {
@@ -753,23 +753,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             sdkStep.Stage = new OptionSetValue();
-            sdkStep.Stage.Value = (int)this.Stage;
+            sdkStep.Stage.Value = (int)Stage;
 
             sdkStep.SupportedDeployment = new OptionSetValue();
-            sdkStep.SupportedDeployment.Value = (int)this.Deployment;
+            sdkStep.SupportedDeployment.Value = (int)Deployment;
 
-            if (string.IsNullOrEmpty(this.FilteringAttributes))
+            if (string.IsNullOrEmpty(FilteringAttributes))
             {
                 sdkStep.FilteringAttributes = string.Empty;
             }
             else
             {
-                sdkStep.FilteringAttributes = this.FilteringAttributes;
+                sdkStep.FilteringAttributes = FilteringAttributes;
             }
 
-            sdkStep.AsyncAutoDelete = this.DeleteAsyncOperationIfSuccessful;
+            sdkStep.AsyncAutoDelete = DeleteAsyncOperationIfSuccessful;
 
-            sdkStep.Description = this.Description;
+            sdkStep.Description = Description;
 
             entityList.Add(SdkMessageProcessingStep.EntityLogicalName, sdkStep);
 
@@ -822,40 +822,40 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.StepId);
-                valueList.Add("Name", ConvertNullStringToEmpty(this.Name));
-                valueList.Add("CreatedOn", this.CreatedOn.HasValue ? this.CreatedOn.ToString() : "");
-                valueList.Add("ModifiedOn", this.ModifiedOn.HasValue ? this.ModifiedOn.ToString() : "");
+                valueList.Add("Id", StepId);
+                valueList.Add("Name", ConvertNullStringToEmpty(Name));
+                valueList.Add("CreatedOn", CreatedOn.HasValue ? CreatedOn.ToString() : "");
+                valueList.Add("ModifiedOn", ModifiedOn.HasValue ? ModifiedOn.ToString() : "");
 
-                if (this.MessageId == Guid.Empty)
+                if (MessageId == Guid.Empty)
                 {
                     valueList.Add("Message", string.Empty);
                     valueList.Add("MessageId", Guid.Empty.ToString());
-                    valueList.Add("MessageEntityId", this.MessageEntityId.ToString());
+                    valueList.Add("MessageEntityId", MessageEntityId.ToString());
                     valueList.Add("PrimaryEntity", string.Empty);
                     valueList.Add("SecondaryEntity", string.Empty);
                 }
-                else if (this.Organization == null)
+                else if (Organization == null)
                 {
-                    valueList.Add("Message", this.MessageId.ToString());
+                    valueList.Add("Message", MessageId.ToString());
                     valueList.Add("MessageId", MessageId.ToString());
-                    valueList.Add("MessageEntityId", this.MessageEntityId.ToString());
-                    valueList.Add("PrimaryEntity", this.MessageEntityId.ToString());
-                    valueList.Add("SecondaryEntity", this.MessageEntityId.ToString());
+                    valueList.Add("MessageEntityId", MessageEntityId.ToString());
+                    valueList.Add("PrimaryEntity", MessageEntityId.ToString());
+                    valueList.Add("SecondaryEntity", MessageEntityId.ToString());
                 }
                 else
                 {
                     valueList.Add("MessageId", MessageId.ToString());
-                    valueList.Add("MessageEntityId", this.MessageEntityId.ToString());
+                    valueList.Add("MessageEntityId", MessageEntityId.ToString());
 
-                    if (this.Organization.Messages.ContainsKey(this.MessageId))
+                    if (Organization.Messages.ContainsKey(MessageId))
                     {
-                        valueList.Add("Message", this.Organization.Messages[this.MessageId].Name);
+                        valueList.Add("Message", Organization.Messages[MessageId].Name);
 
-                        if (this.Organization.Messages[this.MessageId].MessageEntities.ContainsKey(this.MessageEntityId))
+                        if (Organization.Messages[MessageId].MessageEntities.ContainsKey(MessageEntityId))
                         {
-                            valueList.Add("PrimaryEntity", this.Organization.Messages[this.MessageId][MessageEntityId].PrimaryEntity);
-                            valueList.Add("SecondaryEntity", this.Organization.Messages[this.MessageId][MessageEntityId].SecondaryEntity);
+                            valueList.Add("PrimaryEntity", Organization.Messages[MessageId][MessageEntityId].PrimaryEntity);
+                            valueList.Add("SecondaryEntity", Organization.Messages[MessageId][MessageEntityId].SecondaryEntity);
                         }
                         else if (MessageEntityId == Guid.Empty)
                         {
@@ -875,34 +875,34 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         valueList.Add("SecondaryEntity", string.Empty);
                     }
                 }
-                if (this.Organization != null && this.Organization.Plugins != null && this.Organization.Plugins.ContainsKey(this.PluginId))
+                if (Organization != null && Organization.Plugins != null && Organization.Plugins.ContainsKey(PluginId))
                 {
-                    valueList.Add("TypeName", this.Organization.Plugins[this.PluginId].TypeName);
+                    valueList.Add("TypeName", Organization.Plugins[PluginId].TypeName);
                 }
                 else
                 {
                     valueList.Add("TypeName", "Error - Unable to retrieve the TypeName");
                 }
 
-                if (this.ImpersonatingUserId == Guid.Empty)
+                if (ImpersonatingUserId == Guid.Empty)
                 {
                     valueList.Add("Impersonate", "Calling User");
                 }
-                else if (this.Organization == null)
+                else if (Organization == null)
                 {
-                    valueList.Add("Impersonate", this.ImpersonatingUserId.ToString());
+                    valueList.Add("Impersonate", ImpersonatingUserId.ToString());
                 }
-                else if (this.Organization.Users.ContainsKey(this.ImpersonatingUserId))
+                else if (Organization.Users.ContainsKey(ImpersonatingUserId))
                 {
-                    valueList.Add("Impersonate", this.Organization.Users[this.ImpersonatingUserId].Name);
+                    valueList.Add("Impersonate", Organization.Users[ImpersonatingUserId].Name);
                 }
                 else
                 {
                     valueList.Add("Impersonate", "Invalid User");
                 }
-                valueList.Add("Mode", this.Mode.ToString());
+                valueList.Add("Mode", Mode.ToString());
 
-                switch (this.Stage)
+                switch (Stage)
                 {
                     case CrmPluginStepStage.PreValidation:
 
@@ -921,10 +921,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         valueList.Add("Stage", "Post Stage - Outside Transaction");
                         break;
                     default:
-                        throw new NotImplementedException("Stage = " + this.Stage.ToString());
+                        throw new NotImplementedException("Stage = " + Stage.ToString());
                 }
 
-                switch (this.Deployment)
+                switch (Deployment)
                 {
                     case CrmPluginStepDeployment.ServerOnly:
 
@@ -942,10 +942,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         break;
 
                     default:
-                        throw new NotImplementedException("Deployment = " + this.Deployment.ToString());
+                        throw new NotImplementedException("Deployment = " + Deployment.ToString());
                 }
 
-                switch (this.InvocationSource)
+                switch (InvocationSource)
                 {
                     case CrmPluginStepInvocationSource.Parent:
 
@@ -958,32 +958,32 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         break;
                 }
 
-                valueList.Add("Enabled", this.Enabled);
-                valueList.Add("Rank", this.Rank);
+                valueList.Add("Enabled", Enabled);
+                valueList.Add("Rank", Rank);
 
-                if (string.IsNullOrEmpty(this.FilteringAttributes))
+                if (string.IsNullOrEmpty(FilteringAttributes))
                 {
                     valueList.Add("FilteringAttributes", "All Attributes");
                 }
                 else
                 {
-                    valueList.Add("FilteringAttributes", this.FilteringAttributes);
+                    valueList.Add("FilteringAttributes", FilteringAttributes);
                 }
 
-                valueList.Add("Description", ConvertNullStringToEmpty(this.Description));
-                valueList.Add("UnsecureConfiguration", ConvertNullStringToEmpty(this.UnsecureConfiguration));
-                valueList.Add("ServiceBusConfigurationId", this.ServiceBusConfigurationId);
+                valueList.Add("Description", ConvertNullStringToEmpty(Description));
+                valueList.Add("UnsecureConfiguration", ConvertNullStringToEmpty(UnsecureConfiguration));
+                valueList.Add("ServiceBusConfigurationId", ServiceBusConfigurationId);
 
-                if (this.Organization != null && this.Organization.SecureConfigurationPermissionDenied)
+                if (Organization != null && Organization.SecureConfigurationPermissionDenied)
                 {
                     valueList.Add("SecureConfiguration", "Unable to Retrieve Value");
                 }
                 else
                 {
-                    valueList.Add("SecureConfiguration", ConvertNullStringToEmpty(this.SecureConfiguration));
+                    valueList.Add("SecureConfiguration", ConvertNullStringToEmpty(SecureConfiguration));
                 }
 
-                if (this.DeleteAsyncOperationIfSuccessful)
+                if (DeleteAsyncOperationIfSuccessful)
                 {
                     valueList.Add("DeleteAsyncOperationIfSuccessful", "If StatusCode = Successful");
                 }
@@ -1002,7 +1002,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.CustomizationLevel == 0;
+                return CustomizationLevel == 0;
             }
         }
 
@@ -1010,12 +1010,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (createdOn != null)
             {
-                this.m_createdOn = createdOn;
+                m_createdOn = createdOn;
             }
 
             if (modifiedOn != null)
             {
-                this.m_modifiedOn = modifiedOn;
+                m_modifiedOn = modifiedOn;
             }
         }
         #endregion
@@ -1023,7 +1023,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region ICloneable Members
         public object Clone()
         {
-            return this.Clone(true);
+            return Clone(true);
         }
 
         public CrmPluginStep Clone(bool includeOrganization)
@@ -1031,37 +1031,37 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             CrmPluginStep newStep;
             if (includeOrganization)
             {
-                newStep = new CrmPluginStep(this.m_org);
+                newStep = new CrmPluginStep(m_org);
             }
             else
             {
                 newStep = new CrmPluginStep(null);
             }
 
-            newStep.m_assemblyId = this.m_assemblyId;
-            newStep.UnsecureConfiguration = this.UnsecureConfiguration;
-            newStep.m_createdOn = this.m_createdOn;
-            newStep.m_customizationLevel = this.m_customizationLevel;
-            newStep.Deployment = this.Deployment;
-            newStep.Name = this.Name;
-            newStep.Enabled = this.Enabled;
-            newStep.MessageEntityId = this.MessageEntityId;
-            newStep.m_filteringAttributes = this.m_filteringAttributes;
-            newStep.ImpersonatingUserId = this.ImpersonatingUserId;
-            newStep.InvocationSource = this.InvocationSource;
-            newStep.MessageId = this.MessageId;
-            newStep.Mode = this.Mode;
-            newStep.m_modifiedOn = this.m_modifiedOn;
-            newStep.m_pluginId = this.m_pluginId;
-            newStep.Rank = this.Rank;
-            newStep.SecureConfiguration = this.SecureConfiguration;
-            newStep.SecureConfigurationId = this.SecureConfigurationId;
-            newStep.Stage = this.Stage;
-            newStep.StepId = this.StepId;
-            newStep.m_serviceBusConfigurationId = this.m_serviceBusConfigurationId;
+            newStep.m_assemblyId = m_assemblyId;
+            newStep.UnsecureConfiguration = UnsecureConfiguration;
+            newStep.m_createdOn = m_createdOn;
+            newStep.m_customizationLevel = m_customizationLevel;
+            newStep.Deployment = Deployment;
+            newStep.Name = Name;
+            newStep.Enabled = Enabled;
+            newStep.MessageEntityId = MessageEntityId;
+            newStep.m_filteringAttributes = m_filteringAttributes;
+            newStep.ImpersonatingUserId = ImpersonatingUserId;
+            newStep.InvocationSource = InvocationSource;
+            newStep.MessageId = MessageId;
+            newStep.Mode = Mode;
+            newStep.m_modifiedOn = m_modifiedOn;
+            newStep.m_pluginId = m_pluginId;
+            newStep.Rank = Rank;
+            newStep.SecureConfiguration = SecureConfiguration;
+            newStep.SecureConfigurationId = SecureConfigurationId;
+            newStep.Stage = Stage;
+            newStep.StepId = StepId;
+            newStep.m_serviceBusConfigurationId = m_serviceBusConfigurationId;
             //Create a new image list
             Dictionary<Guid, CrmPluginImage> newImageList = new Dictionary<Guid, CrmPluginImage>();
-            foreach (CrmPluginImage image in this.m_imageList.Values)
+            foreach (CrmPluginImage image in m_imageList.Values)
             {
                 //Clone the image
                 CrmPluginImage clonedImage = (CrmPluginImage)image.Clone(includeOrganization);

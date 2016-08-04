@@ -31,17 +31,17 @@
 
         private void OnPropertyChanged(string propertyName)
         {
-            if ((this.PropertyChanged != null))
+            if ((PropertyChanged != null))
             {
-                this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
 
         private void OnPropertyChanging(string propertyName)
         {
-            if ((this.PropertyChanging != null))
+            if ((PropertyChanging != null))
             {
-                this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
             }
         }
 
@@ -53,7 +53,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+                return GetAttributeValue<OptionSetValue>("componentstate");
             }
         }
 
@@ -65,13 +65,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("content");
+                return GetAttributeValue<string>("content");
             }
             set
             {
-                this.OnPropertyChanging("Content");
-                this.SetAttributeValue("content", value);
-                this.OnPropertyChanged("Content");
+                OnPropertyChanging("Content");
+                SetAttributeValue("content", value);
+                OnPropertyChanged("Content");
             }
         }
 
@@ -83,7 +83,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
@@ -95,7 +95,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+                return GetAttributeValue<System.DateTime?>("createdon");
             }
         }
 
@@ -107,7 +107,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
@@ -119,13 +119,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("culture");
+                return GetAttributeValue<string>("culture");
             }
             set
             {
-                this.OnPropertyChanging("Culture");
-                this.SetAttributeValue("culture", value);
-                this.OnPropertyChanged("Culture");
+                OnPropertyChanging("Culture");
+                SetAttributeValue("culture", value);
+                OnPropertyChanged("Culture");
             }
         }
 
@@ -137,7 +137,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+                return GetAttributeValue<int?>("customizationlevel");
             }
         }
 
@@ -149,13 +149,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("description");
+                return GetAttributeValue<string>("description");
             }
             set
             {
-                this.OnPropertyChanging("Description");
-                this.SetAttributeValue("description", value);
-                this.OnPropertyChanged("Description");
+                OnPropertyChanging("Description");
+                SetAttributeValue("description", value);
+                OnPropertyChanged("Description");
             }
         }
 
@@ -167,13 +167,13 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("ishidden");
+                return GetAttributeValue<BooleanManagedProperty>("ishidden");
             }
             set
             {
-                this.OnPropertyChanging("IsHidden");
-                this.SetAttributeValue("ishidden", value);
-                this.OnPropertyChanged("IsHidden");
+                OnPropertyChanging("IsHidden");
+                SetAttributeValue("ishidden", value);
+                OnPropertyChanged("IsHidden");
             }
         }
 
@@ -185,7 +185,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+                return GetAttributeValue<bool?>("ismanaged");
             }
         }
 
@@ -197,13 +197,13 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("isolationmode");
+                return GetAttributeValue<OptionSetValue>("isolationmode");
             }
             set
             {
-                this.OnPropertyChanging("IsolationMode");
-                this.SetAttributeValue("isolationmode", value);
-                this.OnPropertyChanged("IsolationMode");
+                OnPropertyChanging("IsolationMode");
+                SetAttributeValue("isolationmode", value);
+                OnPropertyChanged("IsolationMode");
             }
         }
 
@@ -215,7 +215,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("major");
+                return GetAttributeValue<int?>("major");
             }
         }
 
@@ -227,7 +227,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("minor");
+                return GetAttributeValue<int?>("minor");
             }
         }
 
@@ -239,7 +239,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<EntityReference>("modifiedby");
             }
         }
 
@@ -251,7 +251,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+                return GetAttributeValue<System.DateTime?>("modifiedon");
             }
         }
 
@@ -263,7 +263,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<EntityReference>("modifiedonbehalfby");
             }
         }
 
@@ -275,13 +275,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("name");
+                return GetAttributeValue<string>("name");
             }
             set
             {
-                this.OnPropertyChanging("Name");
-                this.SetAttributeValue("name", value);
-                this.OnPropertyChanged("Name");
+                OnPropertyChanging("Name");
+                SetAttributeValue("name", value);
+                OnPropertyChanged("Name");
             }
         }
 
@@ -293,7 +293,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+                return GetAttributeValue<EntityReference>("organizationid");
             }
         }
 
@@ -305,7 +305,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
+                return GetAttributeValue<System.DateTime?>("overwritetime");
             }
         }
 
@@ -317,13 +317,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("path");
+                return GetAttributeValue<string>("path");
             }
             set
             {
-                this.OnPropertyChanging("Path");
-                this.SetAttributeValue("path", value);
-                this.OnPropertyChanged("Path");
+                OnPropertyChanging("Path");
+                SetAttributeValue("path", value);
+                OnPropertyChanged("Path");
             }
         }
 
@@ -335,12 +335,12 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("pluginassemblyid");
+                return GetAttributeValue<System.Guid?>("pluginassemblyid");
             }
             set
             {
-                this.OnPropertyChanging("PluginAssemblyId");
-                this.SetAttributeValue("pluginassemblyid", value);
+                OnPropertyChanging("PluginAssemblyId");
+                SetAttributeValue("pluginassemblyid", value);
                 if (value.HasValue)
                 {
                     base.Id = value.Value;
@@ -349,7 +349,7 @@
                 {
                     base.Id = System.Guid.Empty;
                 }
-                this.OnPropertyChanged("PluginAssemblyId");
+                OnPropertyChanged("PluginAssemblyId");
             }
         }
 
@@ -362,7 +362,7 @@
             }
             set
             {
-                this.PluginAssemblyId = value;
+                PluginAssemblyId = value;
             }
         }
 
@@ -374,7 +374,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("pluginassemblyidunique");
+                return GetAttributeValue<System.Guid?>("pluginassemblyidunique");
             }
         }
 
@@ -386,13 +386,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("publickeytoken");
+                return GetAttributeValue<string>("publickeytoken");
             }
             set
             {
-                this.OnPropertyChanging("PublicKeyToken");
-                this.SetAttributeValue("publickeytoken", value);
-                this.OnPropertyChanged("PublicKeyToken");
+                OnPropertyChanging("PublicKeyToken");
+                SetAttributeValue("publickeytoken", value);
+                OnPropertyChanged("PublicKeyToken");
             }
         }
 
@@ -404,7 +404,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+                return GetAttributeValue<System.Guid?>("solutionid");
             }
         }
 
@@ -416,13 +416,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("sourcehash");
+                return GetAttributeValue<string>("sourcehash");
             }
             set
             {
-                this.OnPropertyChanging("SourceHash");
-                this.SetAttributeValue("sourcehash", value);
-                this.OnPropertyChanged("SourceHash");
+                OnPropertyChanging("SourceHash");
+                SetAttributeValue("sourcehash", value);
+                OnPropertyChanged("SourceHash");
             }
         }
 
@@ -434,13 +434,13 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("sourcetype");
+                return GetAttributeValue<OptionSetValue>("sourcetype");
             }
             set
             {
-                this.OnPropertyChanging("SourceType");
-                this.SetAttributeValue("sourcetype", value);
-                this.OnPropertyChanged("SourceType");
+                OnPropertyChanging("SourceType");
+                SetAttributeValue("sourcetype", value);
+                OnPropertyChanged("SourceType");
             }
         }
 
@@ -452,13 +452,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("version");
+                return GetAttributeValue<string>("version");
             }
             set
             {
-                this.OnPropertyChanging("Version");
-                this.SetAttributeValue("version", value);
-                this.OnPropertyChanged("Version");
+                OnPropertyChanging("Version");
+                SetAttributeValue("version", value);
+                OnPropertyChanged("Version");
             }
         }
 
@@ -470,7 +470,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+                return GetAttributeValue<long?>("versionnumber");
             }
         }
 
@@ -482,13 +482,13 @@
         {
             get
             {
-                return this.GetRelatedEntities<PluginType>("pluginassembly_plugintype", null);
+                return GetRelatedEntities<PluginType>("pluginassembly_plugintype", null);
             }
             set
             {
-                this.OnPropertyChanging("pluginassembly_plugintype");
-                this.SetRelatedEntities<PluginType>("pluginassembly_plugintype", null, value);
-                this.OnPropertyChanged("pluginassembly_plugintype");
+                OnPropertyChanging("pluginassembly_plugintype");
+                SetRelatedEntities("pluginassembly_plugintype", null, value);
+                OnPropertyChanged("pluginassembly_plugintype");
             }
         }
     }

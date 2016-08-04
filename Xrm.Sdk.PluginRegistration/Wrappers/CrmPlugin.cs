@@ -51,29 +51,29 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public CrmPlugin(CrmOrganization org)
         {
-            this.m_org = org;
-            this.FriendlyName = Guid.NewGuid().ToString();
+            m_org = org;
+            FriendlyName = Guid.NewGuid().ToString();
         }
 
         public CrmPlugin(CrmOrganization org, Guid pluginId, Guid assemblyId, string assemblyName, string friendlyName,
             string typeName, CrmPluginType type, CrmPluginIsolatable isolatable, DateTime? createdOn, DateTime? modifiedOn)
             : this(org)
         {
-            this.PluginId = pluginId;
-            this.AssemblyId = assemblyId;
-            this.AssemblyName = assemblyName;
-            this.TypeName = typeName;
-            this.Name = typeName;
-            this.FriendlyName = friendlyName;
-            this.PluginType = type;
-            this.Isolatable = isolatable;
-            this.UpdateDates(createdOn, modifiedOn);
+            PluginId = pluginId;
+            AssemblyId = assemblyId;
+            AssemblyName = assemblyName;
+            TypeName = typeName;
+            Name = typeName;
+            FriendlyName = friendlyName;
+            PluginType = type;
+            Isolatable = isolatable;
+            UpdateDates(createdOn, modifiedOn);
         }
 
         public CrmPlugin(CrmOrganization org, PluginType type)
             : this(org)
         {
-            this.RefreshFromPluginType(type);
+            RefreshFromPluginType(type);
         }
 
         #region Properties
@@ -82,7 +82,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
@@ -90,18 +90,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentNullException();
                 }
-                else if (this.m_org == null)
+                else if (m_org == null)
                 {
-                    this.m_org = value;
+                    m_org = value;
 
-                    foreach (CrmPluginStep step in this.m_stepList.Values)
+                    foreach (CrmPluginStep step in m_stepList.Values)
                     {
                         if (step.Organization == null)
                         {
                             step.Organization = m_org;
                         }
 
-                        this.Organization.AddStep(this, step);
+                        Organization.AddStep(this, step);
                     }
                 }
                 else
@@ -116,12 +116,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_assemblyName;
+                return m_assemblyName;
             }
 
             set
             {
-                this.m_assemblyName = value;
+                m_assemblyName = value;
             }
         }
 
@@ -130,12 +130,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_typeName;
+                return m_typeName;
             }
 
             set
             {
-                this.m_typeName = value;
+                m_typeName = value;
             }
         }
 
@@ -151,11 +151,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_friendlyName;
+                return m_friendlyName;
             }
             set
             {
-                this.m_friendlyName = this.GenerateFriendlyName(value, out this.m_friendlyNameIgnore);
+                m_friendlyName = GenerateFriendlyName(value, out m_friendlyNameIgnore);
             }
         }
 
@@ -164,11 +164,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_plugType;
+                return m_plugType;
             }
             set
             {
-                this.m_plugType = value;
+                m_plugType = value;
             }
         }
 
@@ -180,7 +180,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_createdOn;
+                return m_createdOn;
             }
         }
 
@@ -192,7 +192,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_modifiedOn;
+                return m_modifiedOn;
             }
         }
 
@@ -201,12 +201,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_isolatable;
+                return m_isolatable;
             }
 
             set
             {
-                this.m_isolatable = value;
+                m_isolatable = value;
             }
         }
 
@@ -215,18 +215,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginId;
+                return m_pluginId;
             }
             set
             {
-                if (value == this.m_pluginId)
+                if (value == m_pluginId)
                 {
                     return;
                 }
 
-                this.m_pluginId = value;
+                m_pluginId = value;
 
-                foreach (CrmPluginStep step in this.m_stepList.Values)
+                foreach (CrmPluginStep step in m_stepList.Values)
                 {
                     step.PluginId = value;
                 }
@@ -238,7 +238,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_name;
+                return m_name;
             }
             set
             {
@@ -251,7 +251,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_workflowActivityGroupName;
+                return m_workflowActivityGroupName;
             }
             set
             {
@@ -264,18 +264,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginAssemblyId;
+                return m_pluginAssemblyId;
             }
             set
             {
-                if (value == this.m_pluginAssemblyId)
+                if (value == m_pluginAssemblyId)
                 {
                     return;
                 }
 
-                this.m_pluginAssemblyId = value;
+                m_pluginAssemblyId = value;
 
-                foreach (CrmPluginStep step in this.m_stepList.Values)
+                foreach (CrmPluginStep step in m_stepList.Values)
                 {
                     step.AssemblyId = value;
                 }
@@ -287,7 +287,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_stepList[stepId];
+                return m_stepList[stepId];
             }
         }
 
@@ -296,12 +296,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_stepReadOnlyList == null)
+                if (m_stepReadOnlyList == null)
                 {
-                    this.m_stepReadOnlyList = new CrmEntityDictionary<CrmPluginStep>(this.m_stepList);
+                    m_stepReadOnlyList = new CrmEntityDictionary<CrmPluginStep>(m_stepList);
                 }
 
-                return this.m_stepReadOnlyList;
+                return m_stepReadOnlyList;
             }
         }
 
@@ -310,7 +310,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_customizationLevel;
+                return m_customizationLevel;
             }
 
             set
@@ -320,7 +320,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     throw new ArgumentException("Invalid CustomizationLevel specified");
                 }
 
-                this.m_customizationLevel = value;
+                m_customizationLevel = value;
             }
         }
 
@@ -339,74 +339,74 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (type.AssemblyName != null)
             {
-                this.AssemblyName = type.AssemblyName;
+                AssemblyName = type.AssemblyName;
             }
 
             if (type.TypeName != null)
             {
-                this.TypeName = type.TypeName;
+                TypeName = type.TypeName;
             }
 
             if (type.FriendlyName != null)
             {
-                this.FriendlyName = type.FriendlyName;
+                FriendlyName = type.FriendlyName;
             }
 
             if (type.Name != null)
             {
-                this.Name = type.Name;
+                Name = type.Name;
             }
 
-            this.Description = type.Description;
+            Description = type.Description;
 
             if (type.PluginTypeId != null)
             {
-                this.PluginId = type.PluginTypeId.Value;
+                PluginId = type.PluginTypeId.Value;
             }
 
             if (type.PluginAssemblyId != null)
             {
-                this.AssemblyId = type.PluginAssemblyId.Id;
+                AssemblyId = type.PluginAssemblyId.Id;
             }
 
             if (type.CustomizationLevel != null)
             {
-                this.CustomizationLevel = type.CustomizationLevel.Value;
+                CustomizationLevel = type.CustomizationLevel.Value;
             }
 
             if (type.CreatedOn != null && (type.CreatedOn.HasValue))
             {
-                this.m_createdOn = type.CreatedOn.Value;
+                m_createdOn = type.CreatedOn.Value;
             }
 
             if (type.ModifiedOn != null && (type.ModifiedOn.HasValue))
             {
-                this.m_modifiedOn = type.ModifiedOn.Value;
+                m_modifiedOn = type.ModifiedOn.Value;
             }
 
             if (type.IsWorkflowActivity != null && (type.IsWorkflowActivity.HasValue))
             {
                 if (type.IsWorkflowActivity.Value)
                 {
-                    this.PluginType = CrmPluginType.WorkflowActivity;
+                    PluginType = CrmPluginType.WorkflowActivity;
                 }
                 else
                 {
-                    this.PluginType = CrmPluginType.Plugin;
+                    PluginType = CrmPluginType.Plugin;
                 }
             }
 
-            this.WorkflowActivityGroupName = type.WorkflowActivityGroupName;
+            WorkflowActivityGroupName = type.WorkflowActivityGroupName;
         }
 
         public string GenerateNodeText(string newFriendlyName)
         {
             bool ignoreFriendlyName;
-            string newText = this.GenerateFriendlyName(newFriendlyName, out ignoreFriendlyName);
+            string newText = GenerateFriendlyName(newFriendlyName, out ignoreFriendlyName);
 
             if (ignoreFriendlyName)
             {
-                return this.TypeName;
+                return TypeName;
             }
             else
             {
@@ -416,7 +416,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public override string ToString()
         {
-            return this.NodeText;
+            return NodeText;
         }
 
         #region Management Methods
@@ -427,33 +427,33 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("step");
             }
 
-            this.m_stepList.Add(step.StepId, step);
+            m_stepList.Add(step.StepId, step);
 
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                this.Organization.AddStep(this, step);
+                Organization.AddStep(this, step);
             }
         }
 
         public void ClearSteps()
         {
-            this.m_stepList.Clear();
+            m_stepList.Clear();
 
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                this.Organization.ClearSteps(this.PluginId);
+                Organization.ClearSteps(PluginId);
             }
         }
 
         public void RemoveStep(Guid stepId)
         {
-            if (this.m_stepList.ContainsKey(stepId))
+            if (m_stepList.ContainsKey(stepId))
             {
-                this.m_stepList.Remove(stepId);
+                m_stepList.Remove(stepId);
 
-                if (this.Organization != null)
+                if (Organization != null)
                 {
-                    this.Organization.RemoveStep(this, stepId);
+                    Organization.RemoveStep(this, stepId);
                 }
             }
             else
@@ -480,12 +480,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         private string GenerateFriendlyName(string newName, out bool ignoreFriendlyName)
         {
             if (string.IsNullOrEmpty(newName) ||
-                string.Equals(this.m_typeName, newName, StringComparison.InvariantCultureIgnoreCase))
+                string.Equals(m_typeName, newName, StringComparison.InvariantCultureIgnoreCase))
             {
                 ignoreFriendlyName = true;
-                if (this.m_friendlyNameIgnore)
+                if (m_friendlyNameIgnore)
                 {
-                    return this.m_friendlyName;
+                    return m_friendlyName;
                 }
                 else
                 {
@@ -510,18 +510,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.IsProfilerPlugin)
+                if (IsProfilerPlugin)
                 {
                     return "Plug-in Profiler";
                 }
 
                 string format;
-                if (CrmPluginIsolatable.Yes == this.Isolatable)
+                if (CrmPluginIsolatable.Yes == Isolatable)
                 {
                     format = "({0}) {2} - Isolatable";
                 }
-                else if (string.IsNullOrWhiteSpace(this.WorkflowActivityGroupName) ||
-                    this.WorkflowActivityGroupName.StartsWith(this.AssemblyName + " (", StringComparison.Ordinal))
+                else if (string.IsNullOrWhiteSpace(WorkflowActivityGroupName) ||
+                    WorkflowActivityGroupName.StartsWith(AssemblyName + " (", StringComparison.Ordinal))
                 {
                     format = "({0}) {2}";
                 }
@@ -530,7 +530,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     format = "({0}) {1}: {2}";
                 }
 
-                return string.Format(format, this.NodeTypeLabel, this.WorkflowActivityGroupName, string.IsNullOrWhiteSpace(this.Name) ? this.Description : this.Name);
+                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name);
             }
         }
 
@@ -540,7 +540,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginId;
+                return m_pluginId;
             }
         }
 
@@ -550,14 +550,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_stepList == null || this.m_stepList.Count == 0)
+                if (m_stepList == null || m_stepList.Count == 0)
                 {
                     return new CrmPluginStep[0];
                 }
                 else
                 {
-                    CrmPluginStep[] children = new CrmPluginStep[this.m_stepList.Count];
-                    this.m_stepList.Values.CopyTo(children, 0);
+                    CrmPluginStep[] children = new CrmPluginStep[m_stepList.Count];
+                    m_stepList.Values.CopyTo(children, 0);
 
                     return children;
                 }
@@ -570,13 +570,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.IsProfilerPlugin)
+                if (IsProfilerPlugin)
                 {
                     return CrmTreeNodeImageType.PluginProfiler;
                 }
                 else
                 {
-                    switch (this.m_plugType)
+                    switch (m_plugType)
                     {
                         case CrmPluginType.Plugin:
                             return CrmTreeNodeImageType.Plugin;
@@ -585,7 +585,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                             return CrmTreeNodeImageType.WorkflowActivity;
 
                         default:
-                            throw new NotImplementedException("PluginType = " + this.m_plugType);
+                            throw new NotImplementedException("PluginType = " + m_plugType);
                     }
                 }
             }
@@ -597,13 +597,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.IsProfilerPlugin)
+                if (IsProfilerPlugin)
                 {
                     return CrmTreeNodeImageType.PluginProfilerSelected;
                 }
                 else
                 {
-                    switch (this.m_plugType)
+                    switch (m_plugType)
                     {
                         case CrmPluginType.Plugin:
                             return CrmTreeNodeImageType.PluginSelected;
@@ -612,7 +612,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                             return CrmTreeNodeImageType.WorkflowActivitySelected;
 
                         default:
-                            throw new NotImplementedException("PluginType = " + this.m_plugType);
+                            throw new NotImplementedException("PluginType = " + m_plugType);
                     }
                 }
             }
@@ -624,7 +624,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                switch (this.m_plugType)
+                switch (m_plugType)
                 {
                     case CrmPluginType.Plugin:
                         return CrmTreeNodeType.Plugin;
@@ -633,7 +633,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         return CrmTreeNodeType.WorkflowActivity;
 
                     default:
-                        throw new NotImplementedException("PluginType = " + this.m_plugType);
+                        throw new NotImplementedException("PluginType = " + m_plugType);
                 }
             }
         }
@@ -644,14 +644,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                switch (this.PluginType)
+                switch (PluginType)
                 {
                     case CrmPluginType.Plugin:
                         return "Plugin";
                     case CrmPluginType.WorkflowActivity:
                         return "Workflow Activity";
                     default:
-                        throw new NotImplementedException("PluginType = " + this.PluginType.ToString());
+                        throw new NotImplementedException("PluginType = " + PluginType.ToString());
                 }
             }
         }
@@ -674,36 +674,36 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginId;
+                return m_pluginId;
             }
         }
 
         public Dictionary<string, object> GenerateCrmEntities()
         {
             PluginType plugin = new PluginType();
-            if (this.PluginId != Guid.Empty)
+            if (PluginId != Guid.Empty)
             {
                 plugin["plugintypeid"] = new Guid?();
-                plugin["plugintypeid"] = this.PluginId;
+                plugin["plugintypeid"] = PluginId;
             }
 
-            if (this.AssemblyId != Guid.Empty)
+            if (AssemblyId != Guid.Empty)
             {
                 plugin.PluginAssemblyId = new EntityReference();
                 plugin.PluginAssemblyId.LogicalName = PluginAssembly.EntityLogicalName;
-                plugin.PluginAssemblyId.Id = this.AssemblyId;
+                plugin.PluginAssemblyId.Id = AssemblyId;
             }
             else
             {
                 throw new ArgumentException("PluginAssembly has not been set", "plugin");
             }
 
-            plugin.TypeName = this.TypeName;
-            plugin.FriendlyName = this.m_friendlyName;
+            plugin.TypeName = TypeName;
+            plugin.FriendlyName = m_friendlyName;
 
-            plugin.Name = this.Name;
-            plugin.Description = this.Description;
-            plugin.WorkflowActivityGroupName = this.WorkflowActivityGroupName;
+            plugin.Name = Name;
+            plugin.Description = Description;
+            plugin.WorkflowActivityGroupName = WorkflowActivityGroupName;
 
             Dictionary<string, object> entityList = new Dictionary<string, object>();
             entityList.Add(Entities.PluginType.EntityLogicalName, plugin);
@@ -743,15 +743,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.PluginId);
-                valueList.Add("Assembly", this.AssemblyName);
-                valueList.Add("ModifiedOn", this.ModifiedOn);
-                valueList.Add("FriendlyName", this.FriendlyName);
-                valueList.Add("Name", this.Name);
-                valueList.Add("TypeName", this.TypeName);
-                valueList.Add("WorkflowActivityGroupName", this.WorkflowActivityGroupName);
-                valueList.Add("Isolatable", this.Isolatable.ToString());
-                valueList.Add("Description", this.Description);
+                valueList.Add("Id", PluginId);
+                valueList.Add("Assembly", AssemblyName);
+                valueList.Add("ModifiedOn", ModifiedOn);
+                valueList.Add("FriendlyName", FriendlyName);
+                valueList.Add("Name", Name);
+                valueList.Add("TypeName", TypeName);
+                valueList.Add("WorkflowActivityGroupName", WorkflowActivityGroupName);
+                valueList.Add("Isolatable", Isolatable.ToString());
+                valueList.Add("Description", Description);
                 return valueList;
             }
         }
@@ -762,7 +762,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.CustomizationLevel == 0;
+                return CustomizationLevel == 0;
             }
         }
 
@@ -770,12 +770,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (createdOn != null)
             {
-                this.m_createdOn = createdOn;
+                m_createdOn = createdOn;
             }
 
             if (modifiedOn != null)
             {
-                this.m_modifiedOn = modifiedOn;
+                m_modifiedOn = modifiedOn;
             }
         }
         #endregion
@@ -783,7 +783,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region ICloneable Members
         public object Clone()
         {
-            return this.Clone(true);
+            return Clone(true);
         }
 
         public CrmPlugin Clone(bool includeOrganization)
@@ -791,28 +791,28 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             CrmPlugin newPlugin;
             if (includeOrganization)
             {
-                newPlugin = new CrmPlugin(this.m_org);
+                newPlugin = new CrmPlugin(m_org);
             }
             else
             {
                 newPlugin = new CrmPlugin(null);
             }
 
-            newPlugin.m_assemblyName = this.m_assemblyName;
-            newPlugin.m_createdOn = this.m_createdOn;
-            newPlugin.m_customizationLevel = this.m_customizationLevel;
-            newPlugin.m_friendlyName = this.m_friendlyName;
-            newPlugin.m_friendlyNameIgnore = this.m_friendlyNameIgnore;
-            newPlugin.m_isolatable = this.m_isolatable;
-            newPlugin.m_modifiedOn = this.m_modifiedOn;
-            newPlugin.m_pluginAssemblyId = this.m_pluginAssemblyId;
-            newPlugin.m_pluginId = this.m_pluginId;
-            newPlugin.m_plugType = this.m_plugType;
-            newPlugin.m_typeName = this.m_typeName;
+            newPlugin.m_assemblyName = m_assemblyName;
+            newPlugin.m_createdOn = m_createdOn;
+            newPlugin.m_customizationLevel = m_customizationLevel;
+            newPlugin.m_friendlyName = m_friendlyName;
+            newPlugin.m_friendlyNameIgnore = m_friendlyNameIgnore;
+            newPlugin.m_isolatable = m_isolatable;
+            newPlugin.m_modifiedOn = m_modifiedOn;
+            newPlugin.m_pluginAssemblyId = m_pluginAssemblyId;
+            newPlugin.m_pluginId = m_pluginId;
+            newPlugin.m_plugType = m_plugType;
+            newPlugin.m_typeName = m_typeName;
 
             //Create a new step list
             Dictionary<Guid, CrmPluginStep> newStepList = new Dictionary<Guid, CrmPluginStep>();
-            foreach (CrmPluginStep step in this.m_stepList.Values)
+            foreach (CrmPluginStep step in m_stepList.Values)
             {
                 //Clone the step
                 CrmPluginStep clonedStep = (CrmPluginStep)step.Clone(includeOrganization);

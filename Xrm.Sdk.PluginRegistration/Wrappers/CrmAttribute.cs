@@ -42,13 +42,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("friendlyName");
             }
 
-            this.m_schemaName = schemaName;
-            this.m_friendlyName = friendlyName;
-            this.m_attributeType = type;
-            this.m_validForCreate = validForCreate;
-            this.m_validForRead = validForRead;
-            this.m_validForUpdate = validForUpdate;
-            this.m_isPrimaryId = isPrimaryId;
+            m_schemaName = schemaName;
+            m_friendlyName = friendlyName;
+            m_attributeType = type;
+            m_validForCreate = validForCreate;
+            m_validForRead = validForRead;
+            m_validForUpdate = validForUpdate;
+            m_isPrimaryId = isPrimaryId;
         }
 
         public CrmAttribute(AttributeMetadata md, bool isPrimaryId)
@@ -58,21 +58,21 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("md");
             }
 
-            this.m_schemaName = md.LogicalName;
+            m_schemaName = md.LogicalName;
             if (md.DisplayName.LocalizedLabels.Count == 0)
             {
-                this.m_friendlyName = md.LogicalName;
+                m_friendlyName = md.LogicalName;
             }
             else
             {
-                this.m_friendlyName = md.DisplayName.UserLocalizedLabel.Label;
+                m_friendlyName = md.DisplayName.UserLocalizedLabel.Label;
             }
 
-            this.m_attributeType = md.AttributeType.Value;
-            this.m_validForCreate = md.IsValidForCreate.Value;
-            this.m_validForRead = md.IsValidForUpdate.Value;
-            this.m_validForUpdate = md.IsValidForUpdate.Value;
-            this.m_isPrimaryId = isPrimaryId;
+            m_attributeType = md.AttributeType.Value;
+            m_validForCreate = md.IsValidForCreate.Value;
+            m_validForRead = md.IsValidForUpdate.Value;
+            m_validForUpdate = md.IsValidForUpdate.Value;
+            m_isPrimaryId = isPrimaryId;
         }
 
         #region Properties
@@ -80,7 +80,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_schemaName;
+                return m_schemaName;
             }
         }
 
@@ -88,7 +88,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_friendlyName;
+                return m_friendlyName;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_attributeType;
+                return m_attributeType;
             }
         }
 
@@ -104,7 +104,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_validForCreate;
+                return m_validForCreate;
             }
         }
 
@@ -112,7 +112,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_validForUpdate;
+                return m_validForUpdate;
             }
         }
 
@@ -120,7 +120,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_validForRead;
+                return m_validForRead;
             }
         }
 
@@ -128,7 +128,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_isPrimaryId;
+                return m_isPrimaryId;
             }
         }
         #endregion

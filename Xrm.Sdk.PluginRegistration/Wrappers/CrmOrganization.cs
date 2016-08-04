@@ -96,13 +96,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_organizationServiceUrl;
+                return m_organizationServiceUrl;
             }
             set
             {
-                this.m_organizationServiceUrl = value;
-                this.m_organizationService = null;
-                this.m_connected = false;
+                m_organizationServiceUrl = value;
+                m_organizationService = null;
+                m_connected = false;
             }
         }
 
@@ -114,11 +114,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_organizationId;
+                return m_organizationId;
             }
             set
             {
-                this.m_organizationId = value;
+                m_organizationId = value;
             }
         }
 
@@ -127,11 +127,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_friendlyName;
+                return m_friendlyName;
             }
             set
             {
-                this.m_friendlyName = value;
+                m_friendlyName = value;
             }
         }
 
@@ -140,11 +140,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_uniqueName;
+                return m_uniqueName;
             }
             set
             {
-                this.m_uniqueName = value;
+                m_uniqueName = value;
             }
         }
 
@@ -155,12 +155,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 lock (this)
                 {
-                    if (null == this.m_organizationService)
+                    if (null == m_organizationService)
                     {
-                        this.InitializeOrganizationService();
+                        InitializeOrganizationService();
                     }
 
-                    return this.m_organizationService;
+                    return m_organizationService;
                 }
             }
         }
@@ -170,20 +170,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_connected;
+                return m_connected;
             }
             set
             {
                 if (!value)
                 {
                     //Reset when closing the connection
-                    this.SecureConfigurationPermissionDenied = false;
-                    this.m_currentUser = null;
-                    this.m_invalidEntityList.Clear();
-                    this.ProfilerPlugin = null;
+                    SecureConfigurationPermissionDenied = false;
+                    m_currentUser = null;
+                    m_invalidEntityList.Clear();
+                    ProfilerPlugin = null;
                 }
 
-                this.m_connected = value;
+                m_connected = value;
             }
         }
 
@@ -192,12 +192,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_serviceEndpointReadOnlyList == null)
+                if (m_serviceEndpointReadOnlyList == null)
                 {
-                    this.m_serviceEndpointReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(this.m_serviceEndpointList);
+                    m_serviceEndpointReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(m_serviceEndpointList);
                 }
 
-                return this.m_serviceEndpointReadOnlyList;
+                return m_serviceEndpointReadOnlyList;
             }
         }
 
@@ -206,12 +206,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_assemblyReadOnlyList == null)
+                if (m_assemblyReadOnlyList == null)
                 {
-                    this.m_assemblyReadOnlyList = new CrmEntityDictionary<CrmPluginAssembly>(this.m_assemblyList);
+                    m_assemblyReadOnlyList = new CrmEntityDictionary<CrmPluginAssembly>(m_assemblyList);
                 }
 
-                return this.m_assemblyReadOnlyList;
+                return m_assemblyReadOnlyList;
             }
         }
 
@@ -220,12 +220,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_pluginReadOnlyList == null)
+                if (m_pluginReadOnlyList == null)
                 {
-                    this.m_pluginReadOnlyList = new CrmEntityDictionary<CrmPlugin>(this.m_pluginList);
+                    m_pluginReadOnlyList = new CrmEntityDictionary<CrmPlugin>(m_pluginList);
                 }
 
-                return this.m_pluginReadOnlyList;
+                return m_pluginReadOnlyList;
             }
         }
 
@@ -234,12 +234,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_stepReadOnlyList == null)
+                if (m_stepReadOnlyList == null)
                 {
-                    this.m_stepReadOnlyList = new CrmEntityDictionary<CrmPluginStep>(this.m_stepList);
+                    m_stepReadOnlyList = new CrmEntityDictionary<CrmPluginStep>(m_stepList);
                 }
 
-                return this.m_stepReadOnlyList;
+                return m_stepReadOnlyList;
             }
         }
 
@@ -248,12 +248,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_imageReadOnlyList == null)
+                if (m_imageReadOnlyList == null)
                 {
-                    this.m_imageReadOnlyList = new CrmEntityDictionary<CrmPluginImage>(this.m_imageList);
+                    m_imageReadOnlyList = new CrmEntityDictionary<CrmPluginImage>(m_imageList);
                 }
 
-                return this.m_imageReadOnlyList;
+                return m_imageReadOnlyList;
             }
         }
 
@@ -262,12 +262,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_messageReadOnlyList == null)
+                if (m_messageReadOnlyList == null)
                 {
-                    this.m_messageReadOnlyList = new CrmEntityDictionary<CrmMessage>(this.m_messageList);
+                    m_messageReadOnlyList = new CrmEntityDictionary<CrmMessage>(m_messageList);
                 }
 
-                return this.m_messageReadOnlyList;
+                return m_messageReadOnlyList;
             }
         }
 
@@ -276,12 +276,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_messageEntityReadOnlyList == null)
+                if (m_messageEntityReadOnlyList == null)
                 {
-                    this.m_messageEntityReadOnlyList = new CrmEntityDictionary<CrmMessageEntity>(this.m_messageEntityList);
+                    m_messageEntityReadOnlyList = new CrmEntityDictionary<CrmMessageEntity>(m_messageEntityList);
                 }
 
-                return this.m_messageEntityReadOnlyList;
+                return m_messageEntityReadOnlyList;
             }
         }
 
@@ -290,12 +290,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_invalidEntityReadOnlyList == null)
+                if (m_invalidEntityReadOnlyList == null)
                 {
-                    this.m_invalidEntityReadOnlyList = new CrmEntityDictionary<ICrmEntity>(this.m_invalidEntityList);
+                    m_invalidEntityReadOnlyList = new CrmEntityDictionary<ICrmEntity>(m_invalidEntityList);
                 }
 
-                return this.m_invalidEntityReadOnlyList;
+                return m_invalidEntityReadOnlyList;
             }
         }
 
@@ -304,9 +304,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.Assemblies != null)
+                if (Assemblies != null)
                 {
-                    return this.Assemblies[assemblyId];
+                    return Assemblies[assemblyId];
                 }
                 else
                 {
@@ -323,7 +323,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_userList;
+                return m_userList;
             }
         }
 
@@ -332,7 +332,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_attributeException;
+                return m_attributeException;
             }
         }
 
@@ -341,7 +341,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_currentUser;
+                return m_currentUser;
             }
             set
             {
@@ -351,7 +351,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 }
                 else
                 {
-                    this.m_currentUser = value;
+                    m_currentUser = value;
                 }
             }
         }
@@ -361,7 +361,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_serverBuild;
+                return m_serverBuild;
             }
 
             set
@@ -372,7 +372,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 }
                 else
                 {
-                    this.m_serverBuild = value;
+                    m_serverBuild = value;
                 }
             }
         }
@@ -389,7 +389,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             lock (this)
             {
-                if (this.m_organizationService == null)
+                if (m_organizationService == null)
                 {
                     InitializeOrganizationService();
                 }
@@ -401,7 +401,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         /// </summary>
         public bool IsEntityAttributesLoaded(string entityName)
         {
-            return this.m_attributeList.ContainsKey(entityName);
+            return m_attributeList.ContainsKey(entityName);
         }
 
         /// <summary>
@@ -409,9 +409,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         /// </summary>
         public CrmAttribute[] RetrieveEntityAttributes(string entityName)
         {
-            if (this.m_attributeList.ContainsKey(entityName))
+            if (m_attributeList.ContainsKey(entityName))
             {
-                return this.m_attributeList[entityName];
+                return m_attributeList[entityName];
             }
             else
             {
@@ -424,8 +424,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         /// </summary>
         public void ClearAllEntityAttributes()
         {
-            this.m_attributeList.Clear();
-            this.m_attributeException = null;
+            m_attributeList.Clear();
+            m_attributeException = null;
         }
 
         public void SaveEntityAttributes(string entityName, Exception loadException)
@@ -438,12 +438,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException("entityName");
             }
-            else if (this.m_attributeList.ContainsKey(entityName))
+            else if (m_attributeList.ContainsKey(entityName))
             {
-                this.m_attributeList.Remove(entityName);
+                m_attributeList.Remove(entityName);
             }
 
-            this.m_attributeException = loadException;
+            m_attributeException = loadException;
         }
 
         /// <summary>
@@ -460,16 +460,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("attributes");
             }
 
-            if (this.m_attributeList.ContainsKey(entityName))
+            if (m_attributeList.ContainsKey(entityName))
             {
-                this.m_attributeList[entityName] = attributes;
+                m_attributeList[entityName] = attributes;
             }
             else
             {
-                this.m_attributeList.Add(entityName, attributes);
+                m_attributeList.Add(entityName, attributes);
             }
 
-            this.m_attributeException = null;
+            m_attributeException = null;
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public override string ToString()
         {
-            return this.NodeText;
+            return NodeText;
         }
 
         #region Management Methods
@@ -513,17 +513,17 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("ServiceEndpoint is already in the list");
             }
 
-            this.m_serviceEndpointList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
+            m_serviceEndpointList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
         }
         public void ClearServiceEndpoints()
         {
-            this.m_serviceEndpointList.Clear();
+            m_serviceEndpointList.Clear();
         }
         public void RemoveServiceEndpoint(Guid serviceEndpointId)
         {
-            if (this.m_serviceEndpointList.ContainsKey(serviceEndpointId))
+            if (m_serviceEndpointList.ContainsKey(serviceEndpointId))
             {
-                this.m_serviceEndpointList.Remove(serviceEndpointId);
+                m_serviceEndpointList.Remove(serviceEndpointId);
             }
             else
             {
@@ -538,31 +538,31 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException("assembly");
             }
-            else if (this.m_assemblyList.ContainsKey(assembly.AssemblyId))
+            else if (m_assemblyList.ContainsKey(assembly.AssemblyId))
             {
                 throw new ArgumentException("Assembly is already in the list");
             }
             else
             {
-                this.ValidateEntity(assembly);
+                ValidateEntity(assembly);
             }
 
-            this.m_assemblyList.Add(assembly.AssemblyId, assembly);
+            m_assemblyList.Add(assembly.AssemblyId, assembly);
         }
 
         public void ClearAssemblies()
         {
-            this.m_imageList.Clear();
-            this.m_stepList.Clear();
-            this.m_pluginList.Clear();
-            this.m_assemblyList.Clear();
+            m_imageList.Clear();
+            m_stepList.Clear();
+            m_pluginList.Clear();
+            m_assemblyList.Clear();
         }
 
         public void RemoveAssembly(Guid assemblyId)
         {
-            if (this.m_assemblyList.ContainsKey(assemblyId))
+            if (m_assemblyList.ContainsKey(assemblyId))
             {
-                CrmPluginAssembly assembly = this.m_assemblyList[assemblyId];
+                CrmPluginAssembly assembly = m_assemblyList[assemblyId];
 
                 //Copy the list of plugins. Can't use the enumerator because we are changing the underlying data
                 Guid[] pluginIdList = new Guid[assembly.Plugins.Count];
@@ -571,10 +571,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 //Loop through the plugin id's
                 foreach (Guid pluginId in pluginIdList)
                 {
-                    this.RemovePlugin(assembly, pluginId);
+                    RemovePlugin(assembly, pluginId);
                 }
 
-                this.m_assemblyList.Remove(assemblyId);
+                m_assemblyList.Remove(assemblyId);
             }
             else
             {
@@ -601,15 +601,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
             else
             {
-                this.ValidateEntity(plugin);
+                ValidateEntity(plugin);
             }
 
-            this.m_pluginList.Add(plugin.PluginId, plugin);
+            m_pluginList.Add(plugin.PluginId, plugin);
         }
 
         public void ClearPlugins()
         {
-            this.ClearPlugins(Guid.Empty);
+            ClearPlugins(Guid.Empty);
         }
 
         public void ClearPlugins(Guid assemblyId)
@@ -617,17 +617,17 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             CrmPlugin[] pluginList;
             if (assemblyId == Guid.Empty)
             {
-                this.m_imageList.Clear();
-                this.m_stepList.Clear();
+                m_imageList.Clear();
+                m_stepList.Clear();
 
                 //Copy the list of plugins. Can't use the enumerator because we are changing the underlying data
-                pluginList = new CrmPlugin[this.m_pluginList.Count];
-                this.m_pluginList.Values.CopyTo(pluginList, 0);
+                pluginList = new CrmPlugin[m_pluginList.Count];
+                m_pluginList.Values.CopyTo(pluginList, 0);
             }
-            else if (this.m_assemblyList.ContainsKey(assemblyId))
+            else if (m_assemblyList.ContainsKey(assemblyId))
             {
                 //Copy the list of plugins. Can't use the enumerator because we are changing the underlying data
-                pluginList = this.m_assemblyList[assemblyId].Plugins.ToArray();
+                pluginList = m_assemblyList[assemblyId].Plugins.ToArray();
             }
             else
             {
@@ -637,15 +637,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             //Loop through the plugin id's
             foreach (CrmPlugin plugin in pluginList)
             {
-                this.RemovePlugin(plugin.AssemblyId, plugin.PluginId);
+                RemovePlugin(plugin.AssemblyId, plugin.PluginId);
             }
         }
 
         public void RemovePlugin(Guid assemblyId, Guid pluginId)
         {
-            if (this.m_assemblyList.ContainsKey(assemblyId))
+            if (m_assemblyList.ContainsKey(assemblyId))
             {
-                this.RemovePlugin(this.m_assemblyList[assemblyId], pluginId);
+                RemovePlugin(m_assemblyList[assemblyId], pluginId);
             }
             else
             {
@@ -663,9 +663,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 assembly.RemovePlugin(pluginId);
             }
-            else if (this.m_pluginList.ContainsKey(pluginId))
+            else if (m_pluginList.ContainsKey(pluginId))
             {
-                CrmPlugin plugin = this.m_pluginList[pluginId];
+                CrmPlugin plugin = m_pluginList[pluginId];
 
                 //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
                 Guid[] stepIdList = new Guid[plugin.Steps.Count];
@@ -674,10 +674,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 //Loop through the step id's
                 foreach (Guid stepId in stepIdList)
                 {
-                    this.RemoveStep(plugin, stepId);
+                    RemoveStep(plugin, stepId);
                 }
 
-                this.m_pluginList.Remove(pluginId);
+                m_pluginList.Remove(pluginId);
             }
             else
             {
@@ -704,15 +704,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
             else
             {
-                this.ValidateEntity(step);
+                ValidateEntity(step);
             }
 
-            this.m_stepList.Add(step.StepId, step);
+            m_stepList.Add(step.StepId, step);
         }
 
         public void ClearSteps()
         {
-            this.ClearSteps(Guid.Empty);
+            ClearSteps(Guid.Empty);
         }
 
         public void ClearSteps(Guid pluginId)
@@ -720,16 +720,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             CrmPluginStep[] stepList;
             if (pluginId == Guid.Empty)
             {
-                this.m_imageList.Clear();
+                m_imageList.Clear();
 
                 //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
-                stepList = new CrmPluginStep[this.m_stepList.Count];
-                this.m_stepList.Values.CopyTo(stepList, 0);
+                stepList = new CrmPluginStep[m_stepList.Count];
+                m_stepList.Values.CopyTo(stepList, 0);
             }
-            else if (this.m_pluginList.ContainsKey(pluginId))
+            else if (m_pluginList.ContainsKey(pluginId))
             {
                 //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
-                stepList = this.m_pluginList[pluginId].Steps.ToArray();
+                stepList = m_pluginList[pluginId].Steps.ToArray();
             }
             else
             {
@@ -739,15 +739,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             //Loop through the step id's
             foreach (CrmPluginStep step in stepList)
             {
-                this.RemoveStep(step.PluginId, step.StepId);
+                RemoveStep(step.PluginId, step.StepId);
             }
         }
 
         public void RemoveStep(Guid pluginId, Guid stepId)
         {
-            if (this.m_pluginList.ContainsKey(pluginId))
+            if (m_pluginList.ContainsKey(pluginId))
             {
-                this.RemoveStep(this.m_pluginList[pluginId], stepId);
+                RemoveStep(m_pluginList[pluginId], stepId);
             }
             else
             {
@@ -765,9 +765,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 plugin.RemoveStep(stepId);
             }
-            else if (this.m_stepList.ContainsKey(stepId))
+            else if (m_stepList.ContainsKey(stepId))
             {
-                CrmPluginStep step = this.m_stepList[stepId];
+                CrmPluginStep step = m_stepList[stepId];
 
                 //Copy the list of images. Can't use the enumerator because we are changing the underlying data
                 Guid[] imageIdList = new Guid[step.Images.Count];
@@ -776,10 +776,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 //Loop through the image id's
                 foreach (Guid imageId in imageIdList)
                 {
-                    this.RemoveImage(step, imageId);
+                    RemoveImage(step, imageId);
                 }
 
-                this.m_stepList.Remove(stepId);
+                m_stepList.Remove(stepId);
             }
             else
             {
@@ -806,15 +806,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
             else
             {
-                this.ValidateEntity(image);
+                ValidateEntity(image);
             }
 
-            this.m_imageList.Add(image.ImageId, image);
+            m_imageList.Add(image.ImageId, image);
         }
 
         public void ClearImages()
         {
-            this.ClearImages(Guid.Empty);
+            ClearImages(Guid.Empty);
         }
 
         public void ClearImages(Guid stepId)
@@ -823,13 +823,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             if (stepId == Guid.Empty)
             {
                 //Copy the list of images. Can't use the enumerator because we are changing the underlying data
-                imageList = new CrmPluginImage[this.m_imageList.Count];
-                this.m_imageList.Values.CopyTo(imageList, 0);
+                imageList = new CrmPluginImage[m_imageList.Count];
+                m_imageList.Values.CopyTo(imageList, 0);
             }
-            else if (this.m_stepList.ContainsKey(stepId))
+            else if (m_stepList.ContainsKey(stepId))
             {
                 //Copy the list of images. Can't use the enumerator because we are changing the underlying data
-                imageList = this.m_stepList[stepId].Images.ToArray();
+                imageList = m_stepList[stepId].Images.ToArray();
             }
             else
             {
@@ -839,15 +839,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             //Loop through the image id's
             foreach (CrmPluginImage image in imageList)
             {
-                this.RemoveImage(image.StepId, image.ImageId);
+                RemoveImage(image.StepId, image.ImageId);
             }
         }
 
         public void RemoveImage(Guid stepId, Guid imageId)
         {
-            if (this.m_stepList.ContainsKey(stepId))
+            if (m_stepList.ContainsKey(stepId))
             {
-                this.RemoveImage(this.m_stepList[stepId], imageId);
+                RemoveImage(m_stepList[stepId], imageId);
             }
             else
             {
@@ -865,9 +865,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 step.RemoveImage(imageId);
             }
-            else if (this.m_imageList.ContainsKey(imageId))
+            else if (m_imageList.ContainsKey(imageId))
             {
-                this.m_imageList.Remove(imageId);
+                m_imageList.Remove(imageId);
             }
             else
             {
@@ -883,29 +883,29 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException("message");
             }
-            else if (this.m_messageList.ContainsKey(message.MessageId))
+            else if (m_messageList.ContainsKey(message.MessageId))
             {
                 throw new ArgumentException("Message is already in the list");
             }
             else
             {
-                this.ValidateEntity(message);
+                ValidateEntity(message);
             }
 
-            this.m_messageList.Add(message.MessageId, message);
+            m_messageList.Add(message.MessageId, message);
         }
 
         public void ClearMessages()
         {
-            this.m_messageEntityList.Clear();
-            this.m_messageList.Clear();
+            m_messageEntityList.Clear();
+            m_messageList.Clear();
         }
 
         public void RemoveMessage(Guid messageId)
         {
-            if (this.m_messageList.ContainsKey(messageId))
+            if (m_messageList.ContainsKey(messageId))
             {
-                CrmMessage message = this.m_messageList[messageId];
+                CrmMessage message = m_messageList[messageId];
 
                 //Copy the list of MessageEntities. Can't use the enumerator because we are changing the underlying data
                 Guid[] entityIdList = new Guid[message.MessageEntities.Count];
@@ -914,10 +914,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 //Loop through the MessageEntity id's
                 foreach (Guid messageEntityId in entityIdList)
                 {
-                    this.RemoveMessageEntity(message, messageEntityId);
+                    RemoveMessageEntity(message, messageEntityId);
                 }
 
-                this.m_messageList.Remove(messageId);
+                m_messageList.Remove(messageId);
             }
             else
             {
@@ -944,15 +944,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
             else
             {
-                this.ValidateEntity(entity);
+                ValidateEntity(entity);
             }
 
-            this.m_messageEntityList.Add(entity.EntityId, entity);
+            m_messageEntityList.Add(entity.EntityId, entity);
         }
 
         public void ClearMessageEntities()
         {
-            this.ClearMessageEntities(Guid.Empty);
+            ClearMessageEntities(Guid.Empty);
         }
 
         public void ClearMessageEntities(Guid messageId)
@@ -961,13 +961,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             if (messageId == Guid.Empty)
             {
                 //Copy the list of entities. Can't use the enumerator because we are changing the underlying data
-                entityList = new CrmMessageEntity[this.m_messageEntityList.Count];
-                this.m_messageEntityList.Values.CopyTo(entityList, 0);
+                entityList = new CrmMessageEntity[m_messageEntityList.Count];
+                m_messageEntityList.Values.CopyTo(entityList, 0);
             }
-            else if (this.m_messageList.ContainsKey(messageId))
+            else if (m_messageList.ContainsKey(messageId))
             {
                 //Copy the list of entities. Can't use the enumerator because we are changing the underlying data
-                entityList = this.m_messageList[messageId].MessageEntities.ToArray();
+                entityList = m_messageList[messageId].MessageEntities.ToArray();
             }
             else
             {
@@ -977,15 +977,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             //Loop through the entity id's
             foreach (CrmMessageEntity message in entityList)
             {
-                this.RemoveMessageEntity(message.MessageId, message.MessageEntityId);
+                RemoveMessageEntity(message.MessageId, message.MessageEntityId);
             }
         }
 
         public void RemoveMessageEntity(Guid messageId, Guid messageEntityId)
         {
-            if (this.m_messageList.ContainsKey(messageId))
+            if (m_messageList.ContainsKey(messageId))
             {
-                this.RemoveMessageEntity(this.m_messageList[messageId], messageEntityId);
+                RemoveMessageEntity(m_messageList[messageId], messageEntityId);
             }
             else
             {
@@ -1003,9 +1003,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 message.RemoveMessageEntity(messageEntityId);
             }
-            else if (this.m_messageEntityList.ContainsKey(messageEntityId))
+            else if (m_messageEntityList.ContainsKey(messageEntityId))
             {
-                this.m_messageEntityList.Remove(messageEntityId);
+                m_messageEntityList.Remove(messageEntityId);
             }
             else
             {
@@ -1024,7 +1024,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             lock (this)
             {
-                this.m_organizationService = this.ConnectionDetail.GetCrmServiceClient().OrganizationServiceProxy;
+                m_organizationService = ConnectionDetail.GetCrmServiceClient().OrganizationServiceProxy;
             }
         }
 
@@ -1034,7 +1034,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException();
             }
-            else if (this.m_assemblyList.ContainsKey(assembly.AssemblyId))
+            else if (m_assemblyList.ContainsKey(assembly.AssemblyId))
             {
                 throw new ArgumentException("Assembly is already in the list");
             }
@@ -1054,7 +1054,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException();
             }
-            else if (this.m_pluginList.ContainsKey(plugin.PluginId))
+            else if (m_pluginList.ContainsKey(plugin.PluginId))
             {
                 throw new ArgumentException("Plugin is already in the list");
             }
@@ -1078,7 +1078,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException();
             }
-            else if (this.m_stepList.ContainsKey(step.StepId))
+            else if (m_stepList.ContainsKey(step.StepId))
             {
                 throw new ArgumentException("Step is already in the list");
             }
@@ -1106,7 +1106,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException();
             }
-            else if (this.m_imageList.ContainsKey(image.ImageId))
+            else if (m_imageList.ContainsKey(image.ImageId))
             {
                 throw new ArgumentException("Image is already in the list");
             }
@@ -1138,7 +1138,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException();
             }
-            else if (this.m_messageList.ContainsKey(message.MessageId))
+            else if (m_messageList.ContainsKey(message.MessageId))
             {
                 throw new ArgumentException("Message is already in the list");
             }
@@ -1158,7 +1158,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 throw new ArgumentNullException();
             }
-            else if (this.m_messageEntityList.ContainsKey(messageEntity.MessageEntityId))
+            else if (m_messageEntityList.ContainsKey(messageEntity.MessageEntityId))
             {
                 throw new ArgumentException("MessageEntity is already in the list");
             }
@@ -1183,7 +1183,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_friendlyName;
+                return m_friendlyName;
             }
         }
 
@@ -1192,7 +1192,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_organizationId;
+                return m_organizationId;
             }
         }
 
@@ -1281,16 +1281,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("name");
             }
 
-            this.m_name = name;
-            this.m_label = label;
-            this.m_type = type;
+            m_name = name;
+            m_label = label;
+            m_type = type;
         }
 
         public string Name
         {
             get
             {
-                return this.m_name;
+                return m_name;
             }
         }
 
@@ -1298,7 +1298,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_label;
+                return m_label;
             }
         }
 
@@ -1306,13 +1306,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_type;
+                return m_type;
             }
         }
 
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
     }
     #endregion

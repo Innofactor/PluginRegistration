@@ -39,16 +39,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this.m_progIndicator = new ProgressIndicator(this.ProgressIndicatorInit, this.ProgressIndicatorComplete,
-                null, this.ProgressIndicatorSetText, null, null);
-            this.m_owner = owner;
+            m_progIndicator = new ProgressIndicator(ProgressIndicatorInit, ProgressIndicatorComplete,
+                null, ProgressIndicatorSetText, null, null);
+            m_owner = owner;
         }
 
         public ProgressIndicator ProgressIndicator
         {
             get
             {
-                return this.m_progIndicator;
+                return m_progIndicator;
             }
         }
 
@@ -66,13 +66,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             lblStatus.Text = text;
 
-            this.ShowDialog(this.m_owner);
+            ShowDialog(m_owner);
         }
 
         private void ProgressIndicatorComplete()
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
         #endregion
 
@@ -80,8 +80,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             if (barRegistration.Value == barRegistration.Maximum)
             {
-                this.DialogResult = DialogResult.Abort;
-                this.Close();
+                DialogResult = DialogResult.Abort;
+                Close();
             }
             else
             {

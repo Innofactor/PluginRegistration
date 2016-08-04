@@ -50,12 +50,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this.m_org = org;
-            this.m_orgControl = orgControl;
-            this.m_progRegistration = new ProgressIndicator(this.ProgressIndicatorInit, this.ProgressIndicatorComplete,
-                this.ProgressIndicatorAddText, this.ProgressIndicatorSetText,
-                this.ProgressIndicatorIncrement, null);
-            this.m_currentAssembly = assembly;
+            m_org = org;
+            m_orgControl = orgControl;
+            m_progRegistration = new ProgressIndicator(ProgressIndicatorInit, ProgressIndicatorComplete,
+                ProgressIndicatorAddText, ProgressIndicatorSetText,
+                ProgressIndicatorIncrement, null);
+            m_currentAssembly = assembly;
 
             trvPlugins.CrmTreeNodeSorter = orgControl.CrmTreeNodeSorter;
 
@@ -79,7 +79,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             else
             {
-                this.m_typeIdList = new Dictionary<string, Guid>();
+                m_typeIdList = new Dictionary<string, Guid>();
 
                 LoadAssembly(assembly, false);
 
@@ -112,11 +112,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 txtServerFileName.Text = assembly.ServerFileName;
 
-                this.Text = string.Format("Update Assembly: {0}", assembly.Name);
+                Text = string.Format("Update Assembly: {0}", assembly.Name);
                 btnRegister.Text = "Update Selected Plugins";
             }
 
-            this.EnableRegistrationControls();
+            EnableRegistrationControls();
         }
 
         #region Control Events
@@ -128,7 +128,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private void AssemblyPathControl_PathChanged(object sender, EventArgs e)
         {
             btnLoadAssembly.Enabled = AssemblyPathControl.HasFileName;
-            this.EnableRegistrationControls();
+            EnableRegistrationControls();
 
             if (AssemblyPathControl.FileExists)
             {
@@ -136,12 +136,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 //Only want to change the server file name if it is the same as the assembly's file name
                 //If it isn't, then the user changed the file name
-                if (txtServerFileName.TextLength == 0 || string.Equals(txtServerFileName.Text, this.m_lastAssemblyFileName))
+                if (txtServerFileName.TextLength == 0 || string.Equals(txtServerFileName.Text, m_lastAssemblyFileName))
                 {
                     txtServerFileName.Text = fileName;
                 }
 
-                this.m_lastAssemblyFileName = fileName;
+                m_lastAssemblyFileName = fileName;
             }
         }
 
@@ -169,15 +169,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             LoadAssembly(assembly, true);
 
             //Mark the assembly as having been loaded
-            this.m_assemblyLoaded = true;
-            this.chkUpdateAssembly.Checked = true;
-            if (null != this.m_currentAssembly)
+            m_assemblyLoaded = true;
+            chkUpdateAssembly.Checked = true;
+            if (null != m_currentAssembly)
             {
                 chkUpdateAssembly.Visible = true;
             }
 
             //Enable the controls
-            this.EnableRegistrationControls();
+            EnableRegistrationControls();
         }
 
         private void chkSelectAll_Click(object sender, EventArgs e)
@@ -187,14 +187,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
             const string ERROR_CAPTION = "Registration Error";
             string ERROR_MESSAGE;
-            if (this.m_currentAssembly == null)
+            if (m_currentAssembly == null)
             {
                 ERROR_MESSAGE = "There was an error while registering the selected plugins. Please check the Registration Log for more information.";
             }
@@ -204,7 +204,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             #region Extract Plugin Registration Information
-            this.m_progRegistration.Complete(true); //Just in case it has incorrect information
+            m_progRegistration.Complete(true); //Just in case it has incorrect information
 
             //Determine the source type. If we are talking about an assembly on disk, verify that it exists
             if (GetAssemblySourceType() == CrmAssemblySourceType.Disk)
@@ -213,7 +213,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     MessageBox.Show("If the Registration Location is Disk, the \"File Name on Server\" must be specified",
                         "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    this.m_progRegistration.Complete(false);
+                    m_progRegistration.Complete(false);
                     return;
                 }
             }
@@ -257,7 +257,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             if (string.IsNullOrEmpty(assemblyPath))
             {
                 //Clone the existing assembly
-                assembly = (CrmPluginAssembly)this.m_currentAssembly.Clone(false);
+                assembly = (CrmPluginAssembly)m_currentAssembly.Clone(false);
             }
             else
             {
@@ -283,12 +283,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 foreach (CrmPlugin reg in assembly.Plugins.Values)
                 {
-                    bool alreadyExisted = (this.m_typeIdList != null && this.m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant()));
+                    bool alreadyExisted = (m_typeIdList != null && m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant()));
 
                     if (alreadyExisted)
                     {
-                        reg.AssemblyId = this.m_currentAssembly.AssemblyId;
-                        reg.PluginId = this.m_typeIdList[reg.TypeName.ToLowerInvariant()];
+                        reg.AssemblyId = m_currentAssembly.AssemblyId;
+                        reg.PluginId = m_typeIdList[reg.TypeName.ToLowerInvariant()];
                     }
 
                     if (checkedPluginList.ContainsKey(reg.TypeName))
@@ -339,14 +339,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             //If we are doing an Update, do some special processing
-            if (this.m_currentAssembly != null)
+            if (m_currentAssembly != null)
             {
-                assembly.AssemblyId = this.m_currentAssembly.AssemblyId;
+                assembly.AssemblyId = m_currentAssembly.AssemblyId;
             }
             #endregion
 
             #region Register Plugin
-            this.m_progRegistration.Initialize(registerPluginList.Count +
+            m_progRegistration.Initialize(registerPluginList.Count +
                 removedList.Count, "Preparing Registration");
 
             int registeredAssemblies = 0;
@@ -359,16 +359,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             try
             {
                 Guid pluginAssemblyId = Guid.Empty;
-                if (this.m_currentAssembly != null)
+                if (m_currentAssembly != null)
                 {
                     if (chkUpdateAssembly.Checked)
                     {
                         string originalGroupName = RegistrationHelper.GenerateDefaultGroupName(
-                            this.m_currentAssembly.Name, new Version(this.m_currentAssembly.Version));
+                            m_currentAssembly.Name, new Version(m_currentAssembly.Version));
                         string newGroupName = RegistrationHelper.GenerateDefaultGroupName(assembly.Name, new Version(assembly.Version));
 
                         List<PluginType> updateGroupNameList = new List<PluginType>();
-                        foreach (CrmPlugin plugin in this.m_currentAssembly.Plugins)
+                        foreach (CrmPlugin plugin in m_currentAssembly.Plugins)
                         {
                             if (plugin.PluginType == CrmPluginType.WorkflowActivity &&
                                 string.Equals(plugin.WorkflowActivityGroupName, originalGroupName))
@@ -382,22 +382,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         }
 
                         //Do the actual update to the assembly
-                        RegistrationHelper.UpdateAssembly(this.m_org, assemblyPath, assembly, updateGroupNameList.ToArray());
+                        RegistrationHelper.UpdateAssembly(m_org, assemblyPath, assembly, updateGroupNameList.ToArray());
 
-                        this.m_currentAssembly.Name = assembly.Name;
-                        this.m_currentAssembly.Culture = assembly.Culture;
-                        this.m_currentAssembly.CustomizationLevel = assembly.CustomizationLevel;
-                        this.m_currentAssembly.PublicKeyToken = assembly.PublicKeyToken;
-                        this.m_currentAssembly.ServerFileName = assembly.ServerFileName;
-                        this.m_currentAssembly.SourceType = assembly.SourceType;
-                        this.m_currentAssembly.Version = assembly.Version;
-                        this.m_currentAssembly.IsolationMode = assembly.IsolationMode;
+                        m_currentAssembly.Name = assembly.Name;
+                        m_currentAssembly.Culture = assembly.Culture;
+                        m_currentAssembly.CustomizationLevel = assembly.CustomizationLevel;
+                        m_currentAssembly.PublicKeyToken = assembly.PublicKeyToken;
+                        m_currentAssembly.ServerFileName = assembly.ServerFileName;
+                        m_currentAssembly.SourceType = assembly.SourceType;
+                        m_currentAssembly.Version = assembly.Version;
+                        m_currentAssembly.IsolationMode = assembly.IsolationMode;
 
-                        retrieveDateList.Add(this.m_currentAssembly);
+                        retrieveDateList.Add(m_currentAssembly);
 
                         foreach (PluginType type in updateGroupNameList)
                         {
-                            CrmPlugin plugin = this.m_currentAssembly.Plugins[type.Id];
+                            CrmPlugin plugin = m_currentAssembly.Plugins[type.Id];
 
                             plugin.WorkflowActivityGroupName = type.WorkflowActivityGroupName;
                             retrieveDateList.Add(plugin);
@@ -405,7 +405,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         updatedAssemblies++;
                     }
-                    else if (!chkUpdateAssembly.Visible && assembly.IsolationMode != this.m_currentAssembly.IsolationMode)
+                    else if (!chkUpdateAssembly.Visible && assembly.IsolationMode != m_currentAssembly.IsolationMode)
                     {
                         PluginAssembly updateAssembly = new PluginAssembly()
                         {
@@ -413,37 +413,37 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                             IsolationMode = new OptionSetValue((int)assembly.IsolationMode)
                         };
 
-                        this.m_org.OrganizationService.Update(updateAssembly);
+                        m_org.OrganizationService.Update(updateAssembly);
 
-                        this.m_currentAssembly.ServerFileName = assembly.ServerFileName;
-                        this.m_currentAssembly.SourceType = assembly.SourceType;
-                        this.m_currentAssembly.IsolationMode = assembly.IsolationMode;
+                        m_currentAssembly.ServerFileName = assembly.ServerFileName;
+                        m_currentAssembly.SourceType = assembly.SourceType;
+                        m_currentAssembly.IsolationMode = assembly.IsolationMode;
 
-                        retrieveDateList.Add(this.m_currentAssembly);
+                        retrieveDateList.Add(m_currentAssembly);
 
                         updatedAssemblies++;
                     }
 
-                    assembly = this.m_currentAssembly;
+                    assembly = m_currentAssembly;
 
                     createAssembly = false;
-                    this.m_progRegistration.Increment();
+                    m_progRegistration.Increment();
 
-                    this.m_orgControl.RefreshAssembly(this.m_currentAssembly, false);
+                    m_orgControl.RefreshAssembly(m_currentAssembly, false);
                 }
                 else
                 {
                     createAssembly = true;
-                    this.m_progRegistration.Increment();
+                    m_progRegistration.Increment();
                 }
             }
             catch (Exception ex)
             {
-                this.m_progRegistration.Increment("ERROR: Occurred while checking whether the assembly exists");
+                m_progRegistration.Increment("ERROR: Occurred while checking whether the assembly exists");
 
                 ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
-                this.m_progRegistration.Complete(false);
+                m_progRegistration.Complete(false);
                 return;
             }
 
@@ -452,65 +452,65 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 try
                 {
-                    assembly.AssemblyId = RegistrationHelper.RegisterAssembly(this.m_org, assemblyPath, assembly);
-                    assembly.Organization = this.m_org;
+                    assembly.AssemblyId = RegistrationHelper.RegisterAssembly(m_org, assemblyPath, assembly);
+                    assembly.Organization = m_org;
 
                     retrieveDateList.Add(assembly);
                 }
                 catch (Exception ex)
                 {
-                    this.m_progRegistration.Increment("ERROR: Error occurred while registering the assembly");
+                    m_progRegistration.Increment("ERROR: Error occurred while registering the assembly");
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
-                    this.m_progRegistration.Complete(false);
+                    m_progRegistration.Complete(false);
                     return;
                 }
 
                 registeredAssemblies++;
-                this.m_progRegistration.Increment("SUCCESS: Plugin Assembly was registered");
+                m_progRegistration.Increment("SUCCESS: Plugin Assembly was registered");
             }
-            else if (this.m_currentAssembly == null)
+            else if (m_currentAssembly == null)
             {
                 ignoredAssemblies++;
-                this.m_progRegistration.Increment("INFORMATION: Assembly was not registered");
+                m_progRegistration.Increment("INFORMATION: Assembly was not registered");
             }
             else
             {
                 if (chkUpdateAssembly.Checked)
                 {
-                    this.m_progRegistration.Increment("SUCCESS: Assembly was updated");
+                    m_progRegistration.Increment("SUCCESS: Assembly was updated");
                 }
                 else
                 {
-                    this.m_progRegistration.Increment("INFORMATION: Assembly was not updated");
+                    m_progRegistration.Increment("INFORMATION: Assembly was not updated");
                 }
             }
 
             //Check to see if the assembly needs to be added to the list
-            if (!this.m_org.Assemblies.ContainsKey(assembly.AssemblyId))
+            if (!m_org.Assemblies.ContainsKey(assembly.AssemblyId))
             {
-                this.m_org.AddAssembly(assembly);
+                m_org.AddAssembly(assembly);
 
                 //Update the Main Form
                 try
                 {
-                    this.m_orgControl.AddAssembly(assembly);
-                    this.m_progRegistration.Increment();
+                    m_orgControl.AddAssembly(assembly);
+                    m_progRegistration.Increment();
                 }
                 catch (Exception ex)
                 {
-                    this.m_progRegistration.Increment("ERROR: Error occurred while updating the Main form for the assembly");
+                    m_progRegistration.Increment("ERROR: Error occurred while updating the Main form for the assembly");
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
-                    this.m_progRegistration.Complete(false);
+                    m_progRegistration.Complete(false);
                     return;
                 }
             }
             else
             {
-                this.m_progRegistration.Increment();
+                m_progRegistration.Increment();
             }
 
             // Register the Plugin
@@ -523,12 +523,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 reg.AssemblyId = assembly.AssemblyId;
 
                 //Check if the plugin exists
-                bool pluginUpdate = this.m_typeIdList != null && this.m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant());
+                bool pluginUpdate = m_typeIdList != null && m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant());
                 try
                 {
                     Guid pluginTypeId = Guid.Empty;
 
-                    if (pluginUpdate || (!createAssembly && RegistrationHelper.PluginExists(this.m_org, reg.TypeName, assembly.AssemblyId, out pluginTypeId)))
+                    if (pluginUpdate || (!createAssembly && RegistrationHelper.PluginExists(m_org, reg.TypeName, assembly.AssemblyId, out pluginTypeId)))
                     {
                         if (pluginUpdate)
                         {
@@ -536,7 +536,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         }
                         else
                         {
-                            this.m_progRegistration.AppendText(string.Format("INFORMATION: Plugin Type Name is already being used by PluginType {0}.",
+                            m_progRegistration.AppendText(string.Format("INFORMATION: Plugin Type Name is already being used by PluginType {0}.",
                                 pluginTypeId));
 
                             switch (MessageBox.Show(string.Format("The specified name \"{0}\" is already registered. Skip the registration of this plugin?\n\nPlease note the plugins may not be the same.", reg.TypeName),
@@ -552,30 +552,30 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                                     createPlugin = true;
                                     break;
                                 case DialogResult.Cancel:
-                                    this.m_progRegistration.AppendText("ABORTED: Plugin Registration has been aborted by the user.");
-                                    this.m_progRegistration.Complete(false);
+                                    m_progRegistration.AppendText("ABORTED: Plugin Registration has been aborted by the user.");
+                                    m_progRegistration.Complete(false);
                                     return;
                                 default:
                                     throw new NotImplementedException();
                             }
                         }
 
-                        this.m_progRegistration.Increment();
+                        m_progRegistration.Increment();
                     }
                     else
                     {
                         createPlugin = true;
-                        this.m_progRegistration.Increment();
+                        m_progRegistration.Increment();
                     }
                 }
                 catch (Exception ex)
                 {
-                    this.m_progRegistration.Increment(string.Format("ERROR: Occurred while checking if {0} is already registered.",
+                    m_progRegistration.Increment(string.Format("ERROR: Occurred while checking if {0} is already registered.",
                         reg.TypeName));
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
-                    this.m_progRegistration.Complete(false);
+                    m_progRegistration.Complete(false);
                     return;
                 }
 
@@ -585,8 +585,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     try
                     {
                         Guid pluginId = reg.PluginId;
-                        reg.PluginId = RegistrationHelper.RegisterPlugin(this.m_org, reg);
-                        reg.Organization = this.m_org;
+                        reg.PluginId = RegistrationHelper.RegisterPlugin(m_org, reg);
+                        reg.Organization = m_org;
 
                         if (pluginId != reg.PluginId && assembly.Plugins.ContainsKey(pluginId))
                         {
@@ -595,14 +595,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         retrieveDateList.Add(reg);
 
-                        this.m_progRegistration.Increment(string.Format("SUCCESS: Plugin {0} was registered.",
+                        m_progRegistration.Increment(string.Format("SUCCESS: Plugin {0} was registered.",
                             reg.TypeName));
 
                         registeredPlugins++;
                     }
                     catch (Exception ex)
                     {
-                        this.m_progRegistration.Increment(2, string.Format("ERROR: Occurred while registering {0}.",
+                        m_progRegistration.Increment(2, string.Format("ERROR: Occurred while registering {0}.",
                             reg.TypeName));
 
                         ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
@@ -618,7 +618,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         ignoredPlugins++;
                     }
 
-                    this.m_progRegistration.Increment();
+                    m_progRegistration.Increment();
                 }
 
                 //Check if the plugin needs to be added to the list
@@ -629,23 +629,23 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     //Update the main form
                     try
                     {
-                        this.m_orgControl.AddPlugin(reg);
-                        this.m_progRegistration.Increment();
+                        m_orgControl.AddPlugin(reg);
+                        m_progRegistration.Increment();
                     }
                     catch (Exception ex)
                     {
-                        this.m_progRegistration.Increment(string.Format("ERROR: Occurred while updating the Main form for {0}.",
+                        m_progRegistration.Increment(string.Format("ERROR: Occurred while updating the Main form for {0}.",
                             reg.TypeName));
 
                         ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
-                        this.m_progRegistration.Complete(false);
+                        m_progRegistration.Complete(false);
                         return;
                     }
                 }
                 else
                 {
-                    this.m_progRegistration.Increment();
+                    m_progRegistration.Increment();
                 }
             }
 
@@ -656,16 +656,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 //Check if the plugin exists
                 try
                 {
-                    RegistrationHelper.Unregister(this.m_org, reg);
-                    this.m_progRegistration.Increment(3, string.Format("SUCCESS: Plugin {0} was unregistered.",
+                    RegistrationHelper.Unregister(m_org, reg);
+                    m_progRegistration.Increment(3, string.Format("SUCCESS: Plugin {0} was unregistered.",
                         reg.TypeName));
-                    this.m_orgControl.RemovePlugin(reg.PluginId);
+                    m_orgControl.RemovePlugin(reg.PluginId);
 
                     updatedPlugins++;
                 }
                 catch (Exception ex)
                 {
-                    this.m_progRegistration.Increment(3, string.Format("ERROR: Occurred while unregistering {0}.",
+                    m_progRegistration.Increment(3, string.Format("ERROR: Occurred while unregistering {0}.",
                         reg.TypeName));
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
@@ -677,19 +677,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             //Update the entities whose Created On / Modified On dates changed
             try
             {
-                OrganizationHelper.UpdateDates(this.m_org, retrieveDateList);
-                this.m_progRegistration.Increment("SUCCESS: Created On / Modified On dates updated");
+                OrganizationHelper.UpdateDates(m_org, retrieveDateList);
+                m_progRegistration.Increment("SUCCESS: Created On / Modified On dates updated");
             }
             catch (Exception ex)
             {
-                this.m_progRegistration.Increment("ERROR: Unable to update Created On / Modified On dates");
+                m_progRegistration.Increment("ERROR: Unable to update Created On / Modified On dates");
 
                 ErrorMessageForm.ShowErrorMessageBox(this, "Unable to update Created On / Modified On dates", "Update Error", ex);
             }
             #endregion
 
-            this.m_progRegistration.AppendText("SUCCESS: Selected Plugins have been registered");
-            this.m_progRegistration.Complete(false);
+            m_progRegistration.AppendText("SUCCESS: Selected Plugins have been registered");
+            m_progRegistration.Complete(false);
 
             MessageBox.Show(string.Format("The selected Plugins have been registered.\n{0} Assembly Registered\n{1} Assembly Ignored\n{2} Assembly Updated\n{3} Plugin(s) Registered\n{4} Plugin(s) Ignored\n{5} Plugin(s) Encountered Errors\n{6} Plugin(s) Removed",
                 registeredAssemblies, ignoredAssemblies, updatedAssemblies, registeredPlugins, ignoredPlugins, errorsPlugins, updatedPlugins),
@@ -697,7 +697,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             if (errorsPlugins == 0)
             {
-                this.Close();
+                Close();
             }
         }
 
@@ -717,12 +717,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private void EnableRegistrationControls()
         {
             //Check if there are any nodes in the tree. If there are, the assembly must have been loaded or it is an update
-            if (this.m_assemblyLoaded)
+            if (m_assemblyLoaded)
             {
                 btnRegister.Enabled = true;
                 grpRegLoc.Enabled = true;
             }
-            else if (null != this.m_currentAssembly)
+            else if (null != m_currentAssembly)
             {
                 btnRegister.Enabled = true;
                 grpRegLoc.Enabled = false;
@@ -772,20 +772,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void LoadAssembly(CrmPluginAssembly assembly, bool checkExisting)
         {
-            bool loadTypeId = (this.m_currentAssembly != null && !checkExisting && this.m_typeIdList != null);
-            bool checkRecord = (checkExisting && this.m_currentAssembly != null && this.m_typeIdList != null);
+            bool loadTypeId = (m_currentAssembly != null && !checkExisting && m_typeIdList != null);
+            bool checkRecord = (checkExisting && m_currentAssembly != null && m_typeIdList != null);
 
             //Loop through and add the data to the form
             trvPlugins.LoadNodes(new ICrmTreeNode[] { assembly });
 
             foreach (CrmPlugin reg in assembly.Plugins.Values)
             {
-                if (loadTypeId && !this.m_typeIdList.ContainsKey(reg.TypeName))
+                if (loadTypeId && !m_typeIdList.ContainsKey(reg.TypeName))
                 {
-                    this.m_typeIdList.Add(reg.TypeName.ToLowerInvariant(), reg.PluginId);
+                    m_typeIdList.Add(reg.TypeName.ToLowerInvariant(), reg.PluginId);
                 }
 
-                if (!checkRecord || this.m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant()))
+                if (!checkRecord || m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant()))
                 {
                     trvPlugins.CheckNode(reg.PluginId, true);
                 }
@@ -825,7 +825,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             if (totalSteps <= 0)
             {
-                this.m_progRegistration.ClearText();
+                m_progRegistration.ClearText();
                 return;
             }
 
@@ -874,7 +874,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             grpPlugins.Enabled = true;
             grpIsolationMode.Enabled = true;
             grpRegLoc.Enabled = true;
-            this.EnableRegistrationControls();
+            EnableRegistrationControls();
             btnCancel.Enabled = true;
 
             barRegistration.Value = barRegistration.Minimum;

@@ -45,7 +45,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public CrmPluginImage(CrmOrganization org)
         {
-            this.m_org = org;
+            m_org = org;
         }
 
         public CrmPluginImage(CrmOrganization org, Guid assemblyId, Guid pluginId, Guid stepId, Guid imageId, string attributes,
@@ -53,23 +53,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             DateTime? createdOn, DateTime? modifiedOn)
             : this(org)
         {
-            this.AssemblyId = assemblyId;
-            this.PluginId = pluginId;
-            this.StepId = stepId;
-            this.ImageId = imageId;
-            this.Attributes = attributes;
-            this.RelatedAttribute = relatedAttribute;
-            this.EntityAlias = entityAlias;
-            this.ImageType = imageType;
-            this.MessagePropertyName = messagePropertyName;
-            this.CustomizationLevel = customizationLevel;
-            this.UpdateDates(createdOn, modifiedOn);
+            AssemblyId = assemblyId;
+            PluginId = pluginId;
+            StepId = stepId;
+            ImageId = imageId;
+            Attributes = attributes;
+            RelatedAttribute = relatedAttribute;
+            EntityAlias = entityAlias;
+            ImageType = imageType;
+            MessagePropertyName = messagePropertyName;
+            CustomizationLevel = customizationLevel;
+            UpdateDates(createdOn, modifiedOn);
         }
 
         public CrmPluginImage(CrmOrganization org, Guid assemblyId, Guid pluginId, SdkMessageProcessingStepImage image)
             : this(org)
         {
-            this.RefreshFromSdkMessageProcessingStepImage(assemblyId, pluginId, image);
+            RefreshFromSdkMessageProcessingStepImage(assemblyId, pluginId, image);
         }
 
         #region Properties
@@ -78,7 +78,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
@@ -86,7 +86,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentNullException();
                 }
-                else if (this.m_org == null)
+                else if (m_org == null)
                 {
                     m_org = value;
                 }
@@ -102,12 +102,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_assemblyId;
+                return m_assemblyId;
             }
 
             set
             {
-                this.m_assemblyId = value;
+                m_assemblyId = value;
             }
         }
 
@@ -116,12 +116,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginId;
+                return m_pluginId;
             }
 
             set
             {
-                this.m_pluginId = value;
+                m_pluginId = value;
             }
         }
 
@@ -130,12 +130,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_stepId;
+                return m_stepId;
             }
 
             set
             {
-                this.m_stepId = value;
+                m_stepId = value;
             }
         }
 
@@ -144,12 +144,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_imageId;
+                return m_imageId;
             }
 
             set
             {
-                this.m_imageId = value;
+                m_imageId = value;
             }
         }
 
@@ -158,12 +158,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_attributes;
+                return m_attributes;
             }
 
             set
             {
-                this.m_attributes = value;
+                m_attributes = value;
             }
         }
 
@@ -181,7 +181,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_createdOn;
+                return m_createdOn;
             }
         }
 
@@ -193,7 +193,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_modifiedOn;
+                return m_modifiedOn;
             }
         }
 
@@ -202,12 +202,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_relatedAttribute;
+                return m_relatedAttribute;
             }
 
             set
             {
-                this.m_relatedAttribute = value;
+                m_relatedAttribute = value;
             }
         }
 
@@ -216,12 +216,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_entityAlias;
+                return m_entityAlias;
             }
 
             set
             {
-                this.m_entityAlias = value;
+                m_entityAlias = value;
             }
         }
 
@@ -230,12 +230,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_type;
+                return m_type;
             }
 
             set
             {
-                this.m_type = value;
+                m_type = value;
             }
         }
 
@@ -244,15 +244,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_propertyName;
+                return m_propertyName;
             }
 
             set
             {
-                if (!string.Equals(this.m_propertyName, value))
+                if (!string.Equals(m_propertyName, value))
                 {
-                    this.m_propertyName = value;
-                    this.m_propertyTitle = null;
+                    m_propertyName = value;
+                    m_propertyTitle = null;
                 }
             }
         }
@@ -262,7 +262,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_customizationLevel;
+                return m_customizationLevel;
             }
 
             set
@@ -272,7 +272,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     throw new ArgumentException("Invalid CustomizationLevel specified");
                 }
 
-                this.m_customizationLevel = value;
+                m_customizationLevel = value;
             }
         }
         #endregion
@@ -285,65 +285,65 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("image");
             }
 
-            this.AssemblyId = assemblyId;
-            this.PluginId = pluginId;
+            AssemblyId = assemblyId;
+            PluginId = pluginId;
 
             if (image.SdkMessageProcessingStepImageId != null)
             {
-                this.ImageId = image.SdkMessageProcessingStepImageId.Value;
+                ImageId = image.SdkMessageProcessingStepImageId.Value;
             }
 
             if (image.Attributes != null)
             {
-                this.Attributes = image.Attributes1;
+                Attributes = image.Attributes1;
             }
 
             if (image.EntityAlias != null)
             {
-                this.EntityAlias = image.EntityAlias;
+                EntityAlias = image.EntityAlias;
             }
 
             if (image.MessagePropertyName != null)
             {
-                this.MessagePropertyName = image.MessagePropertyName;
+                MessagePropertyName = image.MessagePropertyName;
             }
 
             if (image.RelatedAttributeName != null)
             {
-                this.RelatedAttribute = image.RelatedAttributeName;
+                RelatedAttribute = image.RelatedAttributeName;
             }
 
             if (image.SdkMessageProcessingStepId != null)
             {
-                this.StepId = image.SdkMessageProcessingStepId.Id;
+                StepId = image.SdkMessageProcessingStepId.Id;
             }
 
             if (image.ImageType != null)
             {
-                this.ImageType = (CrmPluginImageType)Enum.ToObject(typeof(CrmPluginImageType), image.ImageType.Value);
+                ImageType = (CrmPluginImageType)Enum.ToObject(typeof(CrmPluginImageType), image.ImageType.Value);
             }
 
             if (image.CustomizationLevel != null)
             {
-                this.m_customizationLevel = image.CustomizationLevel.Value;
+                m_customizationLevel = image.CustomizationLevel.Value;
             }
 
             if (image.CreatedOn != null && (image.CreatedOn.HasValue))
             {
-                this.m_createdOn = image.CreatedOn.Value;
+                m_createdOn = image.CreatedOn.Value;
             }
 
             if (image.ModifiedOn != null && (image.ModifiedOn.HasValue))
             {
-                this.m_modifiedOn = image.ModifiedOn.Value;
+                m_modifiedOn = image.ModifiedOn.Value;
             }
 
-            this.Name = image.Name;
+            Name = image.Name;
         }
 
         public override string ToString()
         {
-            return this.NodeText;
+            return NodeText;
         }
         #endregion
 
@@ -368,7 +368,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                string attributeList = this.m_attributes;
+                string attributeList = m_attributes;
                 if (string.IsNullOrEmpty(attributeList))
                 {
                     attributeList = null;
@@ -379,7 +379,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 }
 
                 string imageLabel;
-                switch (this.ImageType)
+                switch (ImageType)
                 {
                     case CrmPluginImageType.PreImage:
                         imageLabel = "Pre Image";
@@ -391,19 +391,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         imageLabel = "Pre & Post Image";
                         break;
                     default:
-                        throw new NotImplementedException("ImageType = " + this.ImageType.ToString());
+                        throw new NotImplementedException("ImageType = " + ImageType.ToString());
                 }
 
                 //Retrieve the MessagePropertyName object
-                if (this.m_propertyTitle == null)
+                if (m_propertyTitle == null)
                 {
-                    if (string.IsNullOrEmpty(this.MessagePropertyName))
+                    if (string.IsNullOrEmpty(MessagePropertyName))
                     {
-                        this.m_propertyTitle = string.Empty;
+                        m_propertyTitle = string.Empty;
                     }
-                    else if (this.Organization != null && this.Organization.Steps.ContainsKey(this.StepId))
+                    else if (Organization != null && Organization.Steps.ContainsKey(StepId))
                     {
-                        CrmPluginStep step = this.Organization.Steps[this.StepId];
+                        CrmPluginStep step = Organization.Steps[StepId];
 
                         Guid messageId;
                         string primaryEntity;
@@ -414,23 +414,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         }
                         else
                         {
-                            CrmMessageEntity messageEntity = this.Organization.MessageEntities[step.MessageEntityId];
+                            CrmMessageEntity messageEntity = Organization.MessageEntities[step.MessageEntityId];
                             messageId = messageEntity.MessageId;
                             primaryEntity = messageEntity.PrimaryEntity;
                         }
 
 
-                        this.m_propertyTitle = string.Empty;
+                        m_propertyTitle = string.Empty;
 
                         //Determine the title of the property
-                        List<ImageMessagePropertyName> validProperties = this.m_org.Messages[messageId].ImageMessagePropertyNames;
-                        if (0 != validProperties.Count && !string.IsNullOrEmpty(this.m_propertyName))
+                        List<ImageMessagePropertyName> validProperties = m_org.Messages[messageId].ImageMessagePropertyNames;
+                        if (0 != validProperties.Count && !string.IsNullOrEmpty(m_propertyName))
                         {
                             foreach (ImageMessagePropertyName property in validProperties)
                             {
-                                if (string.Equals(property.Name, this.m_propertyName, StringComparison.OrdinalIgnoreCase))
+                                if (string.Equals(property.Name, m_propertyName, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    this.m_propertyTitle = property.Label;
+                                    m_propertyTitle = property.Label;
                                     break;
                                 }
                             }
@@ -438,15 +438,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     }
                     else
                     {
-                        this.m_propertyTitle = null;
+                        m_propertyTitle = null;
                     }
                 }
 
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("({0}) ", this.NodeTypeLabel);
-                if (!string.IsNullOrEmpty(this.m_entityAlias))
+                sb.AppendFormat("({0}) ", NodeTypeLabel);
+                if (!string.IsNullOrEmpty(m_entityAlias))
                 {
-                    sb.Append(this.EntityAlias);
+                    sb.Append(EntityAlias);
                 }
                 else
                 {
@@ -458,9 +458,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     sb.AppendFormat(" ({0})", attributeList);
                 }
 
-                if (!string.IsNullOrEmpty(this.m_propertyTitle))
+                if (!string.IsNullOrEmpty(m_propertyTitle))
                 {
-                    sb.AppendFormat(" - {0}", this.m_propertyTitle);
+                    sb.AppendFormat(" - {0}", m_propertyTitle);
                 }
 
                 return sb.ToString();
@@ -473,7 +473,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_imageId;
+                return m_imageId;
             }
         }
 
@@ -545,15 +545,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_imageId;
+                return m_imageId;
             }
         }
 
         public Dictionary<string, object> GenerateCrmEntities()
         {
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                CrmPluginStep step = this.Organization[this.AssemblyId][this.PluginId][this.StepId];
+                CrmPluginStep step = Organization[AssemblyId][PluginId][StepId];
                 return GenerateCrmEntities(step.MessageId, step.MessageEntityId);
             }
             return GenerateCrmEntities(Guid.Empty, Guid.Empty);
@@ -561,54 +561,54 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public Dictionary<string, object> GenerateCrmEntities(Guid sdkMessageId, Guid sdkMessageFilterId)
         {
-            if (this.Organization != null)
+            if (Organization != null)
             {
-                if (string.IsNullOrEmpty(this.MessagePropertyName))
+                if (string.IsNullOrEmpty(MessagePropertyName))
                 {
-                    List<ImageMessagePropertyName> validImages = this.Organization.Messages[sdkMessageId].ImageMessagePropertyNames;
+                    List<ImageMessagePropertyName> validImages = Organization.Messages[sdkMessageId].ImageMessagePropertyNames;
                     if (0 != validImages.Count)
                     {
                         //Select the first one from the list
-                        this.MessagePropertyName = validImages[0].Name;
+                        MessagePropertyName = validImages[0].Name;
                     }
                 }
             }
 
             Dictionary<string, object> entityList = new Dictionary<string, object>();
             SdkMessageProcessingStepImage image = new SdkMessageProcessingStepImage();
-            if (this.ImageId != Guid.Empty)
+            if (ImageId != Guid.Empty)
             {
                 image.SdkMessageProcessingStepImageId = new Guid?();
-                image["sdkmessageprocessingstepimageid"] = this.ImageId;
+                image["sdkmessageprocessingstepimageid"] = ImageId;
             }
 
-            if (this.StepId != Guid.Empty)
+            if (StepId != Guid.Empty)
             {
                 image.SdkMessageProcessingStepId = new EntityReference();
                 image.SdkMessageProcessingStepId.LogicalName = SdkMessageProcessingStep.EntityLogicalName;
-                image.SdkMessageProcessingStepId.Id = this.StepId;
+                image.SdkMessageProcessingStepId.Id = StepId;
             }
 
             image.ImageType = new OptionSetValue();
-            image.ImageType.Value = (int)this.ImageType;
+            image.ImageType.Value = (int)ImageType;
 
-            image.MessagePropertyName = this.MessagePropertyName;
+            image.MessagePropertyName = MessagePropertyName;
 
-            image.Name = this.Name;
+            image.Name = Name;
 
-            image.EntityAlias = this.EntityAlias;
+            image.EntityAlias = EntityAlias;
 
-            if (!string.IsNullOrEmpty(this.Attributes)) // null is all attributes
+            if (!string.IsNullOrEmpty(Attributes)) // null is all attributes
             {
-                image.Attributes1 = this.Attributes;
+                image.Attributes1 = Attributes;
             }
             else
             {
                 image.Attributes1 = string.Empty;
             }
-            if (!string.IsNullOrEmpty(this.RelatedAttribute))
+            if (!string.IsNullOrEmpty(RelatedAttribute))
             {
-                image.RelatedAttributeName = this.RelatedAttribute; //For Related Entity Information
+                image.RelatedAttributeName = RelatedAttribute; //For Related Entity Information
             }
 
             entityList.Add(SdkMessageProcessingStepImage.EntityLogicalName, image);
@@ -643,21 +643,21 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.ImageId);
-                valueList.Add("Name", String.IsNullOrEmpty(this.Name) ? string.Empty : this.Name);
-                valueList.Add("EntityAlias", this.EntityAlias);
-                valueList.Add("PropertyName", this.MessagePropertyName);
+                valueList.Add("Id", ImageId);
+                valueList.Add("Name", String.IsNullOrEmpty(Name) ? string.Empty : Name);
+                valueList.Add("EntityAlias", EntityAlias);
+                valueList.Add("PropertyName", MessagePropertyName);
 
-                if (string.IsNullOrEmpty(this.Attributes))
+                if (string.IsNullOrEmpty(Attributes))
                 {
                     valueList.Add("Attributes", "All Attributes");
                 }
                 else
                 {
-                    valueList.Add("Attributes", this.Attributes);
+                    valueList.Add("Attributes", Attributes);
                 }
 
-                switch (this.ImageType)
+                switch (ImageType)
                 {
                     case CrmPluginImageType.PreImage:
 
@@ -673,7 +673,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         valueList.Add("Type", "Pre & Post Image");
                         break;
                     default:
-                        throw new NotImplementedException("ImageType = " + this.ImageType.ToString());
+                        throw new NotImplementedException("ImageType = " + ImageType.ToString());
                 }
 
                 return valueList;
@@ -686,7 +686,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.CustomizationLevel == 0;
+                return CustomizationLevel == 0;
             }
         }
 
@@ -694,12 +694,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (createdOn != null)
             {
-                this.m_createdOn = createdOn;
+                m_createdOn = createdOn;
             }
 
             if (modifiedOn != null)
             {
-                this.m_modifiedOn = modifiedOn;
+                m_modifiedOn = modifiedOn;
             }
         }
         #endregion
@@ -707,7 +707,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region ICloneable Members
         public object Clone()
         {
-            return this.Clone(true);
+            return Clone(true);
         }
 
         public CrmPluginImage Clone(bool includeOrganization)
@@ -715,26 +715,26 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             CrmPluginImage newImage;
             if (includeOrganization)
             {
-                newImage = new CrmPluginImage(this.m_org);
+                newImage = new CrmPluginImage(m_org);
             }
             else
             {
                 newImage = new CrmPluginImage(null);
             }
 
-            newImage.m_assemblyId = this.m_assemblyId;
-            newImage.m_attributes = this.m_attributes;
-            newImage.m_createdOn = this.m_createdOn;
-            newImage.m_customizationLevel = this.m_customizationLevel;
-            newImage.m_entityAlias = this.m_entityAlias;
-            newImage.m_imageId = this.m_imageId;
-            newImage.m_modifiedOn = this.m_modifiedOn;
-            newImage.m_pluginId = this.m_pluginId;
-            newImage.m_propertyName = this.m_propertyName;
-            newImage.m_propertyTitle = this.m_propertyTitle;
-            newImage.m_relatedAttribute = this.m_relatedAttribute;
-            newImage.m_stepId = this.m_stepId;
-            newImage.m_type = this.m_type;
+            newImage.m_assemblyId = m_assemblyId;
+            newImage.m_attributes = m_attributes;
+            newImage.m_createdOn = m_createdOn;
+            newImage.m_customizationLevel = m_customizationLevel;
+            newImage.m_entityAlias = m_entityAlias;
+            newImage.m_imageId = m_imageId;
+            newImage.m_modifiedOn = m_modifiedOn;
+            newImage.m_pluginId = m_pluginId;
+            newImage.m_propertyName = m_propertyName;
+            newImage.m_propertyTitle = m_propertyTitle;
+            newImage.m_relatedAttribute = m_relatedAttribute;
+            newImage.m_stepId = m_stepId;
+            newImage.m_type = m_type;
 
             return newImage;
         }

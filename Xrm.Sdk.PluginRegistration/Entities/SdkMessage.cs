@@ -27,17 +27,17 @@
 
         private void OnPropertyChanged(string propertyName)
         {
-            if ((this.PropertyChanged != null))
+            if ((PropertyChanged != null))
             {
-                this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
 
         private void OnPropertyChanging(string propertyName)
         {
-            if ((this.PropertyChanging != null))
+            if ((PropertyChanging != null))
             {
-                this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
             }
         }
 
@@ -49,13 +49,13 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("autotransact");
+                return GetAttributeValue<bool?>("autotransact");
             }
             set
             {
-                this.OnPropertyChanging("AutoTransact");
-                this.SetAttributeValue("autotransact", value);
-                this.OnPropertyChanged("AutoTransact");
+                OnPropertyChanging("AutoTransact");
+                SetAttributeValue("autotransact", value);
+                OnPropertyChanged("AutoTransact");
             }
         }
 
@@ -67,13 +67,13 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("availability");
+                return GetAttributeValue<int?>("availability");
             }
             set
             {
-                this.OnPropertyChanging("Availability");
-                this.SetAttributeValue("availability", value);
-                this.OnPropertyChanged("Availability");
+                OnPropertyChanging("Availability");
+                SetAttributeValue("availability", value);
+                OnPropertyChanged("Availability");
             }
         }
 
@@ -85,13 +85,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("categoryname");
+                return GetAttributeValue<string>("categoryname");
             }
             set
             {
-                this.OnPropertyChanging("CategoryName");
-                this.SetAttributeValue("categoryname", value);
-                this.OnPropertyChanged("CategoryName");
+                OnPropertyChanging("CategoryName");
+                SetAttributeValue("categoryname", value);
+                OnPropertyChanged("CategoryName");
             }
         }
 
@@ -103,7 +103,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
             }
         }
 
@@ -115,7 +115,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+                return GetAttributeValue<System.DateTime?>("createdon");
             }
         }
 
@@ -127,7 +127,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
             }
         }
 
@@ -139,7 +139,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+                return GetAttributeValue<int?>("customizationlevel");
             }
         }
 
@@ -151,13 +151,13 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("expand");
+                return GetAttributeValue<bool?>("expand");
             }
             set
             {
-                this.OnPropertyChanging("Expand");
-                this.SetAttributeValue("expand", value);
-                this.OnPropertyChanged("Expand");
+                OnPropertyChanging("Expand");
+                SetAttributeValue("expand", value);
+                OnPropertyChanged("Expand");
             }
         }
 
@@ -169,13 +169,13 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("isprivate");
+                return GetAttributeValue<bool?>("isprivate");
             }
             set
             {
-                this.OnPropertyChanging("IsPrivate");
-                this.SetAttributeValue("isprivate", value);
-                this.OnPropertyChanged("IsPrivate");
+                OnPropertyChanging("IsPrivate");
+                SetAttributeValue("isprivate", value);
+                OnPropertyChanged("IsPrivate");
             }
         }
 
@@ -187,7 +187,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
             }
         }
 
@@ -199,7 +199,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+                return GetAttributeValue<System.DateTime?>("modifiedon");
             }
         }
 
@@ -211,7 +211,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
             }
         }
 
@@ -223,13 +223,13 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("name");
+                return GetAttributeValue<string>("name");
             }
             set
             {
-                this.OnPropertyChanging("Name");
-                this.SetAttributeValue("name", value);
-                this.OnPropertyChanged("Name");
+                OnPropertyChanging("Name");
+                SetAttributeValue("name", value);
+                OnPropertyChanged("Name");
             }
         }
 
@@ -241,7 +241,7 @@
         {
             get
             {
-                return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
             }
         }
 
@@ -253,12 +253,12 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageid");
+                return GetAttributeValue<System.Guid?>("sdkmessageid");
             }
             set
             {
-                this.OnPropertyChanging("SdkMessageId");
-                this.SetAttributeValue("sdkmessageid", value);
+                OnPropertyChanging("SdkMessageId");
+                SetAttributeValue("sdkmessageid", value);
                 if (value.HasValue)
                 {
                     base.Id = value.Value;
@@ -267,7 +267,7 @@
                 {
                     base.Id = System.Guid.Empty;
                 }
-                this.OnPropertyChanged("SdkMessageId");
+                OnPropertyChanged("SdkMessageId");
             }
         }
 
@@ -280,7 +280,7 @@
             }
             set
             {
-                this.SdkMessageId = value;
+                SdkMessageId = value;
             }
         }
 
@@ -292,7 +292,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageidunique");
+                return GetAttributeValue<System.Guid?>("sdkmessageidunique");
             }
         }
 
@@ -304,13 +304,13 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<bool>>("template");
+                return GetAttributeValue<bool?>("template");
             }
             set
             {
-                this.OnPropertyChanging("Template");
-                this.SetAttributeValue("template", value);
-                this.OnPropertyChanged("Template");
+                OnPropertyChanging("Template");
+                SetAttributeValue("template", value);
+                OnPropertyChanged("Template");
             }
         }
 
@@ -322,7 +322,7 @@
         {
             get
             {
-                return this.GetAttributeValue<string>("throttlesettings");
+                return GetAttributeValue<string>("throttlesettings");
             }
         }
 
@@ -334,7 +334,7 @@
         {
             get
             {
-                return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+                return GetAttributeValue<long?>("versionnumber");
             }
         }
     }

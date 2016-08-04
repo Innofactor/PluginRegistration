@@ -100,7 +100,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
 
             trvPlugins.ImageList = imageList;
-            trvPlugins.TreeViewNodeSorter = this.m_sorter;
+            trvPlugins.TreeViewNodeSorter = m_sorter;
         }
 
         #region Properties & Events
@@ -150,9 +150,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                if (this.HasNode(nodeId))
+                if (HasNode(nodeId))
                 {
-                    return ((ICrmTreeNode)this.m_nodeList[nodeId].CrmNode);
+                    return ((ICrmTreeNode)m_nodeList[nodeId].CrmNode);
                 }
                 else
                 {
@@ -191,19 +191,19 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_contextMenuStrip;
+                return m_contextMenuStrip;
             }
             set
             {
-                if (value == this.m_contextMenuStrip)
+                if (value == m_contextMenuStrip)
                 {
                     return;
                 }
                 else
                 {
-                    this.m_contextMenuStrip = value;
+                    m_contextMenuStrip = value;
 
-                    foreach (CrmTreeNode node in this.m_nodeList.Values)
+                    foreach (CrmTreeNode node in m_nodeList.Values)
                     {
                         node.TreeNode.ContextMenuStrip = value;
                     }
@@ -217,19 +217,19 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_contextMenu;
+                return m_contextMenu;
             }
             set
             {
-                if (value == this.m_contextMenu)
+                if (value == m_contextMenu)
                 {
                     return;
                 }
                 else
                 {
-                    this.m_contextMenu = value;
+                    m_contextMenu = value;
 
-                    foreach (CrmTreeNode node in this.m_nodeList.Values)
+                    foreach (CrmTreeNode node in m_nodeList.Values)
                     {
                         node.TreeNode.ContextMenu = value;
                     }
@@ -290,12 +290,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_excludeTypes;
+                return m_excludeTypes;
             }
 
             set
             {
-                this.m_excludeTypes = value;
+                m_excludeTypes = value;
             }
         }
 
@@ -307,13 +307,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                if (this.trvPlugins.SelectedNode == null)
+                if (trvPlugins.SelectedNode == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return ((CrmTreeNode)this.trvPlugins.SelectedNode.Tag).CrmNode;
+                    return ((CrmTreeNode)trvPlugins.SelectedNode.Tag).CrmNode;
                 }
             }
 
@@ -321,11 +321,11 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 if (value == null)
                 {
-                    this.trvPlugins.SelectedNode = null;
+                    trvPlugins.SelectedNode = null;
                 }
-                else if (this.HasNode(value.NodeId))
+                else if (HasNode(value.NodeId))
                 {
-                    this.trvPlugins.SelectedNode = this.m_nodeList[value.NodeId].TreeNode;
+                    trvPlugins.SelectedNode = m_nodeList[value.NodeId].TreeNode;
                 }
                 else
                 {
@@ -343,7 +343,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             get
             {
                 List<ICrmTreeNode> nodeList = new List<ICrmTreeNode>();
-                this.RetrieveCheckedNodes(trvPlugins.Nodes, nodeList, true);
+                RetrieveCheckedNodes(trvPlugins.Nodes, nodeList, true);
                 return nodeList;
             }
         }
@@ -356,9 +356,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                if (this.SingleCheckParent)
+                if (SingleCheckParent)
                 {
-                    return (this.CheckedNodes.Count == this.m_nodeList.Count);
+                    return (CheckedNodes.Count == m_nodeList.Count);
                 }
                 else
                 {
@@ -386,12 +386,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_singleParentCheck;
+                return m_singleParentCheck;
             }
 
             set
             {
-                this.m_singleParentCheck = value;
+                m_singleParentCheck = value;
             }
         }
 
@@ -403,11 +403,11 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_autoExpand;
+                return m_autoExpand;
             }
             set
             {
-                this.m_autoExpand = value;
+                m_autoExpand = value;
             }
         }
 
@@ -416,12 +416,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_sorter.Sorter;
+                return m_sorter.Sorter;
             }
 
             set
             {
-                this.m_sorter.Sorter = value;
+                m_sorter.Sorter = value;
             }
         }
 
@@ -432,11 +432,11 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.trvPlugins.LabelEdit;
+                return trvPlugins.LabelEdit;
             }
             set
             {
-                this.trvPlugins.LabelEdit = value;
+                trvPlugins.LabelEdit = value;
             }
         }
 
@@ -467,7 +467,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 AutoCompleteStringCollection autoCompleteList = new AutoCompleteStringCollection();
                 Collection<string> itemList = new Collection<string>();
-                foreach (CrmTreeNode node in this.m_nodeList.Values)
+                foreach (CrmTreeNode node in m_nodeList.Values)
                 {
                     string nodeKey = node.TreeNode.Text.ToLowerInvariant().Trim();
                     if (!itemList.Contains(nodeKey))
@@ -494,7 +494,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_nodeList.Count;
+                return m_nodeList.Count;
             }
         }
 
@@ -517,9 +517,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
         private void trvPlugins_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (!this.m_disableSelectionChange && this.SelectionChanged != null)
+            if (!m_disableSelectionChange && SelectionChanged != null)
             {
-                this.SelectionChanged(this, new CrmTreeNodeTreeEventArgs(((CrmTreeNode)e.Node.Tag).CrmNode, e.Action));
+                SelectionChanged(this, new CrmTreeNodeTreeEventArgs(((CrmTreeNode)e.Node.Tag).CrmNode, e.Action));
             }
         }
 
@@ -528,9 +528,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             TreeNode node = trvPlugins.HitTest(((MouseEventArgs)e).Location).Node;
             if (node != null)
             {
-                if (this.Click != null)
+                if (Click != null)
                 {
-                    this.Click(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
+                    Click(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
                 }
             }
         }
@@ -540,38 +540,38 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             TreeNode node = trvPlugins.HitTest(((MouseEventArgs)e).Location).Node;
             if (node != null)
             {
-                if (this.DoubleClick != null)
+                if (DoubleClick != null)
                 {
-                    this.DoubleClick(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
+                    DoubleClick(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
                 }
             }
         }
 
         private void trvPlugins_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            if (!this.m_disableCheckChange)
+            if (!m_disableCheckChange)
             {
                 try
                 {
-                    this.m_disableCheckChange = true;
+                    m_disableCheckChange = true;
 
                     CrmTreeNode node = (CrmTreeNode)e.Node.Tag;
                     node.Checked = e.Node.Checked;
-                    if (this.CheckStateChanged != null)
+                    if (CheckStateChanged != null)
                     {
-                        this.CheckStateChanged(this, new CrmTreeNodeEventArgs(node.CrmNode));
+                        CheckStateChanged(this, new CrmTreeNodeEventArgs(node.CrmNode));
                     }
                 }
                 finally
                 {
-                    this.m_disableCheckChange = false;
+                    m_disableCheckChange = false;
                 }
             }
         }
 
         private void trvPlugins_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && (this.ContextMenu != null || this.ContextMenuStrip != null))
+            if (e.Button == MouseButtons.Right && (ContextMenu != null || ContextMenuStrip != null))
             {
                 TreeNode node = trvPlugins.HitTest(e.Location).Node;
                 if (node != null)
@@ -583,25 +583,25 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
         private void trvPlugins_KeyDown(object sender, KeyEventArgs e)
         {
-            if (this.KeyDown != null)
+            if (KeyDown != null)
             {
-                this.KeyDown(this, e);
+                KeyDown(this, e);
             }
         }
 
         private void trvPlugins_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (this.KeyPress != null)
+            if (KeyPress != null)
             {
-                this.KeyPress(this, e);
+                KeyPress(this, e);
             }
         }
 
         private void trvPlugins_KeyUp(object sender, KeyEventArgs e)
         {
-            if (this.KeyUp != null)
+            if (KeyUp != null)
             {
-                this.KeyUp(this, e);
+                KeyUp(this, e);
             }
         }
 
@@ -609,25 +609,25 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             //Verify that the node can be edited
             CrmTreeNode treeNode = (CrmTreeNode)e.Node.Tag;
-            if (!this.IsNodeTextEditable(treeNode.CrmNode))
+            if (!IsNodeTextEditable(treeNode.CrmNode))
             {
                 e.CancelEdit = true;
-                this.m_currentlyEditing = Guid.Empty;
+                m_currentlyEditing = Guid.Empty;
                 return;
             }
 
             ICrmEditableTreeNode node = (ICrmEditableTreeNode)treeNode.CrmNode;
 
-            if (this.BeforeLabelEdit != null)
+            if (BeforeLabelEdit != null)
             {
                 CrmTreeNodeLabelEditEventArgs args = new CrmTreeNodeLabelEditEventArgs(node, node.NodeEditText);
-                this.BeforeLabelEdit(this, args);
+                BeforeLabelEdit(this, args);
                 e.CancelEdit = args.CancelEdit;
             }
 
             if (!e.CancelEdit)
             {
-                this.m_currentlyEditing = node.NodeId;
+                m_currentlyEditing = node.NodeId;
             }
         }
 
@@ -635,12 +635,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             CrmTreeNode treeNode = (CrmTreeNode)e.Node.Tag;
 
-            if (!this.IsNodeTextEditable(treeNode.CrmNode))
+            if (!IsNodeTextEditable(treeNode.CrmNode))
             {
                 e.CancelEdit = true;
-                if (null != this.LabelEditCanceled)
+                if (null != LabelEditCanceled)
                 {
-                    this.LabelEditCanceled(this, new CrmTreeNodeEventArgs(treeNode.CrmNode));
+                    LabelEditCanceled(this, new CrmTreeNodeEventArgs(treeNode.CrmNode));
                 }
                 return;
             }
@@ -659,11 +659,11 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 {
                     canceled = true;
                 }
-                else if (this.AfterLabelEdit != null)
+                else if (AfterLabelEdit != null)
                 {
                     CrmTreeNodeLabelEditEventArgs args = new CrmTreeNodeLabelEditEventArgs(node,
                         node.GetNodeEditTextForLabel(e.Label));
-                    this.AfterLabelEdit(this, args);
+                    AfterLabelEdit(this, args);
                     canceled = args.CancelEdit;
                 }
 
@@ -680,20 +680,20 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 e.CancelEdit = true;
             }
 
-            this.m_currentlyEditing = Guid.Empty;
+            m_currentlyEditing = Guid.Empty;
 
             if (canceled)
             {
-                if (null != this.LabelEditCanceled)
+                if (null != LabelEditCanceled)
                 {
-                    this.LabelEditCanceled(this, new CrmTreeNodeEventArgs(node));
+                    LabelEditCanceled(this, new CrmTreeNodeEventArgs(node));
                 }
             }
             else
             {
-                if (null != this.LabelEdited)
+                if (null != LabelEdited)
                 {
-                    this.LabelEdited(this, new CrmTreeNodeEventArgs(node));
+                    LabelEdited(this, new CrmTreeNodeEventArgs(node));
                 }
             }
         }
@@ -708,8 +708,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <param name="rootNodes">Nodes to be loaded. If not specifed, the tree will be empty</param>
         public void LoadNodes(ICrmTreeNode[] rootNodes)
         {
-            this.m_nodeList.Clear();
-            this.trvPlugins.Nodes.Clear();
+            m_nodeList.Clear();
+            trvPlugins.Nodes.Clear();
 
             if (rootNodes == null || rootNodes.Length == 0)
             {
@@ -717,7 +717,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
             else
             {
-                this.AddNodes(trvPlugins.Nodes, rootNodes, false);
+                AddNodes(trvPlugins.Nodes, rootNodes, false);
                 trvPlugins.SelectedNode = null;
             }
         }
@@ -740,7 +740,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <param name="nodeId">Node that needs to be refreshed</param>
         public void RefreshNode(Guid nodeId)
         {
-            this.RefreshNode(nodeId, false, false);
+            RefreshNode(nodeId, false, false);
         }
 
         /// <summary>
@@ -750,7 +750,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <param name="reloadChildren">If true, children of this node will be removed and added again</param>
         public void RefreshNode(Guid nodeId, bool reloadChildren)
         {
-            this.RefreshNode(nodeId, reloadChildren, false);
+            RefreshNode(nodeId, reloadChildren, false);
         }
 
         /// <summary>
@@ -761,34 +761,34 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <param name="checkChildren">Indicates that each child should be checked</param>
         public void RefreshNode(Guid nodeId, bool reloadChildren, bool checkChildren)
         {
-            if (this.HasNode(nodeId))
+            if (HasNode(nodeId))
             {
-                CrmTreeNode rootNode = this.m_nodeList[nodeId];
+                CrmTreeNode rootNode = m_nodeList[nodeId];
 
                 rootNode.TreeNode.Text = rootNode.CrmNode.NodeText;
                 rootNode.TreeNode.ImageKey = rootNode.CrmNode.NodeImageType.ToString();
 
                 if (reloadChildren)
                 {
-                    this.Clear(rootNode.TreeNode.Nodes);
+                    Clear(rootNode.TreeNode.Nodes);
 
-                    if (this.CheckIfReSortNeeded(rootNode))
+                    if (CheckIfReSortNeeded(rootNode))
                     {
-                        this.Sort(rootNode.CrmNode.NodeId);
+                        Sort(rootNode.CrmNode.NodeId);
                     }
 
                     rootNode.ReloadChildren();
 
-                    this.AddNodes(rootNode.TreeNode.Nodes, rootNode.CrmNode.NodeChildren, checkChildren);
+                    AddNodes(rootNode.TreeNode.Nodes, rootNode.CrmNode.NodeChildren, checkChildren);
 
-                    if (this.m_autoExpand)
+                    if (m_autoExpand)
                     {
                         rootNode.TreeNode.ExpandAll();
                     }
                 }
-                else if (this.CheckIfReSortNeeded(rootNode))
+                else if (CheckIfReSortNeeded(rootNode))
                 {
-                    this.Sort(rootNode.CrmNode.NodeId);
+                    Sort(rootNode.CrmNode.NodeId);
                 }
             }
         }
@@ -800,7 +800,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <returns>True if the node exists, False if it doesn't</returns>
         public bool HasNode(Guid? nodeId)
         {
-            return (this.m_nodeList.ContainsKey(nodeId));
+            return (m_nodeList.ContainsKey(nodeId));
         }
 
         /// <summary>
@@ -809,9 +809,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <exception cref="ArgumentException">Invalid nodeId given</exception>
         public bool IsNodeChecked(Guid nodeId)
         {
-            if (this.HasNode(nodeId))
+            if (HasNode(nodeId))
             {
-                return this.m_nodeList[nodeId].Checked;
+                return m_nodeList[nodeId].Checked;
             }
             else
             {
@@ -824,7 +824,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void AddNode(Guid parentNodeId, ICrmTreeNode node)
         {
-            this.AddNode(parentNodeId, node, false);
+            AddNode(parentNodeId, node, false);
         }
 
         /// <summary>
@@ -836,19 +836,19 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 throw new ArgumentNullException("node");
             }
-            else if (Guid.Empty != parentNodeId && !this.HasNode(parentNodeId))
+            else if (Guid.Empty != parentNodeId && !HasNode(parentNodeId))
             {
                 throw new ArgumentException("Invalid Node Id", "parentNodeId");
             }
-            else if (this.HasNode(node.NodeId))
+            else if (HasNode(node.NodeId))
             {
                 throw new ArgumentException("Node is already in the tree", "node");
             }
 
-            TreeNodeCollection nodeList = this.RetrieveParentNodeCollection(parentNodeId);
+            TreeNodeCollection nodeList = RetrieveParentNodeCollection(parentNodeId);
             bool hasChildren = (nodeList.Count != 0);
-            this.AddNodes(nodeList, new ICrmTreeNode[] { node }, checkNode);
-            if (this.m_autoExpand && !hasChildren)
+            AddNodes(nodeList, new ICrmTreeNode[] { node }, checkNode);
+            if (m_autoExpand && !hasChildren)
             {
                 if (parentNodeId == Guid.Empty)
                 {
@@ -856,7 +856,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 }
                 else
                 {
-                    this.m_nodeList[parentNodeId].TreeNode.ExpandAll();
+                    m_nodeList[parentNodeId].TreeNode.ExpandAll();
                 }
             }
         }
@@ -866,27 +866,27 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void RemoveNode(Guid nodeId)
         {
-            if (!this.HasNode(nodeId))
+            if (!HasNode(nodeId))
             {
                 throw new ArgumentException("Invalid Node ID given");
             }
 
-            CrmTreeNode node = this.m_nodeList[nodeId];
+            CrmTreeNode node = m_nodeList[nodeId];
 
             //Remove all of the children
-            this.RemoveNodes(node.TreeNode.Nodes);
+            RemoveNodes(node.TreeNode.Nodes);
 
             //Remove this item from its parent node
             node.TreeNode.Remove();
 
             //Retrieve the curent node
-            if (null != this.NodeRemoved)
+            if (null != NodeRemoved)
             {
-                this.NodeRemoved(this, new CrmTreeNodeEventArgs(node.CrmNode));
+                NodeRemoved(this, new CrmTreeNodeEventArgs(node.CrmNode));
             }
 
             //Remove the item from the list
-            this.m_nodeList.Remove(nodeId);
+            m_nodeList.Remove(nodeId);
         }
 
         /// <summary>
@@ -910,13 +910,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void CheckNode(Guid nodeId, bool checkValue)
         {
-            if (!this.HasNode(nodeId))
+            if (!HasNode(nodeId))
             {
                 throw new ArgumentException("nodeId");
             }
             else
             {
-                this.m_nodeList[nodeId].TreeNode.Checked = checkValue;
+                m_nodeList[nodeId].TreeNode.Checked = checkValue;
             }
         }
 
@@ -925,9 +925,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public Color GetNodeColor(Guid nodeId)
         {
-            if (this.HasNode(nodeId))
+            if (HasNode(nodeId))
             {
-                return this.m_nodeList[nodeId].TreeNode.ForeColor;
+                return m_nodeList[nodeId].TreeNode.ForeColor;
             }
             else
             {
@@ -940,9 +940,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void SetNodeColor(Guid nodeId, Color color)
         {
-            if (this.HasNode(nodeId))
+            if (HasNode(nodeId))
             {
-                this.m_nodeList[nodeId].TreeNode.ForeColor = color;
+                m_nodeList[nodeId].TreeNode.ForeColor = color;
             }
             else
             {
@@ -955,9 +955,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public string GetNodeToolTipText(Guid nodeId)
         {
-            if (this.HasNode(nodeId))
+            if (HasNode(nodeId))
             {
-                return this.m_nodeList[nodeId].TreeNode.ToolTipText;
+                return m_nodeList[nodeId].TreeNode.ToolTipText;
             }
             else
             {
@@ -970,9 +970,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void SetNodeToolTipText(Guid nodeId, string tip)
         {
-            if (this.HasNode(nodeId))
+            if (HasNode(nodeId))
             {
-                this.m_nodeList[nodeId].TreeNode.ToolTipText = tip;
+                m_nodeList[nodeId].TreeNode.ToolTipText = tip;
             }
             else
             {
@@ -985,13 +985,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void Sort()
         {
-            this.m_disableSelectionChange = true;
+            m_disableSelectionChange = true;
             TreeNode selectedNode = trvPlugins.SelectedNode;
 
             trvPlugins.Sort();
 
             trvPlugins.SelectedNode = selectedNode;
-            this.m_disableSelectionChange = false;
+            m_disableSelectionChange = false;
         }
 
         /// <summary>
@@ -999,14 +999,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void BeginNodeTextEdit(Guid nodeId)
         {
-            if (!this.LabelEdit)
+            if (!LabelEdit)
             {
                 throw new InvalidOperationException("BeginNodeTextEdit failed because LabelEdit is false");
             }
-            else if (this.HasNode(nodeId))
+            else if (HasNode(nodeId))
             {
-                this.m_nodeList[nodeId].TreeNode.BeginEdit();
-                this.m_currentlyEditing = nodeId;
+                m_nodeList[nodeId].TreeNode.BeginEdit();
+                m_currentlyEditing = nodeId;
             }
             else
             {
@@ -1020,14 +1020,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <param name="cancelChanges">Cancels the current changes being made</param>
         public void EndNodeTextEdit(Guid nodeId, bool cancelChanges)
         {
-            if (!this.LabelEdit)
+            if (!LabelEdit)
             {
                 throw new InvalidOperationException("EndNodeTextEdit failed because LabelEdit is false");
             }
-            else if (this.HasNode(nodeId))
+            else if (HasNode(nodeId))
             {
-                this.m_nodeList[nodeId].TreeNode.EndEdit(cancelChanges);
-                this.m_currentlyEditing = Guid.Empty;
+                m_nodeList[nodeId].TreeNode.EndEdit(cancelChanges);
+                m_currentlyEditing = Guid.Empty;
             }
             else
             {
@@ -1040,7 +1040,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void Expand()
         {
-            this.Expand(Guid.Empty, true);
+            Expand(Guid.Empty, true);
         }
 
         /// <summary>
@@ -1054,15 +1054,15 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 trvPlugins.ExpandAll();
             }
-            else if (this.HasNode(nodeId))
+            else if (HasNode(nodeId))
             {
                 if (applyToChildren)
                 {
-                    this.m_nodeList[nodeId].TreeNode.ExpandAll();
+                    m_nodeList[nodeId].TreeNode.ExpandAll();
                 }
                 else
                 {
-                    this.m_nodeList[nodeId].TreeNode.Expand();
+                    m_nodeList[nodeId].TreeNode.Expand();
                 }
             }
             else
@@ -1076,7 +1076,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void Collapse()
         {
-            this.Collapse(Guid.Empty, true);
+            Collapse(Guid.Empty, true);
         }
 
         /// <summary>
@@ -1090,15 +1090,15 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 trvPlugins.CollapseAll();
             }
-            else if (this.HasNode(nodeId))
+            else if (HasNode(nodeId))
             {
                 if (applyToChildren)
                 {
-                    this.CollapseAll(this.m_nodeList[nodeId].TreeNode);
+                    CollapseAll(m_nodeList[nodeId].TreeNode);
                 }
                 else
                 {
-                    this.m_nodeList[nodeId].TreeNode.Collapse();
+                    m_nodeList[nodeId].TreeNode.Collapse();
                 }
             }
             else
@@ -1126,7 +1126,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     continue;
                 }
 
-                this.Search(node, null, removeNodeList, text);
+                Search(node, null, removeNodeList, text);
             }
 
             foreach (TreeNode node in removeNodeList)
@@ -1136,7 +1136,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     continue;
                 }
 
-                this.m_nodeList.Remove(((CrmTreeNode)node.Tag).CrmNode.NodeId);
+                m_nodeList.Remove(((CrmTreeNode)node.Tag).CrmNode.NodeId);
                 node.Remove();
             }
         }
@@ -1147,15 +1147,15 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public void SetContextMenuStrip(CrmTreeNodeType type, ContextMenuStrip strip)
         {
-            if (this.m_contextMenuList.ContainsKey(type))
+            if (m_contextMenuList.ContainsKey(type))
             {
                 if (strip == null)
                 {
-                    this.m_contextMenuList.Remove(type);
+                    m_contextMenuList.Remove(type);
                 }
                 else
                 {
-                    this.m_contextMenuList[type] = strip;
+                    m_contextMenuList[type] = strip;
                 }
             }
             else if (strip == null)
@@ -1164,7 +1164,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
             else
             {
-                this.m_contextMenuList.Add(type, strip);
+                m_contextMenuList.Add(type, strip);
             }
         }
 
@@ -1173,7 +1173,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public bool HasContextMenuStrip(CrmTreeNodeType type)
         {
-            return this.m_contextMenuList.ContainsKey(type);
+            return m_contextMenuList.ContainsKey(type);
         }
 
         /// <summary>
@@ -1181,9 +1181,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// </summary>
         public ContextMenuStrip GetContextMenuStrip(CrmTreeNodeType type)
         {
-            if (this.HasContextMenuStrip(type))
+            if (HasContextMenuStrip(type))
             {
-                return this.m_contextMenuList[type];
+                return m_contextMenuList[type];
             }
             else
             {
@@ -1214,7 +1214,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// <returns>Value indicating whether the given node's text can be edited</returns>
         public bool IsNodeTextEditable(Guid nodeId)
         {
-            return IsNodeTextEditable(this.m_nodeList[nodeId].CrmNode);
+            return IsNodeTextEditable(m_nodeList[nodeId].CrmNode);
         }
 
         #endregion Public Methods
@@ -1230,7 +1230,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
             foreach (ICrmTreeNode node in nodes)
             {
-                if (node != null && this.IncludeType(node.NodeType))
+                if (node != null && IncludeType(node.NodeType))
                 {
                     ICrmTreeNode crmNode = (ICrmTreeNode)node;
                     bool firstChild = (parentNodeList.Count == 0);
@@ -1238,21 +1238,21 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     TreeNode tNode = new TreeNode(node.NodeText);
                     tNode.ImageKey = crmNode.NodeImageType.ToString();
                     tNode.SelectedImageKey = crmNode.NodeSelectedImageType.ToString();
-                    tNode.Tag = new CrmTreeNode(this.SingleCheckParent, tNode, node);
+                    tNode.Tag = new CrmTreeNode(SingleCheckParent, tNode, node);
 
-                    if (this.HasContextMenuStrip(crmNode.NodeType))
+                    if (HasContextMenuStrip(crmNode.NodeType))
                     {
-                        tNode.ContextMenuStrip = this.GetContextMenuStrip(crmNode.NodeType);
+                        tNode.ContextMenuStrip = GetContextMenuStrip(crmNode.NodeType);
                     }
                     else
                     {
-                        tNode.ContextMenu = this.ContextMenu;
-                        tNode.ContextMenuStrip = this.ContextMenuStrip;
+                        tNode.ContextMenu = ContextMenu;
+                        tNode.ContextMenuStrip = ContextMenuStrip;
                     }
 
                     parentNodeList.Add(tNode);
 
-                    if (this.m_autoExpand && firstChild)
+                    if (m_autoExpand && firstChild)
                     {
                         if (tNode.Parent == null)
                         {
@@ -1264,8 +1264,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         }
                     }
 
-                    this.m_nodeList.Add(node.NodeId, (CrmTreeNode)tNode.Tag);
-                    if (this.CheckBoxes)
+                    m_nodeList.Add(node.NodeId, (CrmTreeNode)tNode.Tag);
+                    if (CheckBoxes)
                     {
                         if (checkNodes)
                         {
@@ -1275,15 +1275,15 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         ((CrmTreeNode)tNode.Tag).UpdateParentChecked();
                     }
 
-                    if (null != this.NodeAdded)
+                    if (null != NodeAdded)
                     {
-                        this.NodeAdded(this, new CrmTreeNodeEventArgs(crmNode));
+                        NodeAdded(this, new CrmTreeNodeEventArgs(crmNode));
                     }
 
                     ICrmTreeNode[] childNodes = node.NodeChildren;
                     if (childNodes != null && childNodes.Length != 0)
                     {
-                        this.AddNodes(tNode.Nodes, childNodes, checkNodes);
+                        AddNodes(tNode.Nodes, childNodes, checkNodes);
                     }
                 }
             }
@@ -1303,16 +1303,16 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
                     if (node.Nodes.Count != 0)
                     {
-                        this.RemoveNodes(node.Nodes);
+                        RemoveNodes(node.Nodes);
                     }
 
                     ICrmTreeNode crmNode = ((CrmTreeNode)node.Tag).CrmNode;
-                    this.m_nodeList.Remove(crmNode.NodeId);
+                    m_nodeList.Remove(crmNode.NodeId);
                     parentNodeList.Remove(node);
 
-                    if (null != this.NodeRemoved)
+                    if (null != NodeRemoved)
                     {
-                        this.NodeRemoved(this, new CrmTreeNodeEventArgs(crmNode));
+                        NodeRemoved(this, new CrmTreeNodeEventArgs(crmNode));
                     }
                 }
             }
@@ -1324,9 +1324,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 return trvPlugins.Nodes;
             }
-            else if (this.HasNode(parentId))
+            else if (HasNode(parentId))
             {
-                return this.m_nodeList[parentId].TreeNode.Nodes;
+                return m_nodeList[parentId].TreeNode.Nodes;
             }
             else
             {
@@ -1352,13 +1352,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 return false;
             }
-            else if (this.m_excludeTypes == CrmTreeNodeType.None)
+            else if (m_excludeTypes == CrmTreeNodeType.None)
             {
                 return true;
             }
             else
             {
-                return (((CrmTreeNodeType)this.m_excludeTypes & type) != type);
+                return (((CrmTreeNodeType)m_excludeTypes & type) != type);
             }
         }
 
@@ -1375,7 +1375,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 {
                     //The parent node is checked if at least one child is checked. If the parent is not checked
                     //then no child is checked
-                    if (this.SingleCheckParent && !node.Checked)
+                    if (SingleCheckParent && !node.Checked)
                     {
                         continue;
                     }
@@ -1384,7 +1384,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 {
                     //The parent is checked if every child is checked. Since the parent is checked, no
                     //child is checked
-                    if (!this.SingleCheckParent && node.Checked)
+                    if (!SingleCheckParent && node.Checked)
                     {
                         continue;
                     }
@@ -1393,7 +1393,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 //Retrieve the checked children
                 if (node.Nodes.Count != 0)
                 {
-                    this.RetrieveCheckedNodes(node.Nodes, checkedList, checkValue);
+                    RetrieveCheckedNodes(node.Nodes, checkedList, checkValue);
                 }
             }
         }
@@ -1413,23 +1413,23 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             //there is no need to resort the entire tree
 
             //Result should be -1 or 0 if we don't need to resort
-            int prevNode = this.m_sorter.Compare(node.TreeNode.PrevNode, node.TreeNode);
+            int prevNode = m_sorter.Compare(node.TreeNode.PrevNode, node.TreeNode);
 
             //Result should be -1 or 0 if we don't need to resort
-            int nextNode = this.m_sorter.Compare(node.TreeNode, node.TreeNode.NextNode);
+            int nextNode = m_sorter.Compare(node.TreeNode, node.TreeNode.NextNode);
 
             return !(prevNode <= 0 && nextNode <= 0);
         }
 
         private void Sort(Guid nodeId)
         {
-            if (!this.HasNode(nodeId))
+            if (!HasNode(nodeId))
             {
                 throw new ArgumentException("Invalid Node Id", "nodeId");
             }
 
-            TreeNode currentNode = this.m_nodeList[nodeId].TreeNode;
-            TreeNodeCollection parentNodes = this.RetrieveParentNodeCollection(currentNode.Parent);
+            TreeNode currentNode = m_nodeList[nodeId].TreeNode;
+            TreeNodeCollection parentNodes = RetrieveParentNodeCollection(currentNode.Parent);
 
             if (parentNodes.Count > 1)
             {
@@ -1444,7 +1444,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     }
 
                     //Compare the nodes
-                    int result = this.m_sorter.Compare(currentNode, parentNodes[i]);
+                    int result = m_sorter.Compare(currentNode, parentNodes[i]);
 
                     //If currentNode > parentNodes[i], have to keep looking
                     if (result > 0)
@@ -1468,7 +1468,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         }
 
                         //If parentNodes[i] > current, have to keep looking
-                        if (this.m_sorter.Compare(parentNodes[i], currentNode) > 0)
+                        if (m_sorter.Compare(parentNodes[i], currentNode) > 0)
                         {
                             newIndex--;
                         }
@@ -1483,7 +1483,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 if (newIndex != currentNode.Index)
                 {
                     TreeNode selectedNode = trvPlugins.SelectedNode;
-                    this.m_disableSelectionChange = true;
+                    m_disableSelectionChange = true;
 
                     try
                     {
@@ -1492,7 +1492,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     }
                     finally
                     {
-                        this.m_disableSelectionChange = false;
+                        m_disableSelectionChange = false;
                     }
 
                     trvPlugins.SelectedNode = selectedNode;
@@ -1515,10 +1515,10 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 }
                 else if (node.Nodes.Count != 0)
                 {
-                    this.Clear(node.Nodes);
+                    Clear(node.Nodes);
                 }
 
-                this.m_nodeList.Remove(((CrmTreeNode)node.Tag).CrmNode.NodeId);
+                m_nodeList.Remove(((CrmTreeNode)node.Tag).CrmNode.NodeId);
             }
 
             nodeList.Clear();
@@ -1540,7 +1540,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         continue;
                     }
 
-                    this.CollapseAll(childNode);
+                    CollapseAll(childNode);
                 }
             }
 
@@ -1558,7 +1558,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             bool foundAtLeastOne = false;
             foreach (TreeNode childNode in node.Nodes)
             {
-                if (this.Search(childNode, matchedNodes, unmatchedNodes, text))
+                if (Search(childNode, matchedNodes, unmatchedNodes, text))
                 {
                     foundAtLeastOne = true;
                 }
@@ -1653,17 +1653,17 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
             public CrmTreeNode(bool singleCheckParent, TreeNode node, ICrmTreeNode crmNode)
             {
-                this.m_singleCheckParent = singleCheckParent;
-                this.m_node = node;
-                this.m_crmNode = crmNode;
-                this.ReloadChildren();
+                m_singleCheckParent = singleCheckParent;
+                m_node = node;
+                m_crmNode = crmNode;
+                ReloadChildren();
             }
 
             public TreeNode TreeNode
             {
                 get
                 {
-                    return this.m_node;
+                    return m_node;
                 }
             }
 
@@ -1671,7 +1671,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 get
                 {
-                    return this.m_crmNode;
+                    return m_crmNode;
                 }
             }
 
@@ -1679,13 +1679,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 get
                 {
-                    if (this.m_node == null)
+                    if (m_node == null)
                     {
                         return null;
                     }
                     else
                     {
-                        return (CrmTreeNode)this.m_node.Parent.Tag;
+                        return (CrmTreeNode)m_node.Parent.Tag;
                     }
                 }
             }
@@ -1694,49 +1694,49 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 get
                 {
-                    return this.m_node.Checked;
+                    return m_node.Checked;
                 }
 
                 set
                 {
-                    this.UpdateParentChecked();
-                    this.UpdateChildChecked();
+                    UpdateParentChecked();
+                    UpdateChildChecked();
                 }
             }
 
             public void ReloadChildren()
             {
-                this.m_checkedList.Clear();
+                m_checkedList.Clear();
 
-                foreach (TreeNode childNode in this.m_node.Nodes)
+                foreach (TreeNode childNode in m_node.Nodes)
                 {
                     if (childNode.Checked)
                     {
                         CrmTreeNode checkedNode = (CrmTreeNode)childNode.Tag;
-                        this.m_checkedList.Add(checkedNode.m_crmNode.NodeId, checkedNode);
+                        m_checkedList.Add(checkedNode.m_crmNode.NodeId, checkedNode);
                     }
                 }
             }
 
             public void UpdateParentChecked()
             {
-                if (this.m_node.Parent == null)
+                if (m_node.Parent == null)
                 {
                     return;
                 }
 
-                CrmTreeNode parentNode = this.ParentNode;
-                if (this.Checked && !parentNode.m_checkedList.ContainsKey(this.CrmNode.NodeId))
+                CrmTreeNode parentNode = ParentNode;
+                if (Checked && !parentNode.m_checkedList.ContainsKey(CrmNode.NodeId))
                 {
-                    parentNode.m_checkedList.Add(this.CrmNode.NodeId, this);
+                    parentNode.m_checkedList.Add(CrmNode.NodeId, this);
                 }
-                else if (!this.Checked && parentNode.m_checkedList.ContainsKey(this.CrmNode.NodeId))
+                else if (!Checked && parentNode.m_checkedList.ContainsKey(CrmNode.NodeId))
                 {
-                    parentNode.m_checkedList.Remove(this.CrmNode.NodeId);
+                    parentNode.m_checkedList.Remove(CrmNode.NodeId);
                 }
 
                 bool parentChecked;
-                if (this.m_singleCheckParent)
+                if (m_singleCheckParent)
                 {
                     parentChecked = (parentNode.m_checkedList.Count != 0);
                 }
@@ -1754,9 +1754,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
             public void UpdateChildChecked()
             {
-                if (this.m_node.Checked)
+                if (m_node.Checked)
                 {
-                    foreach (TreeNode node in this.m_node.Nodes)
+                    foreach (TreeNode node in m_node.Nodes)
                     {
                         CrmTreeNode childNode = (CrmTreeNode)node.Tag;
                         if (!childNode.Checked)
@@ -1764,9 +1764,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                             childNode.m_node.Checked = true;
                             childNode.UpdateChildChecked();
 
-                            if (!this.m_checkedList.ContainsKey(childNode.m_crmNode.NodeId))
+                            if (!m_checkedList.ContainsKey(childNode.m_crmNode.NodeId))
                             {
-                                this.m_checkedList.Add(childNode.m_crmNode.NodeId, childNode);
+                                m_checkedList.Add(childNode.m_crmNode.NodeId, childNode);
                             }
                         }
                     }
@@ -1774,14 +1774,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 else
                 {
                     List<Guid> removeList = new List<Guid>();
-                    foreach (CrmTreeNode childNode in this.m_checkedList.Values)
+                    foreach (CrmTreeNode childNode in m_checkedList.Values)
                     {
                         if (childNode.Checked)
                         {
                             childNode.m_node.Checked = false;
                             childNode.UpdateChildChecked();
 
-                            if (this.m_checkedList.ContainsKey(childNode.m_crmNode.NodeId))
+                            if (m_checkedList.ContainsKey(childNode.m_crmNode.NodeId))
                             {
                                 removeList.Add(childNode.m_crmNode.NodeId);
                             }
@@ -1790,7 +1790,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
                     foreach (Guid nodeId in removeList)
                     {
-                        this.m_checkedList.Remove(nodeId);
+                        m_checkedList.Remove(nodeId);
                     }
                 }
             }
@@ -1804,12 +1804,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 get
                 {
-                    return this.m_sorter;
+                    return m_sorter;
                 }
 
                 set
                 {
-                    this.m_sorter = value;
+                    m_sorter = value;
                 }
             }
 
@@ -1818,13 +1818,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 ICrmTreeNode node1 = GetCrmNode(x);
                 ICrmTreeNode node2 = GetCrmNode(y);
 
-                if (this.m_sorter == null)
+                if (m_sorter == null)
                 {
                     return string.Compare(GetNodeText(node1), GetNodeText(node2), false);
                 }
                 else
                 {
-                    return this.m_sorter.Compare(node1, node2);
+                    return m_sorter.Compare(node1, node2);
                 }
             }
 
@@ -1879,14 +1879,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 throw new ArgumentNullException("node");
             }
 
-            this.m_node = node;
+            m_node = node;
         }
 
         public ICrmTreeNode Node
         {
             get
             {
-                return this.m_node;
+                return m_node;
             }
         }
     }
@@ -1904,15 +1904,15 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 throw new ArgumentNullException("node");
             }
 
-            this.m_action = action;
-            this.m_node = node;
+            m_action = action;
+            m_node = node;
         }
 
         public TreeViewAction Action
         {
             get
             {
-                return this.m_action;
+                return m_action;
             }
         }
 
@@ -1920,7 +1920,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_node;
+                return m_node;
             }
         }
     }
@@ -1939,15 +1939,15 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 throw new ArgumentNullException("node");
             }
 
-            this.m_node = node;
-            this.m_label = label;
+            m_node = node;
+            m_label = label;
         }
 
         public ICrmTreeNode Node
         {
             get
             {
-                return this.m_node;
+                return m_node;
             }
         }
 
@@ -1955,7 +1955,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_label;
+                return m_label;
             }
         }
 
@@ -1963,11 +1963,11 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             get
             {
-                return this.m_cancelEdit;
+                return m_cancelEdit;
             }
             set
             {
-                this.m_cancelEdit = value;
+                m_cancelEdit = value;
             }
         }
     }

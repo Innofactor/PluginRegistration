@@ -83,7 +83,7 @@ namespace Xrm.Sdk.PluginRegistration
                 imlEnableImages.Images.Add("enableStep", nodeImageList[CrmTreeNodeImageType.StepEnabled]);
                 imlEnableImages.Images.Add("disableStep", nodeImageList[CrmTreeNodeImageType.StepDisabled]);
 
-                this.UpdateEnableButton(true);
+                UpdateEnableButton(true);
             }
             catch (Exception)
             {
@@ -233,17 +233,17 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("org.ConnectionDetail");
             }
 
-            this.m_org = org;
-            this.m_con = org.ConnectionDetail;
-            this.m_currentView = CrmViewType.Assembly;
-            this.LoadNodes();
+            m_org = org;
+            m_con = org.ConnectionDetail;
+            m_currentView = CrmViewType.Assembly;
+            LoadNodes();
         }
 
         #region Control Event Handlers
         private void toolAssemblyRegister_Click(object sender, EventArgs e)
         {
-            PluginRegistrationForm regForm = new PluginRegistrationForm(this.Organization, this, null);
-            regForm.ShowDialog(this.ParentForm);
+            PluginRegistrationForm regForm = new PluginRegistrationForm(Organization, this, null);
+            regForm.ShowDialog(ParentForm);
         }
         private void toolServiceEndpointRegister_Click(object sender, EventArgs e)
         {
@@ -293,21 +293,21 @@ namespace Xrm.Sdk.PluginRegistration
 
                 if (Guid.Empty != pluginId)
                 {
-                    plugin = this.m_org.Plugins[pluginId];
+                    plugin = m_org.Plugins[pluginId];
                 }
                 if (Guid.Empty != serviceEndpointId)
                 {
-                    serviceEndpoint = this.m_org.ServiceEndpoints[serviceEndpointId];
+                    serviceEndpoint = m_org.ServiceEndpoints[serviceEndpointId];
                 }
             }
 
-            StepRegistrationForm regForm = new StepRegistrationForm(this.Organization, this, plugin, null, serviceEndpoint);
+            StepRegistrationForm regForm = new StepRegistrationForm(Organization, this, plugin, null, serviceEndpoint);
             regForm.ShowDialog();
         }
 
         private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
         {
-            this.SelectItem(e.Node);
+            SelectItem(e.Node);
         }
 
         private void toolUnregister_Click(object sender, EventArgs e)
@@ -316,9 +316,9 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 return;
             }
-            else if (this.IsNodeSystemItem(trvPlugins.SelectedNode))
+            else if (IsNodeSystemItem(trvPlugins.SelectedNode))
             {
-                this.ShowSystemItemError("It cannot be unregistered.");
+                ShowSystemItemError("It cannot be unregistered.");
                 return;
             }
 
@@ -334,18 +334,18 @@ namespace Xrm.Sdk.PluginRegistration
             if (MessageBox.Show("Are you sure you want to unregister this item?", "Unregister",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
-                this.Enabled = false;
+                Enabled = false;
                 // this.MainForm.EnableToolBar(false);
 
                 try
                 {
                     StringBuilder builder = new StringBuilder();
-                    foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(this.m_org, (ICrmEntity)this.trvPlugins.SelectedNode))
+                    foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(m_org, (ICrmEntity)trvPlugins.SelectedNode))
                     {
                         builder.AppendLine(string.Format("{0} {1} Unregistered Successfully", stat.Value, stat.Key));
                     }
 
-                    this.trvPlugins.RemoveNode(this.trvPlugins.SelectedNode.NodeId);
+                    trvPlugins.RemoveNode(trvPlugins.SelectedNode.NodeId);
 
                     MessageBox.Show(builder.ToString(), "Unregister", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -358,10 +358,10 @@ namespace Xrm.Sdk.PluginRegistration
                     if (trvPlugins.HasNode(nodeId))
                     {
                         trvPlugins.RefreshNode(nodeId, true);
-                        this.SelectItem(trvPlugins.SelectedNode);
+                        SelectItem(trvPlugins.SelectedNode);
                     }
 
-                    this.Enabled = true;
+                    Enabled = true;
                     // this.MainForm.EnableToolBar(true);
                 }
 
@@ -380,9 +380,9 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 return;
             }
-            else if (this.IsNodeSystemItem(trvPlugins.SelectedNode))
+            else if (IsNodeSystemItem(trvPlugins.SelectedNode))
             {
-                this.ShowSystemItemError("The step cannot be enabled or disabled.");
+                ShowSystemItemError("The step cannot be enabled or disabled.");
                 return;
             }
 
@@ -406,10 +406,10 @@ namespace Xrm.Sdk.PluginRegistration
                 return;
             }
 
-            this.Enabled = false;
+            Enabled = false;
             try
             {
-                RegistrationHelper.UpdateStepStatus(this.m_org, step.StepId, !step.Enabled);
+                RegistrationHelper.UpdateStepStatus(m_org, step.StepId, !step.Enabled);
                 step.Enabled = !step.Enabled;
                 UpdateEnableButton(step.Enabled);
                 trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
@@ -425,15 +425,15 @@ namespace Xrm.Sdk.PluginRegistration
             }
             finally
             {
-                this.Enabled = true;
+                Enabled = true;
             }
         }
 
         private void toolUpdate_Click(object sender, EventArgs e)
         {
-            if (this.IsNodeSystemItem(trvPlugins.SelectedNode))
+            if (IsNodeSystemItem(trvPlugins.SelectedNode))
             {
-                this.ShowSystemItemError("The assembly cannot be updated.");
+                ShowSystemItemError("The assembly cannot be updated.");
                 return;
             }
 
@@ -447,28 +447,28 @@ namespace Xrm.Sdk.PluginRegistration
                     break;
                 case CrmTreeNodeType.Assembly:
                     {
-                        PluginRegistrationForm regForm = new PluginRegistrationForm(this.Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
-                        regForm.ShowDialog(this.ParentForm);
+                        PluginRegistrationForm regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        regForm.ShowDialog(ParentForm);
                     }
                     break;
                 case CrmTreeNodeType.Step:
                     {
                         CrmPluginStep step = (CrmPluginStep)trvPlugins.SelectedNode;
-                        CrmPlugin plugin = this.m_org[step.AssemblyId][step.PluginId];
+                        CrmPlugin plugin = m_org[step.AssemblyId][step.PluginId];
 
                         CrmServiceEndpoint serviceEndpoint = null;
                         if (step.ServiceBusConfigurationId != Guid.Empty)
                         {
-                            serviceEndpoint = this.m_org.ServiceEndpoints[step.ServiceBusConfigurationId];
+                            serviceEndpoint = m_org.ServiceEndpoints[step.ServiceBusConfigurationId];
                         }
 
-                        StepRegistrationForm regForm = new StepRegistrationForm(this.Organization, this, plugin, step, serviceEndpoint);
+                        StepRegistrationForm regForm = new StepRegistrationForm(Organization, this, plugin, step, serviceEndpoint);
                         regForm.ShowDialog();
                     }
                     break;
                 case CrmTreeNodeType.Image:
                     {
-                        ImageRegistrationForm regForm = new ImageRegistrationForm(this.m_org, this,
+                        ImageRegistrationForm regForm = new ImageRegistrationForm(m_org, this,
                             trvPlugins.RootNodes, (CrmPluginImage)trvPlugins.SelectedNode, trvPlugins.SelectedNode.NodeId);
                         regForm.ShowDialog();
                     }
@@ -492,10 +492,10 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 return;
             }
-            this.m_dataRowIndex = e.RowIndex;
+            m_dataRowIndex = e.RowIndex;
 
             Guid rowId = (Guid)grvData.Rows[m_dataRowIndex].Cells["Id"].Value;
-            this.m_dataRowId = rowId;
+            m_dataRowId = rowId;
 
             //Check for special cases
             switch (trvPlugins.SelectedNode.NodeType)
@@ -504,9 +504,9 @@ namespace Xrm.Sdk.PluginRegistration
                 case CrmTreeNodeType.MessageEntity:
 
                     //The Id presented in the DataGrid is not the id of the node in the tree
-                    if (this.m_viewNodeList.ContainsKey(rowId))
+                    if (m_viewNodeList.ContainsKey(rowId))
                     {
-                        this.m_dataRowId = this.m_viewNodeList[rowId];
+                        m_dataRowId = m_viewNodeList[rowId];
                     }
                     break;
             }
@@ -514,9 +514,9 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void grvData_DoubleClick(object sender, EventArgs e)
         {
-            if (trvPlugins.HasNode(this.m_dataRowId))
+            if (trvPlugins.HasNode(m_dataRowId))
             {
-                trvPlugins.SelectedNode = trvPlugins[this.m_dataRowId];
+                trvPlugins.SelectedNode = trvPlugins[m_dataRowId];
             }
         }
 
@@ -531,7 +531,7 @@ namespace Xrm.Sdk.PluginRegistration
             // TODO : Ajith
             // Do Validations if the Image is valid on the Step -Message and then Launch the Wizard
 
-            var regForm = new ImageRegistrationForm(this.m_org, this, trvPlugins.RootNodes, null, nodeId);
+            var regForm = new ImageRegistrationForm(m_org, this, trvPlugins.RootNodes, null, nodeId);
             regForm.ShowDialog();
         }
 
@@ -543,7 +543,7 @@ namespace Xrm.Sdk.PluginRegistration
                 if (item.Tag != null && item.Tag.GetType() == typeof(CrmViewType))
                 {
                     propGridEntity.SelectedObject = null;
-                    this.LoadNodes((CrmViewType)item.Tag);
+                    LoadNodes((CrmViewType)item.Tag);
                 }
             }
         }
@@ -583,7 +583,7 @@ namespace Xrm.Sdk.PluginRegistration
                 trvPlugins.SelectedNode = e.Node;
                 if (toolUpdate.Visible && toolUpdate.Enabled)
                 {
-                    this.toolUpdate_Click(sender, e);
+                    toolUpdate_Click(sender, e);
                 }
             }
             else
@@ -594,10 +594,10 @@ namespace Xrm.Sdk.PluginRegistration
                 if (null != plugin && plugin.IsProfilerPlugin)
                 {
                     //Display the Plug-in Registration form
-                    using (PluginRegistrationForm form = new PluginRegistrationForm(this.Organization, this,
-                        this.Organization.Assemblies[plugin.AssemblyId]))
+                    using (PluginRegistrationForm form = new PluginRegistrationForm(Organization, this,
+                        Organization.Assemblies[plugin.AssemblyId]))
                     {
-                        form.ShowDialog(this.ParentForm);
+                        form.ShowDialog(ParentForm);
                     }
 
                     //Update the tree based on the selected node
@@ -632,13 +632,13 @@ namespace Xrm.Sdk.PluginRegistration
                 case CrmTreeNodeType.Step:
                     {
                         Guid stepId = e.Node.NodeId;
-                        if (null != this.m_stepParentList && this.m_stepParentList.ContainsKey(stepId))
+                        if (null != m_stepParentList && m_stepParentList.ContainsKey(stepId))
                         {
-                            CrmTreeNode node = (CrmTreeNode)trvPlugins[this.m_stepParentList[stepId]];
+                            CrmTreeNode node = (CrmTreeNode)trvPlugins[m_stepParentList[stepId]];
                             node.RemoveChild(stepId);
-                            this.m_stepParentList.Remove(stepId);
+                            m_stepParentList.Remove(stepId);
 
-                            this.RemoveCrmTreeNodesCascadeUp(node);
+                            RemoveCrmTreeNodesCascadeUp(node);
                         }
                     }
                     break;
@@ -656,19 +656,19 @@ namespace Xrm.Sdk.PluginRegistration
         {
             try
             {
-                if (this.trvPlugins != null && this.trvPlugins.SelectedNode != null)
+                if (trvPlugins != null && trvPlugins.SelectedNode != null)
                 {
-                    switch (this.trvPlugins.SelectedNode.NodeType)
+                    switch (trvPlugins.SelectedNode.NodeType)
                     {
                         case CrmTreeNodeType.Assembly:
-                            CrmPluginAssembly assembly = (CrmPluginAssembly)this.trvPlugins.SelectedNode;
+                            CrmPluginAssembly assembly = (CrmPluginAssembly)trvPlugins.SelectedNode;
                             RegistrationHelper.UpdateAssembly(m_org, assembly.Description, assembly.AssemblyId);
                             trvPlugins.RefreshNode(assembly.AssemblyId, false, false);
                             MessageBox.Show("Assembly has been updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             break;
                         case CrmTreeNodeType.Plugin:
                         case CrmTreeNodeType.WorkflowActivity:
-                            CrmPlugin plugin = (CrmPlugin)this.trvPlugins.SelectedNode;
+                            CrmPlugin plugin = (CrmPlugin)trvPlugins.SelectedNode;
                             RegistrationHelper.UpdatePlugin(m_org, plugin);
                             trvPlugins.RefreshNode(plugin.PluginId, false, false);
                             MessageBox.Show("Plug-in has been updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -828,7 +828,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             get
             {
-                return this.m_con;
+                return m_con;
             }
         }
 
@@ -836,7 +836,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
         }
 
@@ -844,7 +844,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             get
             {
-                return this.trvPlugins.AutoExpand;
+                return trvPlugins.AutoExpand;
             }
         }
 
@@ -858,9 +858,9 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("serviceEndpoint");
             }
 
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.AddNode(Guid.Empty, serviceEndpoint);
+                trvPlugins.AddNode(Guid.Empty, serviceEndpoint);
             }
         }
         public void AddAssembly(CrmPluginAssembly assembly)
@@ -870,9 +870,9 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("assembly");
             }
 
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.AddNode(Guid.Empty, assembly);
+                trvPlugins.AddNode(Guid.Empty, assembly);
             }
         }
 
@@ -883,8 +883,8 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("serviceEndpoint");
             }
 
-            this.trvPlugins.RefreshNode(serviceEndpoint.NodeId, true);
-            this.SelectItem(this.trvPlugins.SelectedNode);
+            trvPlugins.RefreshNode(serviceEndpoint.NodeId, true);
+            SelectItem(trvPlugins.SelectedNode);
         }
         public void RefreshAssembly(CrmPluginAssembly assembly, bool reloadChildren)
         {
@@ -893,19 +893,19 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("assembly");
             }
 
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.RefreshNode(assembly.NodeId, reloadChildren);
-                this.SelectItem(this.trvPlugins.SelectedNode);
+                trvPlugins.RefreshNode(assembly.NodeId, reloadChildren);
+                SelectItem(trvPlugins.SelectedNode);
             }
         }
 
         public void RemoveAssembly(Guid assemblyId)
         {
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.RemoveNode(assemblyId);
-                this.SelectItem(trvPlugins.SelectedNode);
+                trvPlugins.RemoveNode(assemblyId);
+                SelectItem(trvPlugins.SelectedNode);
             }
         }
 
@@ -916,12 +916,12 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("reg");
             }
 
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.AddNode(reg.AssemblyId, reg);
+                trvPlugins.AddNode(reg.AssemblyId, reg);
                 if (trvPlugins.SelectedNode != null && trvPlugins.SelectedNode.NodeId == reg.AssemblyId)
                 {
-                    this.SelectItem(trvPlugins.SelectedNode);
+                    SelectItem(trvPlugins.SelectedNode);
                 }
             }
         }
@@ -933,19 +933,19 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("plugin");
             }
 
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.RefreshNode(plugin.NodeId, true);
-                this.SelectItem(this.trvPlugins.SelectedNode);
+                trvPlugins.RefreshNode(plugin.NodeId, true);
+                SelectItem(trvPlugins.SelectedNode);
             }
         }
 
         public void RemovePlugin(Guid pluginId)
         {
-            if (this.m_currentView == CrmViewType.Assembly)
+            if (m_currentView == CrmViewType.Assembly)
             {
-                this.trvPlugins.RemoveNode(pluginId);
-                this.SelectItem(trvPlugins.SelectedNode);
+                trvPlugins.RemoveNode(pluginId);
+                SelectItem(trvPlugins.SelectedNode);
             }
         }
 
@@ -957,7 +957,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             Guid parentId;
-            switch (this.m_currentView)
+            switch (m_currentView)
             {
                 case CrmViewType.Assembly:
                     if (step.ServiceBusConfigurationId == Guid.Empty)
@@ -972,25 +972,25 @@ namespace Xrm.Sdk.PluginRegistration
                     break;
                 case CrmViewType.Entity:
                 case CrmViewType.Message:
-                    parentId = CreateCrmTreeNodes(this.m_currentView, step.MessageId, step.MessageEntityId, true).NodeId;
+                    parentId = CreateCrmTreeNodes(m_currentView, step.MessageId, step.MessageEntityId, true).NodeId;
 
                     //Add to the step parent id list
-                    if (!this.m_stepParentList.ContainsKey(step.StepId))
+                    if (!m_stepParentList.ContainsKey(step.StepId))
                     {
-                        this.m_stepParentList.Add(step.StepId, parentId);
+                        m_stepParentList.Add(step.StepId, parentId);
                     }
 
                     //Add to the CrmTreeNode
                     ((CrmTreeNode)trvPlugins[parentId]).AddChild(step);
                     break;
                 default:
-                    throw new NotImplementedException("View = " + this.m_currentView.ToString());
+                    throw new NotImplementedException("View = " + m_currentView.ToString());
             }
 
-            this.trvPlugins.AddNode(parentId, step);
+            trvPlugins.AddNode(parentId, step);
             if (trvPlugins.SelectedNode != null && trvPlugins.SelectedNode.NodeId == parentId)
             {
-                this.SelectItem(trvPlugins.SelectedNode);
+                SelectItem(trvPlugins.SelectedNode);
             }
         }
 
@@ -1001,16 +1001,16 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("step");
             }
 
-            this.trvPlugins.RefreshNode(step.NodeId, true);
-            this.SelectItem(this.trvPlugins.SelectedNode);
+            trvPlugins.RefreshNode(step.NodeId, true);
+            SelectItem(trvPlugins.SelectedNode);
         }
 
         public void RemoveStep(Guid stepId)
         {
             CrmPluginStep step = (CrmPluginStep)trvPlugins[stepId];
 
-            this.trvPlugins.RemoveNode(stepId);
-            this.SelectItem(trvPlugins.SelectedNode);
+            trvPlugins.RemoveNode(stepId);
+            SelectItem(trvPlugins.SelectedNode);
         }
 
         public void AddImage(CrmPluginImage image)
@@ -1020,10 +1020,10 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("image");
             }
 
-            this.trvPlugins.AddNode(image.StepId, image);
+            trvPlugins.AddNode(image.StepId, image);
             if (trvPlugins.SelectedNode != null && trvPlugins.SelectedNode.NodeId == image.StepId)
             {
-                this.SelectItem(trvPlugins.SelectedNode);
+                SelectItem(trvPlugins.SelectedNode);
             }
         }
 
@@ -1034,14 +1034,14 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("image");
             }
 
-            this.trvPlugins.RefreshNode(image.NodeId, true);
-            this.SelectItem(this.trvPlugins.SelectedNode);
+            trvPlugins.RefreshNode(image.NodeId, true);
+            SelectItem(trvPlugins.SelectedNode);
         }
 
         public void RemoveImage(Guid imageId)
         {
-            this.trvPlugins.RemoveNode(imageId);
-            this.SelectItem(trvPlugins.SelectedNode);
+            trvPlugins.RemoveNode(imageId);
+            SelectItem(trvPlugins.SelectedNode);
         }
 
         public bool IsNodeSystemItem(ICrmTreeNode node)
@@ -1096,15 +1096,15 @@ namespace Xrm.Sdk.PluginRegistration
         private void SelectItem(ICrmTreeNode node)
         {
             //Reset the visibility and enabled properties because we don't what is enabled
-            this.toolUpdate.Visible = false;
-            this.mnuContextNodeUpdate.Visible = false;
+            toolUpdate.Visible = false;
+            mnuContextNodeUpdate.Visible = false;
 
-            this.toolEnable.Visible = false;
-            this.mnuContextNodeEnable.Visible = false;
+            toolEnable.Visible = false;
+            mnuContextNodeEnable.Visible = false;
 
-            this.RefreshProfilerNodeMenu(null);
+            RefreshProfilerNodeMenu(null);
 
-            bool isSystemNode = this.IsNodeSystemItem(trvPlugins.SelectedNode);
+            bool isSystemNode = IsNodeSystemItem(trvPlugins.SelectedNode);
             if (node == null)
             {
                 mnuContextNodeUnregister.Enabled = false;
@@ -1126,8 +1126,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         CrmServiceEndpoint serviceEndpoint = (CrmServiceEndpoint)node;
 
-                        this.toolUpdate.Visible = true;
-                        this.mnuContextNodeUpdate.Visible = true;
+                        toolUpdate.Visible = true;
+                        mnuContextNodeUpdate.Visible = true;
                         btnSave.Enabled = false;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPluginStep>(CrmPluginStep.Columns, serviceEndpoint.Steps);
@@ -1138,8 +1138,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         CrmPluginAssembly assembly = (CrmPluginAssembly)node;
 
-                        this.toolUpdate.Visible = true;
-                        this.mnuContextNodeUpdate.Visible = true;
+                        toolUpdate.Visible = true;
+                        mnuContextNodeUpdate.Visible = true;
                         btnSave.Enabled = true;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPlugin>(CrmPlugin.Columns, assembly.Plugins);
@@ -1158,19 +1158,19 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         CrmPluginStep step = (CrmPluginStep)node;
                         btnSave.Enabled = false;
-                        this.UpdateEnableButton(step.Enabled);
+                        UpdateEnableButton(step.Enabled);
 
                         if (true/*!OrganizationHelper.IsProfilerSupported*/ ||
                             !(step.IsProfiled || step.Organization.Plugins[step.PluginId].IsProfilerPlugin))
                         {
-                            this.toolEnable.Visible = true;
-                            this.mnuContextNodeEnable.Visible = true;
+                            toolEnable.Visible = true;
+                            mnuContextNodeEnable.Visible = true;
                         }
 
-                        this.toolUpdate.Visible = true;
-                        this.mnuContextNodeUpdate.Visible = true;
+                        toolUpdate.Visible = true;
+                        mnuContextNodeUpdate.Visible = true;
 
-                        this.RefreshProfilerNodeMenu(step);
+                        RefreshProfilerNodeMenu(step);
 
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPluginImage>(CrmPluginImage.Columns, step.Images);
@@ -1178,8 +1178,8 @@ namespace Xrm.Sdk.PluginRegistration
                     break;
                 case CrmTreeNodeType.Image:
                     {
-                        this.toolUpdate.Visible = true;
-                        this.mnuContextNodeUpdate.Visible = true;
+                        toolUpdate.Visible = true;
+                        mnuContextNodeUpdate.Visible = true;
                         CrmPluginImage image = (CrmPluginImage)node;
                         btnSave.Enabled = false;
                         //Load the data table and display information
@@ -1229,16 +1229,16 @@ namespace Xrm.Sdk.PluginRegistration
                 CrmTreeNode treeNode = node as CrmTreeNode;
                 if (null == treeNode)
                 {
-                    this.propGridEntity.SelectedObject = node;
+                    propGridEntity.SelectedObject = node;
                 }
                 else
                 {
-                    this.propGridEntity.SelectedObject = treeNode.Entity;
+                    propGridEntity.SelectedObject = treeNode.Entity;
                 }
             }
 
-            this.m_dataRowIndex = -1;
-            this.m_dataRowId = Guid.Empty;
+            m_dataRowIndex = -1;
+            m_dataRowId = Guid.Empty;
             if (gridTable == null)
             {
                 grpGrid.Visible = false;
@@ -1263,7 +1263,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void LoadNodes()
         {
-            this.LoadNodes(this.m_currentView);
+            LoadNodes(m_currentView);
         }
 
         private void LoadNodes(CrmViewType view)
@@ -1296,18 +1296,18 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             // Create the new view
-            this.Enabled = false;
+            Enabled = false;
             try
             {
                 switch (view)
                 {
                     case CrmViewType.Assembly:
-                        this.m_rootNodeList = null;
-                        this.m_stepParentList = null;
-                        this.m_viewNodeList = null;
+                        m_rootNodeList = null;
+                        m_stepParentList = null;
+                        m_viewNodeList = null;
 
                         List<ICrmTreeNode> nodes = new List<ICrmTreeNode>();
-                        foreach (CrmPluginAssembly assembly in this.Organization.Assemblies)
+                        foreach (CrmPluginAssembly assembly in Organization.Assemblies)
                         {
                             // If the same assembly name used for any other custom plugin assembly then that need to be added
                             if ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != assembly.Name || 0 != assembly.CustomizationLevel) &&
@@ -1317,11 +1317,11 @@ namespace Xrm.Sdk.PluginRegistration
                             }
                         }
 
-                        nodes.AddRange(this.Organization.ServiceEndpoints.ToArray());
+                        nodes.AddRange(Organization.ServiceEndpoints.ToArray());
 
-                        if (null != this.Organization.ProfilerPlugin)
+                        if (null != Organization.ProfilerPlugin)
                         {
-                            nodes.Add(this.Organization.ProfilerPlugin);
+                            nodes.Add(Organization.ProfilerPlugin);
                         }
 
                         trvPlugins.LoadNodes(nodes.ToArray());
@@ -1330,49 +1330,49 @@ namespace Xrm.Sdk.PluginRegistration
                     case CrmViewType.Message:
                         {
                             //Create the Root Node List
-                            if (null == this.m_rootNodeList)
+                            if (null == m_rootNodeList)
                             {
-                                this.m_rootNodeList = new Dictionary<string, CrmTreeNode>();
+                                m_rootNodeList = new Dictionary<string, CrmTreeNode>();
                             }
                             else
                             {
-                                this.m_rootNodeList.Clear();
+                                m_rootNodeList.Clear();
                             }
 
                             //Create the Step Parent Node List
-                            if (null == this.m_stepParentList)
+                            if (null == m_stepParentList)
                             {
-                                this.m_stepParentList = new Dictionary<Guid, Guid>();
+                                m_stepParentList = new Dictionary<Guid, Guid>();
                             }
                             else
                             {
-                                this.m_stepParentList.Clear();
+                                m_stepParentList.Clear();
                             }
 
                             //Create the View Node List
-                            if (null == this.m_viewNodeList)
+                            if (null == m_viewNodeList)
                             {
-                                this.m_viewNodeList = new Dictionary<Guid, Guid>();
+                                m_viewNodeList = new Dictionary<Guid, Guid>();
                             }
                             else
                             {
-                                this.m_viewNodeList.Clear();
+                                m_viewNodeList.Clear();
                             }
 
                             //Retrieve the of steps
-                            foreach (var step in this.Organization.Steps)
+                            foreach (var step in Organization.Steps)
                             {
                                 if (step.MessageId != Guid.Empty)
                                 {
-                                    CrmTreeNode parentNode = this.CreateCrmTreeNodes(view, step.MessageId, step.MessageEntityId, false);
+                                    CrmTreeNode parentNode = CreateCrmTreeNodes(view, step.MessageId, step.MessageEntityId, false);
 
                                     parentNode.AddChild(step);
-                                    this.m_stepParentList.Add(step.StepId, parentNode.NodeId);
+                                    m_stepParentList.Add(step.StepId, parentNode.NodeId);
                                 }
                             }
 
-                            var nodeList = new CrmTreeNode[this.m_rootNodeList.Count];
-                            this.m_rootNodeList.Values.CopyTo(nodeList, 0);
+                            var nodeList = new CrmTreeNode[m_rootNodeList.Count];
+                            m_rootNodeList.Values.CopyTo(nodeList, 0);
 
                             trvPlugins.LoadNodes(nodeList);
                         }
@@ -1381,7 +1381,7 @@ namespace Xrm.Sdk.PluginRegistration
                         throw new NotImplementedException("View = " + view.ToString());
                 }
 
-                this.m_currentView = view;
+                m_currentView = view;
 
                 if (currentCheckedItem != null)
                 {
@@ -1401,7 +1401,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
             finally
             {
-                this.Enabled = true;
+                Enabled = true;
             }
         }
 
@@ -1417,7 +1417,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 case CrmViewType.Message:
                     {
-                        rootNode = new CrmTreeNode(this.m_org.Messages[messageId]);
+                        rootNode = new CrmTreeNode(m_org.Messages[messageId]);
                         if (Guid.Empty == messageEntityId)
                         {
                             childNode = new CrmTreeNode(new CrmMessageEntity(Organization, messageId, Guid.Empty,
@@ -1425,7 +1425,7 @@ namespace Xrm.Sdk.PluginRegistration
                         }
                         else
                         {
-                            childNode = new CrmTreeNode(this.m_org.MessageEntities[messageEntityId]);
+                            childNode = new CrmTreeNode(m_org.MessageEntities[messageEntityId]);
                         }
                     }
                     break;
@@ -1438,9 +1438,9 @@ namespace Xrm.Sdk.PluginRegistration
                         }
                         else
                         {
-                            rootNode = new CrmTreeNode(this.m_org.MessageEntities[messageEntityId]);
+                            rootNode = new CrmTreeNode(m_org.MessageEntities[messageEntityId]);
                         }
-                        childNode = new CrmTreeNode(this.m_org.Messages[messageId]);
+                        childNode = new CrmTreeNode(m_org.Messages[messageId]);
                     }
                     break;
                 default:
@@ -1450,14 +1450,14 @@ namespace Xrm.Sdk.PluginRegistration
             Guid rootNodeId = rootNode.NodeId;
             Guid childNodeId = childNode.NodeId;
 
-            if (this.m_rootNodeList.ContainsKey(rootNode.NodeText))
+            if (m_rootNodeList.ContainsKey(rootNode.NodeText))
             {
-                rootNode = this.m_rootNodeList[rootNode.NodeText];
+                rootNode = m_rootNodeList[rootNode.NodeText];
             }
             else
             {
                 rootNode.NodeId = Guid.NewGuid();
-                this.m_rootNodeList.Add(rootNode.NodeText, rootNode);
+                m_rootNodeList.Add(rootNode.NodeText, rootNode);
 
                 if (addToTree)
                 {
@@ -1480,14 +1480,14 @@ namespace Xrm.Sdk.PluginRegistration
                 }
             }
 
-            if (!this.m_viewNodeList.ContainsKey(rootNodeId))
+            if (!m_viewNodeList.ContainsKey(rootNodeId))
             {
-                this.m_viewNodeList.Add(rootNodeId, rootNode.NodeId);
+                m_viewNodeList.Add(rootNodeId, rootNode.NodeId);
             }
 
-            if (!this.m_viewNodeList.ContainsKey(childNodeId))
+            if (!m_viewNodeList.ContainsKey(childNodeId))
             {
-                this.m_viewNodeList.Add(childNodeId, childNode.NodeId);
+                m_viewNodeList.Add(childNodeId, childNode.NodeId);
             }
 
             return childNode;
@@ -1534,9 +1534,9 @@ namespace Xrm.Sdk.PluginRegistration
                     parentNode = null;
 
                     //This is a root element, remove it from the list
-                    if (this.m_rootNodeList.ContainsKey(node.NodeText))
+                    if (m_rootNodeList.ContainsKey(node.NodeText))
                     {
-                        this.m_rootNodeList.Remove(node.NodeText);
+                        m_rootNodeList.Remove(node.NodeText);
                     }
                 }
                 else
@@ -1564,7 +1564,7 @@ namespace Xrm.Sdk.PluginRegistration
                 toolProfilerSep.Visible = true;
                 toolProfilerDebug.Visible = true;
 
-                if (null != this.m_org.ProfilerPlugin)
+                if (null != m_org.ProfilerPlugin)
                 {
                     mnuContextGeneralProfilerInstall.Text = "Stop All P&rofiling && Uninstall Profiler";
                     mnuContextGeneralProfilerInstall.Image = imlEnableImages.Images["UninstallProfiler"];
@@ -1732,17 +1732,17 @@ namespace Xrm.Sdk.PluginRegistration
                     throw new ArgumentNullException("message");
                 }
 
-                this.m_entity = message;
-                this.m_nodeId = message.MessageId;
-                this.m_nodeText = message.Name;
-                this.m_type = CrmTreeNodeType.Message;
-                this.m_typeLabel = "Message";
-                this.m_imageType = CrmTreeNodeImageType.Message;
-                this.m_selectedImageType = CrmTreeNodeImageType.MessageSelected;
+                m_entity = message;
+                m_nodeId = message.MessageId;
+                m_nodeText = message.Name;
+                m_type = CrmTreeNodeType.Message;
+                m_typeLabel = "Message";
+                m_imageType = CrmTreeNodeImageType.Message;
+                m_selectedImageType = CrmTreeNodeImageType.MessageSelected;
 
-                this.m_origNodeId = this.m_nodeId;
+                m_origNodeId = m_nodeId;
 
-                this.UpdateNodeText();
+                UpdateNodeText();
             }
 
             public CrmTreeNode(CrmMessageEntity msgEntity)
@@ -1752,29 +1752,29 @@ namespace Xrm.Sdk.PluginRegistration
                     throw new ArgumentNullException("entity");
                 }
 
-                this.m_entity = msgEntity;
-                this.m_nodeId = msgEntity.MessageEntityId;
+                m_entity = msgEntity;
+                m_nodeId = msgEntity.MessageEntityId;
                 if (string.IsNullOrEmpty(msgEntity.PrimaryEntity))
                 {
-                    this.m_nodeText = "No Entity";
+                    m_nodeText = "No Entity";
                 }
                 else if (string.IsNullOrEmpty(msgEntity.SecondaryEntity) ||
                     msgEntity.SecondaryEntity.Equals("none", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    this.m_nodeText = msgEntity.PrimaryEntity;
+                    m_nodeText = msgEntity.PrimaryEntity;
                 }
                 else
                 {
-                    this.m_nodeText = string.Format("{0} / {1}", msgEntity.PrimaryEntity, msgEntity.SecondaryEntity);
+                    m_nodeText = string.Format("{0} / {1}", msgEntity.PrimaryEntity, msgEntity.SecondaryEntity);
                 }
-                this.m_type = CrmTreeNodeType.MessageEntity;
-                this.m_typeLabel = "Entity";
-                this.m_imageType = CrmTreeNodeImageType.MessageEntity;
-                this.m_selectedImageType = CrmTreeNodeImageType.MessageEntitySelected;
+                m_type = CrmTreeNodeType.MessageEntity;
+                m_typeLabel = "Entity";
+                m_imageType = CrmTreeNodeImageType.MessageEntity;
+                m_selectedImageType = CrmTreeNodeImageType.MessageEntitySelected;
 
-                this.m_origNodeId = this.m_nodeId;
+                m_origNodeId = m_nodeId;
 
-                this.UpdateNodeText();
+                UpdateNodeText();
             }
 
             public CrmTreeNode(Guid nodeId, string text, CrmTreeNodeType type,
@@ -1785,16 +1785,16 @@ namespace Xrm.Sdk.PluginRegistration
                     throw new ArgumentNullException("text");
                 }
 
-                this.m_entity = null;
-                this.m_nodeId = nodeId;
-                this.m_nodeText = text;
-                this.m_type = type;
-                this.m_imageType = imageType;
-                this.m_selectedImageType = selectedImageType;
+                m_entity = null;
+                m_nodeId = nodeId;
+                m_nodeText = text;
+                m_type = type;
+                m_imageType = imageType;
+                m_selectedImageType = selectedImageType;
 
-                this.m_origNodeId = this.m_nodeId;
+                m_origNodeId = m_nodeId;
 
-                this.UpdateNodeText();
+                UpdateNodeText();
             }
 
             public void AddChild(CrmPluginStep node)
@@ -1803,17 +1803,17 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     throw new ArgumentNullException("node");
                 }
-                else if (this.m_childType != CrmTreeNodeType.None && this.m_childType != node.NodeType)
+                else if (m_childType != CrmTreeNodeType.None && m_childType != node.NodeType)
                 {
                     throw new ArgumentException("Child Node Type has already been determined");
                 }
-                else if (this.m_childType == CrmTreeNodeType.None)
+                else if (m_childType == CrmTreeNodeType.None)
                 {
-                    this.m_childType = node.NodeType;
-                    this.m_stepList = new Dictionary<Guid, CrmPluginStep>();
+                    m_childType = node.NodeType;
+                    m_stepList = new Dictionary<Guid, CrmPluginStep>();
                 }
 
-                this.m_stepList.Add(node.NodeId, node);
+                m_stepList.Add(node.NodeId, node);
             }
 
             public void AddChild(CrmTreeNode node)
@@ -1822,49 +1822,49 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     throw new ArgumentNullException("node");
                 }
-                else if (this.m_childType != CrmTreeNodeType.None && this.m_childType != node.NodeType)
+                else if (m_childType != CrmTreeNodeType.None && m_childType != node.NodeType)
                 {
                     throw new ArgumentException("Child Node Type has already been determined");
                 }
-                else if (this.m_childType == CrmTreeNodeType.None)
+                else if (m_childType == CrmTreeNodeType.None)
                 {
-                    this.m_childType = node.NodeType;
-                    this.m_childList = new Dictionary<string, CrmTreeNode>();
+                    m_childType = node.NodeType;
+                    m_childList = new Dictionary<string, CrmTreeNode>();
                 }
 
-                node.m_parentNodeId = this.m_nodeId;
-                this.m_childList.Add(node.NodeText, node);
+                node.m_parentNodeId = m_nodeId;
+                m_childList.Add(node.NodeText, node);
             }
 
             public void RemoveChild(Guid key)
             {
-                if (this.m_stepList == null)
+                if (m_stepList == null)
                 {
                     throw new ArgumentException("Id is not in the list");
                 }
                 else
                 {
-                    this.m_stepList.Remove(key);
+                    m_stepList.Remove(key);
                 }
             }
 
             public void RemoveChild(string key)
             {
-                if (this.m_childList == null)
+                if (m_childList == null)
                 {
                     throw new ArgumentException("Id is not in the list");
                 }
                 else
                 {
-                    this.m_childList.Remove(key);
+                    m_childList.Remove(key);
                 }
             }
 
             public bool HasChild(Guid id)
             {
-                if (this.m_stepList != null)
+                if (m_stepList != null)
                 {
-                    return this.m_stepList.ContainsKey(id);
+                    return m_stepList.ContainsKey(id);
                 }
                 else
                 {
@@ -1874,9 +1874,9 @@ namespace Xrm.Sdk.PluginRegistration
 
             public bool HasChild(string nodeText)
             {
-                if (this.m_childList != null)
+                if (m_childList != null)
                 {
-                    return this.m_childList.ContainsKey(nodeText);
+                    return m_childList.ContainsKey(nodeText);
                 }
                 else
                 {
@@ -1888,7 +1888,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_stepList[id];
+                    return m_stepList[id];
                 }
             }
 
@@ -1896,7 +1896,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_childList[text];
+                    return m_childList[text];
                 }
             }
 
@@ -1904,17 +1904,17 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_childType;
+                    return m_childType;
                 }
             }
 
             public ICrmEntity[] ToEntityArray(CrmTreeNodeType type)
             {
-                if (this.m_childType == CrmTreeNodeType.None)
+                if (m_childType == CrmTreeNodeType.None)
                 {
-                    this.m_childType = type;
+                    m_childType = type;
                 }
-                else if (this.m_childType != type)
+                else if (m_childType != type)
                 {
                     throw new ArgumentNullException("Child type already determined");
                 }
@@ -1924,22 +1924,22 @@ namespace Xrm.Sdk.PluginRegistration
                 switch (type)
                 {
                     case CrmTreeNodeType.Message:
-                        childList = new CrmMessage[this.m_childList.Count];
-                        foreach (CrmTreeNode childNode in this.m_childList.Values)
+                        childList = new CrmMessage[m_childList.Count];
+                        foreach (CrmTreeNode childNode in m_childList.Values)
                         {
                             childList[childIndex++] = (CrmMessage)childNode.Entity;
                         }
                         break;
                     case CrmTreeNodeType.MessageEntity:
-                        childList = new CrmMessageEntity[this.m_childList.Count];
-                        foreach (CrmTreeNode childNode in this.m_childList.Values)
+                        childList = new CrmMessageEntity[m_childList.Count];
+                        foreach (CrmTreeNode childNode in m_childList.Values)
                         {
                             childList[childIndex++] = (CrmMessageEntity)childNode.Entity;
                         }
                         break;
                     case CrmTreeNodeType.Step:
-                        childList = new CrmPluginStep[this.m_stepList.Count];
-                        this.m_stepList.Values.CopyTo((CrmPluginStep[])childList, 0);
+                        childList = new CrmPluginStep[m_stepList.Count];
+                        m_stepList.Values.CopyTo((CrmPluginStep[])childList, 0);
                         break;
                     default:
                         throw new NotImplementedException("Type = " + type.ToString());
@@ -1952,7 +1952,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_parentNodeId;
+                    return m_parentNodeId;
                 }
             }
 
@@ -1960,7 +1960,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_origNodeId;
+                    return m_origNodeId;
                 }
             }
 
@@ -1968,13 +1968,13 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    if (null != this.m_childList)
+                    if (null != m_childList)
                     {
-                        return this.m_childList.Count;
+                        return m_childList.Count;
                     }
-                    else if (null != this.m_stepList)
+                    else if (null != m_stepList)
                     {
-                        return this.m_stepList.Count;
+                        return m_stepList.Count;
                     }
                     else
                     {
@@ -1988,7 +1988,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_entity;
+                    return m_entity;
                 }
             }
 
@@ -1996,15 +1996,15 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_nodeId;
+                    return m_nodeId;
                 }
                 set
                 {
-                    this.m_nodeId = value;
+                    m_nodeId = value;
 
-                    if (null != this.m_childList)
+                    if (null != m_childList)
                     {
-                        foreach (CrmTreeNode childNode in this.m_childList.Values)
+                        foreach (CrmTreeNode childNode in m_childList.Values)
                         {
                             childNode.m_parentNodeId = value;
                         }
@@ -2016,7 +2016,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_nodeText;
+                    return m_nodeText;
                 }
             }
 
@@ -2024,7 +2024,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_type;
+                    return m_type;
                 }
             }
 
@@ -2032,7 +2032,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_typeLabel;
+                    return m_typeLabel;
                 }
             }
 
@@ -2040,17 +2040,17 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    if (this.m_stepList != null)
+                    if (m_stepList != null)
                     {
-                        CrmPluginStep[] nodeList = new CrmPluginStep[this.m_stepList.Count];
-                        this.m_stepList.Values.CopyTo(nodeList, 0);
+                        CrmPluginStep[] nodeList = new CrmPluginStep[m_stepList.Count];
+                        m_stepList.Values.CopyTo(nodeList, 0);
 
                         return nodeList;
                     }
-                    else if (this.m_childList != null)
+                    else if (m_childList != null)
                     {
-                        CrmTreeNode[] nodeList = new CrmTreeNode[this.m_childList.Count];
-                        this.m_childList.Values.CopyTo(nodeList, 0);
+                        CrmTreeNode[] nodeList = new CrmTreeNode[m_childList.Count];
+                        m_childList.Values.CopyTo(nodeList, 0);
 
                         return nodeList;
                     }
@@ -2065,7 +2065,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_imageType;
+                    return m_imageType;
                 }
             }
 
@@ -2073,7 +2073,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 get
                 {
-                    return this.m_selectedImageType;
+                    return m_selectedImageType;
                 }
             }
             #endregion
@@ -2082,7 +2082,7 @@ namespace Xrm.Sdk.PluginRegistration
             private void UpdateNodeText()
             {
                 string prefix;
-                switch (this.m_type)
+                switch (m_type)
                 {
                     case CrmTreeNodeType.Message:
                         prefix = "Message";
@@ -2091,10 +2091,10 @@ namespace Xrm.Sdk.PluginRegistration
                         prefix = "Entity";
                         break;
                     default:
-                        throw new NotImplementedException("NodeType = " + this.m_type.ToString());
+                        throw new NotImplementedException("NodeType = " + m_type.ToString());
                 }
 
-                this.m_nodeText = string.Format("({0}) {1}", prefix, this.m_nodeText);
+                m_nodeText = string.Format("({0}) {1}", prefix, m_nodeText);
             }
             #endregion
         }

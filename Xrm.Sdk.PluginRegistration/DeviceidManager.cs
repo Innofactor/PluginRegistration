@@ -501,9 +501,9 @@ namespace Microsoft.Crm.Services.Utility
                     throw new ArgumentNullException("hostName");
                 }
 
-                this.Type = type;
-                this.HostName = hostName;
-                this.Environment = environment;
+                Type = type;
+                HostName = hostName;
+                Environment = environment;
             }
 
             #region Properties
@@ -640,7 +640,7 @@ namespace Microsoft.Crm.Services.Utility
         public DeviceRegistrationFailedException(DeviceRegistrationErrorCode code, string subCode, Exception innerException)
             : base(string.Concat(code.ToString(), ": ", subCode), innerException)
         {
-            this.RegistrationErrorCode = code;
+            RegistrationErrorCode = code;
         }
 
         /// <summary>
@@ -687,8 +687,8 @@ namespace Microsoft.Crm.Services.Utility
                 throw new ArgumentNullException("device");
             }
 
-            this.ClientInfo = new DeviceRegistrationClientInfo() { ApplicationId = applicationId, Version = "1.0" };
-            this.Authentication = new DeviceRegistrationAuthentication()
+            ClientInfo = new DeviceRegistrationClientInfo() { ApplicationId = applicationId, Version = "1.0" };
+            Authentication = new DeviceRegistrationAuthentication()
             {
                 MemberName = device.User.DeviceId,
                 Password = device.User.DecryptedPassword
@@ -770,12 +770,12 @@ namespace Microsoft.Crm.Services.Utility
         {
             get
             {
-                return this._code;
+                return _code;
             }
 
             set
             {
-                this._code = value;
+                _code = value;
 
                 //Parse the error code
                 if (!string.IsNullOrEmpty(value))
@@ -788,7 +788,7 @@ namespace Microsoft.Crm.Services.Utility
                             CultureInfo.InvariantCulture, out code) &&
                             Enum.IsDefined(typeof(DeviceRegistrationErrorCode), code))
                         {
-                            this.RegistrationErrorCode = (DeviceRegistrationErrorCode)Enum.ToObject(
+                            RegistrationErrorCode = (DeviceRegistrationErrorCode)Enum.ToObject(
                                 typeof(DeviceRegistrationErrorCode), code);
                         }
                     }
@@ -842,7 +842,7 @@ namespace Microsoft.Crm.Services.Utility
         #region Constructors
         public DeviceUserName()
         {
-            this.UserNameType = "Logical";
+            UserNameType = "Logical";
         }
         #endregion
 
@@ -858,21 +858,21 @@ namespace Microsoft.Crm.Services.Utility
         {
             get
             {
-                this.ThrowIfNoEncryption();
+                ThrowIfNoEncryption();
 
-                if (!this._encryptedValueIsUpdated)
+                if (!_encryptedValueIsUpdated)
                 {
-                    this._encryptedPassword = this.Encrypt(this._decryptedPassword);
-                    this._encryptedValueIsUpdated = true;
+                    _encryptedPassword = Encrypt(_decryptedPassword);
+                    _encryptedValueIsUpdated = true;
                 }
 
-                return this._encryptedPassword;
+                return _encryptedPassword;
             }
 
             set
             {
-                this.ThrowIfNoEncryption();
-                this.UpdateCredentials(value, null);
+                ThrowIfNoEncryption();
+                UpdateCredentials(value, null);
             }
         }
 
@@ -889,12 +889,12 @@ namespace Microsoft.Crm.Services.Utility
         {
             get
             {
-                return this._decryptedPassword;
+                return _decryptedPassword;
             }
 
             set
             {
-                this.UpdateCredentials(null, value);
+                UpdateCredentials(null, value);
             }
         }
 
@@ -913,15 +913,15 @@ namespace Microsoft.Crm.Services.Utility
         public ClientCredentials ToClientCredentials()
         {
             ClientCredentials credentials = new ClientCredentials();
-            credentials.UserName.UserName = this.DeviceId;
-            credentials.UserName.Password = this.DecryptedPassword;
+            credentials.UserName.UserName = DeviceId;
+            credentials.UserName.Password = DecryptedPassword;
 
             return credentials;
         }
 
         private void ThrowIfNoEncryption()
         {
-            if (!this.IsEncryptionEnabled)
+            if (!IsEncryptionEnabled)
             {
                 throw new NotSupportedException("Not supported when DeviceIdManager.UseEncryptionApis is false.");
             }
@@ -936,9 +936,9 @@ namespace Microsoft.Crm.Services.Utility
             }
             else if (string.IsNullOrEmpty(encryptedValue))
             {
-                if (this.IsEncryptionEnabled)
+                if (IsEncryptionEnabled)
                 {
-                    encryptedValue = this.Encrypt(decryptedValue);
+                    encryptedValue = Encrypt(decryptedValue);
                     isValueUpdated = true;
                 }
                 else
@@ -949,15 +949,15 @@ namespace Microsoft.Crm.Services.Utility
             }
             else
             {
-                this.ThrowIfNoEncryption();
+                ThrowIfNoEncryption();
 
-                decryptedValue = this.Decrypt(encryptedValue);
+                decryptedValue = Decrypt(encryptedValue);
                 isValueUpdated = true;
             }
 
-            this._encryptedPassword = encryptedValue;
-            this._decryptedPassword = decryptedValue;
-            this._encryptedValueIsUpdated = isValueUpdated;
+            _encryptedPassword = encryptedValue;
+            _decryptedPassword = decryptedValue;
+            _encryptedValueIsUpdated = isValueUpdated;
         }
 
         private string Encrypt(string value)

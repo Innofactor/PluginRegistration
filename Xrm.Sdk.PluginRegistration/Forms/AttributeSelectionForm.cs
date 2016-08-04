@@ -47,8 +47,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this.m_org = org;
-            this.m_updateAttributes = updateAttributes;
+            m_org = org;
+            m_updateAttributes = updateAttributes;
 
             //Create a sorter for the listview. This will allow the list to be sorted by different columns
             lsvAttributes.ListViewItemSorter = new ListViewColumnSorter(0, lsvAttributes.Sorting);
@@ -134,7 +134,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             Collection<string> attributeList = new Collection<string>();
             if (lsvAttributes.CheckedIndices.Count == lsvAttributes.Items.Count)
             {
-                this.m_updateAttributes(null, true);
+                m_updateAttributes(null, true);
             }
             else
             {
@@ -143,16 +143,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     attributeList.Add(((CrmAttribute)attribute.Tag).LogicalName);
                 }
 
-                this.m_updateAttributes(attributeList, false);
+                m_updateAttributes(attributeList, false);
             }
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void lsvAttributes_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            ListViewColumnSorter lsvSorter = (ListViewColumnSorter)this.lsvAttributes.ListViewItemSorter;
+            ListViewColumnSorter lsvSorter = (ListViewColumnSorter)lsvAttributes.ListViewItemSorter;
 
             if (e.Column == lsvSorter.SortColumn)
             {
@@ -171,7 +171,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 lsvSorter.Order = SortOrder.Ascending;
             }
 
-            this.lsvAttributes.Sort();
+            lsvAttributes.Sort();
         }
 
         private class ListViewColumnSorter : IComparer
@@ -181,20 +181,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             public ListViewColumnSorter(int sortCol, SortOrder order)
             {
-                this.m_col = sortCol;
-                this.m_order = order;
+                m_col = sortCol;
+                m_order = order;
             }
 
             public int SortColumn
             {
                 get
                 {
-                    return this.m_col;
+                    return m_col;
                 }
 
                 set
                 {
-                    this.m_col = value;
+                    m_col = value;
                 }
             }
 
@@ -202,11 +202,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 get
                 {
-                    return this.m_order;
+                    return m_order;
                 }
                 set
                 {
-                    this.m_order = value;
+                    m_order = value;
                 }
             }
 
@@ -221,16 +221,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ListViewItem y = (ListViewItem)item2;
 
                 int compareResult;
-                if (this.SortColumn <= 0)
+                if (SortColumn <= 0)
                 {
                     compareResult = string.Compare(x.Text, y.Text, StringComparison.CurrentCultureIgnoreCase);
                 }
                 else
                 {
-                    compareResult = string.Compare(x.SubItems[this.SortColumn].Text, y.SubItems[this.SortColumn].Text, StringComparison.CurrentCultureIgnoreCase);
+                    compareResult = string.Compare(x.SubItems[SortColumn].Text, y.SubItems[SortColumn].Text, StringComparison.CurrentCultureIgnoreCase);
                 }
 
-                switch (this.Order)
+                switch (Order)
                 {
                     case SortOrder.None:
                         return -1; //x is always less than y
@@ -239,7 +239,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case SortOrder.Descending:
                         return -compareResult; //Reverse of the string comparison
                     default:
-                        throw new NotImplementedException("Unknown SortOrder = " + this.Order.ToString());
+                        throw new NotImplementedException("Unknown SortOrder = " + Order.ToString());
                 }
             }
         }

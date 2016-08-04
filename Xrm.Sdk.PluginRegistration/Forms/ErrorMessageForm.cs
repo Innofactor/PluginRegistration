@@ -41,21 +41,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             get
             {
-                return this._message;
+                return _message;
             }
 
             set
             {
                 if (value == null)
                 {
-                    this._message = null;
+                    _message = null;
                 }
                 else
                 {
-                    this._message = value.Trim().Replace("\r\n", "\n").Replace("\n", "\r\n");
+                    _message = value.Trim().Replace("\r\n", "\n").Replace("\n", "\r\n");
                 }
 
-                if (this._loaded)
+                if (_loaded)
                 {
                     txtErrorMessage.Text = _message;
                     txtErrorMessage.SelectAll();
@@ -65,16 +65,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void ErrorMessage_Load(object sender, EventArgs e)
         {
-            txtErrorMessage.Text = this._message;
+            txtErrorMessage.Text = _message;
             txtErrorMessage.SelectAll();
-            this._loaded = true;
+            _loaded = true;
         }
 
         private void CloseErrorMessage(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
-                this.Close();
+                Close();
             }
         }
 

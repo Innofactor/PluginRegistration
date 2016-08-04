@@ -36,12 +36,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this._message = message;
+            _message = message;
             grpMessageProperties.Text = string.Format(CultureInfo.InvariantCulture, grpMessageProperties.Text,
                 message.Name);
 
             //Create the list
-            this._buttonList = new RadioButton[message.ImageMessagePropertyNames.Count];
+            _buttonList = new RadioButton[message.ImageMessagePropertyNames.Count];
 
             //Add the radio buttons to the list
             int radioSpace = radTemplateItem.Margin.Top + radTemplateItem.Height;
@@ -68,7 +68,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 button.Tag = property;
                 button.CheckedChanged += new EventHandler(ButtonCheckedChanged);
 
-                this._buttonList[i] = button;
+                _buttonList[i] = button;
             }
 
             radTemplateItem.Visible = true;
@@ -112,16 +112,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             get
             {
-                if (0 == this._buttonList.Length)
+                if (0 == _buttonList.Length)
                 {
                     return null;
                 }
 
-                for (int i = 0; i < this._buttonList.Length; i++)
+                for (int i = 0; i < _buttonList.Length; i++)
                 {
-                    if (this._buttonList[i].Checked)
+                    if (_buttonList[i].Checked)
                     {
-                        return (ImageMessagePropertyName)this._buttonList[i].Tag;
+                        return (ImageMessagePropertyName)_buttonList[i].Tag;
                     }
                 }
 
@@ -133,15 +133,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         #region Event Handlers
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (null == this.SelectedMessagePropertyName)
+            if (null == SelectedMessagePropertyName)
             {
                 MessageBox.Show("No Message Property has been checked. Check at least one or click Cancel",
                     "Message Properties", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.DialogResult = DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
 
         private void ButtonCheckedChanged(object sender, EventArgs e)

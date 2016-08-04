@@ -44,9 +44,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             InitializeComponent();
 
-            this.m_org = org;
-            this.m_orgControl = orgControl;
-            this.m_currentStep = step;
+            m_org = org;
+            m_orgControl = orgControl;
+            m_currentStep = step;
 
             crmFilteringAttributes.Organization = org;
 
@@ -172,13 +172,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 UpdatePluginEventHandlerControls(false);
             }
 
-            if (this.m_currentStep != null)
+            if (m_currentStep != null)
             {
-                txtMessageName.Text = this.m_org.Messages[this.m_currentStep.MessageId].Name;
+                txtMessageName.Text = m_org.Messages[m_currentStep.MessageId].Name;
 
-                if (org.MessageEntities.ContainsKey(this.m_currentStep.MessageEntityId))
+                if (org.MessageEntities.ContainsKey(m_currentStep.MessageEntityId))
                 {
-                    CrmMessageEntity msgEntity = this.Message[this.m_currentStep.MessageEntityId];
+                    CrmMessageEntity msgEntity = Message[m_currentStep.MessageEntityId];
                     txtPrimaryEntity.Text = msgEntity.PrimaryEntity;
                     txtSecondaryEntity.Text = msgEntity.SecondaryEntity;
                 }
@@ -188,41 +188,41 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     txtSecondaryEntity.Text = "none";
                 }
 
-                cmbPlugins.SelectedItem = this.m_org[this.m_currentStep.AssemblyId][this.m_currentStep.PluginId];
+                cmbPlugins.SelectedItem = m_org[m_currentStep.AssemblyId][m_currentStep.PluginId];
 
-                if (this.m_currentStep.ServiceBusConfigurationId != Guid.Empty)
+                if (m_currentStep.ServiceBusConfigurationId != Guid.Empty)
                 {
-                    cmbServiceEndpoint.SelectedItem = this.m_org.ServiceEndpoints[this.m_currentStep.ServiceBusConfigurationId];
+                    cmbServiceEndpoint.SelectedItem = m_org.ServiceEndpoints[m_currentStep.ServiceBusConfigurationId];
                 }
 
-                if (this.m_currentStep.ImpersonatingUserId == Guid.Empty)
+                if (m_currentStep.ImpersonatingUserId == Guid.Empty)
                 {
                     cmbUsers.SelectedIndex = 0;
                 }
                 else
                 {
-                    cmbUsers.SelectedItem = this.m_org.Users[this.m_currentStep.ImpersonatingUserId];
+                    cmbUsers.SelectedItem = m_org.Users[m_currentStep.ImpersonatingUserId];
                 }
-                txtRank.Text = this.m_currentStep.Rank.ToString();
-                switch (this.m_currentStep.Stage)
+                txtRank.Text = m_currentStep.Rank.ToString();
+                switch (m_currentStep.Stage)
                 {
                     case CrmPluginStepStage.PreValidation:
-                        this.radStagePreValidation.Checked = true;
+                        radStagePreValidation.Checked = true;
                         break;
                     case CrmPluginStepStage.PreOperation:
-                        this.radStagePreOperation.Checked = true;
+                        radStagePreOperation.Checked = true;
                         break;
                     case CrmPluginStepStage.PostOperation:
-                        this.radStagePostOperation.Checked = true;
+                        radStagePostOperation.Checked = true;
                         break;
                     case CrmPluginStepStage.PostOperationDeprecated:
-                        this.radStagePostOperationDeprecated.Checked = true;
+                        radStagePostOperationDeprecated.Checked = true;
                         break;
                     default:
-                        throw new NotImplementedException("CrmPluginStepStage = " + this.m_currentStep.Stage.ToString());
+                        throw new NotImplementedException("CrmPluginStepStage = " + m_currentStep.Stage.ToString());
                 }
 
-                switch (this.m_currentStep.Mode)
+                switch (m_currentStep.Mode)
                 {
                     case CrmPluginStepMode.Asynchronous:
 
@@ -234,10 +234,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         break;
 
                     default:
-                        throw new NotImplementedException("Mode = " + this.m_currentStep.Mode.ToString());
+                        throw new NotImplementedException("Mode = " + m_currentStep.Mode.ToString());
                 }
 
-                switch (this.m_currentStep.Deployment)
+                switch (m_currentStep.Deployment)
                 {
                     case CrmPluginStepDeployment.Both:
 
@@ -255,10 +255,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         chkDeploymentServer.Checked = false;
                         break;
                     default:
-                        throw new NotImplementedException("Deployment = " + this.m_currentStep.Deployment.ToString());
+                        throw new NotImplementedException("Deployment = " + m_currentStep.Deployment.ToString());
                 }
 
-                switch (this.m_currentStep.InvocationSource)
+                switch (m_currentStep.InvocationSource)
                 {
                     case null:
                     case CrmPluginStepInvocationSource.Parent:
@@ -270,12 +270,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         radInvocationChild.Checked = true;
                         break;
                     default:
-                        throw new NotImplementedException("InvocationSource = " + this.m_currentStep.InvocationSource.ToString());
+                        throw new NotImplementedException("InvocationSource = " + m_currentStep.InvocationSource.ToString());
                 }
 
-                txtDescription.Text = this.m_currentStep.Description;
+                txtDescription.Text = m_currentStep.Description;
 
-                txtSecureConfig.Text = this.m_currentStep.SecureConfiguration;
+                txtSecureConfig.Text = m_currentStep.SecureConfiguration;
 
                 string stepName;
                 //if (this.m_currentStep.IsProfiled && org.Plugins[this.m_currentStep.PluginId].IsProfilerPlugin)
@@ -287,33 +287,33 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 //}
                 //else
                 //{
-                    txtUnsecureConfiguration.Text = this.m_currentStep.UnsecureConfiguration;
-                    stepName = this.m_currentStep.Name;
+                    txtUnsecureConfiguration.Text = m_currentStep.UnsecureConfiguration;
+                    stepName = m_currentStep.Name;
                 //}
 
-                if (stepName == this.GenerateDescription())
+                if (stepName == GenerateDescription())
                 {
-                    this.m_stepName = this.GenerateDescription();
+                    m_stepName = GenerateDescription();
                 }
                 else
                 {
-                    this.m_stepName = null;
+                    m_stepName = null;
                     txtName.Text = stepName;
                 }
 
-                if (this.MessageEntity != null)
+                if (MessageEntity != null)
                 {
-                    crmFilteringAttributes.EntityName = this.MessageEntity.PrimaryEntity;
+                    crmFilteringAttributes.EntityName = MessageEntity.PrimaryEntity;
                 }
 
-                crmFilteringAttributes.Attributes = this.m_currentStep.FilteringAttributes;
-                chkDeleteAsyncOperationIfSuccessful.Checked = this.m_currentStep.DeleteAsyncOperationIfSuccessful;
-                chkDeleteAsyncOperationIfSuccessful.Enabled = (this.m_currentStep.Mode == CrmPluginStepMode.Asynchronous);
+                crmFilteringAttributes.Attributes = m_currentStep.FilteringAttributes;
+                chkDeleteAsyncOperationIfSuccessful.Checked = m_currentStep.DeleteAsyncOperationIfSuccessful;
+                chkDeleteAsyncOperationIfSuccessful.Enabled = (m_currentStep.Mode == CrmPluginStepMode.Asynchronous);
 
-                this.Text = "Update Existing Step";
+                Text = "Update Existing Step";
                 btnRegister.Text = "Update";
 
-                this.CheckAttributesSupported();
+                CheckAttributesSupported();
             }
             else if (!radStagePostOperation.Enabled && radStagePostOperationDeprecated.Enabled)
             {
@@ -361,11 +361,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 lblInvalidSecureConfigurationId.Left = picAccessDenied.Right;
                 lnkInvalidSecureConfigurationId.Left = lblInvalidSecureConfigurationId.Left;
 
-                this.m_secureConfigurationIdIsInvalid = true;
+                m_secureConfigurationIdIsInvalid = true;
             }
 
-            this.LoadEntities();
-            this.CheckDeploymentSupported();
+            LoadEntities();
+            CheckDeploymentSupported();
         }
 
         private void UpdatePluginEventHandlerControls(bool isServiceEndpoint)
@@ -399,7 +399,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         #region Events
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            CrmPluginStep step = new CrmPluginStep(this.m_org);
+            CrmPluginStep step = new CrmPluginStep(m_org);
 
             bool isDeploymentOfflineChecked = (chkDeploymentOffline.Enabled && chkDeploymentOffline.Checked);
 
@@ -416,14 +416,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 chkDeploymentServer.Focus();
                 return;
             }
-            else if (this.Message == null)
+            else if (Message == null)
             {
                 MessageBox.Show("Invalid Message Name specified. Please re-enter the message name",
                     "Invalid Message Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMessageName.Focus();
                 return;
             }
-            else if (this.radModeAsync.Checked && !(radStagePostOperation.Checked || radStagePostOperationDeprecated.Checked))
+            else if (radModeAsync.Checked && !(radStagePostOperation.Checked || radStagePostOperationDeprecated.Checked))
             {
                 MessageBox.Show("Asynchronous Execution Mode requires registration in one of the Post Stages. Please change the Mode or the Stage.",
                     "Step Registration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -436,21 +436,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 txtName.Focus();
                 return;
             }
-            else if (this.MessageEntity == null)
+            else if (MessageEntity == null)
             {
                 MessageBox.Show("Invalid Primary Entity or Secondary Entity specified. Please re-enter the data.",
                     "Invalid Entity Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPrimaryEntity.Focus();
                 return;
             }
-            else if (this.MessageEntity.PrimaryEntity != txtPrimaryEntity.Text && txtPrimaryEntity.Text.Length > 0)
+            else if (MessageEntity.PrimaryEntity != txtPrimaryEntity.Text && txtPrimaryEntity.Text.Length > 0)
             {
                 MessageBox.Show("Invalid Primary Entity specified. Please re-enter the data.",
                     "Invalid Entity Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPrimaryEntity.Focus();
                 return;
             }
-            else if (this.MessageEntity.SecondaryEntity != txtSecondaryEntity.Text && txtSecondaryEntity.Text.Length > 0)
+            else if (MessageEntity.SecondaryEntity != txtSecondaryEntity.Text && txtSecondaryEntity.Text.Length > 0)
             {
                 MessageBox.Show("Invalid Secondary Entity specified. Please re-enter the data.",
                     "Invalid Entity Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -473,7 +473,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             else if (txtName.TextLength == 0)
             {
-                txtName.Text = this.GenerateDescription();
+                txtName.Text = GenerateDescription();
             }
             else if (isDeploymentOfflineChecked &&
                 txtSecureConfig.TextLength != 0 && txtSecureConfig.Text.Trim().Length != 0)
@@ -501,8 +501,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
 
-            step.MessageId = this.Message.MessageId;
-            step.MessageEntityId = this.MessageEntity.MessageEntityId;
+            step.MessageId = Message.MessageId;
+            step.MessageEntityId = MessageEntity.MessageEntityId;
             step.AssemblyId = plugin.AssemblyId;
             step.FilteringAttributes = crmFilteringAttributes.Attributes;
             step.PluginId = plugin.PluginId;
@@ -518,7 +518,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             if (cmbServiceEndpoint.Visible)
             {
-                step.ServiceBusConfigurationId = ((CrmServiceEndpoint)this.cmbServiceEndpoint.SelectedItem).ServiceEndpointId;
+                step.ServiceBusConfigurationId = ((CrmServiceEndpoint)cmbServiceEndpoint.SelectedItem).ServiceEndpointId;
             }
             else
             {
@@ -549,9 +549,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 throw new NotImplementedException("Unkown Plug-in Stage checked");
             }
 
-            if (null != this.m_currentStep)
+            if (null != m_currentStep)
             {
-                step.Enabled = this.m_currentStep.Enabled;
+                step.Enabled = m_currentStep.Enabled;
             }
 
             if (isDeploymentServerChecked && isDeploymentOfflineChecked)
@@ -590,10 +590,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 //step.ProfilerStepId = step.StepId;
                 //step.UnsecureConfiguration = OrganizationHelper.UpdateWithStandaloneConfiguration(step).ToString();
             }
-            else if (null != this.m_currentStep)
+            else if (null != m_currentStep)
             {
-                step.ProfilerOriginalStepId = this.m_currentStep.ProfilerOriginalStepId;
-                step.ProfilerStepId = this.m_currentStep.ProfilerStepId;
+                step.ProfilerOriginalStepId = m_currentStep.ProfilerOriginalStepId;
+                step.ProfilerStepId = m_currentStep.ProfilerStepId;
             }
             #endregion
 
@@ -601,12 +601,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             bool rankChanged = false;
             try
             {
-                if (this.m_currentStep != null)
+                if (m_currentStep != null)
                 {
-                    Guid? secureConfigurationId = this.m_currentStep.SecureConfigurationId;
-                    if (this.m_currentStep.SecureConfigurationRecordIdInvalid)
+                    Guid? secureConfigurationId = m_currentStep.SecureConfigurationId;
+                    if (m_currentStep.SecureConfigurationRecordIdInvalid)
                     {
-                        if (this.m_secureConfigurationIdIsInvalid)
+                        if (m_secureConfigurationIdIsInvalid)
                         {
                             secureConfigurationId = null;
                         }
@@ -618,17 +618,17 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                     // If the message has changed, the images may need to change as well
                     List<CrmPluginImage> updateImages = null;
-                    if (this.m_currentStep.MessageId != step.MessageId)
+                    if (m_currentStep.MessageId != step.MessageId)
                     {
                         // Add the images for the current step to the list
-                        updateImages = new List<CrmPluginImage>(this.m_currentStep.Images.Count);
-                        updateImages.AddRange(this.m_currentStep.Images.Values);
+                        updateImages = new List<CrmPluginImage>(m_currentStep.Images.Count);
+                        updateImages.AddRange(m_currentStep.Images.Values);
                     }
 
-                    step.StepId = this.m_currentStep.StepId;
-                    if (!RegistrationHelper.UpdateStep(this.m_org, step, secureConfigurationId, updateImages))
+                    step.StepId = m_currentStep.StepId;
+                    if (!RegistrationHelper.UpdateStep(m_org, step, secureConfigurationId, updateImages))
                     {
-                        this.DialogResult = System.Windows.Forms.DialogResult.None;
+                        DialogResult = System.Windows.Forms.DialogResult.None;
                         return;
                     }
 
@@ -638,69 +638,69 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     //    OrganizationHelper.RefreshProfilerStep(step);
                     //}
 
-                    rankChanged = (this.m_currentStep.Rank != step.Rank);
+                    rankChanged = (m_currentStep.Rank != step.Rank);
 
-                    this.m_currentStep.SecureConfigurationRecordIdInvalid = this.m_secureConfigurationIdIsInvalid;
-                    this.m_currentStep.Deployment = step.Deployment;
-                    this.m_currentStep.Name = step.Name;
-                    this.m_currentStep.ImpersonatingUserId = step.ImpersonatingUserId;
-                    this.m_currentStep.InvocationSource = step.InvocationSource;
-                    this.m_currentStep.MessageEntityId = step.MessageEntityId;
-                    this.m_currentStep.MessageId = step.MessageId;
-                    this.m_currentStep.FilteringAttributes = step.FilteringAttributes;
-                    this.m_currentStep.Mode = step.Mode;
-                    this.m_currentStep.Rank = step.Rank;
-                    this.m_currentStep.DeleteAsyncOperationIfSuccessful = step.DeleteAsyncOperationIfSuccessful;
+                    m_currentStep.SecureConfigurationRecordIdInvalid = m_secureConfigurationIdIsInvalid;
+                    m_currentStep.Deployment = step.Deployment;
+                    m_currentStep.Name = step.Name;
+                    m_currentStep.ImpersonatingUserId = step.ImpersonatingUserId;
+                    m_currentStep.InvocationSource = step.InvocationSource;
+                    m_currentStep.MessageEntityId = step.MessageEntityId;
+                    m_currentStep.MessageId = step.MessageId;
+                    m_currentStep.FilteringAttributes = step.FilteringAttributes;
+                    m_currentStep.Mode = step.Mode;
+                    m_currentStep.Rank = step.Rank;
+                    m_currentStep.DeleteAsyncOperationIfSuccessful = step.DeleteAsyncOperationIfSuccessful;
                     if (txtSecureConfig.Visible)
                     {
-                        this.m_currentStep.SecureConfiguration = step.SecureConfiguration;
-                        this.m_currentStep.SecureConfigurationId = step.SecureConfigurationId;
+                        m_currentStep.SecureConfiguration = step.SecureConfiguration;
+                        m_currentStep.SecureConfigurationId = step.SecureConfigurationId;
                     }
-                    this.m_currentStep.Stage = step.Stage;
-                    this.m_currentStep.UnsecureConfiguration = step.UnsecureConfiguration;
-                    this.m_currentStep.Description = step.Description;
-                    this.m_currentStep.ProfilerStepId = step.ProfilerStepId;
+                    m_currentStep.Stage = step.Stage;
+                    m_currentStep.UnsecureConfiguration = step.UnsecureConfiguration;
+                    m_currentStep.Description = step.Description;
+                    m_currentStep.ProfilerStepId = step.ProfilerStepId;
 
                     List<ICrmEntity> stepList = new List<ICrmEntity>(new ICrmEntity[] { step });
-                    OrganizationHelper.UpdateDates(this.m_org, stepList);
+                    OrganizationHelper.UpdateDates(m_org, stepList);
 
-                    if (this.m_currentStep.PluginId != step.PluginId)
+                    if (m_currentStep.PluginId != step.PluginId)
                     {
-                        this.m_orgControl.RemoveStep(step.NodeId);
-                        this.m_org.Assemblies[this.m_currentStep.AssemblyId][this.m_currentStep.PluginId].RemoveStep(step.StepId);
+                        m_orgControl.RemoveStep(step.NodeId);
+                        m_org.Assemblies[m_currentStep.AssemblyId][m_currentStep.PluginId].RemoveStep(step.StepId);
 
-                        this.m_currentStep.AssemblyId = step.AssemblyId;
-                        this.m_currentStep.PluginId = step.PluginId;
-                        this.m_org.Assemblies[step.AssemblyId][step.PluginId].AddStep(step);
-                        this.m_orgControl.AddStep(step);
+                        m_currentStep.AssemblyId = step.AssemblyId;
+                        m_currentStep.PluginId = step.PluginId;
+                        m_org.Assemblies[step.AssemblyId][step.PluginId].AddStep(step);
+                        m_orgControl.AddStep(step);
                     }
-                    else if (this.m_currentStep.ServiceBusConfigurationId != step.ServiceBusConfigurationId)
+                    else if (m_currentStep.ServiceBusConfigurationId != step.ServiceBusConfigurationId)
                     {
-                        this.m_orgControl.RemoveStep(step.NodeId);
-                        this.m_org.Assemblies[this.m_currentStep.AssemblyId][this.m_currentStep.PluginId].RemoveStep(step.StepId);
+                        m_orgControl.RemoveStep(step.NodeId);
+                        m_org.Assemblies[m_currentStep.AssemblyId][m_currentStep.PluginId].RemoveStep(step.StepId);
 
-                        this.m_currentStep.ServiceBusConfigurationId = step.ServiceBusConfigurationId;
-                        this.m_org.Assemblies[step.AssemblyId][step.PluginId].AddStep(step);
-                        this.m_orgControl.AddStep(step);
+                        m_currentStep.ServiceBusConfigurationId = step.ServiceBusConfigurationId;
+                        m_org.Assemblies[step.AssemblyId][step.PluginId].AddStep(step);
+                        m_orgControl.AddStep(step);
                     }
                     else
                     {
-                        this.m_orgControl.RefreshStep(this.m_currentStep);
+                        m_orgControl.RefreshStep(m_currentStep);
                     }
 
-                    step = this.m_currentStep;
+                    step = m_currentStep;
 
 
                 }
                 else
                 {
-                    step.StepId = RegistrationHelper.RegisterStep(this.m_org, step);
+                    step.StepId = RegistrationHelper.RegisterStep(m_org, step);
 
                     List<ICrmEntity> stepList = new List<ICrmEntity>(new ICrmEntity[] { step });
-                    OrganizationHelper.UpdateDates(this.m_org, stepList);
+                    OrganizationHelper.UpdateDates(m_org, stepList);
 
                     plugin.AddStep(step);
-                    this.m_orgControl.AddStep(step);
+                    m_orgControl.AddStep(step);
                     OrganizationHelper.RefreshStep(m_org, step);
                 }
             }
@@ -711,27 +711,27 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             #endregion
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void txtMessageName_Validating(object sender, CancelEventArgs e)
         {
-            if (txtMessageName.TextLength != 0 && this.Message == null)
+            if (txtMessageName.TextLength != 0 && Message == null)
             {
                 MessageBox.Show("Invalid Message Name specified. Please re-enter the message name",
                     "Invalid Message Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
-            else if (this.Message != null)
+            else if (Message != null)
             {
-                this.LoadEntities();
+                LoadEntities();
             }
         }
 
@@ -746,65 +746,65 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private string m_stepName = string.Empty;
         private void MessageData_TextChanged(object sender, EventArgs e)
         {
-            if (this.m_stepName != null)
+            if (m_stepName != null)
             {
-                this.m_stepName = this.GenerateDescription();
-                txtName.Text = this.m_stepName;
+                m_stepName = GenerateDescription();
+                txtName.Text = m_stepName;
             }
         }
 
         private void MessageEntityData_Leave(object sender, EventArgs e)
         {
-            if (this.MessageEntity != null)
+            if (MessageEntity != null)
             {
-                if (!string.Equals(crmFilteringAttributes.EntityName, this.MessageEntity))
+                if (!string.Equals(crmFilteringAttributes.EntityName, MessageEntity))
                 {
-                    crmFilteringAttributes.EntityName = this.MessageEntity.PrimaryEntity;
+                    crmFilteringAttributes.EntityName = MessageEntity.PrimaryEntity;
                 }
             }
 
-            this.CheckDeploymentSupported();
+            CheckDeploymentSupported();
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            if (this.m_stepName != null &&
-                !this.m_stepName.Equals(txtName.Text, StringComparison.InvariantCultureIgnoreCase))
+            if (m_stepName != null &&
+                !m_stepName.Equals(txtName.Text, StringComparison.InvariantCultureIgnoreCase))
             {
-                this.m_stepName = this.GenerateDescription();
+                m_stepName = GenerateDescription();
             }
         }
 
         private void txtMessageName_Leave(object sender, EventArgs e)
         {
-            this.LoadEntities();
-            this.CheckAttributesSupported();
+            LoadEntities();
+            CheckAttributesSupported();
         }
 
         private void txtName_Leave(object sender, EventArgs e)
         {
             if (txtName.TextLength == 0)
             {
-                this.m_stepName = string.Empty;
-                txtName.Text = this.m_stepName;
+                m_stepName = string.Empty;
+                txtName.Text = m_stepName;
             }
         }
 
         private void radInvocationChild_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (this.m_stepName != null)
+            if (m_stepName != null)
             {
-                this.m_stepName = this.GenerateDescription();
-                txtName.Text = this.m_stepName;
+                m_stepName = GenerateDescription();
+                txtName.Text = m_stepName;
             }
         }
 
         private void radInvocationParent_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (this.m_stepName != null)
+            if (m_stepName != null)
             {
-                this.m_stepName = this.GenerateDescription();
-                txtName.Text = this.m_stepName;
+                m_stepName = GenerateDescription();
+                txtName.Text = m_stepName;
             }
         }
 
@@ -859,7 +859,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 return;
             }
 
-            this.m_secureConfigurationIdIsInvalid = false;
+            m_secureConfigurationIdIsInvalid = false;
 
             txtSecureConfig.Visible = true;
             txtSecureConfig.Text = null;
@@ -880,26 +880,26 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 if (txtMessageName.TextLength != 0)
                 {
                     string message = txtMessageName.Text.Trim();
-                    if (!message.Equals(this.m_messageRetrieved, StringComparison.InvariantCultureIgnoreCase))
+                    if (!message.Equals(m_messageRetrieved, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        this.m_messageRetrieved = message;
-                        this.m_message = this.m_org.FindMessage(message);
+                        m_messageRetrieved = message;
+                        m_message = m_org.FindMessage(message);
 
-                        this.m_messageEntityPrimaryRetrieved = null;
-                        this.m_messageEntitySecondaryRetrieved = null;
-                        this.m_messageEntityRetrieved = null;
+                        m_messageEntityPrimaryRetrieved = null;
+                        m_messageEntitySecondaryRetrieved = null;
+                        m_messageEntityRetrieved = null;
                     }
                 }
                 else
                 {
-                    this.m_messageRetrieved = null;
-                    this.m_message = null;
-                    this.m_messageEntityPrimaryRetrieved = null;
-                    this.m_messageEntitySecondaryRetrieved = null;
-                    this.m_messageEntityRetrieved = null;
+                    m_messageRetrieved = null;
+                    m_message = null;
+                    m_messageEntityPrimaryRetrieved = null;
+                    m_messageEntitySecondaryRetrieved = null;
+                    m_messageEntityRetrieved = null;
                 }
 
-                return this.m_message;
+                return m_message;
             }
         }
 
@@ -910,7 +910,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             get
             {
-                if (this.Message != null)
+                if (Message != null)
                 {
                     string primaryEntity = txtPrimaryEntity.Text.Trim();
                     if (string.IsNullOrEmpty(primaryEntity))
@@ -924,22 +924,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         secondaryEntity = "none";
                     }
 
-                    if (!string.Equals(primaryEntity, this.m_messageEntityPrimaryRetrieved, StringComparison.InvariantCultureIgnoreCase) ||
-                        !string.Equals(secondaryEntity, this.m_messageEntitySecondaryRetrieved, StringComparison.InvariantCultureIgnoreCase))
+                    if (!string.Equals(primaryEntity, m_messageEntityPrimaryRetrieved, StringComparison.InvariantCultureIgnoreCase) ||
+                        !string.Equals(secondaryEntity, m_messageEntitySecondaryRetrieved, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        this.m_messageEntityPrimaryRetrieved = primaryEntity;
-                        this.m_messageEntitySecondaryRetrieved = secondaryEntity;
-                        this.m_messageEntityRetrieved = this.Message.FindMessageEntity(primaryEntity, secondaryEntity);
+                        m_messageEntityPrimaryRetrieved = primaryEntity;
+                        m_messageEntitySecondaryRetrieved = secondaryEntity;
+                        m_messageEntityRetrieved = Message.FindMessageEntity(primaryEntity, secondaryEntity);
                     }
                 }
                 else
                 {
-                    this.m_messageEntityPrimaryRetrieved = null;
-                    this.m_messageEntitySecondaryRetrieved = null;
-                    this.m_messageEntityRetrieved = null;
+                    m_messageEntityPrimaryRetrieved = null;
+                    m_messageEntitySecondaryRetrieved = null;
+                    m_messageEntityRetrieved = null;
                 }
 
-                return this.m_messageEntityRetrieved;
+                return m_messageEntityRetrieved;
             }
         }
         #endregion
@@ -948,18 +948,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private CrmMessage m_messageLoaded = null;
         private void LoadEntities()
         {
-            if (this.m_messageLoaded == this.Message)
+            if (m_messageLoaded == Message)
             {
                 return;
             }
             else
             {
-                this.m_messageLoaded = this.Message;
+                m_messageLoaded = Message;
             }
 
-            Control activeControl = this.ActiveControl;
+            Control activeControl = ActiveControl;
 
-            if (this.Message == null)
+            if (Message == null)
             {
                 txtPrimaryEntity.AutoCompleteCustomSource = new AutoCompleteStringCollection();
                 txtSecondaryEntity.AutoCompleteCustomSource = new AutoCompleteStringCollection();
@@ -974,7 +974,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 AutoCompleteStringCollection primaryList = new AutoCompleteStringCollection();
                 AutoCompleteStringCollection secondaryList = new AutoCompleteStringCollection();
-                foreach (CrmMessageEntity entity in this.Message.FindMessageEntities(null, null))
+                foreach (CrmMessageEntity entity in Message.FindMessageEntities(null, null))
                 {
                     if (!string.IsNullOrEmpty(entity.PrimaryEntity))
                     {
@@ -1003,18 +1003,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             string messageName;
             string primaryEntity = txtPrimaryEntity.Text;
             string secondaryEntity = txtSecondaryEntity.Text;
-            if (this.Message == null)
+            if (Message == null)
             {
                 messageName = txtMessageName.Text;
             }
             else
             {
-                messageName = this.Message.Name;
+                messageName = Message.Name;
 
-                if (this.MessageEntity != null)
+                if (MessageEntity != null)
                 {
-                    primaryEntity = this.MessageEntity.PrimaryEntity;
-                    secondaryEntity = this.MessageEntity.SecondaryEntity;
+                    primaryEntity = MessageEntity.PrimaryEntity;
+                    secondaryEntity = MessageEntity.SecondaryEntity;
                 }
             }
 
@@ -1057,7 +1057,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private void CheckAttributesSupported()
         {
             //Check if we should disable the message
-            if (null != this.Message && !this.Message.SupportsFilteredAttributes)
+            if (null != Message && !Message.SupportsFilteredAttributes)
             {
                 crmFilteringAttributes.Enabled = false;
                 crmFilteringAttributes.DisabledMessage = "Message does not support Filtered Attributes";
@@ -1071,14 +1071,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void CheckDeploymentSupported()
         {
-            if (this.MessageEntity == null)
+            if (MessageEntity == null)
             {
                 chkDeploymentOffline.Enabled = true;
                 chkDeploymentServer.Enabled = true;
             }
             else
             {
-                switch (this.MessageEntity.Availability)
+                switch (MessageEntity.Availability)
                 {
                     case CrmPluginStepDeployment.OfflineOnly:
                         chkDeploymentOffline.Enabled = true;
@@ -1093,7 +1093,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         chkDeploymentServer.Enabled = true;
                         break;
                     default:
-                        throw new NotImplementedException("CrmPluginStepDeployment = " + this.MessageEntity.Availability);
+                        throw new NotImplementedException("CrmPluginStepDeployment = " + MessageEntity.Availability);
                 }
             }
         }

@@ -33,7 +33,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("entityList");
             }
 
-            this.m_entityList = entityList;
+            m_entityList = entityList;
         }
 
         #region Properties
@@ -41,7 +41,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_entityList.Count;
+                return m_entityList.Count;
             }
         }
 
@@ -49,7 +49,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_entityList.Keys;
+                return m_entityList.Keys;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_entityList.Values;
+                return m_entityList.Values;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_entityList[id];
+                return m_entityList[id];
             }
         }
         #endregion
@@ -73,18 +73,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region Public Methods
         public bool TryGetValue(Guid id, out EntityType value)
         {
-            return this.m_entityList.TryGetValue(id, out value);
+            return m_entityList.TryGetValue(id, out value);
         }
 
         public bool ContainsKey(Guid id)
         {
-            return this.m_entityList.ContainsKey(id);
+            return m_entityList.ContainsKey(id);
         }
 
         public EntityType[] ToArray()
         {
-            EntityType[] items = new EntityType[this.m_entityList.Count];
-            this.m_entityList.Values.CopyTo(items, 0);
+            EntityType[] items = new EntityType[m_entityList.Count];
+            m_entityList.Values.CopyTo(items, 0);
 
             return items;
         }
@@ -93,12 +93,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region IEnumerable<EntityType> Members
         public IEnumerator<EntityType> GetEnumerator()
         {
-            return this.m_entityList.Values.GetEnumerator();
+            return m_entityList.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.m_entityList.Values.GetEnumerator();
+            return m_entityList.Values.GetEnumerator();
         }
         #endregion
     }

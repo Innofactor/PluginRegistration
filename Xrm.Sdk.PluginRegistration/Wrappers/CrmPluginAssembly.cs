@@ -40,8 +40,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public CrmPluginAssembly(CrmOrganization org)
         {
-            this.m_org = org;
-            this.CustomizationLevel = 1;
+            m_org = org;
+            CustomizationLevel = 1;
         }
 
         public CrmPluginAssembly(CrmOrganization org, Guid id, string name, DateTime? createdOn, DateTime? modifiedOn,
@@ -49,22 +49,22 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             string publicKeyToken, string culture, int customizationLevel, bool enabled)
             : this(org)
         {
-            this.AssemblyId = id;
-            this.Name = name;
-            this.SourceType = type;
-            this.ServerFileName = path;
-            this.Version = version;
-            this.PublicKeyToken = publicKeyToken;
-            this.Culture = culture;
-            this.CustomizationLevel = customizationLevel;
-            this.Enabled = enabled;
-            this.UpdateDates(createdOn, modifiedOn);
+            AssemblyId = id;
+            Name = name;
+            SourceType = type;
+            ServerFileName = path;
+            Version = version;
+            PublicKeyToken = publicKeyToken;
+            Culture = culture;
+            CustomizationLevel = customizationLevel;
+            Enabled = enabled;
+            UpdateDates(createdOn, modifiedOn);
         }
 
         public CrmPluginAssembly(CrmOrganization org, PluginAssembly assembly)
             : this(org)
         {
-            this.RefreshFromPluginAssembly(assembly);
+            RefreshFromPluginAssembly(assembly);
         }
 
         #region Properties
@@ -73,7 +73,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
             set
             {
@@ -81,16 +81,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentNullException();
                 }
-                else if (this.m_org == null)
+                else if (m_org == null)
                 {
-                    this.m_org = value;
-                    foreach (CrmPlugin plugin in this.m_pluginList.Values)
+                    m_org = value;
+                    foreach (CrmPlugin plugin in m_pluginList.Values)
                     {
                         if (plugin.Organization == null)
                         {
-                            plugin.Organization = this.m_org;
+                            plugin.Organization = m_org;
                         }
-                        this.m_org.AddPlugin(this, plugin);
+                        m_org.AddPlugin(this, plugin);
                     }
                 }
                 else
@@ -105,20 +105,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
             set
             {
-                if (value == this.m_Name)
+                if (value == m_Name)
                 {
                     return;
                 }
 
-                this.m_Name = value;
+                m_Name = value;
 
-                if (this.m_pluginList != null)
+                if (m_pluginList != null)
                 {
-                    foreach (CrmPlugin plugin in this.m_pluginList.Values)
+                    foreach (CrmPlugin plugin in m_pluginList.Values)
                     {
                         plugin.AssemblyName = value;
                     }
@@ -131,20 +131,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_assemblyId;
+                return m_assemblyId;
             }
             set
             {
-                if (value == this.m_assemblyId)
+                if (value == m_assemblyId)
                 {
                     return;
                 }
 
-                this.m_assemblyId = value;
+                m_assemblyId = value;
 
-                if (this.m_pluginList != null)
+                if (m_pluginList != null)
                 {
-                    foreach (CrmPlugin plugin in this.m_pluginList.Values)
+                    foreach (CrmPlugin plugin in m_pluginList.Values)
                     {
                         plugin.AssemblyId = value;
                     }
@@ -190,7 +190,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_customizationLevel;
+                return m_customizationLevel;
             }
 
             set
@@ -201,12 +201,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 }
                 
                 //If the customization level is 0, then this is a system assembly (which will depend on the current version of CRM)
-                if (0 == value && null == this.SdkVersion)
+                if (0 == value && null == SdkVersion)
                 {
-                    this.SdkVersion = this.Organization.ServerBuild;
+                    SdkVersion = Organization.ServerBuild;
                 }
 
-                this.m_customizationLevel = value;
+                m_customizationLevel = value;
             }
         }
 
@@ -219,12 +219,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_pluginReadOnlyList == null)
+                if (m_pluginReadOnlyList == null)
                 {
-                    this.m_pluginReadOnlyList = new CrmEntityDictionary<CrmPlugin>(this.m_pluginList);
+                    m_pluginReadOnlyList = new CrmEntityDictionary<CrmPlugin>(m_pluginList);
                 }
 
-                return this.m_pluginReadOnlyList;
+                return m_pluginReadOnlyList;
             }
         }
 
@@ -233,7 +233,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_pluginList[pluginId];
+                return m_pluginList[pluginId];
             }
         }
 
@@ -254,74 +254,74 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (assembly.Name != null)
             {
-                this.Name = assembly.Name;
+                Name = assembly.Name;
             }
 
             if (assembly.PluginAssemblyId != null)
             {
-                this.AssemblyId = assembly.PluginAssemblyId.Value;
+                AssemblyId = assembly.PluginAssemblyId.Value;
             }
 
             if (assembly.CreatedOn != null && (assembly.CreatedOn.HasValue))
             {
-                this.CreatedOn = assembly.CreatedOn.Value;
+                CreatedOn = assembly.CreatedOn.Value;
             }
 
             if (assembly.ModifiedOn != null && (assembly.ModifiedOn.HasValue))
             {
-                this.ModifiedOn = assembly.ModifiedOn.Value;
+                ModifiedOn = assembly.ModifiedOn.Value;
             }
 
             if (assembly.SourceType != null)
             {
-                this.SourceType = (CrmAssemblySourceType)Enum.ToObject(typeof(CrmAssemblySourceType), assembly.SourceType.Value);
+                SourceType = (CrmAssemblySourceType)Enum.ToObject(typeof(CrmAssemblySourceType), assembly.SourceType.Value);
             }
 
             if (assembly.IsolationMode != null)
             {
-                this.IsolationMode = (CrmAssemblyIsolationMode)Enum.ToObject(typeof(CrmAssemblyIsolationMode),
+                IsolationMode = (CrmAssemblyIsolationMode)Enum.ToObject(typeof(CrmAssemblyIsolationMode),
                     assembly.IsolationMode.Value);
             }
 
             if (assembly.Path != null)
             {
-                this.ServerFileName = assembly.Path;
+                ServerFileName = assembly.Path;
             }
 
             if (assembly.Version != null)
             {
-                this.Version = assembly.Version;
+                Version = assembly.Version;
             }
 
             if (assembly.PublicKeyToken != null)
             {
-                this.PublicKeyToken = assembly.PublicKeyToken;
+                PublicKeyToken = assembly.PublicKeyToken;
             }
 
             if (assembly.Culture != null)
             {
-                this.Culture = assembly.Culture;
+                Culture = assembly.Culture;
             }
 
             if (assembly.CustomizationLevel != null)
             {
-                this.CustomizationLevel = assembly.CustomizationLevel.Value;
+                CustomizationLevel = assembly.CustomizationLevel.Value;
             }
 
-            this.Description = assembly.Description;
+            Description = assembly.Description;
 
-            if (null == this.SdkVersion && CrmAssemblyIsolationMode.Sandbox == this.IsolationMode &&
-                null != this.m_org)
+            if (null == SdkVersion && CrmAssemblyIsolationMode.Sandbox == IsolationMode &&
+                null != m_org)
             {
                 //Sandbox was not supported in CRM 4. It is safe to assume CRM 2011 is used here.
                 //TODO: When the next version of CRM rolls out, will this assumption create problems?
-                this.SdkVersion = new Version(5, 0);
+                SdkVersion = new Version(5, 0);
             }
         }
 
         public override string ToString()
         {
-            return this.NodeText;
+            return NodeText;
         }
 
         #region Management Methods
@@ -332,33 +332,33 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("plugin");
             }
 
-            this.m_pluginList.Add(plugin.PluginId, plugin);
+            m_pluginList.Add(plugin.PluginId, plugin);
 
-            if (this.m_org != null)
+            if (m_org != null)
             {
-                this.Organization.AddPlugin(this, plugin);
+                Organization.AddPlugin(this, plugin);
             }
         }
 
         public void ClearPlugins()
         {
-            this.m_pluginList.Clear();
+            m_pluginList.Clear();
 
-            if (this.m_org != null)
+            if (m_org != null)
             {
-                this.Organization.ClearPlugins(this.AssemblyId);
+                Organization.ClearPlugins(AssemblyId);
             }
         }
 
         public void RemovePlugin(Guid pluginId)
         {
-            if (this.m_pluginList.ContainsKey(pluginId))
+            if (m_pluginList.ContainsKey(pluginId))
             {
-                this.m_pluginList.Remove(pluginId);
+                m_pluginList.Remove(pluginId);
 
-                if (this.m_org != null)
+                if (m_org != null)
                 {
-                    this.Organization.RemovePlugin(this, pluginId);
+                    Organization.RemovePlugin(this, pluginId);
                 }
             }
             else
@@ -390,7 +390,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return string.Format("({0}) {1}", this.NodeTypeLabel, this.Name);
+                return string.Format("({0}) {1}", NodeTypeLabel, Name);
             }
         }
 
@@ -400,7 +400,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.AssemblyId;
+                return AssemblyId;
             }
         }
 
@@ -410,14 +410,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                if (this.m_pluginList == null || this.m_pluginList.Count == 0)
+                if (m_pluginList == null || m_pluginList.Count == 0)
                 {
                     return new CrmPlugin[0];
                 }
                 else
                 {
-                    CrmPlugin[] children = new CrmPlugin[this.m_pluginList.Count];
-                    this.m_pluginList.Values.CopyTo(children, 0);
+                    CrmPlugin[] children = new CrmPlugin[m_pluginList.Count];
+                    m_pluginList.Values.CopyTo(children, 0);
 
                     return children;
                 }
@@ -482,7 +482,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.AssemblyId;
+                return AssemblyId;
             }
         }
 
@@ -491,34 +491,34 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             Dictionary<string, object> entityList = new Dictionary<string, object>();
 
             PluginAssembly assembly = new PluginAssembly();
-            if (this.AssemblyId != Guid.Empty)
+            if (AssemblyId != Guid.Empty)
             {
                 assembly.PluginAssemblyId = new Guid?();
-                assembly["pluginassemblyid"] = this.AssemblyId;
+                assembly["pluginassemblyid"] = AssemblyId;
             }
 
             assembly.SourceType = new OptionSetValue();
-            assembly.SourceType.Value = (int)this.SourceType;
+            assembly.SourceType.Value = (int)SourceType;
 
             assembly.IsolationMode = new OptionSetValue();
-            assembly.IsolationMode.Value = (int)this.IsolationMode;
+            assembly.IsolationMode.Value = (int)IsolationMode;
 
-            assembly.Culture = this.Culture;
-            assembly.PublicKeyToken = this.PublicKeyToken;
-            assembly.Version = this.Version;
-            assembly.Name = this.Name;
-            assembly.Description = this.Description;
+            assembly.Culture = Culture;
+            assembly.PublicKeyToken = PublicKeyToken;
+            assembly.Version = Version;
+            assembly.Name = Name;
+            assembly.Description = Description;
 
-            if (this.AssemblyId != Guid.Empty)
+            if (AssemblyId != Guid.Empty)
             {
                 assembly.PluginAssemblyId = new Guid?();
-                assembly["pluginassemblyid"] = this.AssemblyId;
+                assembly["pluginassemblyid"] = AssemblyId;
             }
 
-            switch (this.SourceType)
+            switch (SourceType)
             {
                 case CrmAssemblySourceType.Disk:
-                    assembly.Path = this.ServerFileName;
+                    assembly.Path = ServerFileName;
                     break;
                 case CrmAssemblySourceType.Database:
                     //Do nothing in this method
@@ -527,7 +527,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     //Do nothing
                     break;
                 default:
-                    throw new NotImplementedException("SourceType = " + this.SourceType.ToString());
+                    throw new NotImplementedException("SourceType = " + SourceType.ToString());
             }
 
             entityList.Add(PluginAssembly.EntityLogicalName, assembly);
@@ -570,18 +570,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", this.AssemblyId);
-                valueList.Add("Description", String.IsNullOrEmpty(this.Description) ? string.Empty : this.Description);
-                valueList.Add("Name", this.Name);
+                valueList.Add("Id", AssemblyId);
+                valueList.Add("Description", String.IsNullOrEmpty(Description) ? string.Empty : Description);
+                valueList.Add("Name", Name);
                 valueList.Add("ModifiedOn",
-                    (this.ModifiedOn.HasValue ? this.ModifiedOn.ToString() : ""));
-                valueList.Add("SourceType", this.SourceType.ToString());
-                valueList.Add("Version", ConvertNullStringToEmpty(this.Version));
-                valueList.Add("Path", ConvertNullStringToEmpty(this.ServerFileName));
-                valueList.Add("PublicKeyToken", ConvertNullStringToEmpty(this.PublicKeyToken));
-                valueList.Add("Culture", ConvertNullStringToEmpty(this.Culture));
+                    (ModifiedOn.HasValue ? ModifiedOn.ToString() : ""));
+                valueList.Add("SourceType", SourceType.ToString());
+                valueList.Add("Version", ConvertNullStringToEmpty(Version));
+                valueList.Add("Path", ConvertNullStringToEmpty(ServerFileName));
+                valueList.Add("PublicKeyToken", ConvertNullStringToEmpty(PublicKeyToken));
+                valueList.Add("Culture", ConvertNullStringToEmpty(Culture));
 
-                if (CrmAssemblyIsolationMode.Sandbox == this.IsolationMode)
+                if (CrmAssemblyIsolationMode.Sandbox == IsolationMode)
                 {
                     valueList.Add("IsolationMode", "Sandbox");
                 }
@@ -590,7 +590,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     valueList.Add("IsolationMode", "None");
                 }
 
-                valueList.Add("Enabled", this.Enabled);
+                valueList.Add("Enabled", Enabled);
 
                 return valueList;
             }
@@ -601,7 +601,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.CustomizationLevel == 0;
+                return CustomizationLevel == 0;
             }
         }
 
@@ -609,12 +609,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (createdOn != null)
             {
-                this.CreatedOn = createdOn;
+                CreatedOn = createdOn;
             }
 
             if (modifiedOn != null)
             {
-                this.ModifiedOn = modifiedOn;
+                ModifiedOn = modifiedOn;
             }
         }
         #endregion
@@ -622,7 +622,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region ICloneable Members
         public object Clone()
         {
-            return this.Clone(true);
+            return Clone(true);
         }
 
         public CrmPluginAssembly Clone(bool includeOrganization)
@@ -630,29 +630,29 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             CrmPluginAssembly newAssembly;
             if (includeOrganization)
             {
-                newAssembly = new CrmPluginAssembly(this.m_org);
+                newAssembly = new CrmPluginAssembly(m_org);
             }
             else
             {
                 newAssembly = new CrmPluginAssembly(null);
             }
 
-            newAssembly.m_assemblyId = this.m_assemblyId;
-            newAssembly.m_Name = this.m_Name;
-            newAssembly.CreatedOn = this.CreatedOn;
-            newAssembly.Culture = this.Culture;
-            newAssembly.CustomizationLevel = this.m_customizationLevel;
-            newAssembly.Enabled = this.Enabled;
-            newAssembly.IsolationMode = this.IsolationMode;
-            newAssembly.ModifiedOn = this.ModifiedOn;
-            newAssembly.ServerFileName = this.ServerFileName;
-            newAssembly.PublicKeyToken = this.PublicKeyToken;
-            newAssembly.SourceType = this.SourceType;
-            newAssembly.Version = this.Version;
+            newAssembly.m_assemblyId = m_assemblyId;
+            newAssembly.m_Name = m_Name;
+            newAssembly.CreatedOn = CreatedOn;
+            newAssembly.Culture = Culture;
+            newAssembly.CustomizationLevel = m_customizationLevel;
+            newAssembly.Enabled = Enabled;
+            newAssembly.IsolationMode = IsolationMode;
+            newAssembly.ModifiedOn = ModifiedOn;
+            newAssembly.ServerFileName = ServerFileName;
+            newAssembly.PublicKeyToken = PublicKeyToken;
+            newAssembly.SourceType = SourceType;
+            newAssembly.Version = Version;
 
             //Create a new plugin list
             Dictionary<Guid, CrmPlugin> newPluginList = new Dictionary<Guid, CrmPlugin>();
-            foreach (CrmPlugin plugin in this.m_pluginList.Values)
+            foreach (CrmPlugin plugin in m_pluginList.Values)
             {
                 //Clone the plugin
                 CrmPlugin clonedPlugin = (CrmPlugin)plugin.Clone(includeOrganization);

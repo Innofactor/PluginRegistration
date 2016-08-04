@@ -31,7 +31,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentNullException("org");
             }
 
-            this.m_org = org;
+            m_org = org;
         }
 
         public CrmUser(CrmOrganization org, SystemUser user)
@@ -39,18 +39,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (user.SystemUserId != null)
             {
-                this.UserId = user.SystemUserId.Value;
+                UserId = user.SystemUserId.Value;
             }
 
-            this.Name = user.FullName;
+            Name = user.FullName;
 
             if (user.IsDisabled != null && (user.IsDisabled.HasValue))
             {
-                this.Enabled = !user.IsDisabled.Value;
+                Enabled = !user.IsDisabled.Value;
             }
 
-            this.DomainName = user.DomainName;
-            this.InternalEmailAddress = user.InternalEMailAddress;
+            DomainName = user.DomainName;
+            InternalEmailAddress = user.InternalEMailAddress;
         }
 
         #region Properties
@@ -58,7 +58,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return this.m_org;
+                return m_org;
             }
         }
 
@@ -74,20 +74,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public override string ToString()
         {
-            if (this.Enabled)
+            if (Enabled)
             {
-                if (null != this.Name)
+                if (null != Name)
                 {
-                    return this.Name;
+                    return Name;
                 }
                 else
                 {
-                    return string.Format("null {0}", this.DomainName);
+                    return string.Format("null {0}", DomainName);
                 }
             }
             else
             {
-                return string.Format("{0} (Disabled)", this.Name);
+                return string.Format("{0} (Disabled)", Name);
             }
         }
         #endregion
