@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PluginRegistrationTool</RootNamespace>
-    <AssemblyName>PluginRegistration</AssemblyName>
+    <AssemblyName>Xrm.Sdk.PluginRegistration</AssemblyName>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
