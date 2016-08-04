@@ -29,8 +29,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
-    using Xrm.Sdk.PluginRegistration.Entities;
-    using Xrm.Sdk.PluginRegistration.Wrappers;
+    using Entities;
+    using Wrappers;
     
     public static class OrganizationHelper
     {

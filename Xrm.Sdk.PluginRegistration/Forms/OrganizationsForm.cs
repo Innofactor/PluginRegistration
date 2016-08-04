@@ -21,7 +21,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.Collections.Generic;
     using System.Drawing;
     using System.Windows.Forms;
-    using Xrm.Sdk.PluginRegistration.Wrappers;
+    using Wrappers;
 
     public partial class OrganizationsForm : Form
     {

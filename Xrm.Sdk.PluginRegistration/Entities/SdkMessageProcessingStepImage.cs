@@ -4,8 +4,8 @@
     /// Copy of an entity's attributes before or after the core system operation.
     /// </summary>
     [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessageprocessingstepimage")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessageprocessingstepimage")]
+    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStepImage : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 

@@ -4,8 +4,8 @@
     /// Stage in the execution pipeline that a plug-in is to execute.
     /// </summary>
     [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessageprocessingstep")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessageprocessingstep")]
+    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStep : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 

@@ -4,8 +4,8 @@
     /// Non-public custom configuration that is passed to a plug-in's constructor.
     /// </summary>
     [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessageprocessingstepsecureconfig")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessageprocessingstepsecureconfig")]
+    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStepSecureConfig : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 

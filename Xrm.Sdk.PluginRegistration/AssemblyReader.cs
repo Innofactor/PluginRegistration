@@ -18,14 +18,15 @@
 namespace Xrm.Sdk.PluginRegistration
 {
     using Helpers;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using Wrappers;
 
-    public sealed class AppDomainContext<TProxy> : IDisposable
-        where TProxy : class, new()
+    public sealed class AppDomainContext<T> : IDisposable
+        where T : class, new()
     {
         private AppDomain _domain;
         private bool _disposed;
@@ -43,13 +44,13 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             //Create the AppDomain
-            AppDomainSetup setup = new AppDomainSetup();
+            var setup = new AppDomainSetup();
             setup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
 
             _domain = AppDomain.CreateDomain(domainName, null, setup);
 
             //Create the proxy in the AppDomain so that all assemblies that are loaded do not stay loaded in the AppDomain
-            Proxy = (TProxy)_domain.CreateInstanceFromAndUnwrap(typeof(TProxy).Assembly.Location, typeof(TProxy).FullName);
+            Proxy = (T)_domain.CreateInstanceFromAndUnwrap(typeof(T).Assembly.Location, typeof(T).FullName);
 
             //Attach the resolver so that assemblies can be resolved correctly
             AssemblyResolver.AttachResolver(_domain);
@@ -62,7 +63,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         #region Properties
 
-        public TProxy Proxy
+        public T Proxy
         {
             get;
             private set;
@@ -156,7 +157,7 @@ namespace Xrm.Sdk.PluginRegistration
                 CrmPluginIsolatable isolatable;
 
                 //Retrieve the two interface types
-                Type xrmPlugin = t.GetInterface(typeof(Microsoft.Xrm.Sdk.IPlugin).FullName);
+                Type xrmPlugin = t.GetInterface(typeof(IPlugin).FullName);
                 Type v4Plugin = t.GetInterface("Microsoft.Crm.Sdk.IPlugin");
 
                 string workflowGroupName = defaultGroupName;

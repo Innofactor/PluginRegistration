@@ -4,8 +4,8 @@
     /// Message that is supported by the SDK.
     /// </summary>
     [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessage")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessage")]
+    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessage : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 

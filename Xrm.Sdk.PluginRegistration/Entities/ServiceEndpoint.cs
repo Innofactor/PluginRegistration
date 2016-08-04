@@ -9,8 +9,8 @@
     /// Service endpoint that can be contacted.
     /// </summary>
     [DataContract()]
-    [EntityLogicalNameAttribute("serviceendpoint")]
-    [GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [EntityLogicalName("serviceendpoint")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class ServiceEndpoint : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 

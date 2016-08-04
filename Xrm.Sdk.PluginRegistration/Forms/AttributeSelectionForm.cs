@@ -22,7 +22,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.Collections.ObjectModel;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk.Metadata;
-    using Xrm.Sdk.PluginRegistration.Wrappers;
+    using Wrappers;
 
     public partial class AttributeSelectionForm : Form
     {

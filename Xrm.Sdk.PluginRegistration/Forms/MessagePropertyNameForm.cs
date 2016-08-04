@@ -20,7 +20,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System;
     using System.Globalization;
     using System.Windows.Forms;
-    using Xrm.Sdk.PluginRegistration.Wrappers;
+    using Wrappers;
 
     public partial class MessagePropertyNameForm : Form
     {

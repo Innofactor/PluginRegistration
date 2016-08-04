@@ -10,8 +10,8 @@
     /// Type that inherits from the IPlugin interface and is contained within a plug-in assembly.
     /// </summary>
     [DataContract()]
-    [EntityLogicalNameAttribute("plugintype")]
-    [GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [EntityLogicalName("plugintype")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class PluginType : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>

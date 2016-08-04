@@ -23,7 +23,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using System.Xml.Serialization;
     using Microsoft.Xrm.Sdk;
     using Xrm.Sdk.PluginRegistration.Controls;
-    using Xrm.Sdk.PluginRegistration.Entities;
+    using Entities;
 
     public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
     {

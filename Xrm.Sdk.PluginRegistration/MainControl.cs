@@ -19,9 +19,9 @@ namespace Xrm.Sdk.PluginRegistration
 {
     using McTools.Xrm.Connection;
     using Xrm.Sdk.PluginRegistration.Controls;
-    using Xrm.Sdk.PluginRegistration.Forms;
+    using Forms;
     using Xrm.Sdk.PluginRegistration.Helpers;
-    using Xrm.Sdk.PluginRegistration.Wrappers;
+    using Wrappers;
     using System;
     using System.Collections.Generic;
     using System.Data;

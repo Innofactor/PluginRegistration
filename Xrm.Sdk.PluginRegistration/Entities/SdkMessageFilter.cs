@@ -4,8 +4,8 @@
     /// Filter that defines which SDK messages are valid for each type of entity.
     /// </summary>
     [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessagefilter")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessagefilter")]
+    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageFilter : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 

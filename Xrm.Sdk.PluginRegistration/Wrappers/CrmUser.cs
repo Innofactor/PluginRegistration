@@ -18,7 +18,7 @@
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
     using System;
-    using Xrm.Sdk.PluginRegistration.Entities;
+    using Entities;
 
     public sealed class CrmUser
     {

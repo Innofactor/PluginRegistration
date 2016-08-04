@@ -17,17 +17,17 @@
 
 namespace Xrm.Sdk.PluginRegistration.Helpers
 {
+    using Entities;
+    using Forms;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Query;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Text;
-    using Microsoft.Xrm.Sdk;
-    using Microsoft.Xrm.Sdk.Query;
-    using Xrm.Sdk.PluginRegistration.Entities;
-    using Xrm.Sdk.PluginRegistration.Forms;
-    using Xrm.Sdk.PluginRegistration.Wrappers;
+    using Wrappers;
 
     public static class RegistrationHelper
     {
@@ -38,7 +38,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// <returns>List of Plugins in the Assembly</returns>
         public static CrmPluginAssembly RetrievePluginsFromAssembly(string pathToAssembly)
         {
-            using (AppDomainContext<AssemblyReader> context = new AppDomainContext<AssemblyReader>())
+            using (var context = new AppDomainContext<AssemblyReader>())
             {
                 return context.Proxy.RetrievePluginsFromAssembly(pathToAssembly);
             }
@@ -51,7 +51,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// <returns>Properties Assembly</returns>
         public static CrmPluginAssembly RetrieveAssemblyProperties(string pathToAssembly)
         {
-            using (AppDomainContext<AssemblyReader> context = new AppDomainContext<AssemblyReader>())
+            using (var context = new AppDomainContext<AssemblyReader>())
             {
                 return context.Proxy.RetrieveAssemblyProperties(pathToAssembly);
             }
@@ -67,7 +67,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// <returns>Description that the Step should use</returns>
         public static string GenerateStepDescription(string typeName, string messageName, string primaryEntity, string secondaryEntity)
         {
-            StringBuilder descriptionBuilder = new StringBuilder();
+            var descriptionBuilder = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(typeName))
             {
                 descriptionBuilder.AppendFormat("{0}: ", typeName);
@@ -131,6 +131,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         }
 
         #region Check for Existance Methods
+
         /// <summary>
         /// Determines if the given TypeName is in use for the given assembly id
         /// </summary>
@@ -171,9 +172,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 return false;
             }
         }
-        #endregion
+
+        #endregion Check for Existance Methods
 
         #region Registration, Update, Unregister Methods
+
         public static Guid RegisterServiceEndpoint(CrmOrganization org, CrmServiceEndpoint serviceEndpoint)
         {
             if (org == null)
@@ -188,6 +191,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             return org.OrganizationService.Create(sep);
         }
+
         public static void UpdateServiceEndpoint(CrmOrganization org, CrmServiceEndpoint serviceEndpoint)
         {
             if (org == null)
@@ -229,7 +233,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         }
 
         /// <summary>
-        /// Assembly is Uploaded if it is database. 
+        /// Assembly is Uploaded if it is database.
         /// We dont do Smart updates
         /// </summary>
         /// <param name="org"></param>
@@ -282,6 +286,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             pt1.Description = description;
             org.OrganizationService.Update(pt1);
         }
+
         public static Guid RegisterPlugin(CrmOrganization org, CrmPlugin plugin)
         {
             if (org == null)
@@ -341,6 +346,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             org.OrganizationService.Update(ptl);
             OrganizationHelper.RefreshPlugin(org, plugin);
         }
+
         public static void UpdatePlugin(CrmOrganization org, Guid pluginId, string typeName, string friendlyName)
         {
             if (org == null)
@@ -432,7 +438,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 CrmMessage message = org.Messages[step.MessageId];
                 if (0 == message.ImageMessagePropertyNames.Count && step.Images.Count > 0)
                 {
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, 
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture,
                         "The step has images registered, but the \"{0}\" message doesn't support images.{1}In order to change the message to \"{0}\", delete the existing images.",
                         message.Name, Environment.NewLine));
                 }
@@ -484,7 +490,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     EntityState secureConfigState;
                     if (step.SecureConfigurationId == origSecureConfigId && origSecureConfigId.GetValueOrDefault() != Guid.Empty)
                     {
-                        //Set the ID of the secure configuration to be the 
+                        //Set the ID of the secure configuration to be the
                         secureConfigId = origSecureConfigId.GetValueOrDefault();
                         secureConfigState = EntityState.Changed;
 
@@ -544,7 +550,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             if (step.IsProfiled && null != sdkImages && sdkImages.Count > 0)
             {
-                // Update the Profiler step with the new property values as a single transaction to minimize the 
+                // Update the Profiler step with the new property values as a single transaction to minimize the
                 // possibility of data corruption.
                 SdkMessageProcessingStep profilerStep = new SdkMessageProcessingStep();
                 profilerStep.Id = step.ProfilerStepId.GetValueOrDefault();
@@ -665,7 +671,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             return org.OrganizationService.Create(sdkImage);
-
         }
 
         public static void UpdateImage(CrmOrganization org, CrmPluginImage image)
@@ -758,18 +763,23 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     case Entities.ServiceEndpoint.EntityLogicalName:
                         serviceEndpointList.Add(entity.EntityId);
                         break;
+
                     case Entities.PluginAssembly.EntityLogicalName:
                         assemblyList.Add(entity.EntityId);
                         break;
+
                     case Entities.PluginType.EntityLogicalName:
                         pluginList.Add(entity.EntityId);
                         break;
+
                     case Entities.SdkMessageProcessingStep.EntityLogicalName:
                         stepList.Add(entity.EntityId);
                         break;
+
                     case Entities.SdkMessageProcessingStepImage.EntityLogicalName:
                         imageList.Add(entity.EntityId);
                         break;
+
                     default:
                         throw new NotImplementedException("Type = " + entity.EntityType.ToString());
                 }
@@ -958,14 +968,17 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
                 "sdkmessageprocessingstepsecureconfigid", "sdkmessageprocessingstepid", stepIds);
         }
-        #endregion
+
+        #endregion Registration, Update, Unregister Methods
 
         #region Private Helper Methods
+
         private static List<Guid> RetrieveStepIdsForServiceEndpoint(CrmOrganization org, IList<Guid> serviceEndpointIds)
         {
             return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
                 "sdkmessageprocessingstepid", "eventhandler", serviceEndpointIds);
         }
+
         private static List<Guid> RetrieveStepIdsForPlugins(CrmOrganization org, IList<Guid> pluginIds)
         {
             return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
@@ -991,6 +1004,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             string retrieveAttribute, string filterAttribute, IList<Guid> filterIdList)
         {
             #region Argument Validation
+
             if (org == null)
             {
                 throw new ArgumentNullException("org");
@@ -1011,7 +1025,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 throw new ArgumentException("Attributes must be different");
             }
-            #endregion
+
+            #endregion Argument Validation
 
             if (filterIdList.Count == 0)
             {
@@ -1082,6 +1097,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             return newIdList.ToArray();
         }
-        #endregion
+
+        #endregion Private Helper Methods
     }
 }
