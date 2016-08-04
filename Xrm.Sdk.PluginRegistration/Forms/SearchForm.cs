@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
     using System.Collections.Generic;
@@ -24,8 +24,8 @@ namespace PluginRegistrationTool.Forms
     using System.Drawing;
     using System.Text;
     using System.Windows.Forms;
-    using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Controls;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public partial class SearchForm : Form
     {

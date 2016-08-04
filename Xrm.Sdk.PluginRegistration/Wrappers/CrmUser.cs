@@ -15,10 +15,10 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Wrappers
+namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
     using System;
-    using PluginRegistrationTool.Entities;
+    using Xrm.Sdk.PluginRegistration.Entities;
 
     public sealed class CrmUser
     {

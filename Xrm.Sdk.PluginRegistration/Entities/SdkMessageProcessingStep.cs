@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool.Entities
+﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
     /// <summary>
     /// Stage in the execution pipeline that a plug-in is to execute.

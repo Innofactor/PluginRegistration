@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool.Entities
+﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
     /// <summary>
     /// Type that inherits from the IPlugin interface and is contained within a plug-in assembly.

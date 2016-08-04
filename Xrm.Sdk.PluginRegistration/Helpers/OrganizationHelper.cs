@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Helpers
+namespace Xrm.Sdk.PluginRegistration.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -29,8 +29,8 @@ namespace PluginRegistrationTool.Helpers
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
-    using PluginRegistrationTool.Entities;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Entities;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
     
     public static class OrganizationHelper
     {

@@ -15,16 +15,16 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool
+namespace Xrm.Sdk.PluginRegistration
 {
+    using Controls;
+    using Entities;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Microsoft.Xrm.Sdk;
-    using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.Entities;
-    using PluginRegistrationTool.Wrappers;
+    using Wrappers;
 
     public sealed class CrmServiceEndpoint : ICrmEntity, ICrmTreeNode
     {
@@ -34,37 +34,39 @@ namespace PluginRegistrationTool
         public readonly Guid ServiceBusPluginAssembly = new Guid("A430B185-D19D-428C-B156-5EBE3F391564");
 
         private CrmOrganization m_org = null;
-        
+
         public CrmServiceEndpoint(CrmOrganization org)
         {
             this.m_org = org;
         }
-
 
         public CrmServiceEndpoint(CrmOrganization org, ServiceEndpoint serviceEndpoint)
             : this(org)
         {
             this.RefreshFromServiceEndpoint(serviceEndpoint);
         }
-        
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Name
         {
             get;
             set;
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Description
         {
             get;
             set;
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string SolutionNamespace
         {
             get;
             set;
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Path
         {
@@ -78,18 +80,21 @@ namespace PluginRegistrationTool
             get;
             set;
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public CrmServiceEndpointUserClaim UserClaim
         {
             get;
             set;
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public CrmServiceEndpointConnectionMode ConnectionMode
         {
             get;
             set;
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public Guid ServiceEndpointId
         {
@@ -102,9 +107,10 @@ namespace PluginRegistrationTool
         {
             get { return ServiceBusPlugin; }
         }
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? CreatedOn { get; private set; }
- 
+
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? ModifiedOn { get; private set; }
 
@@ -171,7 +177,7 @@ namespace PluginRegistrationTool
             serviceEndPoint.Name = this.Name;
             serviceEndPoint.Path = this.Path;
             serviceEndPoint.SolutionNamespace = this.SolutionNamespace;
-            
+
             entityList.Add(ServiceEndpoint.EntityLogicalName, serviceEndPoint);
 
             return entityList;
@@ -184,12 +190,11 @@ namespace PluginRegistrationTool
                 throw new ArgumentNullException("serviceEndPoint");
             }
 
-
             this.Name = serviceEndPoint.Name;
             this.Description = serviceEndPoint.Description;
             this.Path = serviceEndPoint.Path;
             this.SolutionNamespace = serviceEndPoint.SolutionNamespace;
-            
+
             if (serviceEndPoint.ServiceEndpointId != Guid.Empty)
             {
                 this.ServiceEndpointId = serviceEndPoint.ServiceEndpointId.Value;
@@ -223,7 +228,7 @@ namespace PluginRegistrationTool
         }
 
         private static CrmEntityColumn[] m_entityColumns = null;
-        
+
         [XmlIgnore]
         [Browsable(false)]
         public static CrmEntityColumn[] Columns
@@ -233,7 +238,7 @@ namespace PluginRegistrationTool
                 if (m_entityColumns == null)
                 {
                     m_entityColumns = new CrmEntityColumn[] {
-                        new CrmEntityColumn("Id", "ServiceEndpointId", typeof(Guid)), 
+                        new CrmEntityColumn("Id", "ServiceEndpointId", typeof(Guid)),
                         new CrmEntityColumn("Name", "Name", typeof(string)),
                         new CrmEntityColumn("Description", "Description", typeof(string)),
                         new CrmEntityColumn("SolutionNamespace", "Solution Namespace", typeof(string)),
@@ -249,11 +254,13 @@ namespace PluginRegistrationTool
                 return m_entityColumns;
             }
         }
+
         [XmlIgnore]
         [Browsable(false)]
         public Dictionary<string, object> Values
         {
-            get {
+            get
+            {
                 Dictionary<string, object> valueList = new Dictionary<string, object>();
                 valueList.Add("Id", this.ServiceEndpointId.ToString());
                 valueList.Add("Name", this.Name);
@@ -287,19 +294,20 @@ namespace PluginRegistrationTool
         {
             get
             {
-                Dictionary<Guid, CrmPluginStep> steps = new Dictionary<Guid,CrmPluginStep>();
-            
+                Dictionary<Guid, CrmPluginStep> steps = new Dictionary<Guid, CrmPluginStep>();
+
                 foreach (CrmPluginStep step in m_org.Steps.Values)
                 {
-                    if(step.ServiceBusConfigurationId == this.ServiceEndpointId)
+                    if (step.ServiceBusConfigurationId == this.ServiceEndpointId)
                     {
-                        steps.Add(step.StepId,step);
+                        steps.Add(step.StepId, step);
                     }
                 }
                 return new CrmEntityDictionary<CrmPluginStep>(steps);
             }
         }
-        #endregion
+
+        #endregion ICrmEntity Members
 
         #region ICrmTreeNode Members
 
@@ -336,7 +344,6 @@ namespace PluginRegistrationTool
                     }
                 }
                 return steps.ToArray();
-
             }
         }
 
@@ -361,8 +368,9 @@ namespace PluginRegistrationTool
             get { return CrmTreeNodeImageType.ServiceEndpointSelected; }
         }
 
-        #endregion
+        #endregion ICrmTreeNode Members
     }
+
     public enum CrmServiceEndpointContract
     {
         OneWay = 1,
@@ -370,12 +378,14 @@ namespace PluginRegistrationTool
         Rest = 3,
         TwoWay = 4
     }
+
     public enum CrmServiceEndpointUserClaim
     {
         None = 1,
         UserId = 2,
         UserInfo = 3
     }
+
     public enum CrmServiceEndpointConnectionMode
     {
         Normal = 1,

@@ -15,13 +15,13 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool
+namespace Xrm.Sdk.PluginRegistration
 {
     using McTools.Xrm.Connection;
-    using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.Forms;
-    using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Controls;
+    using Xrm.Sdk.PluginRegistration.Forms;
+    using Xrm.Sdk.PluginRegistration.Helpers;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
     using System;
     using System.Collections.Generic;
     using System.Data;

@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool.Controls
+﻿namespace Xrm.Sdk.PluginRegistration.Controls
 {
     using System;
     using System.ComponentModel;
@@ -16,12 +16,15 @@
         }
 
         #region Events
+
         public event EventHandler<EventArgs> BrowseCompleted;
 
         public event EventHandler<EventArgs> PathChanged;
-        #endregion
+
+        #endregion Events
 
         #region Events Handlers
+
         private void BrowseButton_Click(object sender, EventArgs e)
         {
             if (DialogResult.OK == this.Dialog.ShowDialog())
@@ -61,9 +64,11 @@
             //without a change.
             this._isPathChanged = true;
         }
-        #endregion
+
+        #endregion Events Handlers
 
         #region Properties
+
         public string DialogTitle
         {
             get
@@ -154,6 +159,7 @@
                 return (this.HasFileName && File.Exists(this.FileName));
             }
         }
-        #endregion
+
+        #endregion Properties
     }
 }

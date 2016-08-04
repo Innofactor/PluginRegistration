@@ -15,12 +15,12 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
     using System.Globalization;
     using System.Windows.Forms;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public partial class MessagePropertyNameForm : Form
     {

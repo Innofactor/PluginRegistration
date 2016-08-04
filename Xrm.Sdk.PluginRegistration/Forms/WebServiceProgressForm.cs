@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
     using System.Collections.Generic;

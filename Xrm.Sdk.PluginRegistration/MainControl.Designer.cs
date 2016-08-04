@@ -1,4 +1,4 @@
-namespace PluginRegistrationTool
+namespace Xrm.Sdk.PluginRegistration
 {
     partial class MainControl
     {
@@ -82,7 +82,7 @@ namespace PluginRegistrationTool
             this.imlEnableImages = new System.Windows.Forms.ImageList(this.components);
             this.splitterDisplay = new System.Windows.Forms.SplitContainer();
             this.grpPlugins = new System.Windows.Forms.GroupBox();
-            this.trvPlugins = new PluginRegistrationTool.Controls.CrmTreeControl();
+            this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
             this.mnuContextNode.SuspendLayout();
@@ -578,9 +578,9 @@ namespace PluginRegistrationTool
             this.trvPlugins.ShowNodeToolTips = false;
             this.trvPlugins.Size = new System.Drawing.Size(548, 422);
             this.trvPlugins.TabIndex = 0;
-            this.trvPlugins.SelectionChanged += new System.EventHandler<PluginRegistrationTool.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
-            this.trvPlugins.NodeRemoved += new System.EventHandler<PluginRegistrationTool.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
-            this.trvPlugins.DoubleClick += new System.EventHandler<PluginRegistrationTool.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_DoubleClick);
+            this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
+            this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
+            this.trvPlugins.DoubleClick += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_DoubleClick);
             // 
             // btnSave
             // 
@@ -671,7 +671,7 @@ namespace PluginRegistrationTool
         private System.Windows.Forms.ToolStripSeparator mnuContextNodeSep2;
         private System.Windows.Forms.SplitContainer splitterDisplay;
         private System.Windows.Forms.GroupBox grpPlugins;
-        private PluginRegistrationTool.Controls.CrmTreeControl trvPlugins;
+        private Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl trvPlugins;
         private System.Windows.Forms.ToolStripButton toolDisplayTester;
         private System.Windows.Forms.PropertyGrid propGridEntity;
         private System.Windows.Forms.Button btnSave;

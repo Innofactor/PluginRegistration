@@ -15,14 +15,14 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool
+namespace Xrm.Sdk.PluginRegistration
 {
+    using Controls;
     using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Reflection;
     using System.Resources;
-    using PluginRegistrationTool.Controls;
 
     public static class CrmResources
     {
@@ -32,6 +32,7 @@ namespace PluginRegistrationTool
         private static Dictionary<string, ResourceManager> _resourceList = null;
 
         #region String Resources
+
         /// <summary>
         /// Retrieves a string from the resource files
         /// </summary>
@@ -91,9 +92,11 @@ namespace PluginRegistrationTool
                 return string.Format(provider, resourceString, args);
             }
         }
-        #endregion
+
+        #endregion String Resources
 
         #region Image Resources
+
         public static Image LoadImage(CrmTreeNodeImageType imageType)
         {
             return LoadImage(new CrmTreeNodeImageType[] { imageType })[imageType];
@@ -179,9 +182,11 @@ namespace PluginRegistrationTool
 
             return imageList;
         }
-        #endregion
+
+        #endregion Image Resources
 
         #region Private Helper Methods
+
         private static ResourceManager GetResourceManager(string resourceName)
         {
             if (null == _resourceList)
@@ -242,7 +247,8 @@ namespace PluginRegistrationTool
                 return false;
             }
         }
-        #endregion
+
+        #endregion Private Helper Methods
     }
 
     public static class CrmResourceStringNames

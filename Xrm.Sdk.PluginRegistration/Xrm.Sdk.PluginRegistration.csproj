@@ -8,7 +8,7 @@
     <ProjectGuid>{2E450060-2AC3-40A5-B6E5-2FD642886E18}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PluginRegistrationTool</RootNamespace>
+    <RootNamespace>Xrm.Sdk.PluginRegistration</RootNamespace>
     <AssemblyName>Xrm.Sdk.PluginRegistration</AssemblyName>
     <StartupObject>
     </StartupObject>

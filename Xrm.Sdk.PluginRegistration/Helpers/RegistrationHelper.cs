@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Helpers
+namespace Xrm.Sdk.PluginRegistration.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -25,9 +25,9 @@ namespace PluginRegistrationTool.Helpers
     using System.Text;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
-    using PluginRegistrationTool.Entities;
-    using PluginRegistrationTool.Forms;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Entities;
+    using Xrm.Sdk.PluginRegistration.Forms;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public static class RegistrationHelper
     {

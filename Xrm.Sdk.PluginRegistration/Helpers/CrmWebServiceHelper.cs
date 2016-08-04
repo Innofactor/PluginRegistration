@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Helpers
+namespace Xrm.Sdk.PluginRegistration.Helpers
 {
     using System.Collections.Generic;
     using System.Threading;

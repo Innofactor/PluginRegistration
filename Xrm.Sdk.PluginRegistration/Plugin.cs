@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool
+﻿namespace Xrm.Sdk.PluginRegistration
 {
     using System.ComponentModel.Composition;
     using XrmToolBox.Extensibility;

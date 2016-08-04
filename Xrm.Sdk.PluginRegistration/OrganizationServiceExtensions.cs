@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool
+namespace Xrm.Sdk.PluginRegistration
 {
     using System;
     using System.Reflection;

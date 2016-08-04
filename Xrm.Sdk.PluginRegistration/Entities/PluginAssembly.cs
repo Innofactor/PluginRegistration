@@ -1,14 +1,18 @@
-﻿namespace PluginRegistrationTool.Entities
+﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System.CodeDom.Compiler;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Assembly that contains one or more plug-in types.
     /// </summary>
-    [System.Runtime.Serialization.DataContractAttribute()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("pluginassembly")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "5.0.9689.1985")]
+    [DataContract()]
+    [EntityLogicalName("pluginassembly")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class PluginAssembly : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
-
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -128,7 +132,7 @@
         /// <summary>
         /// Customization Level.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+        [AttributeLogicalName("customizationlevel")]
         public System.Nullable<int> CustomizationLevel
         {
             get
@@ -140,7 +144,7 @@
         /// <summary>
         /// Description of the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+        [AttributeLogicalName("description")]
         public string Description
         {
             get
@@ -158,8 +162,8 @@
         /// <summary>
         /// Information that specifies whether this component should be hidden.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ishidden")]
-        public Microsoft.Xrm.Sdk.BooleanManagedProperty IsHidden
+        [AttributeLogicalName("ishidden")]
+        public BooleanManagedProperty IsHidden
         {
             get
             {
@@ -284,7 +288,7 @@
         /// <summary>
         /// Unique identifier of the organization with which the plug-in assembly is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
         public Microsoft.Xrm.Sdk.EntityReference OrganizationId
         {
             get
@@ -296,7 +300,7 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("overwritetime")]
         public System.Nullable<System.DateTime> OverwriteTime
         {
             get
@@ -308,7 +312,7 @@
         /// <summary>
         /// File name of the plug-in assembly. Used when the source type is set to 1.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("path")]
+        [Microsoft.Xrm.Sdk.AttributeLogicalName("path")]
         public string Path
         {
             get
@@ -459,7 +463,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
         public System.Nullable<long> VersionNumber

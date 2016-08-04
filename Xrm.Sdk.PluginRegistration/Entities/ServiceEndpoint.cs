@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool.Entities
+﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
     /// <summary>
     /// Service endpoint that can be contacted.

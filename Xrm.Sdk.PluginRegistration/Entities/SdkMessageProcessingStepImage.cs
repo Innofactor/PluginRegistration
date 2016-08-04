@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool.Entities
+﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
     /// <summary>
     /// Copy of an entity's attributes before or after the core system operation.

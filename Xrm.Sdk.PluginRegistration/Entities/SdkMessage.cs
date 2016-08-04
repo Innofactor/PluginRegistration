@@ -1,4 +1,4 @@
-﻿namespace PluginRegistrationTool.Entities
+﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
     /// <summary>
     /// Message that is supported by the SDK.

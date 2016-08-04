@@ -15,14 +15,14 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool
+namespace Xrm.Sdk.PluginRegistration
 {
+    using Helpers;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.Wrappers;
+    using Wrappers;
 
     public sealed class AppDomainContext<TProxy> : IDisposable
         where TProxy : class, new()
@@ -61,18 +61,23 @@ namespace PluginRegistrationTool
         }
 
         #region Properties
+
         public TProxy Proxy { get; private set; }
-        #endregion
+
+        #endregion Properties
 
         #region Methods
+
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+
+        #endregion Methods
 
         #region Private Methods
+
         private void Dispose(bool disposing)
         {
             if (this._disposed)
@@ -92,7 +97,8 @@ namespace PluginRegistrationTool
                 this._disposed = true;
             }
         }
-        #endregion
+
+        #endregion Private Methods
     }
 
     public sealed class AssemblyReader : MarshalByRefObject
@@ -180,7 +186,7 @@ namespace PluginRegistrationTool
                         errorMessage = string.Format("The Custom Workflow Activity {0} class must have the CrmWorkflowActivity attribute set",
                             t.FullName);
 
-                        //Verify that the Workflow attribute is present.                    
+                        //Verify that the Workflow attribute is present.
                         foreach (Attribute att in t.GetCustomAttributes(true))
                         {
                             if (att != null && (att.GetType().FullName == "Microsoft.Crm.Workflow.CrmWorkflowActivityAttribute"))
@@ -242,6 +248,7 @@ namespace PluginRegistrationTool
         }
 
         #region Private Helper Methods
+
         private Assembly LoadAssembly(string path)
         {
             return Assembly.LoadFrom(path);
@@ -288,6 +295,7 @@ namespace PluginRegistrationTool
 
             return pluginAssembly;
         }
-        #endregion
+
+        #endregion Private Helper Methods
     }
 }

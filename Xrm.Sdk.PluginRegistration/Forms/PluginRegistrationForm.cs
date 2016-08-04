@@ -15,17 +15,17 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk;
-    using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.Entities;
-    using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Controls;
+    using Xrm.Sdk.PluginRegistration.Entities;
+    using Xrm.Sdk.PluginRegistration.Helpers;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public partial class PluginRegistrationForm : Form
     {

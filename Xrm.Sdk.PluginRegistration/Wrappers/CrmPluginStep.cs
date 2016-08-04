@@ -15,15 +15,15 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Wrappers
+namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
     using Microsoft.Xrm.Sdk;
-    using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.Entities;
+    using Xrm.Sdk.PluginRegistration.Controls;
+    using Xrm.Sdk.PluginRegistration.Entities;
 
     public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
     {

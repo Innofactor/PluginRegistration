@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Wrappers
+namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
     using System;
     using Microsoft.Xrm.Sdk.Metadata;

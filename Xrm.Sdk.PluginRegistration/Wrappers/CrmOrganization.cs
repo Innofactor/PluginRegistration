@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Wrappers
+namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
     using System;
     using System.Collections.Generic;
@@ -24,8 +24,8 @@ namespace PluginRegistrationTool.Wrappers
     using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Discovery;
-    using PluginRegistrationTool.Controls;
-    using PluginRegistrationTool.Helpers;
+    using Xrm.Sdk.PluginRegistration.Controls;
+    using Xrm.Sdk.PluginRegistration.Helpers;
 
     public sealed class CrmOrganization : ICrmTreeNode
     {

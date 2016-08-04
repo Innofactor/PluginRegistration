@@ -1,4 +1,4 @@
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     partial class OrganizationsForm
     {

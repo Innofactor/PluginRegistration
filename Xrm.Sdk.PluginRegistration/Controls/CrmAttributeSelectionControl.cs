@@ -15,17 +15,17 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Controls
+namespace Xrm.Sdk.PluginRegistration.Controls
 {
+    using Forms;
+    using Helpers;
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.ComponentModel.Design;
     using System.Windows.Forms;
     using System.Windows.Forms.Design;
-    using PluginRegistrationTool.Forms;
-    using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.Wrappers;
+    using Wrappers;
 
     [Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
     public partial class CrmAttributeSelectionControl : UserControl
@@ -196,13 +196,16 @@ namespace PluginRegistrationTool.Controls
         }
 
         #region Public Helper Methods
+
         public void ClearAttributes()
         {
             this.UpdateParameters(null, false);
         }
-        #endregion
+
+        #endregion Public Helper Methods
 
         #region Private Helper Methods
+
         private string AttributeString
         {
             get
@@ -296,6 +299,7 @@ namespace PluginRegistrationTool.Controls
             txtAttributes.Visible = !visibleDisabledMessage;
             btnSelect.Visible = !visibleDisabledMessage;
         }
-        #endregion
+
+        #endregion Private Helper Methods
     }
 }

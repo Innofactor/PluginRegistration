@@ -1,4 +1,4 @@
-namespace PluginRegistrationTool.Controls
+namespace Xrm.Sdk.PluginRegistration.Controls
 {
     partial class CrmTreeControl
     {

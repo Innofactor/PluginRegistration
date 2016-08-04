@@ -15,14 +15,14 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk.Metadata;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public partial class AttributeSelectionForm : Form
     {

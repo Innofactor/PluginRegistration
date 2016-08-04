@@ -15,14 +15,14 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Forms
+namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Forms;
-    using PluginRegistrationTool.Helpers;
-    using PluginRegistrationTool.Wrappers;
+    using Xrm.Sdk.PluginRegistration.Helpers;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public partial class StepRegistrationForm : Form
     {

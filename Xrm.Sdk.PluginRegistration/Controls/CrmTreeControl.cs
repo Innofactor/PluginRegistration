@@ -15,7 +15,7 @@
 //
 // =====================================================================
 
-namespace PluginRegistrationTool.Controls
+namespace Xrm.Sdk.PluginRegistration.Controls
 {
     using System;
     using System.Collections;
@@ -57,7 +57,7 @@ namespace PluginRegistrationTool.Controls
         {
             InitializeComponent();
 
-            //Use the image provided in the nodeImages dictionary. If it is not given, 
+            //Use the image provided in the nodeImages dictionary. If it is not given,
             //use the image that is in the Resources.resX file.
             ImageList imageList = new ImageList();
             List<CrmTreeNodeImageType> loadImageList = new List<CrmTreeNodeImageType>();
@@ -104,6 +104,7 @@ namespace PluginRegistrationTool.Controls
         }
 
         #region Properties & Events
+
         [Browsable(true)]
         public event EventHandler<CrmTreeNodeTreeEventArgs> SelectionChanged;
 
@@ -129,9 +130,13 @@ namespace PluginRegistrationTool.Controls
         public event EventHandler<CrmTreeNodeEventArgs> NodeRemoved;
 
         public new event EventHandler<CrmTreeNodeEventArgs> Click;
+
         public new event EventHandler<CrmTreeNodeEventArgs> DoubleClick;
+
         public new event KeyEventHandler KeyDown;
+
         public new event KeyEventHandler KeyUp;
+
         public new event KeyPressEventHandler KeyPress;
 
         /// <summary>
@@ -505,9 +510,11 @@ namespace PluginRegistrationTool.Controls
                 trvPlugins.ShowNodeToolTips = value;
             }
         }
-        #endregion
+
+        #endregion Properties & Events
 
         #region Event Handlers
+
         private void trvPlugins_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (!this.m_disableSelectionChange && this.SelectionChanged != null)
@@ -554,7 +561,6 @@ namespace PluginRegistrationTool.Controls
                     {
                         this.CheckStateChanged(this, new CrmTreeNodeEventArgs(node.CrmNode));
                     }
-
                 }
                 finally
                 {
@@ -690,11 +696,12 @@ namespace PluginRegistrationTool.Controls
                     this.LabelEdited(this, new CrmTreeNodeEventArgs(node));
                 }
             }
-
         }
-        #endregion
+
+        #endregion Event Handlers
 
         #region Public Methods
+
         /// <summary>
         /// Reloads the entire tree
         /// </summary>
@@ -1209,9 +1216,11 @@ namespace PluginRegistrationTool.Controls
         {
             return IsNodeTextEditable(this.m_nodeList[nodeId].CrmNode);
         }
-        #endregion
+
+        #endregion Public Methods
 
         #region Private Helper Methods
+
         private void AddNodes(TreeNodeCollection parentNodeList, ICrmTreeNode[] nodes, bool checkNodes)
         {
             if (nodes == null || nodes.Length == 0)
@@ -1470,7 +1479,7 @@ namespace PluginRegistrationTool.Controls
                     }
                 }
 
-                //If the index has changed, readd 
+                //If the index has changed, readd
                 if (newIndex != currentNode.Index)
                 {
                     TreeNode selectedNode = trvPlugins.SelectedNode;
@@ -1592,9 +1601,11 @@ namespace PluginRegistrationTool.Controls
 
             return matchFound;
         }
-        #endregion
+
+        #endregion Private Helper Methods
 
         #region IRootDesigner Members
+
         public object GetView(ViewTechnology technology)
         {
             throw new Exception("The method or operation is not implemented.");
@@ -1604,9 +1615,11 @@ namespace PluginRegistrationTool.Controls
         {
             get { throw new Exception("The method or operation is not implemented."); }
         }
-        #endregion
+
+        #endregion IRootDesigner Members
 
         #region IDesigner Members
+
         public IComponent Component
         {
             get { throw new Exception("The method or operation is not implemented."); }
@@ -1626,9 +1639,11 @@ namespace PluginRegistrationTool.Controls
         {
             get { throw new Exception("The method or operation is not implemented."); }
         }
-        #endregion
+
+        #endregion IDesigner Members
 
         #region Private Classes
+
         private sealed class CrmTreeNode
         {
             private bool m_singleCheckParent;
@@ -1814,6 +1829,7 @@ namespace PluginRegistrationTool.Controls
             }
 
             #region Private Helper Methods
+
             private ICrmTreeNode GetCrmNode(object item)
             {
                 if (item == null)
@@ -1842,12 +1858,15 @@ namespace PluginRegistrationTool.Controls
                     return node.NodeText;
                 }
             }
-            #endregion
+
+            #endregion Private Helper Methods
         }
-        #endregion
+
+        #endregion Private Classes
     }
 
     #region Public Classes & Interfaces
+
     public sealed class CrmTreeNodeEventArgs : EventArgs
     {
         private ICrmTreeNode m_node;
@@ -1991,6 +2010,7 @@ namespace PluginRegistrationTool.Controls
         /// A node of this type will never be listed.
         /// </summary>
         None = 0,
+
         Connection = 1,
         Organization = 2,
         Assembly = 4,
@@ -2032,5 +2052,6 @@ namespace PluginRegistrationTool.Controls
         ServiceEndpoint,
         ServiceEndpointSelected
     }
-    #endregion
+
+    #endregion Public Classes & Interfaces
 }
