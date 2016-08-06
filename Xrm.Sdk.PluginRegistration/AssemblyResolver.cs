@@ -32,7 +32,7 @@ namespace Xrm.Sdk.PluginRegistration
         /// This is useful for architecture specific assemblies that may be different depending on the process architecture
         /// of the current assembly.
         /// </remarks>
-        private static readonly string[] AssemblyProbeSubdirectories = new string[] { string.Empty, "amd64", "i386", @"..\..\..\..\..\private\lib" };
+        private static readonly string[] AssemblyProbeSubdirectories = new string[] { string.Empty, "amd64", "i386", @"..\..\..\..\..\private\lib", "Plugins" };
 
         /// <summary>
         /// Contains a list of the assemblies that were resolved via the custom assembly resolve event
@@ -57,6 +57,9 @@ namespace Xrm.Sdk.PluginRegistration
         /// </summary>
         internal static void AttachResolver(AppDomain domain)
         {
+            domain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
+            domain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
+
             if (null == domain)
             {
                 throw new ArgumentNullException("domain");
@@ -79,7 +82,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 _baseDirectories.Add(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory).ToUpperInvariant());
 
-                string currentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
+                var currentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
                 if (!_baseDirectories.Contains(currentDirectory))
                 {
                     _baseDirectories.Add(currentDirectory);
@@ -87,18 +90,18 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             //Create an AssemblyName from the event arguments so that the name can be retrieved
-            AssemblyName name = new AssemblyName(args.Name);
+            var name = new AssemblyName(args.Name);
 
             //Create a file name for the assembly to start probing for a location
             string fileName = name.Name + ".dll";
 
             //Loop through the probing subdirectories to see if the assembly exists
-            foreach (string baseDirectory in _baseDirectories)
+            foreach (var baseDirectory in _baseDirectories)
             {
-                foreach (string subdirectory in AssemblyProbeSubdirectories)
+                foreach (var subdirectory in AssemblyProbeSubdirectories)
                 {
                     //Create the file path to the assembly
-                    string assemblyPath = Path.Combine(Path.Combine(baseDirectory, subdirectory), fileName);
+                    var assemblyPath = Path.Combine(Path.Combine(baseDirectory, subdirectory), fileName);
 
                     //Check if the file path exists
                     if (File.Exists(assemblyPath))
@@ -106,7 +109,7 @@ namespace Xrm.Sdk.PluginRegistration
                         //Load the assembly and return it
                         try
                         {
-                            Assembly assembly = Assembly.Load(AssemblyName.GetAssemblyName(assemblyPath));
+                            var assembly = Assembly.Load(AssemblyName.GetAssemblyName(assemblyPath));
                             _resolvedAssemblies[args.Name] = assembly;
                             return assembly;
                         }
