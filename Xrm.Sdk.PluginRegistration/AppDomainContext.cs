@@ -26,13 +26,11 @@
 
             _domain = AppDomain.CreateDomain(domainName, null, setup);
 
+            //Attach the resolver so that assemblies can be resolved correctly
             AssemblyResolver.AttachResolver(AppDomain.CurrentDomain);
 
             //Create the proxy in the AppDomain so that all assemblies that are loaded do not stay loaded in the AppDomain
             Proxy = (T)_domain.CreateInstanceFromAndUnwrap(typeof(T).Assembly.Location, typeof(T).FullName);
-
-            //Attach the resolver so that assemblies can be resolved correctly
-            AssemblyResolver.AttachResolver(_domain);
         }
 
         ~AppDomainContext()
