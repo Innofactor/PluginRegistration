@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/macacq/PluginRegistration/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>First NuGet release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>XrmToolBox Microsoft Dynamics CRM Plugin Registration Tool</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\Plugins\$id$.dll" target="lib\net452\" exclude="Images\*" />
+  </files>
+</package>
