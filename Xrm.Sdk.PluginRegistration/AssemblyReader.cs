@@ -28,6 +28,12 @@ namespace Xrm.Sdk.PluginRegistration
 
     public sealed class AssemblyReader : MarshalByRefObject
     {
+        public AssemblyReader()
+        {
+            //Attach the resolver so that assemblies can be resolved correctly
+            AssemblyResolver.AttachResolver(AppDomain.CurrentDomain);
+        }
+
         public CrmPluginAssembly RetrieveAssemblyProperties(string path)
         {
             if (path == null)
