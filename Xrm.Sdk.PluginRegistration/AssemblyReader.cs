@@ -21,6 +21,7 @@ namespace Xrm.Sdk.PluginRegistration
     using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using Wrappers;
@@ -33,7 +34,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 throw new ArgumentNullException("path");
             }
-            else if (!System.IO.File.Exists(path))
+            else if (!File.Exists(path))
             {
                 throw new ArgumentException("Path does not point to an existing file");
             }
@@ -47,21 +48,21 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 throw new ArgumentNullException("path");
             }
-            else if (!System.IO.File.Exists(path))
+            else if (!File.Exists(path))
             {
                 throw new ArgumentException("Path does not point to an existing file");
             }
 
             //Load the assembly
-            Assembly assembly = LoadAssembly(path);
-            AssemblyName assemblyName = assembly.GetName();
-            string defaultGroupName = RegistrationHelper.GenerateDefaultGroupName(assemblyName.Name, assemblyName.Version);
+            var assembly = LoadAssembly(path);
+            var assemblyName = assembly.GetName();
+            var defaultGroupName = RegistrationHelper.GenerateDefaultGroupName(assemblyName.Name, assemblyName.Version);
 
             //Retrieve the assembly properties
             CrmPluginAssembly pluginAssembly = RetrieveAssemblyProperties(assembly, path);
 
             //Loop through each type and process it
-            List<string> errorList = new List<string>();
+            var errorList = new List<string>();
             foreach (Type t in assembly.GetExportedTypes())
             {
                 //Plugins and Workflow Activities must be non-abstract classes
@@ -79,8 +80,8 @@ namespace Xrm.Sdk.PluginRegistration
                 Type xrmPlugin = t.GetInterface(typeof(IPlugin).FullName);
                 Type v4Plugin = t.GetInterface("Microsoft.Crm.Sdk.IPlugin");
 
-                string workflowGroupName = defaultGroupName;
-                string pluginName = t.FullName;
+                var workflowGroupName = defaultGroupName;
+                var pluginName = t.FullName;
 
                 Version sdkVersion = null;
                 if (null != xrmPlugin)
@@ -107,8 +108,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                     if (t.IsSubclassOf(typeof(System.Workflow.ComponentModel.Activity)))
                     {
-                        errorMessage = string.Format("The Custom Workflow Activity {0} class must have the CrmWorkflowActivity attribute set",
-                            t.FullName);
+                        errorMessage = string.Format("The Custom Workflow Activity {0} class must have the CrmWorkflowActivity attribute set", t.FullName);
 
                         //Verify that the Workflow attribute is present.
                         foreach (Attribute att in t.GetCustomAttributes(true))
@@ -121,8 +121,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                                 if (string.IsNullOrEmpty(pluginName))
                                 {
-                                    errorMessage = string.Format("The Custom Workflow Activity {0} class's CrmWorkflowActivity attribute must have the Name property set",
-                                        t.FullName);
+                                    errorMessage = string.Format("The Custom Workflow Activity {0} class's CrmWorkflowActivity attribute must have the Name property set", t.FullName);
                                 }
                                 else
                                 {
@@ -150,7 +149,7 @@ namespace Xrm.Sdk.PluginRegistration
                 }
                 else
                 {
-                    CrmPlugin plugin = new CrmPlugin(null);
+                    var plugin = new CrmPlugin(null);
                     plugin.TypeName = t.FullName;
                     plugin.Name = pluginName;
                     plugin.PluginType = type;
