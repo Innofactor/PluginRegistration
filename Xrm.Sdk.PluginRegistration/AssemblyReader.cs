@@ -65,7 +65,7 @@ namespace Xrm.Sdk.PluginRegistration
             var defaultGroupName = RegistrationHelper.GenerateDefaultGroupName(assemblyName.Name, assemblyName.Version);
 
             //Retrieve the assembly properties
-            CrmPluginAssembly pluginAssembly = RetrieveAssemblyProperties(assembly, path);
+            var pluginAssembly = RetrieveAssemblyProperties(assembly, path);
 
             //Loop through each type and process it
             var errorList = new List<string>();
