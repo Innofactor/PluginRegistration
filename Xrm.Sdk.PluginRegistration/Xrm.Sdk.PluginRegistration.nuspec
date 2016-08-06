@@ -12,8 +12,11 @@
     <releaseNotes>First NuGet release.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>XrmToolBox Microsoft Dynamics CRM Plugin Registration Tool</tags>
+	<dependencies>
+      <dependency id="XrmToolBox" version="1.2016.6.29" />
+	</dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\Plugins\$id$.dll" target="lib\net452\" exclude="Images\*" />
+    <file src="bin\Release\Plugins\$id$.dll" target="lib\net452\Plugins" />
   </files>
 </package>
