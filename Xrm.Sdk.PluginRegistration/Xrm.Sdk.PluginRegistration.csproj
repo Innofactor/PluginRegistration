@@ -142,6 +142,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppDomainContext.cs" />
     <Compile Include="CrmTreeControlDefaults.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
