@@ -69,7 +69,14 @@
 
             if (null != _domain)
             {
-                AppDomain.Unload(_domain);
+                try
+                {
+                    AppDomain.Unload(_domain);
+                }
+                catch (CannotUnloadAppDomainException ex)
+                {
+                    // AppDomain could not be uploaded probably because it was not loaded properly (due to any possible reason)
+                }
                 _domain = null;
                 Proxy = null;
             }
