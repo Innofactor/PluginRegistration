@@ -18,6 +18,7 @@
 namespace Xrm.Sdk.PluginRegistration
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
@@ -32,7 +33,7 @@ namespace Xrm.Sdk.PluginRegistration
         /// This is useful for architecture specific assemblies that may be different depending on the process architecture
         /// of the current assembly.
         /// </remarks>
-        private static readonly string[] AssemblyProbeSubdirectories = new string[] { string.Empty, "amd64", "i386", @"..\..\..\..\..\private\lib", "Plugins" };
+        private static readonly string[] AssemblyProbeSubdirectories = new string[] { string.Empty, "amd64", "i386", @"..\..\..\..\..\private\lib" };
 
         /// <summary>
         /// Contains a list of the assemblies that were resolved via the custom assembly resolve event
@@ -42,7 +43,36 @@ namespace Xrm.Sdk.PluginRegistration
         /// <summary>
         /// List of base directories that should be checked
         /// </summary>
-        private static Collection<string> _baseDirectories = new Collection<string>();
+        private static Collection<string> _baseDirectories = SetLocations();
+
+        private static Collection<string> SetLocations()
+        {
+            var list = new Collection<string>();
+            var location = string.Empty;
+
+            // Adding current AppDomain location
+            location = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory).ToUpperInvariant();
+            list.Add(location);
+
+            // Searching for plugins in subfolder of current AppDomain location
+            location = Path.Combine(location, "Plugins").ToUpperInvariant();
+
+            // Adding (if different) current working folder location
+            location = Path.GetDirectoryName(Environment.CurrentDirectory).ToUpperInvariant();
+            if (!list.Contains(location))
+            {
+                list.Add(location);
+            }
+
+            // Searching for plugins in subfolder of current working folder location
+            location = Path.Combine(location, "Plugins").ToUpperInvariant();
+            if (!list.Contains(location))
+            {
+                list.Add(location);
+            }
+
+            return list;
+        }
 
         /// <summary>
         /// Attaches the resolver to the current app domain
@@ -57,7 +87,6 @@ namespace Xrm.Sdk.PluginRegistration
         /// </summary>
         internal static void AttachResolver(AppDomain domain)
         {
-            domain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
             domain.AssemblyResolve -= new ResolveEventHandler(ResolveAssembly);
 
             if (null == domain)
@@ -77,23 +106,19 @@ namespace Xrm.Sdk.PluginRegistration
                 return resolvedAssembly;
             }
 
-            //Check if the base directories have been initialized
-            if (_baseDirectories.Count == 0)
-            {
-                _baseDirectories.Add(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory).ToUpperInvariant());
+            //Check if the assembly has been already loaded
+            resolvedAssembly = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName == args.Name).FirstOrDefault();
 
-                var currentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
-                if (!_baseDirectories.Contains(currentDirectory))
-                {
-                    _baseDirectories.Add(currentDirectory);
-                }
+            if (resolvedAssembly != null)
+            {
+                return resolvedAssembly;
             }
 
             //Create an AssemblyName from the event arguments so that the name can be retrieved
             var name = new AssemblyName(args.Name);
 
             //Create a file name for the assembly to start probing for a location
-            string fileName = name.Name + ".dll";
+            var fileName = name.Name + ".dll";
 
             //Loop through the probing subdirectories to see if the assembly exists
             foreach (var baseDirectory in _baseDirectories)
