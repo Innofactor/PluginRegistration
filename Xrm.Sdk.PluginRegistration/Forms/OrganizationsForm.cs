@@ -31,7 +31,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             if (tabOrganizations.SelectedTab != null)
             {
-                CrmOrganization org = ((CrmOrganization)tabOrganizations.SelectedTab.Tag);
+                var org = ((CrmOrganization)tabOrganizations.SelectedTab.Tag);
                 CloseOrganizationTab(org.ConnectionDetail.ConnectionId, org.OrganizationId);
             }
         }
@@ -105,9 +105,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         public void UpdateAutoExpand(bool newValue)
         {
-            foreach (Dictionary<Guid, MainControl> connectionList in m_orgList.Values)
+            foreach (var connectionList in m_orgList.Values)
             {
-                foreach (MainControl control in connectionList.Values)
+                foreach (var control in connectionList.Values)
                 {
                     control.UpdateAutoExpand(newValue);
                 }
