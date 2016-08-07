@@ -32,7 +32,7 @@ namespace Xrm.Sdk.PluginRegistration
     using XrmToolBox.Extensibility.Interfaces;
     using XrmToolBox.Extensibility.Args;
 
-    public partial class MainControl : PluginControlBase, IStatusBarMessager
+    public partial class MainControl : PluginControlBase, IStatusBarMessenger
     {
         private const string SYSTEM_ERROR_MESSAGE = "The selected item is required for the Microsoft Dynamics CRM system to work correctly.";
         private const string SYSTEM_ERROR_CAPTION = "Microsoft Dynamics CRM";
