@@ -820,34 +820,34 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Create the query
-            QueryExpression query = new QueryExpression(PluginType.EntityLogicalName);
+            var query = new QueryExpression(PluginType.EntityLogicalName);
             query.ColumnSet = GetColumnSet(Entities.PluginType.EntityLogicalName);
             query.Criteria = new FilterExpression();
             query.Criteria.AddCondition("typename", ConditionOperator.NotLike, "Compiled.Workflow%");
 
             //Add a filter to only include the desired system plugins
-            FilterExpression systemAssemblyFilter = query.Criteria.AddFilter(LogicalOperator.Or);
+            var systemAssemblyFilter = query.Criteria.AddFilter(LogicalOperator.Or);
             systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.Null);
             systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.NotEqual, 0);
             systemAssemblyFilter.AddCondition("typename", ConditionOperator.In,
                 "Microsoft.Crm.Extensibility.InternalOperationPlugin",
-                OrganizationHelper.V3CalloutProxyTypeName,
+                V3CalloutProxyTypeName,
                 "Microsoft.Crm.ServiceBus.ServiceBusPlugin");
 
             //Link to the assembly to ensure that only valid plug-ins are retrieved
-            LinkEntity assemblyLink = query.AddLink(PluginAssembly.EntityLogicalName, "pluginassemblyid", "pluginassemblyid");
+            var assemblyLink = query.AddLink(PluginAssembly.EntityLogicalName, "pluginassemblyid", "pluginassemblyid");
             assemblyLink.LinkCriteria = CreateAssemblyFilter();
 
             //Retrieve the results
-            EntityCollection results = org.OrganizationService.RetrieveMultipleAllPages(query);
+            var results = org.OrganizationService.RetrieveMultipleAllPages(query);
 
             //Initialize the map
             bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
             typeList = new Dictionary<Guid, CrmPlugin>();
             
-            foreach (PluginType plugin in results.Entities)
+            foreach (var plugin in results.Entities.Select(x => Magic.CastTo<PluginType>(x)))
             {
-                CrmPluginAssembly assembly = org.Assemblies[plugin.PluginAssemblyId.Id];
+                var assembly = org.Assemblies[plugin.PluginAssemblyId.Id];
                 if (assembly.Plugins.ContainsKey(plugin.PluginTypeId.Value))
                 {
                     assembly[plugin.PluginTypeId.Value].RefreshFromPluginType(plugin);
@@ -857,7 +857,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     assembly.AddPlugin(new CrmPlugin(org, plugin));
                 }
 
-                CrmPlugin crmPlugin = assembly[plugin.PluginTypeId.Value];
+                var crmPlugin = assembly[plugin.PluginTypeId.Value];
                 if (!profilerPluginLocated)
                 {
                     bool isProfilerPlugin = false;// IsProfilerPlugin(crmPlugin);
