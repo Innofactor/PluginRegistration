@@ -1,12 +1,19 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System;
+    using System.CodeDom.Compiler;
+    using System.ComponentModel;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Non-public custom configuration that is passed to a plug-in's constructor.
     /// </summary>
-    [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessageprocessingstepsecureconfig")]
-    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class SdkMessageProcessingStepSecureConfig : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    [DataContract()]
+    [EntityLogicalName("sdkmessageprocessingstepsecureconfig")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
+    public partial class SdkMessageProcessingStepSecureConfig : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -21,9 +28,9 @@
 
         public const int EntityTypeCode = 4616;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -44,43 +51,43 @@
         /// <summary>
         /// Unique identifier of the user who created the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        [AttributeLogicalName("createdby")]
+        public EntityReference CreatedBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
         /// <summary>
         /// Date and time when the SDK message processing step was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdon")]
-        public System.DateTime? CreatedOn
+        [AttributeLogicalName("createdon")]
+        public DateTime? CreatedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("createdon");
+                return GetAttributeValue<DateTime?>("createdon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who created the sdkmessageprocessingstepsecureconfig.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        [AttributeLogicalName("createdonbehalfby")]
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
         /// <summary>
         /// Customization level of the SDK message processing step secure configuration.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
+        [AttributeLogicalName("customizationlevel")]
         public int? CustomizationLevel
         {
             get
@@ -92,60 +99,60 @@
         /// <summary>
         /// Unique identifier of the user who last modified the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<EntityReference>("modifiedby");
             }
         }
 
         /// <summary>
         /// Date and time when the SDK message processing step was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedon")]
-        public System.DateTime? ModifiedOn
+        [AttributeLogicalName("modifiedon")]
+        public DateTime? ModifiedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("modifiedon");
+                return GetAttributeValue<DateTime?>("modifiedon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who last modified the sdkmessageprocessingstepsecureconfig.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<EntityReference>("modifiedonbehalfby");
             }
         }
 
         /// <summary>
         /// Unique identifier of the organization with which the SDK message processing step is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
-        public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+        [AttributeLogicalName("organizationid")]
+        public EntityReference OrganizationId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+                return GetAttributeValue<EntityReference>("organizationid");
             }
         }
 
         /// <summary>
         /// Unique identifier of the SDK message processing step secure configuration.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        public System.Guid? SdkMessageProcessingStepSecureConfigId
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
+        public Guid? SdkMessageProcessingStepSecureConfigId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessageprocessingstepsecureconfigid");
+                return GetAttributeValue<Guid?>("sdkmessageprocessingstepsecureconfigid");
             }
             set
             {
@@ -157,14 +164,14 @@
                 }
                 else
                 {
-                    base.Id = System.Guid.Empty;
+                    base.Id = Guid.Empty;
                 }
                 OnPropertyChanged("SdkMessageProcessingStepSecureConfigId");
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        public override System.Guid Id
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
+        public override Guid Id
         {
             get
             {
@@ -179,19 +186,19 @@
         /// <summary>
         /// Unique identifier of the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigidunique")]
-        public System.Guid? SdkMessageProcessingStepSecureConfigIdUnique
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigidunique")]
+        public Guid? SdkMessageProcessingStepSecureConfigIdUnique
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessageprocessingstepsecureconfigidunique");
+                return GetAttributeValue<Guid?>("sdkmessageprocessingstepsecureconfigidunique");
             }
         }
 
         /// <summary>
         /// Secure step-specific configuration for the plug-in type that is passed to the plug-in's constructor at run time.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("secureconfig")]
+        [AttributeLogicalName("secureconfig")]
         public string SecureConfig
         {
             get

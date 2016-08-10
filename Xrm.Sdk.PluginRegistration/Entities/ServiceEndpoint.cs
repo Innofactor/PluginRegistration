@@ -3,6 +3,7 @@
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
     using System.CodeDom.Compiler;
+    using System.ComponentModel;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -11,7 +12,7 @@
     [DataContract()]
     [EntityLogicalName("serviceendpoint")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class ServiceEndpoint : Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    public partial class ServiceEndpoint : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -26,15 +27,15 @@
 
         public const int EntityTypeCode = 4618;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
             if ((PropertyChanged != null))
             {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -42,7 +43,7 @@
         {
             if ((PropertyChanging != null))
             {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
 
@@ -152,11 +153,11 @@
         /// Information that specifies whether this component can be customized.
         /// </summary>
         [AttributeLogicalName("iscustomizable")]
-        public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
+        public BooleanManagedProperty IsCustomizable
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
+                return GetAttributeValue<BooleanManagedProperty>("iscustomizable");
             }
             set
             {

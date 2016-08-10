@@ -2,7 +2,9 @@
 {
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
+    using System;
     using System.CodeDom.Compiler;
+    using System.ComponentModel;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -11,7 +13,7 @@
     [DataContract()]
     [EntityLogicalName("systemuser")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class SystemUser : Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    public partial class SystemUser : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -26,15 +28,15 @@
 
         public const int EntityTypeCode = 8;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
             if ((PropertyChanged != null))
             {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -42,7 +44,7 @@
         {
             if ((PropertyChanging != null))
             {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
 
@@ -68,11 +70,11 @@
         /// Unique identifier for address 1.
         /// </summary>
         [AttributeLogicalName("address1_addressid")]
-        public System.Guid? Address1_AddressId
+        public Guid? Address1_AddressId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("address1_addressid");
+                return GetAttributeValue<Guid?>("address1_addressid");
             }
             set
             {
@@ -176,11 +178,11 @@
         /// Latitude for address 1.
         /// </summary>
         [AttributeLogicalName("address1_latitude")]
-        public System.Nullable<double> Address1_Latitude
+        public double? Address1_Latitude
         {
             get
             {
-                return GetAttributeValue<System.Nullable<double>>("address1_latitude");
+                return GetAttributeValue<double?>("address1_latitude");
             }
             set
             {
@@ -248,11 +250,11 @@
         /// Longitude for address 1.
         /// </summary>
         [AttributeLogicalName("address1_longitude")]
-        public System.Nullable<double> Address1_Longitude
+        public double? Address1_Longitude
         {
             get
             {
-                return GetAttributeValue<System.Nullable<double>>("address1_longitude");
+                return GetAttributeValue<double?>("address1_longitude");
             }
             set
             {
@@ -446,11 +448,11 @@
         /// Unique identifier for address 2.
         /// </summary>
         [AttributeLogicalName("address2_addressid")]
-        public System.Guid? Address2_AddressId
+        public Guid? Address2_AddressId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("address2_addressid");
+                return GetAttributeValue<Guid?>("address2_addressid");
             }
             set
             {
@@ -554,11 +556,11 @@
         /// Latitude for address 2.
         /// </summary>
         [AttributeLogicalName("address2_latitude")]
-        public System.Nullable<double> Address2_Latitude
+        public double? Address2_Latitude
         {
             get
             {
-                return GetAttributeValue<System.Nullable<double>>("address2_latitude");
+                return GetAttributeValue<double?>("address2_latitude");
             }
             set
             {
@@ -626,11 +628,11 @@
         /// Longitude for address 2.
         /// </summary>
         [AttributeLogicalName("address2_longitude")]
-        public System.Nullable<double> Address2_Longitude
+        public double? Address2_Longitude
         {
             get
             {
-                return GetAttributeValue<System.Nullable<double>>("address2_longitude");
+                return GetAttributeValue<double?>("address2_longitude");
             }
             set
             {
@@ -890,11 +892,11 @@
         /// Date and time when the user was created.
         /// </summary>
         [AttributeLogicalName("createdon")]
-        public System.DateTime? CreatedOn
+        public DateTime? CreatedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("createdon");
+                return GetAttributeValue<DateTime?>("createdon");
             }
         }
 
@@ -1328,11 +1330,11 @@
         /// Date and time when the user was last modified.
         /// </summary>
         [AttributeLogicalName("modifiedon")]
-        public System.DateTime? ModifiedOn
+        public DateTime? ModifiedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("modifiedon");
+                return GetAttributeValue<DateTime?>("modifiedon");
             }
         }
 
@@ -1370,11 +1372,11 @@
         /// Unique identifier of the organization associated with the user.
         /// </summary>
         [AttributeLogicalName("organizationid")]
-        public System.Guid? OrganizationId
+        public Guid? OrganizationId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("organizationid");
+                return GetAttributeValue<Guid?>("organizationid");
             }
         }
 
@@ -1400,11 +1402,11 @@
         /// Date and time that the record was migrated.
         /// </summary>
         [AttributeLogicalName("overriddencreatedon")]
-        public System.DateTime? OverriddenCreatedOn
+        public DateTime? OverriddenCreatedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("overriddencreatedon");
+                return GetAttributeValue<DateTime?>("overriddencreatedon");
             }
             set
             {
@@ -1652,11 +1654,11 @@
         /// Unique identifier for the user.
         /// </summary>
         [AttributeLogicalName("systemuserid")]
-        public System.Guid? SystemUserId
+        public Guid? SystemUserId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("systemuserid");
+                return GetAttributeValue<Guid?>("systemuserid");
             }
             set
             {
@@ -1668,14 +1670,14 @@
                 }
                 else
                 {
-                    base.Id = System.Guid.Empty;
+                    base.Id = Guid.Empty;
                 }
                 OnPropertyChanged("SystemUserId");
             }
         }
 
         [AttributeLogicalName("systemuserid")]
-        public override System.Guid Id
+        public override Guid Id
         {
             get
             {
@@ -1781,11 +1783,11 @@
         /// Version number of the user.
         /// </summary>
         [AttributeLogicalName("versionnumber")]
-        public System.Nullable<long> VersionNumber
+        public long? VersionNumber
         {
             get
             {
-                return GetAttributeValue<System.Nullable<long>>("versionnumber");
+                return GetAttributeValue<long?>("versionnumber");
             }
         }
 

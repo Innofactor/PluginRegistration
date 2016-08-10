@@ -2,6 +2,7 @@
 {
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
+    using System;
     using System.CodeDom.Compiler;
     using System.ComponentModel;
     using System.Runtime.Serialization;
@@ -27,15 +28,15 @@
 
         public const int EntityTypeCode = 4606;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
             if ((PropertyChanged != null))
             {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -43,7 +44,7 @@
         {
             if ((PropertyChanging != null))
             {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
 
@@ -117,11 +118,11 @@
         /// Date and time when the SDK message was created.
         /// </summary>
         [AttributeLogicalName("createdon")]
-        public System.DateTime? CreatedOn
+        public DateTime? CreatedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("createdon");
+                return GetAttributeValue<DateTime?>("createdon");
             }
         }
 
@@ -201,11 +202,11 @@
         /// Date and time when the SDK message was last modified.
         /// </summary>
         [AttributeLogicalName("modifiedon")]
-        public System.DateTime? ModifiedOn
+        public DateTime? ModifiedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("modifiedon");
+                return GetAttributeValue<DateTime?>("modifiedon");
             }
         }
 
@@ -255,11 +256,11 @@
         /// Unique identifier of the SDK message entity.
         /// </summary>
         [AttributeLogicalName("sdkmessageid")]
-        public System.Guid? SdkMessageId
+        public Guid? SdkMessageId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessageid");
+                return GetAttributeValue<Guid?>("sdkmessageid");
             }
             set
             {
@@ -271,14 +272,14 @@
                 }
                 else
                 {
-                    base.Id = System.Guid.Empty;
+                    base.Id = Guid.Empty;
                 }
                 OnPropertyChanged("SdkMessageId");
             }
         }
 
         [AttributeLogicalName("sdkmessageid")]
-        public override System.Guid Id
+        public override Guid Id
         {
             get
             {
@@ -294,11 +295,11 @@
         /// Unique identifier of the SDK message.
         /// </summary>
         [AttributeLogicalName("sdkmessageidunique")]
-        public System.Guid? SdkMessageIdUnique
+        public Guid? SdkMessageIdUnique
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessageidunique");
+                return GetAttributeValue<Guid?>("sdkmessageidunique");
             }
         }
 
@@ -336,7 +337,7 @@
         /// Number that identifies a specific revision of the SDK message. 
         /// </summary>
         [AttributeLogicalName("versionnumber")]
-        public System.Nullable<long> VersionNumber
+        public long? VersionNumber
         {
             get
             {

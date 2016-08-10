@@ -2,7 +2,9 @@
 {
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
+    using System;
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Runtime.Serialization;
 
@@ -42,7 +44,7 @@
         {
             if ((PropertyChanging != null))
             {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
 
@@ -332,11 +334,11 @@
         /// Unique identifier of the plug-in assembly.
         /// </summary>
         [AttributeLogicalName("pluginassemblyid")]
-        public System.Guid? PluginAssemblyId
+        public Guid? PluginAssemblyId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("pluginassemblyid");
+                return GetAttributeValue<Guid?>("pluginassemblyid");
             }
             set
             {
@@ -355,7 +357,7 @@
         }
 
         [AttributeLogicalName("pluginassemblyid")]
-        public override System.Guid Id
+        public override Guid Id
         {
             get
             {
@@ -371,11 +373,11 @@
         /// Unique identifier of the plug-in assembly.
         /// </summary>
         [AttributeLogicalName("pluginassemblyidunique")]
-        public System.Guid? PluginAssemblyIdUnique
+        public Guid? PluginAssemblyIdUnique
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("pluginassemblyidunique");
+                return GetAttributeValue<Guid?>("pluginassemblyidunique");
             }
         }
 
@@ -401,11 +403,11 @@
         /// Unique identifier of the associated solution.
         /// </summary>
         [AttributeLogicalName("solutionid")]
-        public System.Guid? SolutionId
+        public Guid? SolutionId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("solutionid");
+                return GetAttributeValue<Guid?>("solutionid");
             }
         }
 
@@ -467,7 +469,7 @@
         ///
         /// </summary>
         [AttributeLogicalName("versionnumber")]
-        public System.Nullable<long> VersionNumber
+        public long? VersionNumber
         {
             get
             {
@@ -478,8 +480,8 @@
         /// <summary>
         /// 1:N pluginassembly_plugintype
         /// </summary>
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("pluginassembly_plugintype")]
-        public System.Collections.Generic.IEnumerable<PluginType> pluginassembly_plugintype
+        [RelationshipSchemaName("pluginassembly_plugintype")]
+        public IEnumerable<PluginType> pluginassembly_plugintype
         {
             get
             {

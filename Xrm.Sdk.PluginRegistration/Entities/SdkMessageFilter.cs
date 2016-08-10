@@ -1,12 +1,19 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System;
+    using System.CodeDom.Compiler;
+    using System.ComponentModel;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Filter that defines which SDK messages are valid for each type of entity.
     /// </summary>
-    [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessagefilter")]
-    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class SdkMessageFilter : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    [DataContract()]
+    [EntityLogicalName("sdkmessagefilter")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
+    public partial class SdkMessageFilter : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -21,15 +28,15 @@
 
         public const int EntityTypeCode = 4607;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
             if ((PropertyChanged != null))
             {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -37,14 +44,14 @@
         {
             if ((PropertyChanging != null))
             {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
 
         /// <summary>
         /// Identifies where a method will be exposed. 0 - Server, 1 - Client, 2 - both.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("availability")]
+        [AttributeLogicalName("availability")]
         public int? Availability
         {
             get
@@ -62,19 +69,19 @@
         /// <summary>
         /// Unique identifier of the user who created the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        [AttributeLogicalName("createdby")]
+        public EntityReference CreatedBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
         /// <summary>
         /// Date and time when the SDK message filter was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdon")]
+        [AttributeLogicalName("createdon")]
         public System.DateTime? CreatedOn
         {
             get
@@ -86,19 +93,19 @@
         /// <summary>
         /// Unique identifier of the delegate user who created the sdkmessagefilter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        [AttributeLogicalName("createdonbehalfby")]
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
         /// <summary>
         /// Customization level of the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
+        [AttributeLogicalName("customizationlevel")]
         public int? CustomizationLevel
         {
             get
@@ -110,7 +117,7 @@
         /// <summary>
         /// Indicates whether a custom SDK message processing step is allowed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("iscustomprocessingstepallowed")]
+        [AttributeLogicalName("iscustomprocessingstepallowed")]
         public bool? IsCustomProcessingStepAllowed
         {
             get
@@ -128,7 +135,7 @@
         /// <summary>
         /// Indicates whether the filter should be visible.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("isvisible")]
+        [AttributeLogicalName("isvisible")]
         public bool? IsVisible
         {
             get
@@ -140,19 +147,19 @@
         /// <summary>
         /// Unique identifier of the user who last modified the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<EntityReference>("modifiedby");
             }
         }
 
         /// <summary>
         /// Date and time when the SDK message filter was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedon")]
+        [AttributeLogicalName("modifiedon")]
         public System.DateTime? ModifiedOn
         {
             get
@@ -164,31 +171,31 @@
         /// <summary>
         /// Unique identifier of the delegate user who last modified the sdkmessagefilter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<EntityReference>("modifiedonbehalfby");
             }
         }
 
         /// <summary>
         /// Unique identifier of the organization with which the SDK message filter is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
-        public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+        [AttributeLogicalName("organizationid")]
+        public EntityReference OrganizationId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+                return GetAttributeValue<EntityReference>("organizationid");
             }
         }
 
         /// <summary>
         /// Type of entity with which the SDK message filter is primarily associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("primaryobjecttypecode")]
+        [AttributeLogicalName("primaryobjecttypecode")]
         public string PrimaryObjectTypeCode
         {
             get
@@ -200,12 +207,12 @@
         /// <summary>
         /// Unique identifier of the SDK message filter entity.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilterid")]
-        public System.Guid? SdkMessageFilterId
+        [AttributeLogicalName("sdkmessagefilterid")]
+        public Guid? SdkMessageFilterId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessagefilterid");
+                return GetAttributeValue<Guid?>("sdkmessagefilterid");
             }
             set
             {
@@ -217,14 +224,14 @@
                 }
                 else
                 {
-                    base.Id = System.Guid.Empty;
+                    base.Id = Guid.Empty;
                 }
                 OnPropertyChanged("SdkMessageFilterId");
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilterid")]
-        public override System.Guid Id
+        [AttributeLogicalName("sdkmessagefilterid")]
+        public override Guid Id
         {
             get
             {
@@ -239,24 +246,24 @@
         /// <summary>
         /// Unique identifier of the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilteridunique")]
-        public System.Guid? SdkMessageFilterIdUnique
+        [AttributeLogicalName("sdkmessagefilteridunique")]
+        public Guid? SdkMessageFilterIdUnique
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessagefilteridunique");
+                return GetAttributeValue<Guid?>("sdkmessagefilteridunique");
             }
         }
 
         /// <summary>
         /// Unique identifier of the related SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageid")]
-        public Microsoft.Xrm.Sdk.EntityReference SdkMessageId
+        [AttributeLogicalName("sdkmessageid")]
+        public EntityReference SdkMessageId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessageid");
+                return GetAttributeValue<EntityReference>("sdkmessageid");
             }
             set
             {
@@ -269,7 +276,7 @@
         /// <summary>
         /// Type of entity with which the SDK message filter is secondarily associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("secondaryobjecttypecode")]
+        [AttributeLogicalName("secondaryobjecttypecode")]
         public string SecondaryObjectTypeCode
         {
             get
@@ -281,8 +288,8 @@
         /// <summary>
         /// 
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("versionnumber")]
-        public System.Nullable<long> VersionNumber
+        [AttributeLogicalName("versionnumber")]
+        public long? VersionNumber
         {
             get
             {

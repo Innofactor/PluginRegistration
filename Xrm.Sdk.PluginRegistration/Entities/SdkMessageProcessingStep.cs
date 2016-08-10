@@ -1,12 +1,20 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Client;
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Stage in the execution pipeline that a plug-in is to execute.
     /// </summary>
-    [System.Runtime.Serialization.DataContract()]
-    [Microsoft.Xrm.Sdk.Client.EntityLogicalName("sdkmessageprocessingstep")]
-    [System.CodeDom.Compiler.GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class SdkMessageProcessingStep : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    [DataContract()]
+    [EntityLogicalName("sdkmessageprocessingstep")]
+    [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
+    public partial class SdkMessageProcessingStep : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -21,15 +29,15 @@
 
         public const int EntityTypeCode = 4608;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
             if ((PropertyChanged != null))
             {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -37,14 +45,14 @@
         {
             if ((PropertyChanging != null))
             {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
 
         /// <summary>
         /// Indicates whether the asynchronous system job is automatically deleted on completion.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("asyncautodelete")]
+        [AttributeLogicalName("asyncautodelete")]
         public bool? AsyncAutoDelete
         {
             get
@@ -62,19 +70,19 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("componentstate")]
-        public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+        [AttributeLogicalName("componentstate")]
+        public OptionSetValue ComponentState
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+                return GetAttributeValue<OptionSetValue>("componentstate");
             }
         }
 
         /// <summary>
         /// Step-specific configuration for the plug-in type. Passed to the plug-in constructor at run time.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("configuration")]
+        [AttributeLogicalName("configuration")]
         public string Configuration
         {
             get
@@ -92,43 +100,43 @@
         /// <summary>
         /// Unique identifier of the user who created the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+        [AttributeLogicalName("createdby")]
+        public EntityReference CreatedBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+                return GetAttributeValue<EntityReference>("createdby");
             }
         }
 
         /// <summary>
         /// Date and time when the SDK message processing step was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdon")]
-        public System.DateTime? CreatedOn
+        [AttributeLogicalName("createdon")]
+        public DateTime? CreatedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("createdon");
+                return GetAttributeValue<DateTime?>("createdon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who created the sdkmessageprocessingstep.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("createdonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+        [AttributeLogicalName("createdonbehalfby")]
+        public EntityReference CreatedOnBehalfBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+                return GetAttributeValue<EntityReference>("createdonbehalfby");
             }
         }
 
         /// <summary>
         /// Customization level of the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
+        [AttributeLogicalName("customizationlevel")]
         public int? CustomizationLevel
         {
             get
@@ -140,7 +148,7 @@
         /// <summary>
         /// Description of the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("description")]
+        [AttributeLogicalName("description")]
         public string Description
         {
             get
@@ -158,12 +166,12 @@
         /// <summary>
         /// Unique identifier of the associated event handler.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("eventhandler")]
-        public Microsoft.Xrm.Sdk.EntityReference EventHandler
+        [AttributeLogicalName("eventhandler")]
+        public EntityReference EventHandler
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("eventhandler");
+                return GetAttributeValue<EntityReference>("eventhandler");
             }
             set
             {
@@ -176,7 +184,7 @@
         /// <summary>
         /// Comma-separated list of attributes. If at least one of these attributes is modified, the plug-in should execute.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("filteringattributes")]
+        [AttributeLogicalName("filteringattributes")]
         public string FilteringAttributes
         {
             get
@@ -194,12 +202,12 @@
         /// <summary>
         /// Unique identifier of the user to impersonate context when step is executed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("impersonatinguserid")]
-        public Microsoft.Xrm.Sdk.EntityReference ImpersonatingUserId
+        [AttributeLogicalName("impersonatinguserid")]
+        public EntityReference ImpersonatingUserId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("impersonatinguserid");
+                return GetAttributeValue<EntityReference>("impersonatinguserid");
             }
             set
             {
@@ -212,13 +220,13 @@
         /// <summary>
         /// Identifies if a plug-in should be executed from a parent pipeline, a child pipeline, or both.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("invocationsource")]
-        [System.ObsoleteAttribute()]
-        public Microsoft.Xrm.Sdk.OptionSetValue InvocationSource
+        [AttributeLogicalName("invocationsource")]
+        [Obsolete()]
+        public OptionSetValue InvocationSource
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("invocationsource");
+                return GetAttributeValue<OptionSetValue>("invocationsource");
             }
             set
             {
@@ -231,12 +239,12 @@
         /// <summary>
         /// Information that specifies whether this component can be customized.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("iscustomizable")]
-        public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
+        [AttributeLogicalName("iscustomizable")]
+        public BooleanManagedProperty IsCustomizable
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
+                return GetAttributeValue<BooleanManagedProperty>("iscustomizable");
             }
             set
             {
@@ -249,12 +257,12 @@
         /// <summary>
         /// Information that specifies whether this component should be hidden.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("ishidden")]
-        public Microsoft.Xrm.Sdk.BooleanManagedProperty IsHidden
+        [AttributeLogicalName("ishidden")]
+        public BooleanManagedProperty IsHidden
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("ishidden");
+                return GetAttributeValue<BooleanManagedProperty>("ishidden");
             }
             set
             {
@@ -267,7 +275,7 @@
         /// <summary>
         /// Information that specifies whether this component is managed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("ismanaged")]
+        [AttributeLogicalName("ismanaged")]
         public bool? IsManaged
         {
             get
@@ -279,12 +287,12 @@
         /// <summary>
         /// Run-time mode of execution, for example, synchronous or asynchronous.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("mode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Mode
+        [AttributeLogicalName("mode")]
+        public OptionSetValue Mode
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("mode");
+                return GetAttributeValue<OptionSetValue>("mode");
             }
             set
             {
@@ -297,43 +305,43 @@
         /// <summary>
         /// Unique identifier of the user who last modified the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+        [AttributeLogicalName("modifiedby")]
+        public EntityReference ModifiedBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+                return GetAttributeValue<EntityReference>("modifiedby");
             }
         }
 
         /// <summary>
         /// Date and time when the SDK message processing step was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedon")]
-        public System.DateTime? ModifiedOn
+        [AttributeLogicalName("modifiedon")]
+        public DateTime? ModifiedOn
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("modifiedon");
+                return GetAttributeValue<DateTime?>("modifiedon");
             }
         }
 
         /// <summary>
         /// Unique identifier of the delegate user who last modified the sdkmessageprocessingstep.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("modifiedonbehalfby")]
-        public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+        [AttributeLogicalName("modifiedonbehalfby")]
+        public EntityReference ModifiedOnBehalfBy
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+                return GetAttributeValue<EntityReference>("modifiedonbehalfby");
             }
         }
 
         /// <summary>
         /// Name of SdkMessage processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("name")]
+        [AttributeLogicalName("name")]
         public string Name
         {
             get
@@ -351,37 +359,37 @@
         /// <summary>
         /// Unique identifier of the organization with which the SDK message processing step is associated.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("organizationid")]
-        public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+        [AttributeLogicalName("organizationid")]
+        public EntityReference OrganizationId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+                return GetAttributeValue<EntityReference>("organizationid");
             }
         }
 
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("overwritetime")]
-        public System.DateTime? OverwriteTime
+        [AttributeLogicalName("overwritetime")]
+        public DateTime? OverwriteTime
         {
             get
             {
-                return GetAttributeValue<System.DateTime?>("overwritetime");
+                return GetAttributeValue<DateTime?>("overwritetime");
             }
         }
 
         /// <summary>
         /// Unique identifier of the plug-in type associated with the step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("plugintypeid")]
-        [System.ObsoleteAttribute()]
-        public Microsoft.Xrm.Sdk.EntityReference PluginTypeId
+        [AttributeLogicalName("plugintypeid")]
+        [Obsolete()]
+        public EntityReference PluginTypeId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("plugintypeid");
+                return GetAttributeValue<EntityReference>("plugintypeid");
             }
             set
             {
@@ -394,7 +402,7 @@
         /// <summary>
         /// Processing order within the stage.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("rank")]
+        [AttributeLogicalName("rank")]
         public int? Rank
         {
             get
@@ -412,12 +420,12 @@
         /// <summary>
         /// Unique identifier of the SDK message filter.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilterid")]
-        public Microsoft.Xrm.Sdk.EntityReference SdkMessageFilterId
+        [AttributeLogicalName("sdkmessagefilterid")]
+        public EntityReference SdkMessageFilterId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessagefilterid");
+                return GetAttributeValue<EntityReference>("sdkmessagefilterid");
             }
             set
             {
@@ -430,12 +438,12 @@
         /// <summary>
         /// Unique identifier of the SDK message.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageid")]
-        public Microsoft.Xrm.Sdk.EntityReference SdkMessageId
+        [AttributeLogicalName("sdkmessageid")]
+        public EntityReference SdkMessageId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessageid");
+                return GetAttributeValue<EntityReference>("sdkmessageid");
             }
             set
             {
@@ -448,12 +456,12 @@
         /// <summary>
         /// Unique identifier of the SDK message processing step entity.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepid")]
-        public System.Guid? SdkMessageProcessingStepId
+        [AttributeLogicalName("sdkmessageprocessingstepid")]
+        public Guid? SdkMessageProcessingStepId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessageprocessingstepid");
+                return GetAttributeValue<Guid?>("sdkmessageprocessingstepid");
             }
             set
             {
@@ -465,14 +473,14 @@
                 }
                 else
                 {
-                    base.Id = System.Guid.Empty;
+                    base.Id = Guid.Empty;
                 }
                 OnPropertyChanged("SdkMessageProcessingStepId");
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepid")]
-        public override System.Guid Id
+        [AttributeLogicalName("sdkmessageprocessingstepid")]
+        public override Guid Id
         {
             get
             {
@@ -487,24 +495,24 @@
         /// <summary>
         /// Unique identifier of the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepidunique")]
-        public System.Guid? SdkMessageProcessingStepIdUnique
+        [AttributeLogicalName("sdkmessageprocessingstepidunique")]
+        public Guid? SdkMessageProcessingStepIdUnique
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("sdkmessageprocessingstepidunique");
+                return GetAttributeValue<Guid?>("sdkmessageprocessingstepidunique");
             }
         }
 
         /// <summary>
         /// Unique identifier of the Sdk message processing step secure configuration.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        public Microsoft.Xrm.Sdk.EntityReference SdkMessageProcessingStepSecureConfigId
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
+        public EntityReference SdkMessageProcessingStepSecureConfigId
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessageprocessingstepsecureconfigid");
+                return GetAttributeValue<EntityReference>("sdkmessageprocessingstepsecureconfigid");
             }
             set
             {
@@ -517,24 +525,24 @@
         /// <summary>
         /// Unique identifier of the associated solution.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("solutionid")]
-        public System.Guid? SolutionId
+        [AttributeLogicalName("solutionid")]
+        public Guid? SolutionId
         {
             get
             {
-                return GetAttributeValue<System.Guid?>("solutionid");
+                return GetAttributeValue<Guid?>("solutionid");
             }
         }
 
         /// <summary>
         /// Stage in the execution pipeline that the SDK message processing step is in.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("stage")]
-        public Microsoft.Xrm.Sdk.OptionSetValue Stage
+        [AttributeLogicalName("stage")]
+        public OptionSetValue Stage
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("stage");
+                return GetAttributeValue<OptionSetValue>("stage");
             }
             set
             {
@@ -547,12 +555,12 @@
         /// <summary>
         /// Status of the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("statecode")]
-        public System.Nullable<SdkMessageProcessingStepState> StateCode
+        [AttributeLogicalName("statecode")]
+        public SdkMessageProcessingStepState? StateCode
         {
             get
             {
-                Microsoft.Xrm.Sdk.OptionSetValue optionSet = GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("statecode");
+                OptionSetValue optionSet = GetAttributeValue<OptionSetValue>("statecode");
                 if ((optionSet != null))
                 {
                     return ((SdkMessageProcessingStepState)(System.Enum.ToObject(typeof(SdkMessageProcessingStepState), optionSet.Value)));
@@ -567,12 +575,12 @@
         /// <summary>
         /// Reason for the status of the SDK message processing step.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("statuscode")]
-        public Microsoft.Xrm.Sdk.OptionSetValue StatusCode
+        [AttributeLogicalName("statuscode")]
+        public OptionSetValue StatusCode
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("statuscode");
+                return GetAttributeValue<OptionSetValue>("statuscode");
             }
             set
             {
@@ -585,12 +593,12 @@
         /// <summary>
         /// Deployment that the SDK message processing step should be executed on; server, client, or both.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("supporteddeployment")]
-        public Microsoft.Xrm.Sdk.OptionSetValue SupportedDeployment
+        [AttributeLogicalName("supporteddeployment")]
+        public OptionSetValue SupportedDeployment
         {
             get
             {
-                return GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("supporteddeployment");
+                return GetAttributeValue<OptionSetValue>("supporteddeployment");
             }
             set
             {
@@ -603,8 +611,8 @@
         /// <summary>
         /// Number that identifies a specific revision of the SDK message processing step. 
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("versionnumber")]
-        public System.Nullable<long> VersionNumber
+        [AttributeLogicalName("versionnumber")]
+        public long? VersionNumber
         {
             get
             {
@@ -615,8 +623,8 @@
         /// <summary>
         /// 1:N sdkmessageprocessingstepid_sdkmessageprocessingstepimage
         /// </summary>
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepid_sdkmessageprocessingstepimage")]
-        public System.Collections.Generic.IEnumerable<SdkMessageProcessingStepImage> sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+        [RelationshipSchemaName("sdkmessageprocessingstepid_sdkmessageprocessingstepimage")]
+        public IEnumerable<SdkMessageProcessingStepImage> sdkmessageprocessingstepid_sdkmessageprocessingstepimage
         {
             get
             {
@@ -633,8 +641,8 @@
         /// <summary>
         /// N:1 sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
+        [RelationshipSchemaName("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
         public SdkMessageProcessingStepSecureConfig sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
         {
             get
