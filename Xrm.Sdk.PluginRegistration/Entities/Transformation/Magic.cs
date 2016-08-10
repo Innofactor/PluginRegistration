@@ -12,7 +12,21 @@
         public static T Do<T>(Entity entity)
             where T: Entity
         {
-            return default(T);
+            var type = typeof(T);
+
+            var instance = (T)Activator.CreateInstance(typeof(T));
+            
+            foreach (var property in type.GetProperties().Where(x => x.IsDefined(typeof(AttributeLogicalNameAttribute), false)))
+            {
+                var attributeName = ((AttributeLogicalNameAttribute)property.GetCustomAttributes(false).FirstOrDefault()).LogicalName;
+
+                if (entity.Attributes.ContainsKey(attributeName))
+                {
+                    property.SetValue(instance, entity[attributeName]);
+                }
+            }
+
+            return instance;
         }
     }
 }
