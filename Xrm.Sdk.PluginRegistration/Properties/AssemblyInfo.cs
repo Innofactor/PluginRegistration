@@ -25,7 +25,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.6.0")]
-[assembly: AssemblyFileVersion("3.0.6.0")]
-
-//[assembly: Microsoft.Xrm.Sdk.Client.ProxyTypesAssemblyAttribute()]
+[assembly: AssemblyVersion("3.0.7.0")]
+[assembly: AssemblyFileVersion("3.0.7.0")]
