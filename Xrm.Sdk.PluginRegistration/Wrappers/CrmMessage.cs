@@ -449,7 +449,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return Entities.SdkMessageFilter.EntityLogicalName;
+                return SdkMessageFilter.EntityLogicalName;
             }
         }
 

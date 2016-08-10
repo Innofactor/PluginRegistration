@@ -791,7 +791,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             var query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(Entities.SdkMessageFilter.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(SdkMessageFilter.EntityLogicalName);
             query.Criteria.AddCondition("sdkmessageid", ConditionOperator.In, messageIdList.ToArray());
             query.Criteria.AddCondition("iscustomprocessingstepallowed", ConditionOperator.Equal, true);
             query.Criteria.AddCondition("isvisible", ConditionOperator.Equal, true);
