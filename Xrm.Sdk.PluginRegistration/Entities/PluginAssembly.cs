@@ -3,6 +3,7 @@
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
     using System.CodeDom.Compiler;
+    using System.ComponentModel;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -11,7 +12,7 @@
     [DataContract()]
     [EntityLogicalName("pluginassembly")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class PluginAssembly : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    public partial class PluginAssembly : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
         /// <summary>
         /// Default Constructor.
@@ -25,15 +26,15 @@
 
         public const int EntityTypeCode = 4605;
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler PropertyChanging;
 
         private void OnPropertyChanged(string propertyName)
         {
             if ((PropertyChanged != null))
             {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -48,7 +49,7 @@
         /// <summary>
         /// For internal use only.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+        [AttributeLogicalName("componentstate")]
         public OptionSetValue ComponentState
         {
             get
@@ -60,7 +61,7 @@
         /// <summary>
         /// Bytes of the assembly, in Base64 format.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("content")]
+        [AttributeLogicalName("content")]
         public string Content
         {
             get
@@ -78,7 +79,7 @@
         /// <summary>
         /// Unique identifier of the user who created the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+        [AttributeLogicalName("createdby")]
         public EntityReference CreatedBy
         {
             get
@@ -90,7 +91,7 @@
         /// <summary>
         /// Date and time when the plug-in assembly was created.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+        [AttributeLogicalName("createdon")]
         public System.DateTime? CreatedOn
         {
             get
@@ -102,7 +103,7 @@
         /// <summary>
         /// Unique identifier of the delegate user who created the pluginassembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+        [AttributeLogicalName("createdonbehalfby")]
         public EntityReference CreatedOnBehalfBy
         {
             get
@@ -114,7 +115,7 @@
         /// <summary>
         /// Culture code for the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("culture")]
+        [AttributeLogicalName("culture")]
         public string Culture
         {
             get
@@ -180,7 +181,7 @@
         /// <summary>
         /// Information that specifies whether this component is managed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+        [AttributeLogicalName("ismanaged")]
         public System.Nullable<bool> IsManaged
         {
             get
@@ -192,7 +193,7 @@
         /// <summary>
         /// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isolationmode")]
+        [AttributeLogicalName("isolationmode")]
         public OptionSetValue IsolationMode
         {
             get
@@ -210,7 +211,7 @@
         /// <summary>
         /// Major of the assembly version.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("major")]
+        [AttributeLogicalName("major")]
         public System.Nullable<int> Major
         {
             get
@@ -246,7 +247,7 @@
         /// <summary>
         /// Date and time when the plug-in assembly was last modified.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+        [AttributeLogicalName("modifiedon")]
         public System.DateTime? ModifiedOn
         {
             get
@@ -330,7 +331,7 @@
         /// <summary>
         /// Unique identifier of the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
+        [AttributeLogicalName("pluginassemblyid")]
         public System.Nullable<System.Guid> PluginAssemblyId
         {
             get
@@ -353,7 +354,7 @@
             }
         }
 
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
+        [AttributeLogicalName("pluginassemblyid")]
         public override System.Guid Id
         {
             get
@@ -369,7 +370,7 @@
         /// <summary>
         /// Unique identifier of the plug-in assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyidunique")]
+        [AttributeLogicalName("pluginassemblyidunique")]
         public System.Nullable<System.Guid> PluginAssemblyIdUnique
         {
             get
@@ -381,7 +382,7 @@
         /// <summary>
         /// Public key token of the assembly. This value can be obtained from the assembly by using reflection.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("publickeytoken")]
+        [AttributeLogicalName("publickeytoken")]
         public string PublicKeyToken
         {
             get
@@ -399,7 +400,7 @@
         /// <summary>
         /// Unique identifier of the associated solution.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+        [AttributeLogicalName("solutionid")]
         public System.Nullable<System.Guid> SolutionId
         {
             get
@@ -411,7 +412,7 @@
         /// <summary>
         /// Hash of the source of the assembly.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcehash")]
+        [AttributeLogicalName("sourcehash")]
         public string SourceHash
         {
             get
@@ -429,7 +430,7 @@
         /// <summary>
         /// Location of the assembly, for example 0=database, 1=on-disk.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcetype")]
+        [AttributeLogicalName("sourcetype")]
         public OptionSetValue SourceType
         {
             get
@@ -447,7 +448,7 @@
         /// <summary>
         /// Version number of the assembly. The value can be obtained from the assembly through reflection.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("version")]
+        [AttributeLogicalName("version")]
         public string Version
         {
             get
@@ -465,7 +466,7 @@
         /// <summary>
         ///
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+        [AttributeLogicalName("versionnumber")]
         public System.Nullable<long> VersionNumber
         {
             get
