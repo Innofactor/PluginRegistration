@@ -353,7 +353,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             bool stopAtFirstMatch)
         {
             bool hasNoneNone = false;
-            List<CrmMessageEntity> msgList = new List<CrmMessageEntity>();
+            var msgList = new List<CrmMessageEntity>();
 
             bool findNoneNone;
             if ((string.IsNullOrEmpty(primaryEntity) || primaryEntity.Equals("none", StringComparison.InvariantCultureIgnoreCase)) &&
@@ -464,9 +464,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public Dictionary<string, object> GenerateCrmEntities()
         {
-            Dictionary<string, object> entityList = new Dictionary<string, object>();
+            var entityList = new Dictionary<string, object>();
 
-            SdkMessage entity = new SdkMessage();
+            var entity = new SdkMessage();
 
             entity.SdkMessageId = new Guid?();
             entity["sdkmessageid"] = MessageId;
@@ -486,7 +486,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
+                var valueList = new Dictionary<string, object>();
                 valueList.Add("Id", MessageId);
                 valueList.Add("Name", Name);
 
