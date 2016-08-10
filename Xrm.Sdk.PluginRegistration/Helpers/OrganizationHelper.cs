@@ -798,7 +798,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             query.Criteria.FilterOperator = LogicalOperator.And;
             query.EntityName = SdkMessageFilter.EntityLogicalName;
 
-            foreach (SdkMessageFilter filter in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
+            foreach (var filter in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<SdkMessageFilter>(x)))
             {
                 var entity = new CrmMessageEntity(org, filter);
                 var message = messages[entity.MessageId];
