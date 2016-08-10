@@ -1,6 +1,5 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
-    using Magic;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
     using System;
@@ -15,7 +14,7 @@
     [DataContract()]
     [EntityLogicalName("sdkmessageprocessingstep")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class SdkMessageProcessingStep : Transformer, INotifyPropertyChanging, INotifyPropertyChanged
+    public partial class SdkMessageProcessingStep : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>

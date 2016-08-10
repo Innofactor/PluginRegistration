@@ -151,7 +151,6 @@
     <Compile Include="DeviceIdManager.cs">
       <Link>DeviceIdManager.cs</Link>
     </Compile>
-    <Compile Include="Entities\Magic\Transformer.cs" />
     <Compile Include="Entities\PluginAssembly.cs" />
     <Compile Include="Entities\PluginType.cs" />
     <Compile Include="Entities\SdkMessage.cs" />
@@ -162,6 +161,7 @@
     <Compile Include="Entities\SdkMessageProcessingStepState.cs" />
     <Compile Include="Entities\ServiceEndpoint.cs" />
     <Compile Include="Entities\SystemUser.cs" />
+    <Compile Include="Entities\Transformation\Magic.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssemblyReader.cs" />

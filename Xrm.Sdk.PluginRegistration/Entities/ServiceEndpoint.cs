@@ -1,6 +1,5 @@
 ﻿namespace Xrm.Sdk.PluginRegistration.Entities
 {
-    using Magic;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
     using System.CodeDom.Compiler;
@@ -13,7 +12,7 @@
     [DataContract()]
     [EntityLogicalName("serviceendpoint")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class ServiceEndpoint : Transformer, INotifyPropertyChanging, INotifyPropertyChanged
+    public partial class ServiceEndpoint : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
 
         /// <summary>
