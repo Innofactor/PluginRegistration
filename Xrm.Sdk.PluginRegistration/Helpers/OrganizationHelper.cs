@@ -284,7 +284,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Clear the assemblies list since we are reloading from scratch
             org.ClearAssemblies();
 
-            foreach (PluginAssembly assembly in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
+            foreach (var assembly in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<PluginAssembly>(x)))
             {
                 org.AddAssembly(new CrmPluginAssembly(org, assembly));
             }
@@ -308,7 +308,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Clear the Service Endpoints list since we are reloading from scratch
             org.ClearServiceEndpoints();
 
-            foreach (ServiceEndpoint serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
+            foreach (var serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<ServiceEndpoint>(x)))
             {
                 org.AddServiceEndpoint(new CrmServiceEndpoint(org, serviceEndPoint));
             }

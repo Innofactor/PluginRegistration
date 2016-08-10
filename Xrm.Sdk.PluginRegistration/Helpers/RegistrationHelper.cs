@@ -160,7 +160,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 query.AddAttributeValue("pluginassemblyid", pluginAssemblyId);
             }
 
-            EntityCollection results = org.OrganizationService.RetrieveMultipleAllPages(query);
+            var results = org.OrganizationService.RetrieveMultipleAllPages(query);
             if (results.Entities != null && results.Entities.Count > 0)
             {
                 pluginTypeId = results.Entities[0].Id;
@@ -1034,25 +1034,25 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Generate the query
-            ColumnSet cols = new ColumnSet();
+            var cols = new ColumnSet();
             cols.AddColumns(retrieveAttribute);
 
-            ConditionExpression idCondition = new ConditionExpression();
+            var idCondition = new ConditionExpression();
             idCondition.AttributeName = filterAttribute;
             idCondition.Operator = ConditionOperator.In;
             idCondition.Values.Clear();
             idCondition.Values.AddRange(ConvertIdArrayToObjectArray(filterIdList));
 
-            QueryExpression query = new QueryExpression();
+            var query = new QueryExpression();
             query.ColumnSet = cols;
             query.Criteria.AddCondition(idCondition);
             query.EntityName = entityName;
 
             //Loop through the results
-            List<Guid> resultList = new List<Guid>();
-            foreach (Entity entity in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
+            var resultList = new List<Guid>();
+            foreach (var entity in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
             {
-                foreach (System.Collections.Generic.KeyValuePair<string, object> prop in entity.Attributes)
+                foreach (KeyValuePair<string, object> prop in entity.Attributes)
                 {
                     if (prop.Key == retrieveAttribute)
                     {
