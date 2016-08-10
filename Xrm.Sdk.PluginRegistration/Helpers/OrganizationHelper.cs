@@ -1035,7 +1035,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             parentLink.LinkCriteria = CreateStepFilter();
 
             //Execute the query
-            foreach (SdkMessageProcessingStepImage image in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
+            foreach (var image in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<SdkMessageProcessingStepImage>(x)))
             {
                 CrmPluginStep step;
                 if (null != stepList && stepList.TryGetValue(image.SdkMessageProcessingStepId.Id, out step))
