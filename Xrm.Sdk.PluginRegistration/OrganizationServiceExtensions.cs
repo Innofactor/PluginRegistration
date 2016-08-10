@@ -38,22 +38,22 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("query");
             }
 
-            EntityCollection fullResults = service.RetrieveMultiple(query);
+            var fullResults = service.RetrieveMultiple(query);
             if (!fullResults.MoreRecords)
             {
                 return fullResults;
             }
 
-            PropertyInfo property = query.GetType().GetProperty("PageInfo");
+            var property = query.GetType().GetProperty("PageInfo");
             if (null == property)
             {
                 throw new NotSupportedException("The specified query object does not have a PageInfo property defined.");
             }
 
-            PagingInfo paging = new PagingInfo() { PageNumber = 1, ReturnTotalRecordCount = false };
+            var paging = new PagingInfo() { PageNumber = 1, ReturnTotalRecordCount = false };
             property.SetValue(query, paging, null);
 
-            EntityCollection results = fullResults;
+            var results = fullResults;
             while (results.MoreRecords)
             {
                 //Update the paging information

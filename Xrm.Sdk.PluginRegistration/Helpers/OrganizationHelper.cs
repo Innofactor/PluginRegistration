@@ -800,8 +800,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             foreach (SdkMessageFilter filter in org.OrganizationService.RetrieveMultipleAllPages(query).Entities)
             {
-                CrmMessageEntity entity = new CrmMessageEntity(org, filter);
-                CrmMessage message = messages[entity.MessageId];
+                var entity = new CrmMessageEntity(org, filter);
+                var message = messages[entity.MessageId];
                 if (message.Organization == null)
                 {
                     message.Organization = org;
