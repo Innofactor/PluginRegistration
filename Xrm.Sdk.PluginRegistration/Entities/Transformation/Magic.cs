@@ -9,7 +9,7 @@
 
     public static class Magic
     {
-        public static T Do<T>(Entity entity)
+        public static T Cast<T>(Entity entity)
             where T: Entity
         {
             var type = typeof(T);

@@ -15,7 +15,7 @@
             var lateBound = new Entity("sdkmessage");
 
             // Act
-            var earlyBound = Magic.Do<SdkMessage>(lateBound);
+            var earlyBound = Magic.Cast<SdkMessage>(lateBound);
 
             // Assert
             Assert.That(earlyBound.LogicalName == lateBound.LogicalName);
@@ -29,7 +29,7 @@
             lateBound.Attributes.Add("autotransact", true);
 
             // Act
-            var earlyBound = Magic.Do<SdkMessage>(lateBound);
+            var earlyBound = Magic.Cast<SdkMessage>(lateBound);
 
             // Assert
             Assert.That(earlyBound.AutoTransact == (bool?)lateBound.Attributes["autotransact"]);
