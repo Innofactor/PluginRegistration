@@ -133,7 +133,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             var msgList = new List<CrmMessage>();
             for (int i = 0; i < results.Entities.Count; i++)
             {
-                msgList.Add(UpdateMessageProperties(new CrmMessage(null, Magic.Cast<SdkMessage>(results[i]))));
+                msgList.Add(UpdateMessageProperties(new CrmMessage(null, Magic.CastTo<SdkMessage>(results[i]))));
 
                 //Increment the Progress Indicator
                 if (null != prog)
@@ -742,7 +742,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 .CreateQuery(SystemUser.EntityLogicalName)
                 // Executing LINQ-to-SQL query, not optimal, but safe for early-bound
                 .ToArray()
-                .Select(x => Magic.Cast<SystemUser>(x))
+                .Select(x => Magic.CastTo<SystemUser>(x))
                 .Select(x =>
                 {
                     return new CrmUser(org)

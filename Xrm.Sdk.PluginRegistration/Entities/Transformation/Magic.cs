@@ -5,7 +5,7 @@
 
     public static class Magic
     {
-        public static T Cast<T>(Entity entity)
+        public static T CastTo<T>(Entity entity)
             where T: Entity
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
