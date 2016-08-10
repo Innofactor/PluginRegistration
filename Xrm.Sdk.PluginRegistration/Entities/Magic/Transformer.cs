@@ -12,5 +12,15 @@
             :base(entityName)
         {
         }
+
+        /// <summary>
+        /// Constructor that transforms late-bound classes to early-bound ones
+        /// </summary>
+        /// <param name="entity"></param>
+        public Transformer(Entity entity)
+            :base(entity.LogicalName)
+        {
+
+        }
     }
 }
