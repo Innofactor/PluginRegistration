@@ -151,6 +151,7 @@
     <Compile Include="DeviceIdManager.cs">
       <Link>DeviceIdManager.cs</Link>
     </Compile>
+    <Compile Include="Entities\Magic\Transformer.cs" />
     <Compile Include="Entities\PluginAssembly.cs" />
     <Compile Include="Entities\PluginType.cs" />
     <Compile Include="Entities\SdkMessage.cs" />
