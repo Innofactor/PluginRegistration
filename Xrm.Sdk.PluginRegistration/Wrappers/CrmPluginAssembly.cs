@@ -472,7 +472,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return Entities.PluginAssembly.EntityLogicalName;
+                return PluginAssembly.EntityLogicalName;
             }
         }
 

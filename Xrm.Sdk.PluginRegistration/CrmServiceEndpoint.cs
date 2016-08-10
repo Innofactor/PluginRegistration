@@ -146,7 +146,7 @@ namespace Xrm.Sdk.PluginRegistration
         [Browsable(false)]
         public string EntityType
         {
-            get { return Entities.ServiceEndpoint.EntityLogicalName; }
+            get { return ServiceEndpoint.EntityLogicalName; }
         }
 
         [Browsable(false)]

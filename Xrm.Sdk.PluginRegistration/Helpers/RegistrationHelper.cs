@@ -760,15 +760,15 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 switch (entity.EntityType)
                 {
-                    case Entities.ServiceEndpoint.EntityLogicalName:
+                    case ServiceEndpoint.EntityLogicalName:
                         serviceEndpointList.Add(entity.EntityId);
                         break;
 
-                    case Entities.PluginAssembly.EntityLogicalName:
+                    case PluginAssembly.EntityLogicalName:
                         assemblyList.Add(entity.EntityId);
                         break;
 
-                    case Entities.PluginType.EntityLogicalName:
+                    case PluginType.EntityLogicalName:
                         pluginList.Add(entity.EntityId);
                         break;
 
@@ -945,7 +945,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 }
                 foreach (Guid serviceEndpointId in serviceEndpointList)
                 {
-                    org.OrganizationService.Delete(Entities.ServiceEndpoint.EntityLogicalName, serviceEndpointId);
+                    org.OrganizationService.Delete(ServiceEndpoint.EntityLogicalName, serviceEndpointId);
                     if (prog != null)
                     {
                         prog.Increment();

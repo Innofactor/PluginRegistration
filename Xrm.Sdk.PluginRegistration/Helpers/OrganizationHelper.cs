@@ -301,9 +301,9 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             QueryExpression query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(Entities.ServiceEndpoint.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(ServiceEndpoint.EntityLogicalName);
             query.Criteria = new FilterExpression();
-            query.EntityName = Entities.ServiceEndpoint.EntityLogicalName;
+            query.EntityName = ServiceEndpoint.EntityLogicalName;
 
             //Clear the Service Endpoints list since we are reloading from scratch
             org.ClearServiceEndpoints();
@@ -455,11 +455,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Create the base query that will be used       
 
             string[] colsArray = new string[] { "modifiedon", "createdon" };
-            ConditionExpression idCon = new ConditionExpression();
+            var idCon = new ConditionExpression();
             idCon.AttributeName = string.Empty;
             idCon.Operator = ConditionOperator.In;
 
-            QueryExpression query = new QueryExpression();
+            var query = new QueryExpression();
             query.Criteria.Conditions.Add(idCon);
 
             foreach (KeyValuePair<string, List<Guid>> entityIdList in queryList)
@@ -477,7 +477,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     DateTime? modified = null;
                     Guid id = Guid.Empty;
 
-                    foreach (KeyValuePair<string, object> prop in entity.Attributes)
+                    foreach (var prop in entity.Attributes)
                     {
                         DateTime? dateValue = prop.Value as DateTime?;
                         if (null != dateValue)
@@ -522,7 +522,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("assembly");
             }
 
-            PluginAssembly assemblyRetrievedFromDatabase = (PluginAssembly)org.OrganizationService.Retrieve(Entities.PluginAssembly.EntityLogicalName, assembly.AssemblyId, GetColumnSet(Entities.PluginAssembly.EntityLogicalName));
+            var assemblyRetrievedFromDatabase = Magic.CastTo<PluginAssembly>(org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assembly.AssemblyId, GetColumnSet(PluginAssembly.EntityLogicalName)));
             assembly.RefreshFromPluginAssembly(assemblyRetrievedFromDatabase);
         }
 
@@ -538,7 +538,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("plugin");
             }
 
-            PluginType pluginRetrievedFromDatabase = (PluginType)org.OrganizationService.Retrieve(Entities.PluginType.EntityLogicalName, plugin.PluginId, GetColumnSet(Entities.PluginType.EntityLogicalName));
+            var pluginRetrievedFromDatabase = Magic.CastTo<PluginType>(org.OrganizationService.Retrieve(PluginType.EntityLogicalName, plugin.PluginId, GetColumnSet(PluginType.EntityLogicalName)));
             plugin.RefreshFromPluginType(pluginRetrievedFromDatabase);
         }
 
@@ -554,7 +554,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("step");
             }
 
-            SdkMessageProcessingStep stepRetrievedFromDatabase = (SdkMessageProcessingStep)org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStep.EntityLogicalName, step.StepId, GetColumnSet(Entities.SdkMessageProcessingStep.EntityLogicalName));
+            var stepRetrievedFromDatabase = Magic.CastTo<SdkMessageProcessingStep>(org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStep.EntityLogicalName, step.StepId, GetColumnSet(Entities.SdkMessageProcessingStep.EntityLogicalName)));
             step.RefreshFromSdkMessageProcessingStep(step.AssemblyId, stepRetrievedFromDatabase, step.SecureConfiguration);
         }
 
@@ -573,7 +573,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("image");
             }
 
-            SdkMessageProcessingStepImage imageRetrievedFromDatabase = (SdkMessageProcessingStepImage)org.OrganizationService.Retrieve(SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName));
+            var imageRetrievedFromDatabase = Magic.CastTo<SdkMessageProcessingStepImage>(org.OrganizationService.Retrieve(SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName)));
             if (step.IsProfiled && null != imageRetrievedFromDatabase.SdkMessageProcessingStepId)
             {
                 imageRetrievedFromDatabase.SdkMessageProcessingStepId.Id = step.StepId;
@@ -594,7 +594,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("sep");
             }
 
-            ServiceEndpoint sepRetrievedFromDatabase = (ServiceEndpoint)org.OrganizationService.Retrieve(Entities.ServiceEndpoint.EntityLogicalName, sep.ServiceEndpointId, GetColumnSet(Entities.ServiceEndpoint.EntityLogicalName));
+            var sepRetrievedFromDatabase = Magic.CastTo<ServiceEndpoint>(org.OrganizationService.Retrieve(ServiceEndpoint.EntityLogicalName, sep.ServiceEndpointId, GetColumnSet(ServiceEndpoint.EntityLogicalName)));
             sep.RefreshFromServiceEndpoint(sepRetrievedFromDatabase);
         }
 
@@ -602,7 +602,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         {
             get
             {
-                return new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory.FullName;
+                return new System.IO.FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
             }
         }
         /// <summary>
@@ -821,7 +821,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             //Create the query
             var query = new QueryExpression(PluginType.EntityLogicalName);
-            query.ColumnSet = GetColumnSet(Entities.PluginType.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(PluginType.EntityLogicalName);
             query.Criteria = new FilterExpression();
             query.Criteria.AddCondition("typename", ConditionOperator.NotLike, "Compiled.Workflow%");
 
