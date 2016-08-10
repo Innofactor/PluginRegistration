@@ -10,5 +10,10 @@
     [TestFixture]
     class SdkMessageFixture
     {
+        [Test]
+        public void CreateFromLateBound()
+        {
+
+        }
     }
 }
