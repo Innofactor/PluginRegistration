@@ -31,7 +31,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
     using Microsoft.Xrm.Sdk.Query;
     using Entities;
     using Wrappers;
-    
+    using Entities.Transformation;
+
     public static class OrganizationHelper
     {
         internal const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
@@ -129,10 +130,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Process each message entity
-            List<CrmMessage> msgList = new List<CrmMessage>();
+            var msgList = new List<CrmMessage>();
             for (int i = 0; i < results.Entities.Count; i++)
             {
-                msgList.Add(UpdateMessageProperties(new CrmMessage(null, (SdkMessage)results[i])));
+                msgList.Add(UpdateMessageProperties(new CrmMessage(null, Magic.Cast<SdkMessage>(results[i]))));
 
                 //Increment the Progress Indicator
                 if (null != prog)
@@ -736,21 +737,29 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve all of the users
-            OrganizationServiceContext context = new OrganizationServiceContext(org.OrganizationService);
-            IQueryable<CrmUser> users = from u in context.CreateQuery<SystemUser>()
-                                        orderby u.FullName ascending
-                                        select new CrmUser(org)
-                                        {
-                                            UserId = u.SystemUserId.GetValueOrDefault(),
-                                            Name = u.FullName,
-                                            DomainName = u.DomainName,
-                                            InternalEmailAddress = u.InternalEMailAddress,
-                                            Enabled = !u.IsDisabled.GetValueOrDefault(),
-                                        };
+            var users = new OrganizationServiceContext(org.OrganizationService)
+                // Creating query for given entity, with no conditions
+                .CreateQuery(SystemUser.EntityLogicalName)
+                // Executing LINQ-to-SQL query, not optimal, but safe for early-bound
+                .ToArray()
+                .Select(x => Magic.Cast<SystemUser>(x))
+                .Select(x =>
+                {
+                    return new CrmUser(org)
+                    {
+                        UserId = x.SystemUserId.GetValueOrDefault(),
+                        Name = x.FullName,
+                        DomainName = x.DomainName,
+                        InternalEmailAddress = x.InternalEMailAddress,
+                        Enabled = !x.IsDisabled.GetValueOrDefault()
+                    };
+                })
+                // Final sorting of results
+                .OrderBy(x => x.Name);
 
             //Loop through the users that were returned from the server
             org.Users.Clear();
-            foreach (CrmUser user in users)
+            foreach (var user in users)
             {
                 //Create the CrmUser object
                 org.Users.Add(user.UserId, user);
