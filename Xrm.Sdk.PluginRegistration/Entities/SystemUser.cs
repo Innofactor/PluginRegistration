@@ -11,7 +11,7 @@
     [DataContract()]
     [EntityLogicalName("systemuser")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class SystemUser : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    public partial class SystemUser : Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 
         /// <summary>
@@ -68,11 +68,11 @@
         /// Unique identifier for address 1.
         /// </summary>
         [AttributeLogicalName("address1_addressid")]
-        public System.Nullable<System.Guid> Address1_AddressId
+        public System.Guid? Address1_AddressId
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("address1_addressid");
+                return GetAttributeValue<System.Guid?>("address1_addressid");
             }
             set
             {
@@ -428,11 +428,11 @@
         /// UTC offset for address 1. This is the difference between local time and standard Coordinated Universal Time.
         /// </summary>
         [AttributeLogicalName("address1_utcoffset")]
-        public System.Nullable<int> Address1_UTCOffset
+        public int? Address1_UTCOffset
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("address1_utcoffset");
+                return GetAttributeValue<int?>("address1_utcoffset");
             }
             set
             {
@@ -446,11 +446,11 @@
         /// Unique identifier for address 2.
         /// </summary>
         [AttributeLogicalName("address2_addressid")]
-        public System.Nullable<System.Guid> Address2_AddressId
+        public System.Guid? Address2_AddressId
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("address2_addressid");
+                return GetAttributeValue<System.Guid?>("address2_addressid");
             }
             set
             {
@@ -806,11 +806,11 @@
         /// UTC offset for address 2. This is the difference between local time and standard Coordinated Universal Time.
         /// </summary>
         [AttributeLogicalName("address2_utcoffset")]
-        public System.Nullable<int> Address2_UTCOffset
+        public int? Address2_UTCOffset
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("address2_utcoffset");
+                return GetAttributeValue<int?>("address2_utcoffset");
             }
             set
             {
@@ -914,11 +914,11 @@
         /// Indicates if default outlook filters have been populated.
         /// </summary>
         [AttributeLogicalName("defaultfilterspopulated")]
-        public System.Nullable<bool> DefaultFiltersPopulated
+        public bool? DefaultFiltersPopulated
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("defaultfilterspopulated");
+                return GetAttributeValue<bool?>("defaultfilterspopulated");
             }
         }
 
@@ -938,11 +938,11 @@
         /// Whether to display the user in service views.
         /// </summary>
         [AttributeLogicalName("displayinserviceviews")]
-        public System.Nullable<bool> DisplayInServiceViews
+        public bool? DisplayInServiceViews
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("displayinserviceviews");
+                return GetAttributeValue<bool?>("displayinserviceviews");
             }
             set
             {
@@ -1088,11 +1088,11 @@
         /// Unique identifier of the data import or data migration that created this record.
         /// </summary>
         [AttributeLogicalName("importsequencenumber")]
-        public System.Nullable<int> ImportSequenceNumber
+        public int? ImportSequenceNumber
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("importsequencenumber");
+                return GetAttributeValue<int?>("importsequencenumber");
             }
             set
             {
@@ -1160,11 +1160,11 @@
         /// Information about whether the user is enabled.
         /// </summary>
         [AttributeLogicalName("isdisabled")]
-        public System.Nullable<bool> IsDisabled
+        public bool? IsDisabled
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("isdisabled");
+                return GetAttributeValue<bool?>("isdisabled");
             }
         }
 
@@ -1172,11 +1172,11 @@
         /// Check if user is an integration user.
         /// </summary>
         [AttributeLogicalName("isintegrationuser")]
-        public System.Nullable<bool> IsIntegrationUser
+        public bool? IsIntegrationUser
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("isintegrationuser");
+                return GetAttributeValue<bool?>("isintegrationuser");
             }
             set
             {
@@ -1190,11 +1190,11 @@
         /// Information about whether the user is licensed.
         /// </summary>
         [AttributeLogicalName("islicensed")]
-        public System.Nullable<bool> IsLicensed
+        public bool? IsLicensed
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("islicensed");
+                return GetAttributeValue<bool?>("islicensed");
             }
             set
             {
@@ -1208,11 +1208,11 @@
         /// Information about whether the user is synced with the directory.
         /// </summary>
         [AttributeLogicalName("issyncwithdirectory")]
-        public System.Nullable<bool> IsSyncWithDirectory
+        public bool? IsSyncWithDirectory
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("issyncwithdirectory");
+                return GetAttributeValue<bool?>("issyncwithdirectory");
             }
             set
             {
@@ -1370,11 +1370,11 @@
         /// Unique identifier of the organization associated with the user.
         /// </summary>
         [AttributeLogicalName("organizationid")]
-        public System.Nullable<System.Guid> OrganizationId
+        public System.Guid? OrganizationId
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("organizationid");
+                return GetAttributeValue<System.Guid?>("organizationid");
             }
         }
 
@@ -1436,11 +1436,11 @@
         /// For internal use only.
         /// </summary>
         [AttributeLogicalName("passporthi")]
-        public System.Nullable<int> PassportHi
+        public int? PassportHi
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("passporthi");
+                return GetAttributeValue<int?>("passporthi");
             }
             set
             {
@@ -1454,11 +1454,11 @@
         /// For internal use only.
         /// </summary>
         [AttributeLogicalName("passportlo")]
-        public System.Nullable<int> PassportLo
+        public int? PassportLo
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("passportlo");
+                return GetAttributeValue<int?>("passportlo");
             }
             set
             {
@@ -1598,11 +1598,11 @@
         /// Check if user is a setup user.
         /// </summary>
         [AttributeLogicalName("setupuser")]
-        public System.Nullable<bool> SetupUser
+        public bool? SetupUser
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("setupuser");
+                return GetAttributeValue<bool?>("setupuser");
             }
             set
             {
@@ -1652,11 +1652,11 @@
         /// Unique identifier for the user.
         /// </summary>
         [AttributeLogicalName("systemuserid")]
-        public System.Nullable<System.Guid> SystemUserId
+        public System.Guid? SystemUserId
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("systemuserid");
+                return GetAttributeValue<System.Guid?>("systemuserid");
             }
             set
             {
@@ -1709,11 +1709,11 @@
         /// For internal use only.
         /// </summary>
         [AttributeLogicalName("timezoneruleversionnumber")]
-        public System.Nullable<int> TimeZoneRuleVersionNumber
+        public int? TimeZoneRuleVersionNumber
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("timezoneruleversionnumber");
+                return GetAttributeValue<int?>("timezoneruleversionnumber");
             }
             set
             {
@@ -1763,11 +1763,11 @@
         /// Time zone code that was in use when the record was created.
         /// </summary>
         [AttributeLogicalName("utcconversiontimezonecode")]
-        public System.Nullable<int> UTCConversionTimeZoneCode
+        public int? UTCConversionTimeZoneCode
         {
             get
             {
-                return GetAttributeValue<System.Nullable<int>>("utcconversiontimezonecode");
+                return GetAttributeValue<int?>("utcconversiontimezonecode");
             }
             set
             {

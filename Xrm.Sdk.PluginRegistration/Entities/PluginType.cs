@@ -12,7 +12,7 @@
     [DataContract()]
     [EntityLogicalName("plugintype")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class PluginType : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    public partial class PluginType : Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
         /// Default Constructor.
@@ -170,7 +170,7 @@
         ///
         /// </summary>
         [AttributeLogicalName("ismanaged")]
-        public System.Nullable<bool> IsManaged
+        public bool? IsManaged
         {
             get
             {
@@ -181,7 +181,7 @@
         /// <summary>
         /// Indicates if the plug-in is a custom activity for workflows.
         /// </summary>
-        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isworkflowactivity")]
+        [AttributeLogicalName("isworkflowactivity")]
         public bool? IsWorkflowActivity
         {
             get

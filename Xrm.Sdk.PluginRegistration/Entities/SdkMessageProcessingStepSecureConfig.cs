@@ -81,7 +81,7 @@
         /// Customization level of the SDK message processing step secure configuration.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
-        public System.Nullable<int> CustomizationLevel
+        public int? CustomizationLevel
         {
             get
             {
@@ -141,7 +141,7 @@
         /// Unique identifier of the SDK message processing step secure configuration.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        public System.Nullable<System.Guid> SdkMessageProcessingStepSecureConfigId
+        public System.Guid? SdkMessageProcessingStepSecureConfigId
         {
             get
             {
@@ -180,7 +180,7 @@
         /// Unique identifier of the SDK message processing step.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepsecureconfigidunique")]
-        public System.Nullable<System.Guid> SdkMessageProcessingStepSecureConfigIdUnique
+        public System.Guid? SdkMessageProcessingStepSecureConfigIdUnique
         {
             get
             {

@@ -134,7 +134,7 @@
         /// Customization Level.
         /// </summary>
         [AttributeLogicalName("customizationlevel")]
-        public System.Nullable<int> CustomizationLevel
+        public int? CustomizationLevel
         {
             get
             {
@@ -182,7 +182,7 @@
         /// Information that specifies whether this component is managed.
         /// </summary>
         [AttributeLogicalName("ismanaged")]
-        public System.Nullable<bool> IsManaged
+        public bool? IsManaged
         {
             get
             {
@@ -212,7 +212,7 @@
         /// Major of the assembly version.
         /// </summary>
         [AttributeLogicalName("major")]
-        public System.Nullable<int> Major
+        public int? Major
         {
             get
             {
@@ -224,7 +224,7 @@
         /// Minor of the assembly version.
         /// </summary>
         [AttributeLogicalName("minor")]
-        public System.Nullable<int> Minor
+        public int? Minor
         {
             get
             {
@@ -332,7 +332,7 @@
         /// Unique identifier of the plug-in assembly.
         /// </summary>
         [AttributeLogicalName("pluginassemblyid")]
-        public System.Nullable<System.Guid> PluginAssemblyId
+        public System.Guid? PluginAssemblyId
         {
             get
             {
@@ -371,7 +371,7 @@
         /// Unique identifier of the plug-in assembly.
         /// </summary>
         [AttributeLogicalName("pluginassemblyidunique")]
-        public System.Nullable<System.Guid> PluginAssemblyIdUnique
+        public System.Guid? PluginAssemblyIdUnique
         {
             get
             {
@@ -401,7 +401,7 @@
         /// Unique identifier of the associated solution.
         /// </summary>
         [AttributeLogicalName("solutionid")]
-        public System.Nullable<System.Guid> SolutionId
+        public System.Guid? SolutionId
         {
             get
             {

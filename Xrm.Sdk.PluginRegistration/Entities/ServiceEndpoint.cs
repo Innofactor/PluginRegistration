@@ -11,7 +11,7 @@
     [DataContract()]
     [EntityLogicalName("serviceendpoint")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class ServiceEndpoint : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+    public partial class ServiceEndpoint : Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 
         /// <summary>
@@ -170,11 +170,11 @@
         /// Information that specifies whether this component is managed.
         /// </summary>
         [AttributeLogicalName("ismanaged")]
-        public System.Nullable<bool> IsManaged
+        public bool? IsManaged
         {
             get
             {
-                return GetAttributeValue<System.Nullable<bool>>("ismanaged");
+                return GetAttributeValue<bool?>("ismanaged");
             }
         }
 
@@ -278,11 +278,11 @@
         /// Unique identifier of the service endpoint.
         /// </summary>
         [AttributeLogicalName("serviceendpointid")]
-        public System.Nullable<System.Guid> ServiceEndpointId
+        public System.Guid? ServiceEndpointId
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("serviceendpointid");
+                return GetAttributeValue<System.Guid?>("serviceendpointid");
             }
             set
             {
@@ -317,11 +317,11 @@
         /// Unique identifier of the service endpoint.
         /// </summary>
         [AttributeLogicalName("serviceendpointidunique")]
-        public System.Nullable<System.Guid> ServiceEndpointIdUnique
+        public System.Guid? ServiceEndpointIdUnique
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("serviceendpointidunique");
+                return GetAttributeValue<System.Guid?>("serviceendpointidunique");
             }
         }
 
@@ -329,11 +329,11 @@
         /// Unique identifier of the associated solution.
         /// </summary>
         [AttributeLogicalName("solutionid")]
-        public System.Nullable<System.Guid> SolutionId
+        public System.Guid? SolutionId
         {
             get
             {
-                return GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+                return GetAttributeValue<System.Guid?>("solutionid");
             }
         }
 

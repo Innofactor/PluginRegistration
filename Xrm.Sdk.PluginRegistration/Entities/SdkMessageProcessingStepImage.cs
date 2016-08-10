@@ -111,7 +111,7 @@
         /// Customization level of the SDK message processing step image.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
-        public System.Nullable<int> CustomizationLevel
+        public int? CustomizationLevel
         {
             get
             {
@@ -195,7 +195,7 @@
         /// 
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("ismanaged")]
-        public System.Nullable<bool> IsManaged
+        public bool? IsManaged
         {
             get
             {
@@ -339,7 +339,7 @@
         /// Unique identifier of the SDK message processing step image entity.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepimageid")]
-        public System.Nullable<System.Guid> SdkMessageProcessingStepImageId
+        public System.Guid? SdkMessageProcessingStepImageId
         {
             get
             {
@@ -378,7 +378,7 @@
         /// Unique identifier of the SDK message processing step image.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepimageidunique")]
-        public System.Nullable<System.Guid> SdkMessageProcessingStepImageIdUnique
+        public System.Guid? SdkMessageProcessingStepImageIdUnique
         {
             get
             {
@@ -390,7 +390,7 @@
         /// Unique identifier of the associated solution.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("solutionid")]
-        public System.Nullable<System.Guid> SolutionId
+        public System.Guid? SolutionId
         {
             get
             {

@@ -45,7 +45,7 @@
         /// Indicates whether the asynchronous system job is automatically deleted on completion.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("asyncautodelete")]
-        public System.Nullable<bool> AsyncAutoDelete
+        public bool? AsyncAutoDelete
         {
             get
             {
@@ -129,7 +129,7 @@
         /// Customization level of the SDK message processing step.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
-        public System.Nullable<int> CustomizationLevel
+        public int? CustomizationLevel
         {
             get
             {
@@ -268,7 +268,7 @@
         /// Information that specifies whether this component is managed.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("ismanaged")]
-        public System.Nullable<bool> IsManaged
+        public bool? IsManaged
         {
             get
             {
@@ -395,7 +395,7 @@
         /// Processing order within the stage.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("rank")]
-        public System.Nullable<int> Rank
+        public int? Rank
         {
             get
             {
@@ -449,7 +449,7 @@
         /// Unique identifier of the SDK message processing step entity.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepid")]
-        public System.Nullable<System.Guid> SdkMessageProcessingStepId
+        public System.Guid? SdkMessageProcessingStepId
         {
             get
             {
@@ -488,7 +488,7 @@
         /// Unique identifier of the SDK message processing step.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessageprocessingstepidunique")]
-        public System.Nullable<System.Guid> SdkMessageProcessingStepIdUnique
+        public System.Guid? SdkMessageProcessingStepIdUnique
         {
             get
             {
@@ -518,7 +518,7 @@
         /// Unique identifier of the associated solution.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("solutionid")]
-        public System.Nullable<System.Guid> SolutionId
+        public System.Guid? SolutionId
         {
             get
             {

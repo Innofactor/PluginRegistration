@@ -45,7 +45,7 @@
         /// Identifies where a method will be exposed. 0 - Server, 1 - Client, 2 - both.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("availability")]
-        public System.Nullable<int> Availability
+        public int? Availability
         {
             get
             {
@@ -99,7 +99,7 @@
         /// Customization level of the SDK message filter.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("customizationlevel")]
-        public System.Nullable<int> CustomizationLevel
+        public int? CustomizationLevel
         {
             get
             {
@@ -111,7 +111,7 @@
         /// Indicates whether a custom SDK message processing step is allowed.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("iscustomprocessingstepallowed")]
-        public System.Nullable<bool> IsCustomProcessingStepAllowed
+        public bool? IsCustomProcessingStepAllowed
         {
             get
             {
@@ -129,7 +129,7 @@
         /// Indicates whether the filter should be visible.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("isvisible")]
-        public System.Nullable<bool> IsVisible
+        public bool? IsVisible
         {
             get
             {
@@ -201,7 +201,7 @@
         /// Unique identifier of the SDK message filter entity.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilterid")]
-        public System.Nullable<System.Guid> SdkMessageFilterId
+        public System.Guid? SdkMessageFilterId
         {
             get
             {
@@ -240,7 +240,7 @@
         /// Unique identifier of the SDK message filter.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalName("sdkmessagefilteridunique")]
-        public System.Nullable<System.Guid> SdkMessageFilterIdUnique
+        public System.Guid? SdkMessageFilterIdUnique
         {
             get
             {
