@@ -884,11 +884,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             const string SecureConfigurationAttributeName = "config.secureconfig";
 
-            List<SdkMessageProcessingStep> stepList = new List<SdkMessageProcessingStep>();
-            List<object> secureConfigIdList = new List<object>();
+            var stepList = new List<SdkMessageProcessingStep>();
+            var secureConfigIdList = new List<object>();
 
             //Create the query for the step
-            QueryExpression query = new QueryExpression(SdkMessageProcessingStep.EntityLogicalName);
+            var query = new QueryExpression(SdkMessageProcessingStep.EntityLogicalName);
             query.ColumnSet = GetColumnSet(SdkMessageProcessingStep.EntityLogicalName);
             query.Criteria = CreateStepFilter();
 
@@ -934,11 +934,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Loop through the results and process them
-            Dictionary<Guid, CrmPluginStep> profiledStepList = new Dictionary<Guid, CrmPluginStep>();
+            var profiledStepList = new Dictionary<Guid, CrmPluginStep>();
             crmStepList = new Dictionary<Guid, CrmPluginStep>();
-            foreach (SdkMessageProcessingStep step in results.Entities)
+            foreach (var step in results.Entities.Select(x => Magic.CastTo<SdkMessageProcessingStep>(x)))
             {
-                AliasedValue secureConfig = step.GetAttributeValue<AliasedValue>(SecureConfigurationAttributeName);
+                var secureConfig = step.GetAttributeValue<AliasedValue>(SecureConfigurationAttributeName);
 
                 //Check if the secure configuration was retrieved
                 bool invalidSecureConfigurationId = false;
