@@ -107,8 +107,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Generate the query
-            QueryExpression query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(Entities.SdkMessage.EntityLogicalName);
+            var query = new QueryExpression();
+            query.ColumnSet = GetColumnSet(SdkMessage.EntityLogicalName);
             query.Criteria.AddCondition("isprivate", ConditionOperator.Equal, false);
             query.AddOrder("name", OrderType.Ascending);
             query.EntityName = SdkMessage.EntityLogicalName;
@@ -120,7 +120,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve the message entities
-            EntityCollection results = org.OrganizationService.RetrieveMultipleAllPages(query);
+            var results = org.OrganizationService.RetrieveMultipleAllPages(query);
 
             //Update the progress indicator with a new maximum
             if (null != prog)
