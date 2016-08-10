@@ -573,7 +573,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("image");
             }
 
-            SdkMessageProcessingStepImage imageRetrievedFromDatabase = (SdkMessageProcessingStepImage)org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(Entities.SdkMessageProcessingStepImage.EntityLogicalName));
+            SdkMessageProcessingStepImage imageRetrievedFromDatabase = (SdkMessageProcessingStepImage)org.OrganizationService.Retrieve(SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName));
             if (step.IsProfiled && null != imageRetrievedFromDatabase.SdkMessageProcessingStepId)
             {
                 imageRetrievedFromDatabase.SdkMessageProcessingStepId.Id = step.StepId;
@@ -1025,7 +1025,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             var query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName);
-            query.ColumnSet = GetColumnSet(Entities.SdkMessageProcessingStepImage.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName);
 
             //Put this extra exclusion because any published Workflows will create
             //Images (linked to the Step for Workflow Expansion). Since we are using InnerJoin,

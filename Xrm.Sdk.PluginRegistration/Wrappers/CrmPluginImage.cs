@@ -535,7 +535,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return Entities.SdkMessageProcessingStepImage.EntityLogicalName;
+                return SdkMessageProcessingStepImage.EntityLogicalName;
             }
         }
 

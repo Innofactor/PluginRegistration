@@ -704,7 +704,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             //Retrieve the SDK entity equivalent of the given image
             Dictionary<string, object> entityList = image.GenerateCrmEntities(step.MessageId, step.MessageEntityId);
-            SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[Entities.SdkMessageProcessingStepImage.EntityLogicalName];
+            SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[SdkMessageProcessingStepImage.EntityLogicalName];
 
             //If the step that owns this image is a profiled step, the step will be the original step (the step that is being profiled),
             //not the profiler step. The Profiler step is what should be set on the server, since that is the step that is actually enabled.
@@ -776,7 +776,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                         stepList.Add(entity.EntityId);
                         break;
 
-                    case Entities.SdkMessageProcessingStepImage.EntityLogicalName:
+                    case SdkMessageProcessingStepImage.EntityLogicalName:
                         imageList.Add(entity.EntityId);
                         break;
 
