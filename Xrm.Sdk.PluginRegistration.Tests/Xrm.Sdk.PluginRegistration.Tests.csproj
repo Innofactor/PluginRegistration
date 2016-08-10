@@ -78,6 +78,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xrm.Sdk.PluginRegistration\Xrm.Sdk.PluginRegistration.csproj">
+      <Project>{2e450060-2ac3-40a5-b6e5-2fd642886e18}</Project>
+      <Name>Xrm.Sdk.PluginRegistration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
