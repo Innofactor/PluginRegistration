@@ -107,12 +107,8 @@ namespace Xrm.Sdk.PluginRegistration
                 }
                 else if (t.IsSubclassOf(typeof(CodeActivity)) || t.IsSubclassOf(typeof(Activity)))
                 {
-                    //Checking whether the Custom Activity descends from Activity will save time, because it
-                    //would most likely fail at run-time since the Workflow engine would not know how to handle the class
-
                     type = CrmPluginType.WorkflowActivity;
                     isolatable = CrmPluginIsolatable.Yes;
-                    sdkVersion = xrmPlugin.Assembly.GetName().Version;
                 }
                 else
                 {
