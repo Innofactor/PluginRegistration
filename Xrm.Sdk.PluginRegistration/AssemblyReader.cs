@@ -70,7 +70,7 @@ namespace Xrm.Sdk.PluginRegistration
 
             //Loop through each type and process it
             var errorList = new List<string>();
-            foreach (Type t in assembly.GetExportedTypes())
+            foreach (var t in assembly.GetExportedTypes())
             {
                 //Plugins and Workflow Activities must be non-abstract classes
                 if (t.IsAbstract || !t.IsClass)
@@ -84,8 +84,8 @@ namespace Xrm.Sdk.PluginRegistration
                 CrmPluginIsolatable isolatable;
 
                 //Retrieve the two interface types
-                Type xrmPlugin = t.GetInterface(typeof(IPlugin).FullName);
-                Type v4Plugin = t.GetInterface("Microsoft.Crm.Sdk.IPlugin");
+                var xrmPlugin = t.GetInterface(typeof(IPlugin).FullName);
+                var v4Plugin = t.GetInterface("Microsoft.Crm.Sdk.IPlugin");
 
                 var workflowGroupName = defaultGroupName;
                 var pluginName = t.FullName;
@@ -162,14 +162,14 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("assembly");
             }
 
-            CrmPluginAssembly pluginAssembly = new CrmPluginAssembly(null);
+            var pluginAssembly = new CrmPluginAssembly(null);
             pluginAssembly.AssemblyId = Guid.NewGuid();
             pluginAssembly.SourceType = CrmAssemblySourceType.Disk;
 
-            System.IO.FileInfo fileInfo = new System.IO.FileInfo(path);
+            var fileInfo = new FileInfo(path);
             pluginAssembly.ServerFileName = fileInfo.Name;
 
-            AssemblyName name = assembly.GetName();
+            var name = assembly.GetName();
             string cultureLabel;
             if (name.CultureInfo.LCID == System.Globalization.CultureInfo.InvariantCulture.LCID)
             {
