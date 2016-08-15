@@ -20,6 +20,7 @@ namespace Xrm.Sdk.PluginRegistration
     using Helpers;
     using Microsoft.Xrm.Sdk;
     using System;
+    using System.Activities;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -104,39 +105,14 @@ namespace Xrm.Sdk.PluginRegistration
                     //It may be that the version of Microsoft.Crm.Sdk.dll will be the v5 version, but it will still be a v4 plug-in.
                     sdkVersion = new Version(4, 0);
                 }
-                else if (t.IsSubclassOf(typeof(System.Workflow.ComponentModel.Activity)) || t.IsSubclassOf(typeof(System.Activities.Activity)))
+                else if (t.IsSubclassOf(typeof(CodeActivity)) || t.IsSubclassOf(typeof(Activity)))
                 {
                     //Checking whether the Custom Activity descends from Activity will save time, because it
                     //would most likely fail at run-time since the Workflow engine would not know how to handle the class
 
                     type = CrmPluginType.WorkflowActivity;
-                    isolatable = CrmPluginIsolatable.No;
-
-                    if (t.IsSubclassOf(typeof(System.Workflow.ComponentModel.Activity)))
-                    {
-                        errorMessage = string.Format("The Custom Workflow Activity {0} class must have the CrmWorkflowActivity attribute set", t.FullName);
-
-                        //Verify that the Workflow attribute is present.
-                        foreach (Attribute att in t.GetCustomAttributes(true))
-                        {
-                            if (att != null && (att.GetType().FullName == "Microsoft.Crm.Workflow.CrmWorkflowActivityAttribute"))
-                            {
-                                dynamic attribute = att;
-                                workflowGroupName = attribute.GroupName;
-                                pluginName = attribute.Name;
-
-                                if (string.IsNullOrEmpty(pluginName))
-                                {
-                                    errorMessage = string.Format("The Custom Workflow Activity {0} class's CrmWorkflowActivity attribute must have the Name property set", t.FullName);
-                                }
-                                else
-                                {
-                                    errorMessage = null;
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    isolatable = CrmPluginIsolatable.Yes;
+                    sdkVersion = xrmPlugin.Assembly.GetName().Version;
                 }
                 else
                 {
