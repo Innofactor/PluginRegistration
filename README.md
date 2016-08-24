@@ -1,3 +1,6 @@
+# The Classic Microsoft Dynamics CRM tool
+## Now in the XrmToolBox suite
+
 #####Project description
 
 ![Plugin Registration](http://i.imgur.com/83pJL6K.png)
