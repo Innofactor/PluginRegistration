@@ -329,6 +329,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             //Update the assembly with the information specified by the user
             assembly.IsolationMode = GetIsolationMode();
 
+            if (missingPluginList.Count != 0)
+            {
+                var list = missingPluginList.Select(x => x.TypeName).Aggregate((name01, name02) => name01 + "\n" + name02);
+
+                MessageBox.Show($"Following plugin are missing in the assembly:\n\n{list}\n\nRegistration cannot continue!", 
+                    "Plugins are missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             //An assembly with plugins must be strongly signed
             if (pluginList.Count != 0)
             {
