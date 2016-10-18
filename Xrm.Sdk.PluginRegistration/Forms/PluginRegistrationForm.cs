@@ -18,6 +18,7 @@
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
@@ -358,8 +359,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             #endregion
 
             #region Register Plugin
-            m_progRegistration.Initialize(registerPluginList.Count +
-                removedList.Count, "Preparing Registration");
+            m_progRegistration.Initialize(registerPluginList.Count + removedPluginList.Count, "Preparing Registration");
 
             int registeredAssemblies = 0;
             int ignoredAssemblies = 0;
@@ -367,7 +367,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             bool createAssembly;
 
             //Check whether the plugin exists. If it exists, should we use the existing one?
-            List<ICrmEntity> retrieveDateList = new List<ICrmEntity>();
+            var retrieveDateList = new List<ICrmEntity>();
             try
             {
                 Guid pluginAssemblyId = Guid.Empty;
@@ -375,15 +375,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     if (chkUpdateAssembly.Checked)
                     {
-                        string originalGroupName = RegistrationHelper.GenerateDefaultGroupName(
-                            m_currentAssembly.Name, new Version(m_currentAssembly.Version));
+                        string originalGroupName = RegistrationHelper.GenerateDefaultGroupName(m_currentAssembly.Name, new Version(m_currentAssembly.Version));
                         string newGroupName = RegistrationHelper.GenerateDefaultGroupName(assembly.Name, new Version(assembly.Version));
 
-                        List<PluginType> updateGroupNameList = new List<PluginType>();
-                        foreach (CrmPlugin plugin in m_currentAssembly.Plugins)
+                        var updateGroupNameList = new List<PluginType>();
+                        foreach (var plugin in m_currentAssembly.Plugins)
                         {
-                            if (plugin.PluginType == CrmPluginType.WorkflowActivity &&
-                                string.Equals(plugin.WorkflowActivityGroupName, originalGroupName))
+                            if (plugin.PluginType == CrmPluginType.WorkflowActivity && string.Equals(plugin.WorkflowActivityGroupName, originalGroupName))
                             {
                                 updateGroupNameList.Add(new PluginType()
                                 {
@@ -407,9 +405,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         retrieveDateList.Add(m_currentAssembly);
 
-                        foreach (PluginType type in updateGroupNameList)
+                        foreach (var type in updateGroupNameList)
                         {
-                            CrmPlugin plugin = m_currentAssembly.Plugins[type.Id];
+                            var plugin = m_currentAssembly.Plugins[type.Id];
 
                             plugin.WorkflowActivityGroupName = type.WorkflowActivityGroupName;
                             retrieveDateList.Add(plugin);
@@ -419,7 +417,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
                     else if (!chkUpdateAssembly.Visible && assembly.IsolationMode != m_currentAssembly.IsolationMode)
                     {
-                        PluginAssembly updateAssembly = new PluginAssembly()
+                        var updateAssembly = new PluginAssembly()
                         {
                             Id = assembly.AssemblyId,
                             IsolationMode = new OptionSetValue((int)assembly.IsolationMode)
