@@ -315,7 +315,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     Parallel.ForEach(m_registeredPluginList, (currentRecord) => {
                         if (!assembly.Plugins.Values.ToList().Any(x => x.TypeName.ToLowerInvariant() == currentRecord.TypeName.ToLowerInvariant()))
                         {
-                            ;
+                            missingPluginList.Add(currentRecord);
                         }
                     });
                 }
