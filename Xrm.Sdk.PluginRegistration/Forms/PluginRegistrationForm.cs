@@ -276,33 +276,33 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             //Ensure the checked items were all found in the assembly
-            List<CrmPlugin> registerPluginList = new List<CrmPlugin>();
-            List<CrmPlugin> pluginList = new List<CrmPlugin>();
-            List<CrmPlugin> removedList = new List<CrmPlugin>();
+            var registerPluginList = new List<CrmPlugin>();
+            var pluginList = new List<CrmPlugin>();
+            var removedList = new List<CrmPlugin>();
             try
             {
-                foreach (CrmPlugin reg in assembly.Plugins.Values)
+                foreach (var currentPlugin in assembly.Plugins.Values)
                 {
-                    bool alreadyExisted = (m_typeIdList != null && m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant()));
+                    bool alreadyExisted = (m_typeIdList != null && m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()));
 
                     if (alreadyExisted)
                     {
-                        reg.AssemblyId = m_currentAssembly.AssemblyId;
-                        reg.PluginId = m_typeIdList[reg.TypeName.ToLowerInvariant()];
+                        currentPlugin.AssemblyId = m_currentAssembly.AssemblyId;
+                        currentPlugin.PluginId = m_typeIdList[currentPlugin.TypeName.ToLowerInvariant()];
                     }
 
-                    if (checkedPluginList.ContainsKey(reg.TypeName))
+                    if (checkedPluginList.ContainsKey(currentPlugin.TypeName))
                     {
-                        registerPluginList.Add(reg);
+                        registerPluginList.Add(currentPlugin);
 
-                        if (reg.PluginType == CrmPluginType.Plugin)
+                        if (currentPlugin.PluginType == CrmPluginType.Plugin)
                         {
-                            pluginList.Add(reg);
+                            pluginList.Add(currentPlugin);
                         }
                     }
                     else if (alreadyExisted)
                     {
-                        removedList.Add(reg);
+                        removedList.Add(currentPlugin);
                     }
                 }
             }
