@@ -786,20 +786,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             //Loop through and add the data to the form
             trvPlugins.LoadNodes(new ICrmTreeNode[] { assembly });
 
-            foreach (CrmPlugin reg in assembly.Plugins.Values)
+            foreach (var currentPlugin in assembly.Plugins.Values)
             {
-                if (loadTypeId && !m_typeIdList.ContainsKey(reg.TypeName))
+                if (loadTypeId && !m_typeIdList.ContainsKey(currentPlugin.TypeName))
                 {
-                    m_typeIdList.Add(reg.TypeName.ToLowerInvariant(), reg.PluginId);
+                    m_typeIdList.Add(currentPlugin.TypeName.ToLowerInvariant(), currentPlugin.PluginId);
                 }
 
-                if (!checkRecord || m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant()))
+                if (!checkRecord || m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()))
                 {
-                    trvPlugins.CheckNode(reg.PluginId, true);
+                    trvPlugins.CheckNode(currentPlugin.PluginId, true);
                 }
                 else
                 {
-                    trvPlugins.CheckNode(reg.PluginId, false);
+                    trvPlugins.CheckNode(currentPlugin.PluginId, false);
                     chkSelectAll.Checked = false;
                 }
             }
