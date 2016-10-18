@@ -26,6 +26,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using Entities;
     using Xrm.Sdk.PluginRegistration.Helpers;
     using Wrappers;
+    using System.Threading.Tasks;
 
     public partial class PluginRegistrationForm : Form
     {
@@ -275,15 +276,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
 
-            //Ensure the checked items were all found in the assembly
+            // Ensure the checked items were all found in the assembly
             var registerPluginList = new List<CrmPlugin>();
             var pluginList = new List<CrmPlugin>();
-            var removedList = new List<CrmPlugin>();
+            var removedPluginList = new List<CrmPlugin>();
+            var missingPluginList = new List<CrmPlugin>();
+
             try
             {
-                foreach (var currentPlugin in assembly.Plugins.Values)
-                {
-                    bool alreadyExisted = (m_typeIdList != null && m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()));
+                Parallel.ForEach(assembly.Plugins.Values, (currentPlugin) => {
+                    var alreadyExisted = (m_typeIdList != null && m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()));
 
                     if (alreadyExisted)
                     {
@@ -302,8 +304,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
                     else if (alreadyExisted)
                     {
-                        removedList.Add(currentPlugin);
+                        removedPluginList.Add(currentPlugin);
                     }
+                });
+
+                if (m_typeIdList != null)
+                {
+                    Parallel.ForEach(m_typeIdList, (currentRecord) => {
+                        if (!assembly.Plugins.Values.ToList().Any(x => x.TypeName.ToLowerInvariant() == currentRecord.Key))
+                        {
+                            ;
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -651,7 +663,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             // Unregister plugins that were unchecked
             int updatedPlugins = 0;
-            foreach (CrmPlugin reg in removedList)
+            foreach (CrmPlugin reg in removedPluginList)
             {
                 //Check if the plugin exists
                 try
