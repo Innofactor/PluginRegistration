@@ -528,17 +528,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             int registeredPlugins = 0;
             int ignoredPlugins = 0;
             int errorsPlugins = 0;
-            foreach (CrmPlugin reg in registerPluginList)
+
+            foreach (var currentPlugin in registerPluginList)
             {
-                reg.AssemblyId = assembly.AssemblyId;
+                currentPlugin.AssemblyId = assembly.AssemblyId;
 
                 //Check if the plugin exists
-                bool pluginUpdate = m_typeIdList != null && m_typeIdList.ContainsKey(reg.TypeName.ToLowerInvariant());
+                bool pluginUpdate = m_typeIdList != null && m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant());
                 try
                 {
                     Guid pluginTypeId = Guid.Empty;
 
-                    if (pluginUpdate || (!createAssembly && RegistrationHelper.PluginExists(m_org, reg.TypeName, assembly.AssemblyId, out pluginTypeId)))
+                    if (pluginUpdate || (!createAssembly && RegistrationHelper.PluginExists(m_org, currentPlugin.TypeName, assembly.AssemblyId, out pluginTypeId)))
                     {
                         if (pluginUpdate)
                         {
@@ -546,17 +547,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         }
                         else
                         {
-                            m_progRegistration.AppendText(string.Format("INFORMATION: Plugin Type Name is already being used by PluginType {0}.",
-                                pluginTypeId));
+                            m_progRegistration.AppendText(string.Format("INFORMATION: Plugin Type Name is already being used by PluginType {0}.", pluginTypeId));
 
-                            switch (MessageBox.Show(string.Format("The specified name \"{0}\" is already registered. Skip the registration of this plugin?\n\nPlease note the plugins may not be the same.", reg.TypeName),
+                            switch (MessageBox.Show(string.Format("The specified name \"{0}\" is already registered. Skip the registration of this plugin?\n\nPlease note the plugins may not be the same.", currentPlugin.TypeName),
                                 "Plugin Already Exists", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
                             {
                                 case DialogResult.Yes:
                                     createPlugin = false;
 
-                                    reg.PluginId = pluginTypeId;
-                                    reg.Organization = assembly.Organization;
+                                    currentPlugin.PluginId = pluginTypeId;
+                                    currentPlugin.Organization = assembly.Organization;
                                     break;
                                 case DialogResult.No:
                                     createPlugin = true;
@@ -581,7 +581,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 catch (Exception ex)
                 {
                     m_progRegistration.Increment(string.Format("ERROR: Occurred while checking if {0} is already registered.",
-                        reg.TypeName));
+                        currentPlugin.TypeName));
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
@@ -594,26 +594,26 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     try
                     {
-                        Guid pluginId = reg.PluginId;
-                        reg.PluginId = RegistrationHelper.RegisterPlugin(m_org, reg);
-                        reg.Organization = m_org;
+                        Guid pluginId = currentPlugin.PluginId;
+                        currentPlugin.PluginId = RegistrationHelper.RegisterPlugin(m_org, currentPlugin);
+                        currentPlugin.Organization = m_org;
 
-                        if (pluginId != reg.PluginId && assembly.Plugins.ContainsKey(pluginId))
+                        if (pluginId != currentPlugin.PluginId && assembly.Plugins.ContainsKey(pluginId))
                         {
                             assembly.RemovePlugin(pluginId);
                         }
 
-                        retrieveDateList.Add(reg);
+                        retrieveDateList.Add(currentPlugin);
 
                         m_progRegistration.Increment(string.Format("SUCCESS: Plugin {0} was registered.",
-                            reg.TypeName));
+                            currentPlugin.TypeName));
 
                         registeredPlugins++;
                     }
                     catch (Exception ex)
                     {
                         m_progRegistration.Increment(2, string.Format("ERROR: Occurred while registering {0}.",
-                            reg.TypeName));
+                            currentPlugin.TypeName));
 
                         ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
@@ -632,20 +632,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
 
                 //Check if the plugin needs to be added to the list
-                if (!assembly.Plugins.ContainsKey(reg.PluginId))
+                if (!assembly.Plugins.ContainsKey(currentPlugin.PluginId))
                 {
-                    assembly.AddPlugin(reg);
+                    assembly.AddPlugin(currentPlugin);
 
                     //Update the main form
                     try
                     {
-                        m_orgControl.AddPlugin(reg);
+                        m_orgControl.AddPlugin(currentPlugin);
                         m_progRegistration.Increment();
                     }
                     catch (Exception ex)
                     {
                         m_progRegistration.Increment(string.Format("ERROR: Occurred while updating the Main form for {0}.",
-                            reg.TypeName));
+                            currentPlugin.TypeName));
 
                         ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
