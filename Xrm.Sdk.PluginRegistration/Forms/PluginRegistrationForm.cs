@@ -36,7 +36,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private CrmPluginAssembly m_currentAssembly;
         private MainControl m_orgControl;
         private ProgressIndicator m_progRegistration;
-        private Dictionary<string, Guid> m_typeIdList;
+        private Dictionary<string, Guid> m_registeredPluginList;
         private bool m_assemblyLoaded = false;
 
         public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly)
@@ -81,7 +81,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             else
             {
-                m_typeIdList = new Dictionary<string, Guid>();
+                m_registeredPluginList = new Dictionary<string, Guid>();
 
                 LoadAssembly(assembly, false);
 
@@ -286,12 +286,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             try
             {
                 Parallel.ForEach(assembly.Plugins.Values, (currentPlugin) => {
-                    var alreadyExisted = (m_typeIdList != null && m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()));
+                    var alreadyExisted = (m_registeredPluginList != null && m_registeredPluginList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()));
 
                     if (alreadyExisted)
                     {
                         currentPlugin.AssemblyId = m_currentAssembly.AssemblyId;
-                        currentPlugin.PluginId = m_typeIdList[currentPlugin.TypeName.ToLowerInvariant()];
+                        currentPlugin.PluginId = m_registeredPluginList[currentPlugin.TypeName.ToLowerInvariant()];
                     }
 
                     if (checkedPluginList.ContainsKey(currentPlugin.TypeName))
@@ -309,9 +309,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
                 });
 
-                if (m_typeIdList != null)
+                if (m_registeredPluginList != null)
                 {
-                    Parallel.ForEach(m_typeIdList, (currentRecord) => {
+                    Parallel.ForEach(m_registeredPluginList, (currentRecord) => {
                         if (!assembly.Plugins.Values.ToList().Any(x => x.TypeName.ToLowerInvariant() == currentRecord.Key))
                         {
                             ;
@@ -534,7 +534,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 currentPlugin.AssemblyId = assembly.AssemblyId;
 
                 //Check if the plugin exists
-                bool pluginUpdate = m_typeIdList != null && m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant());
+                bool pluginUpdate = m_registeredPluginList != null && m_registeredPluginList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant());
                 try
                 {
                     Guid pluginTypeId = Guid.Empty;
@@ -780,20 +780,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void LoadAssembly(CrmPluginAssembly assembly, bool checkExisting)
         {
-            bool loadTypeId = (m_currentAssembly != null && !checkExisting && m_typeIdList != null);
-            bool checkRecord = (checkExisting && m_currentAssembly != null && m_typeIdList != null);
+            bool loadTypeId = (m_currentAssembly != null && !checkExisting && m_registeredPluginList != null);
+            bool checkRecord = (checkExisting && m_currentAssembly != null && m_registeredPluginList != null);
 
             //Loop through and add the data to the form
             trvPlugins.LoadNodes(new ICrmTreeNode[] { assembly });
 
             foreach (var currentPlugin in assembly.Plugins.Values)
             {
-                if (loadTypeId && !m_typeIdList.ContainsKey(currentPlugin.TypeName))
+                if (loadTypeId && !m_registeredPluginList.ContainsKey(currentPlugin.TypeName))
                 {
-                    m_typeIdList.Add(currentPlugin.TypeName.ToLowerInvariant(), currentPlugin.PluginId);
+                    m_registeredPluginList.Add(currentPlugin.TypeName.ToLowerInvariant(), currentPlugin.PluginId);
                 }
 
-                if (!checkRecord || m_typeIdList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()))
+                if (!checkRecord || m_registeredPluginList.ContainsKey(currentPlugin.TypeName.ToLowerInvariant()))
                 {
                     trvPlugins.CheckNode(currentPlugin.PluginId, true);
                 }
