@@ -661,22 +661,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             // Unregister plugins that were unchecked
             int updatedPlugins = 0;
-            foreach (CrmPlugin reg in removedPluginList)
+            foreach (var currectPlugin in removedPluginList)
             {
                 //Check if the plugin exists
                 try
                 {
-                    RegistrationHelper.Unregister(m_org, reg);
-                    m_progRegistration.Increment(3, string.Format("SUCCESS: Plugin {0} was unregistered.",
-                        reg.TypeName));
-                    m_orgControl.RemovePlugin(reg.PluginId);
+                    RegistrationHelper.Unregister(m_org, currectPlugin);
+                    m_progRegistration.Increment(3, string.Format("SUCCESS: Plugin {0} was unregistered.", currectPlugin.TypeName));
+                    m_orgControl.RemovePlugin(currectPlugin.PluginId);
 
                     updatedPlugins++;
                 }
                 catch (Exception ex)
                 {
-                    m_progRegistration.Increment(3, string.Format("ERROR: Occurred while unregistering {0}.",
-                        reg.TypeName));
+                    m_progRegistration.Increment(3, string.Format("ERROR: Occurred while unregistering {0}.", currectPlugin.TypeName));
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
