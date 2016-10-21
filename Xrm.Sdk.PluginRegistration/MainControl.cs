@@ -245,11 +245,7 @@ namespace Xrm.Sdk.PluginRegistration
             PluginRegistrationForm regForm = new PluginRegistrationForm(Organization, this, null);
             regForm.ShowDialog(ParentForm);
         }
-        private void toolServiceEndpointRegister_Click(object sender, EventArgs e)
-        {
-            //ServiceBusConfigForm serviceBusConfigForm = new ServiceBusConfigForm(this.Organization, this, null);
-            //serviceBusConfigForm.ShowDialog();
-        }
+
         private void toolStepRegister_Click(object sender, EventArgs e)
         {
             //Check if we can extract a plugin from the Tree

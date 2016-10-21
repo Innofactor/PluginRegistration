@@ -33,7 +33,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeAssemblyRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeStepRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeImageRegister = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuContextNodeServiceEndpointRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuContextNodeSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeRefresh = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +44,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextGeneralAssemblyRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralStepRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralImageRegister = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuContextGeneralServiceEndpointRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuContextGeneralRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,7 +96,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeAssemblyRegister,
             this.mnuContextNodeStepRegister,
             this.mnuContextNodeImageRegister,
-            this.mnuContextNodeServiceEndpointRegister,
             this.mnuContextNodeSep1,
             this.mnuContextNodeSearch,
             this.mnuContextNodeRefresh,
@@ -107,71 +104,64 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeUpdate,
             this.mnuContextNodeUnregister});
             this.mnuContextNode.Name = "mnuContextNode";
-            this.mnuContextNode.Size = new System.Drawing.Size(208, 236);
+            this.mnuContextNode.Size = new System.Drawing.Size(198, 192);
             // 
             // mnuContextNodeAssemblyRegister
             // 
             this.mnuContextNodeAssemblyRegister.Name = "mnuContextNodeAssemblyRegister";
-            this.mnuContextNodeAssemblyRegister.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeAssemblyRegister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeAssemblyRegister.Text = "Register New &Assembly";
             this.mnuContextNodeAssemblyRegister.Click += new System.EventHandler(this.toolAssemblyRegister_Click);
             // 
             // mnuContextNodeStepRegister
             // 
             this.mnuContextNodeStepRegister.Name = "mnuContextNodeStepRegister";
-            this.mnuContextNodeStepRegister.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeStepRegister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeStepRegister.Text = "Register New S&tep";
             this.mnuContextNodeStepRegister.Click += new System.EventHandler(this.toolStepRegister_Click);
             // 
             // mnuContextNodeImageRegister
             // 
             this.mnuContextNodeImageRegister.Name = "mnuContextNodeImageRegister";
-            this.mnuContextNodeImageRegister.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeImageRegister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeImageRegister.Text = "Register New &Image";
             this.mnuContextNodeImageRegister.Click += new System.EventHandler(this.toolImageRegister_Click);
-            // 
-            // mnuContextNodeServiceEndpointRegister
-            // 
-            this.mnuContextNodeServiceEndpointRegister.Name = "mnuContextNodeServiceEndpointRegister";
-            this.mnuContextNodeServiceEndpointRegister.Size = new System.Drawing.Size(207, 22);
-            this.mnuContextNodeServiceEndpointRegister.Text = "Register Service Endpoint";
-            this.mnuContextNodeServiceEndpointRegister.Click += new System.EventHandler(this.toolServiceEndpointRegister_Click);
             // 
             // mnuContextNodeSep1
             // 
             this.mnuContextNodeSep1.Name = "mnuContextNodeSep1";
-            this.mnuContextNodeSep1.Size = new System.Drawing.Size(204, 6);
+            this.mnuContextNodeSep1.Size = new System.Drawing.Size(194, 6);
             // 
             // mnuContextNodeSearch
             // 
             this.mnuContextNodeSearch.Name = "mnuContextNodeSearch";
-            this.mnuContextNodeSearch.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeSearch.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeSearch.Text = "&Search";
             this.mnuContextNodeSearch.Click += new System.EventHandler(this.toolSearch_Click);
             // 
             // mnuContextNodeRefresh
             // 
             this.mnuContextNodeRefresh.Name = "mnuContextNodeRefresh";
-            this.mnuContextNodeRefresh.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeRefresh.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeRefresh.Text = "Re&fresh";
             this.mnuContextNodeRefresh.Click += new System.EventHandler(this.toolRefresh_Click);
             // 
             // mnuContextNodeSep2
             // 
             this.mnuContextNodeSep2.Name = "mnuContextNodeSep2";
-            this.mnuContextNodeSep2.Size = new System.Drawing.Size(204, 6);
+            this.mnuContextNodeSep2.Size = new System.Drawing.Size(194, 6);
             // 
             // mnuContextNodeEnable
             // 
             this.mnuContextNodeEnable.Name = "mnuContextNodeEnable";
-            this.mnuContextNodeEnable.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeEnable.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeEnable.Text = "&Disable";
             this.mnuContextNodeEnable.Click += new System.EventHandler(this.toolEnable_Click);
             // 
             // mnuContextNodeUpdate
             // 
             this.mnuContextNodeUpdate.Name = "mnuContextNodeUpdate";
-            this.mnuContextNodeUpdate.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeUpdate.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeUpdate.Text = "&Update";
             this.mnuContextNodeUpdate.Click += new System.EventHandler(this.toolUpdate_Click);
             // 
@@ -179,7 +169,7 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.mnuContextNodeUnregister.Name = "mnuContextNodeUnregister";
             this.mnuContextNodeUnregister.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.mnuContextNodeUnregister.Size = new System.Drawing.Size(207, 22);
+            this.mnuContextNodeUnregister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeUnregister.Text = "U&nregister";
             this.mnuContextNodeUnregister.Click += new System.EventHandler(this.toolUnregister_Click);
             // 
@@ -189,51 +179,43 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextGeneralAssemblyRegister,
             this.mnuContextGeneralStepRegister,
             this.mnuContextGeneralImageRegister,
-            this.mnuContextGeneralServiceEndpointRegister,
             this.mnuContextGeneralSep1,
             this.mnuContextGeneralRefresh,
             this.mnuContextGeneralSearch});
             this.mnuContextGeneral.Name = "mnuContextTree";
-            this.mnuContextGeneral.Size = new System.Drawing.Size(235, 142);
+            this.mnuContextGeneral.Size = new System.Drawing.Size(198, 142);
             // 
             // mnuContextGeneralAssemblyRegister
             // 
             this.mnuContextGeneralAssemblyRegister.Name = "mnuContextGeneralAssemblyRegister";
-            this.mnuContextGeneralAssemblyRegister.Size = new System.Drawing.Size(234, 22);
+            this.mnuContextGeneralAssemblyRegister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralAssemblyRegister.Text = "Register New &Assembly";
             this.mnuContextGeneralAssemblyRegister.Click += new System.EventHandler(this.toolAssemblyRegister_Click);
             // 
             // mnuContextGeneralStepRegister
             // 
             this.mnuContextGeneralStepRegister.Name = "mnuContextGeneralStepRegister";
-            this.mnuContextGeneralStepRegister.Size = new System.Drawing.Size(234, 22);
+            this.mnuContextGeneralStepRegister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralStepRegister.Text = "Register New S&tep";
             this.mnuContextGeneralStepRegister.Click += new System.EventHandler(this.toolStepRegister_Click);
             // 
             // mnuContextGeneralImageRegister
             // 
             this.mnuContextGeneralImageRegister.Name = "mnuContextGeneralImageRegister";
-            this.mnuContextGeneralImageRegister.Size = new System.Drawing.Size(234, 22);
+            this.mnuContextGeneralImageRegister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralImageRegister.Text = "Register New &Image";
             this.mnuContextGeneralImageRegister.Click += new System.EventHandler(this.toolImageRegister_Click);
-            // 
-            // mnuContextGeneralServiceEndpointRegister
-            // 
-            this.mnuContextGeneralServiceEndpointRegister.Name = "mnuContextGeneralServiceEndpointRegister";
-            this.mnuContextGeneralServiceEndpointRegister.Size = new System.Drawing.Size(234, 22);
-            this.mnuContextGeneralServiceEndpointRegister.Text = "Register New Service &Endpoint";
-            this.mnuContextGeneralServiceEndpointRegister.Click += new System.EventHandler(this.toolServiceEndpointRegister_Click);
             // 
             // mnuContextGeneralSep1
             // 
             this.mnuContextGeneralSep1.Name = "mnuContextGeneralSep1";
-            this.mnuContextGeneralSep1.Size = new System.Drawing.Size(231, 6);
+            this.mnuContextGeneralSep1.Size = new System.Drawing.Size(194, 6);
             // 
             // mnuContextGeneralRefresh
             // 
             this.mnuContextGeneralRefresh.Name = "mnuContextGeneralRefresh";
             this.mnuContextGeneralRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuContextGeneralRefresh.Size = new System.Drawing.Size(234, 22);
+            this.mnuContextGeneralRefresh.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralRefresh.Text = "Re&fresh";
             this.mnuContextGeneralRefresh.Click += new System.EventHandler(this.toolRefresh_Click);
             // 
@@ -241,7 +223,7 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.mnuContextGeneralSearch.Name = "mnuContextGeneralSearch";
             this.mnuContextGeneralSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mnuContextGeneralSearch.Size = new System.Drawing.Size(234, 22);
+            this.mnuContextGeneralSearch.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralSearch.Text = "&Search";
             this.mnuContextGeneralSearch.Click += new System.EventHandler(this.toolSearch_Click);
             // 
@@ -351,7 +333,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolServiceEndpointRegister.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.toolServiceEndpointRegister.Size = new System.Drawing.Size(274, 22);
             this.toolServiceEndpointRegister.Text = "Register New Service &Endpoint";
-            this.toolServiceEndpointRegister.Click += new System.EventHandler(this.toolServiceEndpointRegister_Click);
             // 
             // toolView
             // 
@@ -551,7 +532,7 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(299, 635);
+            this.btnSave.Location = new System.Drawing.Point(297, 635);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(112, 35);
@@ -568,7 +549,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Location = new System.Drawing.Point(0, 0);
             this.propGridEntity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.propGridEntity.Name = "propGridEntity";
-            this.propGridEntity.Size = new System.Drawing.Size(413, 626);
+            this.propGridEntity.Size = new System.Drawing.Size(411, 626);
             this.propGridEntity.TabIndex = 4;
             // 
             // MainControl
@@ -643,8 +624,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.PropertyGrid propGridEntity;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ToolStripMenuItem toolServiceEndpointRegister;
-        private System.Windows.Forms.ToolStripMenuItem mnuContextNodeServiceEndpointRegister;
-        private System.Windows.Forms.ToolStripMenuItem mnuContextGeneralServiceEndpointRegister;
         private System.Windows.Forms.ToolStripButton toolProfilerInstall;
         private System.Windows.Forms.ToolStripSeparator toolProfilerSep;
         private System.Windows.Forms.ToolStripButton toolProfilerEnable;
