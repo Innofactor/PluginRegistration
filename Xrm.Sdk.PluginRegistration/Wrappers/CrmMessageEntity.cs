@@ -17,21 +17,23 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Entities;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Microsoft.Xrm.Sdk;
-    using Entities;
 
     public sealed class CrmMessageEntity : ICrmEntity
     {
+        #region Private Fields
+
+        private static CrmEntityColumn[] m_entityColumns = null;
         private CrmOrganization m_org;
 
-        private CrmMessageEntity(CrmOrganization org)
-        {
-            m_org = org;
-        }
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmMessageEntity(CrmOrganization org, Guid messageId, Guid messageEntityId,
             string primaryEntity, string secondaryEntity, CrmPluginStepDeployment availability, DateTime? createdOn, DateTime? modifiedOn)
@@ -52,12 +54,80 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             RefreshFromSdkMessageFilter(filter);
         }
 
-        #region Properties
+        #endregion Public Constructors
+
+        #region Private Constructors
+
+        private CrmMessageEntity(CrmOrganization org)
+        {
+            m_org = org;
+        }
+
+        #endregion Private Constructors
+
+        #region Public Properties
+
+        [XmlIgnore, Browsable(false)]
+        public static CrmEntityColumn[] Columns
+        {
+            get
+            {
+                if (m_entityColumns == null)
+                {
+                    m_entityColumns = new CrmEntityColumn[] {
+                        new CrmEntityColumn("Id", null, typeof(Guid)),
+                        new CrmEntityColumn("PrimaryEntity", "Primary Entity", typeof(string)),
+                        new CrmEntityColumn("SecondaryEntity", "Secondary Entity", typeof(string)) };
+                }
+
+                return m_entityColumns;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmPluginStepDeployment Availability { get; set; }
+
         /// <summary>
         /// Retrieves the Created On date of the entity. To update, see UpdateDates.
         /// </summary>
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? CreatedOn { get; private set; }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public int CustomizationLevel { get; set; }
+
+        [XmlIgnore, Browsable(false)]
+        public Guid EntityId
+        {
+            get
+            {
+                return MessageEntityId;
+            }
+        }
+
+        [XmlIgnore, Browsable(false)]
+        public string EntityType
+        {
+            get
+            {
+                return SdkMessageFilter.EntityLogicalName;
+            }
+        }
+
+        [XmlIgnore, Browsable(false)]
+        public bool IsSystemCrmEntity
+        {
+            get
+            {
+                return (CustomizationLevel == 0);
+            }
+        }
+
+        [Category("Information"), Browsable(true), Description("Unique identifier of Message Filter"), ReadOnly(true)]
+        public Guid MessageEntityId { get; set; }
+
+        [Category("Information"), Browsable(true), Description("Unique identifier of the Message"), ReadOnly(true)]
+        public Guid MessageId { get; set; }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? ModifiedOn { get; private set; }
@@ -87,44 +157,44 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
-        public int CustomizationLevel { get; set; }
-
-        [Category("Information"), Browsable(true), Description("Unique identifier of Message Filter"), ReadOnly(true)]
-        public Guid MessageEntityId { get; set; }
-
-        [Category("Information"), Browsable(true), Description("Unique identifier of the Message"), ReadOnly(true)]
-        public Guid MessageId { get; set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
         public string PrimaryEntity { get; set; }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string SecondaryEntity { get; set; }
 
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmPluginStepDeployment Availability { get; set; }
-
-        private static CrmEntityColumn[] m_entityColumns = null;
-
         [XmlIgnore, Browsable(false)]
-        public static CrmEntityColumn[] Columns
+        public Dictionary<string, object> Values
         {
             get
             {
-                if (m_entityColumns == null)
-                {
-                    m_entityColumns = new CrmEntityColumn[] {
-                        new CrmEntityColumn("Id", null, typeof(Guid)),
-                        new CrmEntityColumn("PrimaryEntity", "Primary Entity", typeof(string)),
-                        new CrmEntityColumn("SecondaryEntity", "Secondary Entity", typeof(string)) };
-                }
+                Dictionary<string, object> valueList = new Dictionary<string, object>();
+                valueList.Add("Id", MessageEntityId);
+                valueList.Add("PrimaryEntity", ConvertNullStringToEmpty(PrimaryEntity));
+                valueList.Add("SecondaryEntity", ConvertNullStringToEmpty(SecondaryEntity));
 
-                return m_entityColumns;
+                return valueList;
             }
         }
-        #endregion
 
-        #region Public Helper Methodsd
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public Dictionary<string, object> GenerateCrmEntities()
+        {
+            Dictionary<string, object> entityList = new Dictionary<string, object>();
+
+            SdkMessageFilter entity = new SdkMessageFilter();
+            entity["sdkmessagefilterid"] = MessageEntityId;
+            entity.SdkMessageId = new EntityReference(SdkMessage.EntityLogicalName, MessageId);
+            entity["primaryobjecttypecode"] = PrimaryEntity;
+            entity["secondaryobjecttypecode"] = SecondaryEntity;
+
+            entityList.Add(SdkMessageFilter.EntityLogicalName, entity);
+
+            return entityList;
+        }
+
         public void RefreshFromSdkMessageFilter(SdkMessageFilter filter)
         {
             if (filter == null)
@@ -176,78 +246,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             return string.Format(System.Globalization.CultureInfo.InvariantCulture, "(Entity) {0}", PrimaryEntity);
         }
-        #endregion
-
-        #region Private Helper Methods
-        private string ConvertNullStringToEmpty(string val)
-        {
-            if (string.IsNullOrEmpty(val))
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return val;
-            }
-        }
-        #endregion
-
-        #region ICrmEntity Members
-        [XmlIgnore, Browsable(false)]
-        public bool IsSystemCrmEntity
-        {
-            get
-            {
-                return (CustomizationLevel == 0);
-            }
-        }
-
-        [XmlIgnore, Browsable(false)]
-        public string EntityType
-        {
-            get
-            {
-                return SdkMessageFilter.EntityLogicalName;
-            }
-        }
-
-        [XmlIgnore, Browsable(false)]
-        public Guid EntityId
-        {
-            get
-            {
-                return MessageEntityId;
-            }
-        }
-
-        public Dictionary<string, object> GenerateCrmEntities()
-        {
-            Dictionary<string, object> entityList = new Dictionary<string, object>();
-
-            SdkMessageFilter entity = new SdkMessageFilter();
-            entity["sdkmessagefilterid"] = MessageEntityId;
-            entity.SdkMessageId = new EntityReference(SdkMessage.EntityLogicalName, MessageId);
-            entity["primaryobjecttypecode"] = PrimaryEntity;
-            entity["secondaryobjecttypecode"] = SecondaryEntity;
-
-            entityList.Add(SdkMessageFilter.EntityLogicalName, entity);
-
-            return entityList;
-        }
-
-        [XmlIgnore, Browsable(false)]
-        public Dictionary<string, object> Values
-        {
-            get
-            {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", MessageEntityId);
-                valueList.Add("PrimaryEntity", ConvertNullStringToEmpty(PrimaryEntity));
-                valueList.Add("SecondaryEntity", ConvertNullStringToEmpty(SecondaryEntity));
-
-                return valueList;
-            }
-        }
 
         public void UpdateDates(DateTime? createdOn, DateTime? modifiedOn)
         {
@@ -261,6 +259,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 ModifiedOn = modifiedOn;
             }
         }
-        #endregion
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private string ConvertNullStringToEmpty(string val)
+        {
+            if (string.IsNullOrEmpty(val))
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return val;
+            }
+        }
+
+        #endregion Private Methods
     }
 }

@@ -20,29 +20,32 @@ namespace Xrm.Sdk.PluginRegistration
     using System;
     using XrmToolBox.Extensibility.Args;
 
+    public delegate void ProgressIndicatorAppendStatusText(string text);
+
+    public delegate void ProgressIndicatorComplete();
+
+    public delegate void ProgressIndicatorIncrement(int incrementBy);
+
+    public delegate void ProgressIndicatorInitialize(int min, int max, int initialValue);
+
+    public delegate void ProgressIndicatorSetStatusText(string text);
+
+    public delegate void ProgressIndicatorSetValue(int value);
+
     public class ProgressIndicator
     {
-        private ProgressIndicatorInitialize m_init;
-        private ProgressIndicatorSetValue m_setValue;
-        private ProgressIndicatorIncrement m_increment;
+        #region Private Fields
+
         private ProgressIndicatorAppendStatusText m_appendText;
-        private ProgressIndicatorSetStatusText m_setText;
         private ProgressIndicatorComplete m_complete;
+        private ProgressIndicatorIncrement m_increment;
+        private ProgressIndicatorInitialize m_init;
+        private ProgressIndicatorSetStatusText m_setText;
+        private ProgressIndicatorSetValue m_setValue;
 
-        public int Min { get; private set; }
-        public int Max { get; private set; }
-        public int Step { get; private set; }
-        public int Initial { get; private set; }
+        #endregion Private Fields
 
-        private enum MethodType
-        {
-            Initialize,
-            SetValue,
-            Increment,
-            AppendStatusText,
-            SetStatusText,
-            Complete
-        }
+        #region Public Constructors
 
         public ProgressIndicator(ProgressIndicatorInitialize init, ProgressIndicatorComplete complete,
             ProgressIndicatorAppendStatusText appendText, ProgressIndicatorSetStatusText setText,
@@ -63,7 +66,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         public ProgressIndicator(Action<StatusBarMessageEventArgs> action)
         {
-            m_init = delegate(int min, int max, int initial)
+            m_init = delegate (int min, int max, int initial)
             {
                 if (min < 0 || max < 0)
                 {
@@ -78,7 +81,7 @@ namespace Xrm.Sdk.PluginRegistration
                 action(new StatusBarMessageEventArgs(Initial));
             };
 
-            m_setText = delegate(string message)
+            m_setText = delegate (string message)
             {
                 action(new StatusBarMessageEventArgs(message));
             };
@@ -89,7 +92,110 @@ namespace Xrm.Sdk.PluginRegistration
             };
         }
 
-        #region Overloaded Methods
+        #endregion Public Constructors
+
+        #region Private Enums
+
+        private enum MethodType
+        {
+            Initialize,
+            SetValue,
+            Increment,
+            AppendStatusText,
+            SetStatusText,
+            Complete
+        }
+
+        #endregion Private Enums
+
+        #region Public Properties
+
+        public int Initial { get; private set; }
+        public int Max { get; private set; }
+        public int Min { get; private set; }
+        public int Step { get; private set; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public void AppendText(string text)
+        {
+            if (m_setText == null && m_appendText == null)
+            {
+                return;
+            }
+
+            if (m_appendText != null && !string.IsNullOrEmpty(text))
+            {
+                m_appendText(text);
+            }
+            else if (m_setText != null)
+            {
+                m_setText(text);
+            }
+
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
+
+        public void ClearText()
+        {
+            SetText(string.Empty);
+        }
+
+        public void Complete()
+        {
+            Complete(false);
+        }
+
+        public void Complete(bool clearStatusText)
+        {
+            if (clearStatusText)
+            {
+                SetText(string.Empty);
+            }
+
+            if (m_complete != null)
+            {
+                m_complete();
+            }
+
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
+
+        public void Increment()
+        {
+            Increment(Step, null);
+        }
+
+        public void Increment(string message)
+        {
+            Increment(Step, message);
+        }
+
+        public void Increment(int value)
+        {
+            Increment(value, null);
+        }
+
+        public void Increment(int value, string message)
+        {
+            if (m_increment != null)
+            {
+                m_increment(value);
+            }
+
+            if (message != null)
+            {
+                AppendText(message);
+            }
+
+            //UI doesn't always refresh properly. This will allow the UI to refresh
+            System.Windows.Forms.Application.DoEvents();
+        }
+
         public void Initialize(int max)
         {
             Initialize(max, (string)null);
@@ -110,28 +216,6 @@ namespace Xrm.Sdk.PluginRegistration
             Initialize(min, max, initialValue, null);
         }
 
-        public void Increment()
-        {
-            Increment(Step, null);
-        }
-
-        public void Increment(string message)
-        {
-            Increment(Step, message);
-        }
-
-        public void Increment(int value)
-        {
-            Increment(value, null);
-        }
-
-        public void Complete()
-        {
-            Complete(false);
-        }
-        #endregion
-
-        #region Methods
         public void Initialize(int min, int max, int? initialValue, string initialStatusText)
         {
             if (min > max)
@@ -164,26 +248,6 @@ namespace Xrm.Sdk.PluginRegistration
             System.Windows.Forms.Application.DoEvents();
         }
 
-        public void AppendText(string text)
-        {
-            if (m_setText == null && m_appendText == null)
-            {
-                return;
-            }
-
-            if (m_appendText != null && !string.IsNullOrEmpty(text))
-            {
-                m_appendText(text);
-            }
-            else if (m_setText != null)
-            {
-                m_setText(text);
-            }
-
-            //UI doesn't always refresh properly. This will allow the UI to refresh
-            System.Windows.Forms.Application.DoEvents();
-        }
-
         public void SetText(string text)
         {
             if (m_setText == null && m_appendText == null)
@@ -204,49 +268,6 @@ namespace Xrm.Sdk.PluginRegistration
             System.Windows.Forms.Application.DoEvents();
         }
 
-        public void ClearText()
-        {
-            SetText(string.Empty);
-        }
-
-        public void Increment(int value, string message)
-        {
-            if (m_increment != null)
-            {
-                m_increment(value);
-            }
-
-            if (message != null)
-            {
-                AppendText(message);
-            }
-
-            //UI doesn't always refresh properly. This will allow the UI to refresh
-            System.Windows.Forms.Application.DoEvents();
-        }
-
-        public void Complete(bool clearStatusText)
-        {
-            if (clearStatusText)
-            {
-                SetText(string.Empty);
-            }
-
-            if (m_complete != null)
-            {
-                m_complete();
-            }
-
-            //UI doesn't always refresh properly. This will allow the UI to refresh
-            System.Windows.Forms.Application.DoEvents();
-        }
-        #endregion
+        #endregion Public Methods
     }
-
-    public delegate void ProgressIndicatorInitialize(int min, int max, int initialValue);
-    public delegate void ProgressIndicatorSetValue(int value);
-    public delegate void ProgressIndicatorIncrement(int incrementBy);
-    public delegate void ProgressIndicatorAppendStatusText(string text);
-    public delegate void ProgressIndicatorSetStatusText(string text);
-    public delegate void ProgressIndicatorComplete();
 }

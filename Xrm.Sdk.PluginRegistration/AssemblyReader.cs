@@ -29,11 +29,17 @@ namespace Xrm.Sdk.PluginRegistration
 
     public sealed class AssemblyReader : MarshalByRefObject
     {
+        #region Public Constructors
+
         public AssemblyReader()
         {
             //Attach the resolver so that assemblies can be resolved correctly
             AssemblyResolver.AttachResolver(AppDomain.CurrentDomain);
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public CrmPluginAssembly RetrieveAssemblyProperties(string path)
         {
@@ -148,7 +154,9 @@ namespace Xrm.Sdk.PluginRegistration
             return pluginAssembly;
         }
 
-        #region Private Helper Methods
+        #endregion Public Methods
+
+        #region Private Methods
 
         private Assembly LoadAssembly(string path)
         {
@@ -197,6 +205,6 @@ namespace Xrm.Sdk.PluginRegistration
             return pluginAssembly;
         }
 
-        #endregion Private Helper Methods
+        #endregion Private Methods
     }
 }

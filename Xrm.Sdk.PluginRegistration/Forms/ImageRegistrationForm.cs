@@ -21,8 +21,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.Collections.Generic;
     using System.Text;
     using System.Windows.Forms;
-    using Xrm.Sdk.PluginRegistration.Controls;
-    using Xrm.Sdk.PluginRegistration.Helpers;
+    using Controls;
+    using Helpers;
     using Wrappers;
 
     public partial class ImageRegistrationForm : Form

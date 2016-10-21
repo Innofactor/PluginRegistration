@@ -5,8 +5,10 @@
 
     public static class Magic
     {
+        #region Public Methods
+
         public static T CastTo<T>(Entity entity)
-            where T: Entity
+            where T : Entity
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
 
@@ -14,8 +16,10 @@
             {
                 instance.Attributes = entity.Attributes;
             }
-            
+
             return instance;
         }
+
+        #endregion Public Methods
     }
 }

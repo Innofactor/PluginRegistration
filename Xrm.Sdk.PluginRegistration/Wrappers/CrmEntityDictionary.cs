@@ -24,7 +24,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     public class CrmEntityDictionary<EntityType> : IEnumerable<EntityType>, IEnumerable
         where EntityType : ICrmEntity
     {
+        #region Private Fields
+
         private Dictionary<Guid, EntityType> m_entityList = new Dictionary<Guid, EntityType>();
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmEntityDictionary(Dictionary<Guid, EntityType> entityList)
         {
@@ -36,7 +42,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_entityList = entityList;
         }
 
-        #region Properties
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public int Count
         {
             get
@@ -61,6 +70,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
+        #endregion Public Properties
+
+        #region Public Indexers
+
         public EntityType this[Guid id]
         {
             get
@@ -68,29 +81,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 return m_entityList[id];
             }
         }
-        #endregion
+
+        #endregion Public Indexers
 
         #region Public Methods
-        public bool TryGetValue(Guid id, out EntityType value)
-        {
-            return m_entityList.TryGetValue(id, out value);
-        }
 
         public bool ContainsKey(Guid id)
         {
             return m_entityList.ContainsKey(id);
         }
 
-        public EntityType[] ToArray()
-        {
-            EntityType[] items = new EntityType[m_entityList.Count];
-            m_entityList.Values.CopyTo(items, 0);
-
-            return items;
-        }
-        #endregion
-
-        #region IEnumerable<EntityType> Members
         public IEnumerator<EntityType> GetEnumerator()
         {
             return m_entityList.Values.GetEnumerator();
@@ -100,6 +100,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             return m_entityList.Values.GetEnumerator();
         }
-        #endregion
+
+        public EntityType[] ToArray()
+        {
+            EntityType[] items = new EntityType[m_entityList.Count];
+            m_entityList.Values.CopyTo(items, 0);
+
+            return items;
+        }
+
+        public bool TryGetValue(Guid id, out EntityType value)
+        {
+            return m_entityList.TryGetValue(id, out value);
+        }
+
+        #endregion Public Methods
     }
 }

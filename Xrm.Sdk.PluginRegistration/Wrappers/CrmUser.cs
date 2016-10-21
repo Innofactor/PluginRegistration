@@ -17,12 +17,18 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
-    using System;
     using Entities;
+    using System;
 
     public sealed class CrmUser
     {
+        #region Private Fields
+
         private CrmOrganization m_org;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmUser(CrmOrganization org)
         {
@@ -53,7 +59,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             InternalEmailAddress = user.InternalEMailAddress;
         }
 
-        #region Properties
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public string DomainName { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public string InternalEmailAddress { get; set; }
+
+        public string Name { get; set; }
+
         public CrmOrganization Organization
         {
             get
@@ -64,13 +81,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public Guid UserId { get; set; }
 
-        public string Name { get; set; }
+        #endregion Public Properties
 
-        public string DomainName { get; set; }
-
-        public string InternalEmailAddress { get; set; }
-
-        public bool Enabled { get; set; }
+        #region Public Methods
 
         public override string ToString()
         {
@@ -90,6 +103,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 return string.Format("{0} (Disabled)", Name);
             }
         }
-        #endregion
+
+        #endregion Public Methods
     }
 }

@@ -17,26 +17,49 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Entities;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Microsoft.Xrm.Sdk;
-    using Xrm.Sdk.PluginRegistration.Controls;
-    using Entities;
+    using Controls;
+
+    public enum CrmAssemblyIsolationMode
+    {
+        None = 1,
+        Sandbox = 2
+    }
+
+    public enum CrmAssemblySourceType
+    {
+        Database = 0,
+        Disk = 1,
+        GAC = 2
+    }
 
     [Serializable]
     public sealed class CrmPluginAssembly : ICrmEntity, ICrmTreeNode, ICloneable
     {
+        #region Public Fields
+
         public const string RelationshipAssemblyToType = "pluginassembly_plugintype";
 
-        private CrmOrganization m_org = null;
-        private string m_Name = null;
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static CrmEntityColumn[] m_entityColumns = null;
         private Guid m_assemblyId = Guid.Empty;
         private int m_customizationLevel;
-
-        private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
+        private string m_Name = null;
+        private CrmOrganization m_org = null;
         private Dictionary<Guid, CrmPlugin> m_pluginList = new Dictionary<Guid, CrmPlugin>();
+        private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmPluginAssembly(CrmOrganization org)
         {
@@ -67,62 +90,34 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             RefreshFromPluginAssembly(assembly);
         }
 
-        #region Properties
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        [XmlIgnore]
         [Browsable(false)]
-        public CrmOrganization Organization
+        public static CrmEntityColumn[] Columns
         {
             get
             {
-                return m_org;
-            }
-            set
-            {
-                if (value == null)
+                if (m_entityColumns == null)
                 {
-                    throw new ArgumentNullException();
-                }
-                else if (m_org == null)
-                {
-                    m_org = value;
-                    foreach (CrmPlugin plugin in m_pluginList.Values)
-                    {
-                        if (plugin.Organization == null)
-                        {
-                            plugin.Organization = m_org;
-                        }
-                        m_org.AddPlugin(this, plugin);
-                    }
-                }
-                else
-                {
-                    throw new NotSupportedException("Cannot change the Organization once it has been set");
-                }
-            }
-        }
-
-        [Category("Information"), Browsable(true), Description("Name of the Assembly"), ReadOnly(true)]
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                if (value == m_Name)
-                {
-                    return;
+                    m_entityColumns = new CrmEntityColumn[] {
+                        new CrmEntityColumn("Name", "Name", typeof(string)),
+                        new CrmEntityColumn("Description", "Description", typeof(string)),
+                        new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
+                        new CrmEntityColumn("SourceType", "Source", typeof(string)),
+                        new CrmEntityColumn("Version", "Version", typeof(string)),
+                        new CrmEntityColumn("Path", "Path", typeof(string)),
+                        new CrmEntityColumn("PublicKeyToken", "Public Key Token", typeof(string)),
+                        new CrmEntityColumn("Culture", "Culture", typeof(string)),
+                        new CrmEntityColumn("IsolationMode", "Isolation Mode", typeof(string)),
+                        new CrmEntityColumn("Enabled", "Enabled", typeof(bool)),
+                        new CrmEntityColumn("Id", "AssemblyId", typeof(Guid)),
+                        };
                 }
 
-                m_Name = value;
-
-                if (m_pluginList != null)
-                {
-                    foreach (CrmPlugin plugin in m_pluginList.Values)
-                    {
-                        plugin.AssemblyName = value;
-                    }
-                }
+                return m_entityColumns;
             }
         }
 
@@ -158,32 +153,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? CreatedOn { get; private set; }
 
-        /// <summary>
-        /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
-        /// </summary>
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public DateTime? ModifiedOn { get; private set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmAssemblyIsolationMode IsolationMode { get; set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmAssemblySourceType SourceType { get; set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string ServerFileName { get; set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string Version { get; set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string PublicKeyToken { get; set; }
-
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Culture { get; set; }
-
-        [Category("Editable"), Browsable(true), Description("Description of the Assembly"), ReadOnly(false)]
-        public string Description { get; set; }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public int CustomizationLevel
@@ -199,7 +170,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 {
                     throw new ArgumentException("Invalid CustomizationLevel specified");
                 }
-                
+
                 //If the customization level is 0, then this is a system assembly (which will depend on the current version of CRM)
                 if (0 == value && null == SdkVersion)
                 {
@@ -210,9 +181,190 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        [Category("Information"), DisplayName("SDK Version"), Description("Version of the CRM SDK Assemblies referenced by this Assembly.")]
-        [Browsable(true), ReadOnly(true)]
-        public Version SdkVersion { get; set; }
+        [Category("Editable"), Browsable(true), Description("Description of the Assembly"), ReadOnly(false)]
+        public string Description { get; set; }
+
+        [Browsable(false)]
+        public bool Enabled { get; set; }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Guid EntityId
+        {
+            get
+            {
+                return AssemblyId;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string EntityType
+        {
+            get
+            {
+                return PluginAssembly.EntityLogicalName;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmAssemblyIsolationMode IsolationMode { get; set; }
+
+        [Browsable(false)]
+        public bool IsProfilerAssembly { get; set; }
+
+        [XmlIgnore]
+        public bool IsSystemCrmEntity
+        {
+            get
+            {
+                return CustomizationLevel == 0;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
+        /// </summary>
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public DateTime? ModifiedOn { get; private set; }
+
+        [Category("Information"), Browsable(true), Description("Name of the Assembly"), ReadOnly(true)]
+        public string Name
+        {
+            get
+            {
+                return m_Name;
+            }
+            set
+            {
+                if (value == m_Name)
+                {
+                    return;
+                }
+
+                m_Name = value;
+
+                if (m_pluginList != null)
+                {
+                    foreach (CrmPlugin plugin in m_pluginList.Values)
+                    {
+                        plugin.AssemblyName = value;
+                    }
+                }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public ICrmTreeNode[] NodeChildren
+        {
+            get
+            {
+                if (m_pluginList == null || m_pluginList.Count == 0)
+                {
+                    return new CrmPlugin[0];
+                }
+                else
+                {
+                    CrmPlugin[] children = new CrmPlugin[m_pluginList.Count];
+                    m_pluginList.Values.CopyTo(children, 0);
+
+                    return children;
+                }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Guid NodeId
+        {
+            get
+            {
+                return AssemblyId;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeImageType
+        {
+            get
+            {
+                return CrmTreeNodeImageType.Assembly;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeSelectedImageType
+        {
+            get
+            {
+                return CrmTreeNodeImageType.AssemblySelected;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string NodeText
+        {
+            get
+            {
+                return string.Format("({0}) {1}", NodeTypeLabel, Name);
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeType NodeType
+        {
+            get
+            {
+                return CrmTreeNodeType.Assembly;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string NodeTypeLabel
+        {
+            get
+            {
+                return "Assembly";
+            }
+        }
+
+        [Browsable(false)]
+        public CrmOrganization Organization
+        {
+            get
+            {
+                return m_org;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                else if (m_org == null)
+                {
+                    m_org = value;
+                    foreach (CrmPlugin plugin in m_pluginList.Values)
+                    {
+                        if (plugin.Organization == null)
+                        {
+                            plugin.Organization = m_org;
+                        }
+                        m_org.AddPlugin(this, plugin);
+                    }
+                }
+                else
+                {
+                    throw new NotSupportedException("Cannot change the Organization once it has been set");
+                }
+            }
+        }
 
         [Browsable(false)]
         public CrmEntityDictionary<CrmPlugin> Plugins
@@ -228,6 +380,59 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string PublicKeyToken { get; set; }
+
+        [Category("Information"), DisplayName("SDK Version"), Description("Version of the CRM SDK Assemblies referenced by this Assembly.")]
+        [Browsable(true), ReadOnly(true)]
+        public Version SdkVersion { get; set; }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string ServerFileName { get; set; }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmAssemblySourceType SourceType { get; set; }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Dictionary<string, object> Values
+        {
+            get
+            {
+                Dictionary<string, object> valueList = new Dictionary<string, object>();
+                valueList.Add("Id", AssemblyId);
+                valueList.Add("Description", String.IsNullOrEmpty(Description) ? string.Empty : Description);
+                valueList.Add("Name", Name);
+                valueList.Add("ModifiedOn",
+                    (ModifiedOn.HasValue ? ModifiedOn.ToString() : ""));
+                valueList.Add("SourceType", SourceType.ToString());
+                valueList.Add("Version", ConvertNullStringToEmpty(Version));
+                valueList.Add("Path", ConvertNullStringToEmpty(ServerFileName));
+                valueList.Add("PublicKeyToken", ConvertNullStringToEmpty(PublicKeyToken));
+                valueList.Add("Culture", ConvertNullStringToEmpty(Culture));
+
+                if (CrmAssemblyIsolationMode.Sandbox == IsolationMode)
+                {
+                    valueList.Add("IsolationMode", "Sandbox");
+                }
+                else
+                {
+                    valueList.Add("IsolationMode", "None");
+                }
+
+                valueList.Add("Enabled", Enabled);
+
+                return valueList;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string Version { get; set; }
+
+        #endregion Public Properties
+
+        #region Public Indexers
+
         [Browsable(false)]
         public CrmPlugin this[Guid pluginId]
         {
@@ -237,14 +442,134 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        [Browsable(false)]
-        public bool Enabled { get; set; }
+        #endregion Public Indexers
 
-        [Browsable(false)]
-        public bool IsProfilerAssembly { get; set; }
-        #endregion
+        #region Public Methods
 
-        #region Public Helper Methods
+        public void AddPlugin(CrmPlugin plugin)
+        {
+            if (plugin == null)
+            {
+                throw new ArgumentNullException("plugin");
+            }
+
+            m_pluginList.Add(plugin.PluginId, plugin);
+
+            if (m_org != null)
+            {
+                Organization.AddPlugin(this, plugin);
+            }
+        }
+
+        public void ClearPlugins()
+        {
+            m_pluginList.Clear();
+
+            if (m_org != null)
+            {
+                Organization.ClearPlugins(AssemblyId);
+            }
+        }
+
+        public object Clone()
+        {
+            return Clone(true);
+        }
+
+        public CrmPluginAssembly Clone(bool includeOrganization)
+        {
+            CrmPluginAssembly newAssembly;
+            if (includeOrganization)
+            {
+                newAssembly = new CrmPluginAssembly(m_org);
+            }
+            else
+            {
+                newAssembly = new CrmPluginAssembly(null);
+            }
+
+            newAssembly.m_assemblyId = m_assemblyId;
+            newAssembly.m_Name = m_Name;
+            newAssembly.CreatedOn = CreatedOn;
+            newAssembly.Culture = Culture;
+            newAssembly.CustomizationLevel = m_customizationLevel;
+            newAssembly.Enabled = Enabled;
+            newAssembly.IsolationMode = IsolationMode;
+            newAssembly.ModifiedOn = ModifiedOn;
+            newAssembly.ServerFileName = ServerFileName;
+            newAssembly.PublicKeyToken = PublicKeyToken;
+            newAssembly.SourceType = SourceType;
+            newAssembly.Version = Version;
+
+            //Create a new plugin list
+            Dictionary<Guid, CrmPlugin> newPluginList = new Dictionary<Guid, CrmPlugin>();
+            foreach (CrmPlugin plugin in m_pluginList.Values)
+            {
+                //Clone the plugin
+                CrmPlugin clonedPlugin = (CrmPlugin)plugin.Clone(includeOrganization);
+
+                //Add the plugin to the new list
+                newPluginList.Add(clonedPlugin.PluginId, clonedPlugin);
+            }
+
+            //Assign the list to the new object
+            newAssembly.m_pluginList = newPluginList;
+
+            return newAssembly;
+        }
+
+        public Dictionary<string, object> GenerateCrmEntities()
+        {
+            Dictionary<string, object> entityList = new Dictionary<string, object>();
+
+            PluginAssembly assembly = new PluginAssembly();
+            if (AssemblyId != Guid.Empty)
+            {
+                assembly.PluginAssemblyId = new Guid?();
+                assembly["pluginassemblyid"] = AssemblyId;
+            }
+
+            assembly.SourceType = new OptionSetValue();
+            assembly.SourceType.Value = (int)SourceType;
+
+            assembly.IsolationMode = new OptionSetValue();
+            assembly.IsolationMode.Value = (int)IsolationMode;
+
+            assembly.Culture = Culture;
+            assembly.PublicKeyToken = PublicKeyToken;
+            assembly.Version = Version;
+            assembly.Name = Name;
+            assembly.Description = Description;
+
+            if (AssemblyId != Guid.Empty)
+            {
+                assembly.PluginAssemblyId = new Guid?();
+                assembly["pluginassemblyid"] = AssemblyId;
+            }
+
+            switch (SourceType)
+            {
+                case CrmAssemblySourceType.Disk:
+                    assembly.Path = ServerFileName;
+                    break;
+
+                case CrmAssemblySourceType.Database:
+                    //Do nothing in this method
+                    break;
+
+                case CrmAssemblySourceType.GAC:
+                    //Do nothing
+                    break;
+
+                default:
+                    throw new NotImplementedException("SourceType = " + SourceType.ToString());
+            }
+
+            entityList.Add(PluginAssembly.EntityLogicalName, assembly);
+
+            return entityList;
+        }
+
         public void RefreshFromPluginAssembly(PluginAssembly assembly)
         {
             if (assembly == null)
@@ -319,37 +644,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        public override string ToString()
-        {
-            return NodeText;
-        }
-
-        #region Management Methods
-        public void AddPlugin(CrmPlugin plugin)
-        {
-            if (plugin == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-
-            m_pluginList.Add(plugin.PluginId, plugin);
-
-            if (m_org != null)
-            {
-                Organization.AddPlugin(this, plugin);
-            }
-        }
-
-        public void ClearPlugins()
-        {
-            m_pluginList.Clear();
-
-            if (m_org != null)
-            {
-                Organization.ClearPlugins(AssemblyId);
-            }
-        }
-
         public void RemovePlugin(Guid pluginId)
         {
             if (m_pluginList.ContainsKey(pluginId))
@@ -366,243 +660,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("Invalid Plugin Id", "pluginId");
             }
         }
-        #endregion
-        #endregion
 
-        #region Private Helper Methods
-        private string ConvertNullStringToEmpty(string val)
+        public override string ToString()
         {
-            if (string.IsNullOrEmpty(val))
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return val;
-            }
-        }
-        #endregion
-
-        #region ICrmTreeNode Members
-        [XmlIgnore]
-        [Browsable(false)]
-        public string NodeText
-        {
-            get
-            {
-                return string.Format("({0}) {1}", NodeTypeLabel, Name);
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Guid NodeId
-        {
-            get
-            {
-                return AssemblyId;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
-        {
-            get
-            {
-                if (m_pluginList == null || m_pluginList.Count == 0)
-                {
-                    return new CrmPlugin[0];
-                }
-                else
-                {
-                    CrmPlugin[] children = new CrmPlugin[m_pluginList.Count];
-                    m_pluginList.Values.CopyTo(children, 0);
-
-                    return children;
-                }
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeImageType
-        {
-            get
-            {
-                return CrmTreeNodeImageType.Assembly;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeSelectedImageType
-        {
-            get
-            {
-                return CrmTreeNodeImageType.AssemblySelected;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeType NodeType
-        {
-            get
-            {
-                return CrmTreeNodeType.Assembly;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public string NodeTypeLabel
-        {
-            get
-            {
-                return "Assembly";
-            }
-        }
-        #endregion
-
-        #region ICrmEntity Members
-        [XmlIgnore]
-        [Browsable(false)]
-        public string EntityType
-        {
-            get
-            {
-                return PluginAssembly.EntityLogicalName;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Guid EntityId
-        {
-            get
-            {
-                return AssemblyId;
-            }
-        }
-
-        public Dictionary<string, object> GenerateCrmEntities()
-        {
-            Dictionary<string, object> entityList = new Dictionary<string, object>();
-
-            PluginAssembly assembly = new PluginAssembly();
-            if (AssemblyId != Guid.Empty)
-            {
-                assembly.PluginAssemblyId = new Guid?();
-                assembly["pluginassemblyid"] = AssemblyId;
-            }
-
-            assembly.SourceType = new OptionSetValue();
-            assembly.SourceType.Value = (int)SourceType;
-
-            assembly.IsolationMode = new OptionSetValue();
-            assembly.IsolationMode.Value = (int)IsolationMode;
-
-            assembly.Culture = Culture;
-            assembly.PublicKeyToken = PublicKeyToken;
-            assembly.Version = Version;
-            assembly.Name = Name;
-            assembly.Description = Description;
-
-            if (AssemblyId != Guid.Empty)
-            {
-                assembly.PluginAssemblyId = new Guid?();
-                assembly["pluginassemblyid"] = AssemblyId;
-            }
-
-            switch (SourceType)
-            {
-                case CrmAssemblySourceType.Disk:
-                    assembly.Path = ServerFileName;
-                    break;
-                case CrmAssemblySourceType.Database:
-                    //Do nothing in this method
-                    break;
-                case CrmAssemblySourceType.GAC:
-                    //Do nothing
-                    break;
-                default:
-                    throw new NotImplementedException("SourceType = " + SourceType.ToString());
-            }
-
-            entityList.Add(PluginAssembly.EntityLogicalName, assembly);
-
-            return entityList;
-        }
-
-        private static CrmEntityColumn[] m_entityColumns = null;
-        [XmlIgnore]
-        [Browsable(false)]
-        public static CrmEntityColumn[] Columns
-        {
-            get
-            {
-                if (m_entityColumns == null)
-                {
-                    m_entityColumns = new CrmEntityColumn[] { 
-                        new CrmEntityColumn("Name", "Name", typeof(string)),
-                        new CrmEntityColumn("Description", "Description", typeof(string)),
-                        new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
-                        new CrmEntityColumn("SourceType", "Source", typeof(string)),
-                        new CrmEntityColumn("Version", "Version", typeof(string)),
-                        new CrmEntityColumn("Path", "Path", typeof(string)),
-                        new CrmEntityColumn("PublicKeyToken", "Public Key Token", typeof(string)),
-                        new CrmEntityColumn("Culture", "Culture", typeof(string)),
-                        new CrmEntityColumn("IsolationMode", "Isolation Mode", typeof(string)),
-                        new CrmEntityColumn("Enabled", "Enabled", typeof(bool)),
-                        new CrmEntityColumn("Id", "AssemblyId", typeof(Guid)),
-                        };
-                }
-
-                return m_entityColumns;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Dictionary<string, object> Values
-        {
-            get
-            {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", AssemblyId);
-                valueList.Add("Description", String.IsNullOrEmpty(Description) ? string.Empty : Description);
-                valueList.Add("Name", Name);
-                valueList.Add("ModifiedOn",
-                    (ModifiedOn.HasValue ? ModifiedOn.ToString() : ""));
-                valueList.Add("SourceType", SourceType.ToString());
-                valueList.Add("Version", ConvertNullStringToEmpty(Version));
-                valueList.Add("Path", ConvertNullStringToEmpty(ServerFileName));
-                valueList.Add("PublicKeyToken", ConvertNullStringToEmpty(PublicKeyToken));
-                valueList.Add("Culture", ConvertNullStringToEmpty(Culture));
-
-                if (CrmAssemblyIsolationMode.Sandbox == IsolationMode)
-                {
-                    valueList.Add("IsolationMode", "Sandbox");
-                }
-                else
-                {
-                    valueList.Add("IsolationMode", "None");
-                }
-
-                valueList.Add("Enabled", Enabled);
-
-                return valueList;
-            }
-        }
-
-        [XmlIgnore]
-        public bool IsSystemCrmEntity
-        {
-            get
-            {
-                return CustomizationLevel == 0;
-            }
+            return NodeText;
         }
 
         public void UpdateDates(DateTime? createdOn, DateTime? modifiedOn)
@@ -617,68 +678,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 ModifiedOn = modifiedOn;
             }
         }
-        #endregion
 
-        #region ICloneable Members
-        public object Clone()
-        {
-            return Clone(true);
-        }
+        #endregion Public Methods
 
-        public CrmPluginAssembly Clone(bool includeOrganization)
+        #region Private Methods
+
+        private string ConvertNullStringToEmpty(string val)
         {
-            CrmPluginAssembly newAssembly;
-            if (includeOrganization)
+            if (string.IsNullOrEmpty(val))
             {
-                newAssembly = new CrmPluginAssembly(m_org);
+                return string.Empty;
             }
             else
             {
-                newAssembly = new CrmPluginAssembly(null);
+                return val;
             }
-
-            newAssembly.m_assemblyId = m_assemblyId;
-            newAssembly.m_Name = m_Name;
-            newAssembly.CreatedOn = CreatedOn;
-            newAssembly.Culture = Culture;
-            newAssembly.CustomizationLevel = m_customizationLevel;
-            newAssembly.Enabled = Enabled;
-            newAssembly.IsolationMode = IsolationMode;
-            newAssembly.ModifiedOn = ModifiedOn;
-            newAssembly.ServerFileName = ServerFileName;
-            newAssembly.PublicKeyToken = PublicKeyToken;
-            newAssembly.SourceType = SourceType;
-            newAssembly.Version = Version;
-
-            //Create a new plugin list
-            Dictionary<Guid, CrmPlugin> newPluginList = new Dictionary<Guid, CrmPlugin>();
-            foreach (CrmPlugin plugin in m_pluginList.Values)
-            {
-                //Clone the plugin
-                CrmPlugin clonedPlugin = (CrmPlugin)plugin.Clone(includeOrganization);
-
-                //Add the plugin to the new list
-                newPluginList.Add(clonedPlugin.PluginId, clonedPlugin);
-            }
-
-            //Assign the list to the new object
-            newAssembly.m_pluginList = newPluginList;
-
-            return newAssembly;
         }
-        #endregion
-    }
 
-    public enum CrmAssemblySourceType
-    {
-        Database = 0,
-        Disk = 1,
-        GAC = 2
-    }
-
-    public enum CrmAssemblyIsolationMode
-    {
-        None = 1,
-        Sandbox = 2
+        #endregion Private Methods
     }
 }

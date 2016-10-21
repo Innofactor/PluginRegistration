@@ -26,40 +26,15 @@ namespace Xrm.Sdk.PluginRegistration
 
     public static class CrmResources
     {
-        private const string TREE_RESOURCE_NAME = "CrmTreeControlDefaults";
-        private const string COMMON_RESOURCE_NAME = "Resources";
+        #region Private Fields
 
+        private const string COMMON_RESOURCE_NAME = "Resources";
+        private const string TREE_RESOURCE_NAME = "CrmTreeControlDefaults";
         private static Dictionary<string, ResourceManager> _resourceList = null;
 
-        #region String Resources
+        #endregion Private Fields
 
-        /// <summary>
-        /// Retrieves a string from the resource files
-        /// </summary>
-        /// <param name="name">Name to retrieve</param>
-        /// <returns>String that is found. Null if not found.</returns>
-        public static string GetString(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException("name");
-            }
-            else if (null == _resourceList)
-            {
-                LoadResourceManagers();
-            }
-
-            //Check the common resource file first
-            string resourceString = _resourceList[COMMON_RESOURCE_NAME].GetString(name);
-            if (string.IsNullOrEmpty(resourceString))
-            {
-                return _resourceList[TREE_RESOURCE_NAME].GetString(name);
-            }
-            else
-            {
-                return resourceString;
-            }
-        }
+        #region Public Methods
 
         /// <summary>
         /// Formats the string based on a string from the resource file
@@ -93,9 +68,33 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        #endregion String Resources
+        /// <summary>
+        /// Retrieves a string from the resource files
+        /// </summary>
+        /// <param name="name">Name to retrieve</param>
+        /// <returns>String that is found. Null if not found.</returns>
+        public static string GetString(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+            else if (null == _resourceList)
+            {
+                LoadResourceManagers();
+            }
 
-        #region Image Resources
+            //Check the common resource file first
+            string resourceString = _resourceList[COMMON_RESOURCE_NAME].GetString(name);
+            if (string.IsNullOrEmpty(resourceString))
+            {
+                return _resourceList[TREE_RESOURCE_NAME].GetString(name);
+            }
+            else
+            {
+                return resourceString;
+            }
+        }
 
         public static Image LoadImage(CrmTreeNodeImageType imageType)
         {
@@ -183,9 +182,9 @@ namespace Xrm.Sdk.PluginRegistration
             return imageList;
         }
 
-        #endregion Image Resources
+        #endregion Public Methods
 
-        #region Private Helper Methods
+        #region Private Methods
 
         private static ResourceManager GetResourceManager(string resourceName)
         {
@@ -248,16 +247,22 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        #endregion Private Helper Methods
+        #endregion Private Methods
     }
 
     public static class CrmResourceStringNames
     {
-        public const string ImportExportValidation_StepFriendlyNameDuplicate_Label = "ImportExportValidation_StepFriendlyNameDuplicate_Label";
+        #region Public Fields
+
         public const string ImportExportValidation_StepFriendlyNameDuplicate_Description = "ImportExportValidation_StepFriendlyNameDuplicate_Description";
-        public const string ImportExportValidation_StepFriendlyNameDuplicate_Resolution = "ImportExportValidation_StepFriendlyNameDuplicate_Resolution";
+        public const string ImportExportValidation_StepFriendlyNameDuplicate_Label = "ImportExportValidation_StepFriendlyNameDuplicate_Label";
         public const string ImportExportValidation_StepFriendlyNameDuplicate_PluginLabel_InMemory = "ImportExportValidation_StepFriendlyNameDuplicate_PluginLabel_InMemory";
         public const string ImportExportValidation_StepFriendlyNameDuplicate_PluginLabel_NotInMemory = "ImportExportValidation_StepFriendlyNameDuplicate_PluginLabel_NotInMemory";
+        public const string ImportExportValidation_StepFriendlyNameDuplicate_Resolution = "ImportExportValidation_StepFriendlyNameDuplicate_Resolution";
+
+        #endregion Public Fields
+
+        #region Public Methods
 
         /// <summary>
         /// Retrieves the value of the constant for the given name
@@ -301,5 +306,7 @@ namespace Xrm.Sdk.PluginRegistration
 
             return GetName(string.Format(System.Globalization.CultureInfo.InvariantCulture, format, args));
         }
+
+        #endregion Public Methods
     }
 }

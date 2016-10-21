@@ -17,58 +17,145 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using McTools.Xrm.Connection;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.Xml;
     using System.Xml.Serialization;
-    using McTools.Xrm.Connection;
-    using Microsoft.Xrm.Sdk;
-    using Microsoft.Xrm.Sdk.Discovery;
-    using Xrm.Sdk.PluginRegistration.Controls;
-    using Xrm.Sdk.PluginRegistration.Helpers;
+    using Controls;
+    using Helpers;
+
+    public interface ICrmEntity
+    {
+        #region Public Properties
+
+        Guid EntityId { get; }
+        string EntityType { get; }
+        bool IsSystemCrmEntity { get; }
+        Dictionary<string, object> Values { get; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        Dictionary<string, object> GenerateCrmEntities();
+
+        void UpdateDates(DateTime? createdOn, DateTime? modifiedOn);
+
+        #endregion Public Methods
+    }
+
+    public interface IWcfAuthenticationHeader
+    {
+        #region Public Properties
+
+        Guid CallerId { get; set; }
+        string CrmTicket { get; set; }
+        string OrganizationName { get; }
+
+        #endregion Public Properties
+    }
+
+    public class CrmEntityColumn
+    {
+        #region Private Fields
+
+        private string m_label;
+        private string m_name;
+        private Type m_type;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public CrmEntityColumn(string name, string label, Type type)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            m_name = name;
+            m_label = label;
+            m_type = type;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public string Label
+        {
+            get
+            {
+                return m_label;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return m_name;
+            }
+        }
+
+        public Type Type
+        {
+            get
+            {
+                return m_type;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        #endregion Public Methods
+    }
 
     public sealed class CrmOrganization : ICrmTreeNode
     {
-        private string m_organizationServiceUrl = null;
-        private string m_friendlyName = null;
-        private Guid m_organizationId = Guid.Empty;
-        private string m_uniqueName = null;
-        private Version m_serverBuild = null;
-        private CrmUser m_currentUser = null;
-        private volatile IOrganizationService m_organizationService = null;
+        #region Private Fields
 
-        private bool m_connected = false;
-        private Dictionary<Guid, CrmUser> m_userList = new Dictionary<Guid, CrmUser>();
-
+        private Dictionary<Guid, CrmPluginAssembly> m_assemblyList = new Dictionary<Guid, CrmPluginAssembly>();
+        private CrmEntityDictionary<CrmPluginAssembly> m_assemblyReadOnlyList = null;
         private Exception m_attributeException = null;
         private Dictionary<string, CrmAttribute[]> m_attributeList = new Dictionary<string, CrmAttribute[]>();
-
-        private CrmEntityDictionary<ICrmEntity> m_invalidEntityReadOnlyList = null;
-        private Dictionary<Guid, ICrmEntity> m_invalidEntityList = new Dictionary<Guid, ICrmEntity>();
-
-        #region Entity Lists
-        private CrmEntityDictionary<CrmMessage> m_messageReadOnlyList = null;
-        private Dictionary<Guid, CrmMessage> m_messageList = new Dictionary<Guid, CrmMessage>();
-
-        private CrmEntityDictionary<CrmMessageEntity> m_messageEntityReadOnlyList = null;
-        private Dictionary<Guid, CrmMessageEntity> m_messageEntityList = new Dictionary<Guid, CrmMessageEntity>();
-
-        private CrmEntityDictionary<CrmPluginAssembly> m_assemblyReadOnlyList = null;
-        private Dictionary<Guid, CrmPluginAssembly> m_assemblyList = new Dictionary<Guid, CrmPluginAssembly>();
-
-        private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
-        private Dictionary<Guid, CrmPlugin> m_pluginList = new Dictionary<Guid, CrmPlugin>();
-
-        private CrmEntityDictionary<CrmPluginStep> m_stepReadOnlyList = null;
-        private Dictionary<Guid, CrmPluginStep> m_stepList = new Dictionary<Guid, CrmPluginStep>();
-
-        private CrmEntityDictionary<CrmPluginImage> m_imageReadOnlyList = null;
+        private bool m_connected = false;
+        private CrmUser m_currentUser = null;
+        private string m_friendlyName = null;
         private Dictionary<Guid, CrmPluginImage> m_imageList = new Dictionary<Guid, CrmPluginImage>();
-
-        private CrmEntityDictionary<CrmServiceEndpoint> m_serviceEndpointReadOnlyList = null;
+        private CrmEntityDictionary<CrmPluginImage> m_imageReadOnlyList = null;
+        private Dictionary<Guid, ICrmEntity> m_invalidEntityList = new Dictionary<Guid, ICrmEntity>();
+        private CrmEntityDictionary<ICrmEntity> m_invalidEntityReadOnlyList = null;
+        private Dictionary<Guid, CrmMessageEntity> m_messageEntityList = new Dictionary<Guid, CrmMessageEntity>();
+        private CrmEntityDictionary<CrmMessageEntity> m_messageEntityReadOnlyList = null;
+        private Dictionary<Guid, CrmMessage> m_messageList = new Dictionary<Guid, CrmMessage>();
+        private CrmEntityDictionary<CrmMessage> m_messageReadOnlyList = null;
+        private Guid m_organizationId = Guid.Empty;
+        private volatile IOrganizationService m_organizationService = null;
+        private string m_organizationServiceUrl = null;
+        private Dictionary<Guid, CrmPlugin> m_pluginList = new Dictionary<Guid, CrmPlugin>();
+        private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
+        private Version m_serverBuild = null;
         private Dictionary<Guid, CrmServiceEndpoint> m_serviceEndpointList = new Dictionary<Guid, CrmServiceEndpoint>();
-        
-        #endregion
+        private CrmEntityDictionary<CrmServiceEndpoint> m_serviceEndpointReadOnlyList = null;
+        private Dictionary<Guid, CrmPluginStep> m_stepList = new Dictionary<Guid, CrmPluginStep>();
+        private CrmEntityDictionary<CrmPluginStep> m_stepReadOnlyList = null;
+        private string m_uniqueName = null;
+        private Dictionary<Guid, CrmUser> m_userList = new Dictionary<Guid, CrmUser>();
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmOrganization(ConnectionDetail detail, ProgressIndicator prog)
         {
@@ -89,79 +176,30 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), prog);
         }
 
-        #region Properties
+        #endregion Public Constructors
 
-        [XmlElement(ElementName = "CrmServiceUrl", Type = typeof(string), IsNullable = false)]
-        public string OrganizationServiceUrl
-        {
-            get
-            {
-                return m_organizationServiceUrl;
-            }
-            set
-            {
-                m_organizationServiceUrl = value;
-                m_organizationService = null;
-                m_connected = false;
-            }
-        }
+        #region Public Properties
 
         [XmlIgnore]
-        public string WebApplicationUrl { get; set; }
-
-        [XmlElement(ElementName = "OrganizationId", IsNullable = false)]
-        public Guid OrganizationId
+        public CrmEntityDictionary<CrmPluginAssembly> Assemblies
         {
             get
             {
-                return m_organizationId;
-            }
-            set
-            {
-                m_organizationId = value;
-            }
-        }
-
-        [XmlElement(ElementName = "OrganizationFriendlyName", Type = typeof(string), IsNullable = false)]
-        public string OrganizationFriendlyName
-        {
-            get
-            {
-                return m_friendlyName;
-            }
-            set
-            {
-                m_friendlyName = value;
-            }
-        }
-
-        [XmlElement(ElementName = "OrganizationUniqueName", Type = typeof(string), IsNullable = false)]
-        public string OrganizationUniqueName
-        {
-            get
-            {
-                return m_uniqueName;
-            }
-            set
-            {
-                m_uniqueName = value;
-            }
-        }
-
-        [XmlIgnore]
-        internal IOrganizationService OrganizationService
-        {
-            get
-            {
-                lock (this)
+                if (m_assemblyReadOnlyList == null)
                 {
-                    if (null == m_organizationService)
-                    {
-                        InitializeOrganizationService();
-                    }
-
-                    return m_organizationService;
+                    m_assemblyReadOnlyList = new CrmEntityDictionary<CrmPluginAssembly>(m_assemblyList);
                 }
+
+                return m_assemblyReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
+        public Exception AttributeLoadException
+        {
+            get
+            {
+                return m_attributeException;
             }
         }
 
@@ -187,61 +225,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        [XmlIgnore]
-        public CrmEntityDictionary<CrmServiceEndpoint> ServiceEndpoints
-        {
-            get
-            {
-                if (m_serviceEndpointReadOnlyList == null)
-                {
-                    m_serviceEndpointReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(m_serviceEndpointList);
-                }
-
-                return m_serviceEndpointReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmEntityDictionary<CrmPluginAssembly> Assemblies
-        {
-            get
-            {
-                if (m_assemblyReadOnlyList == null)
-                {
-                    m_assemblyReadOnlyList = new CrmEntityDictionary<CrmPluginAssembly>(m_assemblyList);
-                }
-
-                return m_assemblyReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmEntityDictionary<CrmPlugin> Plugins
-        {
-            get
-            {
-                if (m_pluginReadOnlyList == null)
-                {
-                    m_pluginReadOnlyList = new CrmEntityDictionary<CrmPlugin>(m_pluginList);
-                }
-
-                return m_pluginReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmEntityDictionary<CrmPluginStep> Steps
-        {
-            get
-            {
-                if (m_stepReadOnlyList == null)
-                {
-                    m_stepReadOnlyList = new CrmEntityDictionary<CrmPluginStep>(m_stepList);
-                }
-
-                return m_stepReadOnlyList;
-            }
-        }
+        public ConnectionDetail ConnectionDetail { get; set; }
 
         [XmlIgnore]
         public CrmEntityDictionary<CrmPluginImage> Images
@@ -258,34 +242,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
-        public CrmEntityDictionary<CrmMessage> Messages
-        {
-            get
-            {
-                if (m_messageReadOnlyList == null)
-                {
-                    m_messageReadOnlyList = new CrmEntityDictionary<CrmMessage>(m_messageList);
-                }
-
-                return m_messageReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmEntityDictionary<CrmMessageEntity> MessageEntities
-        {
-            get
-            {
-                if (m_messageEntityReadOnlyList == null)
-                {
-                    m_messageEntityReadOnlyList = new CrmEntityDictionary<CrmMessageEntity>(m_messageEntityList);
-                }
-
-                return m_messageEntityReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
         public CrmEntityDictionary<ICrmEntity> InvalidEntities
         {
             get
@@ -296,43 +252,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 }
 
                 return m_invalidEntityReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmPluginAssembly this[Guid assemblyId]
-        {
-            get
-            {
-                if (Assemblies != null)
-                {
-                    return Assemblies[assemblyId];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        [XmlIgnore]
-        public bool SecureConfigurationPermissionDenied { get; set; }
-
-        [XmlIgnore]
-        public Dictionary<Guid, CrmUser> Users
-        {
-            get
-            {
-                return m_userList;
-            }
-        }
-
-        [XmlIgnore]
-        public Exception AttributeLoadException
-        {
-            get
-            {
-                return m_attributeException;
             }
         }
 
@@ -357,6 +276,171 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
+        public CrmEntityDictionary<CrmMessageEntity> MessageEntities
+        {
+            get
+            {
+                if (m_messageEntityReadOnlyList == null)
+                {
+                    m_messageEntityReadOnlyList = new CrmEntityDictionary<CrmMessageEntity>(m_messageEntityList);
+                }
+
+                return m_messageEntityReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmEntityDictionary<CrmMessage> Messages
+        {
+            get
+            {
+                if (m_messageReadOnlyList == null)
+                {
+                    m_messageReadOnlyList = new CrmEntityDictionary<CrmMessage>(m_messageList);
+                }
+
+                return m_messageReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
+        public ICrmTreeNode[] NodeChildren
+        {
+            get
+            {
+                return new ICrmTreeNode[0];
+            }
+        }
+
+        [XmlIgnore]
+        public Guid NodeId
+        {
+            get
+            {
+                return m_organizationId;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmTreeNodeImageType NodeImageType
+        {
+            get
+            {
+                return CrmTreeNodeImageType.Organization;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmTreeNodeImageType NodeSelectedImageType
+        {
+            get
+            {
+                return CrmTreeNodeImageType.OrganizationSelected;
+            }
+        }
+
+        [XmlIgnore]
+        public string NodeText
+        {
+            get
+            {
+                return m_friendlyName;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmTreeNodeType NodeType
+        {
+            get
+            {
+                return CrmTreeNodeType.Organization;
+            }
+        }
+
+        [XmlIgnore]
+        public string NodeTypeLabel
+        {
+            get
+            {
+                return "Organization";
+            }
+        }
+
+        [XmlElement(ElementName = "OrganizationFriendlyName", Type = typeof(string), IsNullable = false)]
+        public string OrganizationFriendlyName
+        {
+            get
+            {
+                return m_friendlyName;
+            }
+            set
+            {
+                m_friendlyName = value;
+            }
+        }
+
+        [XmlElement(ElementName = "OrganizationId", IsNullable = false)]
+        public Guid OrganizationId
+        {
+            get
+            {
+                return m_organizationId;
+            }
+            set
+            {
+                m_organizationId = value;
+            }
+        }
+
+        [XmlElement(ElementName = "CrmServiceUrl", Type = typeof(string), IsNullable = false)]
+        public string OrganizationServiceUrl
+        {
+            get
+            {
+                return m_organizationServiceUrl;
+            }
+            set
+            {
+                m_organizationServiceUrl = value;
+                m_organizationService = null;
+                m_connected = false;
+            }
+        }
+
+        [XmlElement(ElementName = "OrganizationUniqueName", Type = typeof(string), IsNullable = false)]
+        public string OrganizationUniqueName
+        {
+            get
+            {
+                return m_uniqueName;
+            }
+            set
+            {
+                m_uniqueName = value;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmEntityDictionary<CrmPlugin> Plugins
+        {
+            get
+            {
+                if (m_pluginReadOnlyList == null)
+                {
+                    m_pluginReadOnlyList = new CrmEntityDictionary<CrmPlugin>(m_pluginList);
+                }
+
+                return m_pluginReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmPlugin ProfilerPlugin { get; set; }
+
+        [XmlIgnore]
+        public bool SecureConfigurationPermissionDenied { get; set; }
+
+        [XmlIgnore]
         public Version ServerBuild
         {
             get
@@ -378,160 +462,90 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
-        public CrmPlugin ProfilerPlugin { get; set; }
-        #endregion
-
-        #region Public Helper Methods
-        /// <summary>
-        /// Method that initializes needed variables. This can be done in a thread
-        /// </summary>
-        public void Initialize()
+        public CrmEntityDictionary<CrmServiceEndpoint> ServiceEndpoints
         {
-            lock (this)
+            get
             {
-                if (m_organizationService == null)
+                if (m_serviceEndpointReadOnlyList == null)
                 {
-                    InitializeOrganizationService();
+                    m_serviceEndpointReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(m_serviceEndpointList);
+                }
+
+                return m_serviceEndpointReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
+        public CrmEntityDictionary<CrmPluginStep> Steps
+        {
+            get
+            {
+                if (m_stepReadOnlyList == null)
+                {
+                    m_stepReadOnlyList = new CrmEntityDictionary<CrmPluginStep>(m_stepList);
+                }
+
+                return m_stepReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
+        public Dictionary<Guid, CrmUser> Users
+        {
+            get
+            {
+                return m_userList;
+            }
+        }
+
+        [XmlIgnore]
+        public string WebApplicationUrl { get; set; }
+
+        #endregion Public Properties
+
+        #region Internal Properties
+
+        [XmlIgnore]
+        internal IOrganizationService OrganizationService
+        {
+            get
+            {
+                lock (this)
+                {
+                    if (null == m_organizationService)
+                    {
+                        InitializeOrganizationService();
+                    }
+
+                    return m_organizationService;
                 }
             }
         }
 
-        /// <summary>
-        /// Determines if the attributes for a specific entity have been loaded
-        /// </summary>
-        public bool IsEntityAttributesLoaded(string entityName)
+        #endregion Internal Properties
+
+        #region Public Indexers
+
+        [XmlIgnore]
+        public CrmPluginAssembly this[Guid assemblyId]
         {
-            return m_attributeList.ContainsKey(entityName);
-        }
-
-        /// <summary>
-        /// Retrieves the entity attributes for the specified entity
-        /// </summary>
-        public CrmAttribute[] RetrieveEntityAttributes(string entityName)
-        {
-            if (m_attributeList.ContainsKey(entityName))
+            get
             {
-                return m_attributeList[entityName];
-            }
-            else
-            {
-                throw new ArgumentException("Entity is not loaded", "entityName");
-            }
-        }
-
-        /// <summary>
-        /// Clears all saved entity attributes
-        /// </summary>
-        public void ClearAllEntityAttributes()
-        {
-            m_attributeList.Clear();
-            m_attributeException = null;
-        }
-
-        public void SaveEntityAttributes(string entityName, Exception loadException)
-        {
-            if (loadException == null)
-            {
-                throw new ArgumentNullException("loadException");
-            }
-            else if (entityName == null)
-            {
-                throw new ArgumentNullException("entityName");
-            }
-            else if (m_attributeList.ContainsKey(entityName))
-            {
-                m_attributeList.Remove(entityName);
-            }
-
-            m_attributeException = loadException;
-        }
-
-        /// <summary>
-        /// Save a specific list of attributes for a specific entity
-        /// </summary>
-        public void SaveEntityAttributes(string entityName, CrmAttribute[] attributes)
-        {
-            if (entityName == null)
-            {
-                throw new ArgumentNullException("entityName");
-            }
-            else if (attributes == null)
-            {
-                throw new ArgumentNullException("attributes");
-            }
-
-            if (m_attributeList.ContainsKey(entityName))
-            {
-                m_attributeList[entityName] = attributes;
-            }
-            else
-            {
-                m_attributeList.Add(entityName, attributes);
-            }
-
-            m_attributeException = null;
-        }
-
-        /// <summary>
-        /// Locate the message based on the name of the message
-        /// </summary>
-        /// <param name="messageName">Message to be found</param>
-        /// <returns>CrmMessage if found, null if not</returns>
-        public CrmMessage FindMessage(string messageName)
-        {
-            if (messageName == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-
-            foreach (CrmMessage msg in m_messageList.Values)
-            {
-                if (messageName.Equals(msg.Name, StringComparison.InvariantCultureIgnoreCase))
+                if (Assemblies != null)
                 {
-                    return msg;
+                    return Assemblies[assemblyId];
+                }
+                else
+                {
+                    return null;
                 }
             }
-
-            return null;
         }
 
-        public override string ToString()
-        {
-            return NodeText;
-        }
+        #endregion Public Indexers
 
-        #region Management Methods
-        #region Service End point
-        public void AddServiceEndpoint(CrmServiceEndpoint serviceEndpoint)
-        {
-            if (serviceEndpoint == null)
-            {
-                throw new ArgumentNullException("serviceEndpoint");
-            }
-            if (m_serviceEndpointList.ContainsKey(serviceEndpoint.ServiceEndpointId))
-            {
-                throw new ArgumentException("ServiceEndpoint is already in the list");
-            }
+        #region Public Methods
 
-            m_serviceEndpointList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
-        }
-        public void ClearServiceEndpoints()
-        {
-            m_serviceEndpointList.Clear();
-        }
-        public void RemoveServiceEndpoint(Guid serviceEndpointId)
-        {
-            if (m_serviceEndpointList.ContainsKey(serviceEndpointId))
-            {
-                m_serviceEndpointList.Remove(serviceEndpointId);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid ServiceEndpoint Id", "serviceEndpointId");
-            }
-        }
-        #endregion
-        #region Assembly
         public void AddAssembly(CrmPluginAssembly assembly)
         {
             if (assembly == null)
@@ -550,40 +564,70 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_assemblyList.Add(assembly.AssemblyId, assembly);
         }
 
-        public void ClearAssemblies()
+        public void AddImage(CrmPluginStep step, CrmPluginImage image)
         {
-            m_imageList.Clear();
-            m_stepList.Clear();
-            m_pluginList.Clear();
-            m_assemblyList.Clear();
-        }
-
-        public void RemoveAssembly(Guid assemblyId)
-        {
-            if (m_assemblyList.ContainsKey(assemblyId))
+            if (image == null)
             {
-                CrmPluginAssembly assembly = m_assemblyList[assemblyId];
-
-                //Copy the list of plugins. Can't use the enumerator because we are changing the underlying data
-                Guid[] pluginIdList = new Guid[assembly.Plugins.Count];
-                assembly.Plugins.Keys.CopyTo(pluginIdList, 0);
-
-                //Loop through the plugin id's
-                foreach (Guid pluginId in pluginIdList)
-                {
-                    RemovePlugin(assembly, pluginId);
-                }
-
-                m_assemblyList.Remove(assemblyId);
+                throw new ArgumentNullException("image");
+            }
+            else if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+            else if (!step.Images.ContainsKey(image.ImageId))
+            {
+                step.AddImage(image);
+                return;
             }
             else
             {
-                throw new ArgumentException("Invalid Assembly Id", "assemblyId");
+                ValidateEntity(image);
             }
-        }
-        #endregion
 
-        #region Plugin
+            m_imageList.Add(image.ImageId, image);
+        }
+
+        public void AddMessage(CrmMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException("message");
+            }
+            else if (m_messageList.ContainsKey(message.MessageId))
+            {
+                throw new ArgumentException("Message is already in the list");
+            }
+            else
+            {
+                ValidateEntity(message);
+            }
+
+            m_messageList.Add(message.MessageId, message);
+        }
+
+        public void AddMessageEntity(CrmMessage message, CrmMessageEntity entity)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException("message");
+            }
+            else if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            else if (!message.MessageEntities.ContainsKey(entity.MessageEntityId))
+            {
+                message.AddMessageEntity(entity);
+                return;
+            }
+            else
+            {
+                ValidateEntity(entity);
+            }
+
+            m_messageEntityList.Add(entity.EntityId, entity);
+        }
+
         public void AddPlugin(CrmPluginAssembly assembly, CrmPlugin plugin)
         {
             if (plugin == null)
@@ -605,6 +649,128 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             m_pluginList.Add(plugin.PluginId, plugin);
+        }
+
+        public void AddServiceEndpoint(CrmServiceEndpoint serviceEndpoint)
+        {
+            if (serviceEndpoint == null)
+            {
+                throw new ArgumentNullException("serviceEndpoint");
+            }
+            if (m_serviceEndpointList.ContainsKey(serviceEndpoint.ServiceEndpointId))
+            {
+                throw new ArgumentException("ServiceEndpoint is already in the list");
+            }
+
+            m_serviceEndpointList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
+        }
+
+        public void AddStep(CrmPlugin plugin, CrmPluginStep step)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+            else if (plugin == null)
+            {
+                throw new ArgumentNullException("plugin");
+            }
+            else if (!plugin.Steps.ContainsKey(step.StepId))
+            {
+                plugin.AddStep(step);
+                return;
+            }
+            else
+            {
+                ValidateEntity(step);
+            }
+
+            m_stepList.Add(step.StepId, step);
+        }
+
+        /// <summary>
+        /// Clears all saved entity attributes
+        /// </summary>
+        public void ClearAllEntityAttributes()
+        {
+            m_attributeList.Clear();
+            m_attributeException = null;
+        }
+
+        public void ClearAssemblies()
+        {
+            m_imageList.Clear();
+            m_stepList.Clear();
+            m_pluginList.Clear();
+            m_assemblyList.Clear();
+        }
+
+        public void ClearImages()
+        {
+            ClearImages(Guid.Empty);
+        }
+
+        public void ClearImages(Guid stepId)
+        {
+            CrmPluginImage[] imageList;
+            if (stepId == Guid.Empty)
+            {
+                //Copy the list of images. Can't use the enumerator because we are changing the underlying data
+                imageList = new CrmPluginImage[m_imageList.Count];
+                m_imageList.Values.CopyTo(imageList, 0);
+            }
+            else if (m_stepList.ContainsKey(stepId))
+            {
+                //Copy the list of images. Can't use the enumerator because we are changing the underlying data
+                imageList = m_stepList[stepId].Images.ToArray();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Entity Id", "stepId");
+            }
+
+            //Loop through the image id's
+            foreach (CrmPluginImage image in imageList)
+            {
+                RemoveImage(image.StepId, image.ImageId);
+            }
+        }
+
+        public void ClearMessageEntities()
+        {
+            ClearMessageEntities(Guid.Empty);
+        }
+
+        public void ClearMessageEntities(Guid messageId)
+        {
+            CrmMessageEntity[] entityList;
+            if (messageId == Guid.Empty)
+            {
+                //Copy the list of entities. Can't use the enumerator because we are changing the underlying data
+                entityList = new CrmMessageEntity[m_messageEntityList.Count];
+                m_messageEntityList.Values.CopyTo(entityList, 0);
+            }
+            else if (m_messageList.ContainsKey(messageId))
+            {
+                //Copy the list of entities. Can't use the enumerator because we are changing the underlying data
+                entityList = m_messageList[messageId].MessageEntities.ToArray();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Entity Id", "messageId");
+            }
+
+            //Loop through the entity id's
+            foreach (CrmMessageEntity message in entityList)
+            {
+                RemoveMessageEntity(message.MessageId, message.MessageEntityId);
+            }
+        }
+
+        public void ClearMessages()
+        {
+            m_messageEntityList.Clear();
+            m_messageList.Clear();
         }
 
         public void ClearPlugins()
@@ -638,6 +804,201 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             foreach (CrmPlugin plugin in pluginList)
             {
                 RemovePlugin(plugin.AssemblyId, plugin.PluginId);
+            }
+        }
+
+        public void ClearServiceEndpoints()
+        {
+            m_serviceEndpointList.Clear();
+        }
+
+        public void ClearSteps()
+        {
+            ClearSteps(Guid.Empty);
+        }
+
+        public void ClearSteps(Guid pluginId)
+        {
+            CrmPluginStep[] stepList;
+            if (pluginId == Guid.Empty)
+            {
+                m_imageList.Clear();
+
+                //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
+                stepList = new CrmPluginStep[m_stepList.Count];
+                m_stepList.Values.CopyTo(stepList, 0);
+            }
+            else if (m_pluginList.ContainsKey(pluginId))
+            {
+                //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
+                stepList = m_pluginList[pluginId].Steps.ToArray();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Entity Id", "pluginId");
+            }
+
+            //Loop through the step id's
+            foreach (CrmPluginStep step in stepList)
+            {
+                RemoveStep(step.PluginId, step.StepId);
+            }
+        }
+
+        /// <summary>
+        /// Locate the message based on the name of the message
+        /// </summary>
+        /// <param name="messageName">Message to be found</param>
+        /// <returns>CrmMessage if found, null if not</returns>
+        public CrmMessage FindMessage(string messageName)
+        {
+            if (messageName == null)
+            {
+                throw new ArgumentNullException("message");
+            }
+
+            foreach (CrmMessage msg in m_messageList.Values)
+            {
+                if (messageName.Equals(msg.Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return msg;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Method that initializes needed variables. This can be done in a thread
+        /// </summary>
+        public void Initialize()
+        {
+            lock (this)
+            {
+                if (m_organizationService == null)
+                {
+                    InitializeOrganizationService();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines if the attributes for a specific entity have been loaded
+        /// </summary>
+        public bool IsEntityAttributesLoaded(string entityName)
+        {
+            return m_attributeList.ContainsKey(entityName);
+        }
+
+        public void RemoveAssembly(Guid assemblyId)
+        {
+            if (m_assemblyList.ContainsKey(assemblyId))
+            {
+                CrmPluginAssembly assembly = m_assemblyList[assemblyId];
+
+                //Copy the list of plugins. Can't use the enumerator because we are changing the underlying data
+                Guid[] pluginIdList = new Guid[assembly.Plugins.Count];
+                assembly.Plugins.Keys.CopyTo(pluginIdList, 0);
+
+                //Loop through the plugin id's
+                foreach (Guid pluginId in pluginIdList)
+                {
+                    RemovePlugin(assembly, pluginId);
+                }
+
+                m_assemblyList.Remove(assemblyId);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Assembly Id", "assemblyId");
+            }
+        }
+
+        public void RemoveImage(Guid stepId, Guid imageId)
+        {
+            if (m_stepList.ContainsKey(stepId))
+            {
+                RemoveImage(m_stepList[stepId], imageId);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Entity Id", "stepId");
+            }
+        }
+
+        public void RemoveImage(CrmPluginStep step, Guid imageId)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException("plugin");
+            }
+            else if (step.Images.ContainsKey(imageId))
+            {
+                step.RemoveImage(imageId);
+            }
+            else if (m_imageList.ContainsKey(imageId))
+            {
+                m_imageList.Remove(imageId);
+            }
+            else
+            {
+                throw new ArgumentException("Image is not in list", "step");
+            }
+        }
+
+        public void RemoveMessage(Guid messageId)
+        {
+            if (m_messageList.ContainsKey(messageId))
+            {
+                CrmMessage message = m_messageList[messageId];
+
+                //Copy the list of MessageEntities. Can't use the enumerator because we are changing the underlying data
+                Guid[] entityIdList = new Guid[message.MessageEntities.Count];
+                message.MessageEntities.Keys.CopyTo(entityIdList, 0);
+
+                //Loop through the MessageEntity id's
+                foreach (Guid messageEntityId in entityIdList)
+                {
+                    RemoveMessageEntity(message, messageEntityId);
+                }
+
+                m_messageList.Remove(messageId);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Message Id", "messageId");
+            }
+        }
+
+        public void RemoveMessageEntity(Guid messageId, Guid messageEntityId)
+        {
+            if (m_messageList.ContainsKey(messageId))
+            {
+                RemoveMessageEntity(m_messageList[messageId], messageEntityId);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Entity Id", "messageId");
+            }
+        }
+
+        public void RemoveMessageEntity(CrmMessage message, Guid messageEntityId)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException("message");
+            }
+            else if (message.MessageEntities.ContainsKey(messageEntityId))
+            {
+                message.RemoveMessageEntity(messageEntityId);
+            }
+            else if (m_messageEntityList.ContainsKey(messageEntityId))
+            {
+                m_messageEntityList.Remove(messageEntityId);
+            }
+            else
+            {
+                throw new ArgumentException("MessageEntity is not in list", "messageEntityId");
             }
         }
 
@@ -684,62 +1045,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("Plugin is not in list", "pluginId");
             }
         }
-        #endregion
 
-        #region Step
-        public void AddStep(CrmPlugin plugin, CrmPluginStep step)
+        public void RemoveServiceEndpoint(Guid serviceEndpointId)
         {
-            if (step == null)
+            if (m_serviceEndpointList.ContainsKey(serviceEndpointId))
             {
-                throw new ArgumentNullException("step");
-            }
-            else if (plugin == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-            else if (!plugin.Steps.ContainsKey(step.StepId))
-            {
-                plugin.AddStep(step);
-                return;
+                m_serviceEndpointList.Remove(serviceEndpointId);
             }
             else
             {
-                ValidateEntity(step);
-            }
-
-            m_stepList.Add(step.StepId, step);
-        }
-
-        public void ClearSteps()
-        {
-            ClearSteps(Guid.Empty);
-        }
-
-        public void ClearSteps(Guid pluginId)
-        {
-            CrmPluginStep[] stepList;
-            if (pluginId == Guid.Empty)
-            {
-                m_imageList.Clear();
-
-                //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
-                stepList = new CrmPluginStep[m_stepList.Count];
-                m_stepList.Values.CopyTo(stepList, 0);
-            }
-            else if (m_pluginList.ContainsKey(pluginId))
-            {
-                //Copy the list of steps. Can't use the enumerator because we are changing the underlying data
-                stepList = m_pluginList[pluginId].Steps.ToArray();
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Entity Id", "pluginId");
-            }
-
-            //Loop through the step id's
-            foreach (CrmPluginStep step in stepList)
-            {
-                RemoveStep(step.PluginId, step.StepId);
+                throw new ArgumentException("Invalid ServiceEndpoint Id", "serviceEndpointId");
             }
         }
 
@@ -786,237 +1101,75 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("Step is not in list", "stepId");
             }
         }
-        #endregion
 
-        #region Image
-        public void AddImage(CrmPluginStep step, CrmPluginImage image)
+        /// <summary>
+        /// Retrieves the entity attributes for the specified entity
+        /// </summary>
+        public CrmAttribute[] RetrieveEntityAttributes(string entityName)
         {
-            if (image == null)
+            if (m_attributeList.ContainsKey(entityName))
             {
-                throw new ArgumentNullException("image");
-            }
-            else if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-            else if (!step.Images.ContainsKey(image.ImageId))
-            {
-                step.AddImage(image);
-                return;
+                return m_attributeList[entityName];
             }
             else
             {
-                ValidateEntity(image);
+                throw new ArgumentException("Entity is not loaded", "entityName");
             }
-
-            m_imageList.Add(image.ImageId, image);
         }
 
-        public void ClearImages()
+        public void SaveEntityAttributes(string entityName, Exception loadException)
         {
-            ClearImages(Guid.Empty);
+            if (loadException == null)
+            {
+                throw new ArgumentNullException("loadException");
+            }
+            else if (entityName == null)
+            {
+                throw new ArgumentNullException("entityName");
+            }
+            else if (m_attributeList.ContainsKey(entityName))
+            {
+                m_attributeList.Remove(entityName);
+            }
+
+            m_attributeException = loadException;
         }
 
-        public void ClearImages(Guid stepId)
+        /// <summary>
+        /// Save a specific list of attributes for a specific entity
+        /// </summary>
+        public void SaveEntityAttributes(string entityName, CrmAttribute[] attributes)
         {
-            CrmPluginImage[] imageList;
-            if (stepId == Guid.Empty)
+            if (entityName == null)
             {
-                //Copy the list of images. Can't use the enumerator because we are changing the underlying data
-                imageList = new CrmPluginImage[m_imageList.Count];
-                m_imageList.Values.CopyTo(imageList, 0);
+                throw new ArgumentNullException("entityName");
             }
-            else if (m_stepList.ContainsKey(stepId))
+            else if (attributes == null)
             {
-                //Copy the list of images. Can't use the enumerator because we are changing the underlying data
-                imageList = m_stepList[stepId].Images.ToArray();
+                throw new ArgumentNullException("attributes");
+            }
+
+            if (m_attributeList.ContainsKey(entityName))
+            {
+                m_attributeList[entityName] = attributes;
             }
             else
             {
-                throw new ArgumentException("Invalid Entity Id", "stepId");
+                m_attributeList.Add(entityName, attributes);
             }
 
-            //Loop through the image id's
-            foreach (CrmPluginImage image in imageList)
-            {
-                RemoveImage(image.StepId, image.ImageId);
-            }
+            m_attributeException = null;
         }
 
-        public void RemoveImage(Guid stepId, Guid imageId)
+        public override string ToString()
         {
-            if (m_stepList.ContainsKey(stepId))
-            {
-                RemoveImage(m_stepList[stepId], imageId);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Entity Id", "stepId");
-            }
+            return NodeText;
         }
 
-        public void RemoveImage(CrmPluginStep step, Guid imageId)
-        {
-            if (step == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-            else if (step.Images.ContainsKey(imageId))
-            {
-                step.RemoveImage(imageId);
-            }
-            else if (m_imageList.ContainsKey(imageId))
-            {
-                m_imageList.Remove(imageId);
-            }
-            else
-            {
-                throw new ArgumentException("Image is not in list", "step");
-            }
-        }
-        #endregion
+        #endregion Public Methods
 
-        #region Message
-        public void AddMessage(CrmMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-            else if (m_messageList.ContainsKey(message.MessageId))
-            {
-                throw new ArgumentException("Message is already in the list");
-            }
-            else
-            {
-                ValidateEntity(message);
-            }
+        #region Private Methods
 
-            m_messageList.Add(message.MessageId, message);
-        }
-
-        public void ClearMessages()
-        {
-            m_messageEntityList.Clear();
-            m_messageList.Clear();
-        }
-
-        public void RemoveMessage(Guid messageId)
-        {
-            if (m_messageList.ContainsKey(messageId))
-            {
-                CrmMessage message = m_messageList[messageId];
-
-                //Copy the list of MessageEntities. Can't use the enumerator because we are changing the underlying data
-                Guid[] entityIdList = new Guid[message.MessageEntities.Count];
-                message.MessageEntities.Keys.CopyTo(entityIdList, 0);
-
-                //Loop through the MessageEntity id's
-                foreach (Guid messageEntityId in entityIdList)
-                {
-                    RemoveMessageEntity(message, messageEntityId);
-                }
-
-                m_messageList.Remove(messageId);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Message Id", "messageId");
-            }
-        }
-        #endregion
-
-        #region MessageEntity
-        public void AddMessageEntity(CrmMessage message, CrmMessageEntity entity)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-            else if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
-            else if (!message.MessageEntities.ContainsKey(entity.MessageEntityId))
-            {
-                message.AddMessageEntity(entity);
-                return;
-            }
-            else
-            {
-                ValidateEntity(entity);
-            }
-
-            m_messageEntityList.Add(entity.EntityId, entity);
-        }
-
-        public void ClearMessageEntities()
-        {
-            ClearMessageEntities(Guid.Empty);
-        }
-
-        public void ClearMessageEntities(Guid messageId)
-        {
-            CrmMessageEntity[] entityList;
-            if (messageId == Guid.Empty)
-            {
-                //Copy the list of entities. Can't use the enumerator because we are changing the underlying data
-                entityList = new CrmMessageEntity[m_messageEntityList.Count];
-                m_messageEntityList.Values.CopyTo(entityList, 0);
-            }
-            else if (m_messageList.ContainsKey(messageId))
-            {
-                //Copy the list of entities. Can't use the enumerator because we are changing the underlying data
-                entityList = m_messageList[messageId].MessageEntities.ToArray();
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Entity Id", "messageId");
-            }
-
-            //Loop through the entity id's
-            foreach (CrmMessageEntity message in entityList)
-            {
-                RemoveMessageEntity(message.MessageId, message.MessageEntityId);
-            }
-        }
-
-        public void RemoveMessageEntity(Guid messageId, Guid messageEntityId)
-        {
-            if (m_messageList.ContainsKey(messageId))
-            {
-                RemoveMessageEntity(m_messageList[messageId], messageEntityId);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Entity Id", "messageId");
-            }
-        }
-
-        public void RemoveMessageEntity(CrmMessage message, Guid messageEntityId)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException("message");
-            }
-            else if (message.MessageEntities.ContainsKey(messageEntityId))
-            {
-                message.RemoveMessageEntity(messageEntityId);
-            }
-            else if (m_messageEntityList.ContainsKey(messageEntityId))
-            {
-                m_messageEntityList.Remove(messageEntityId);
-            }
-            else
-            {
-                throw new ArgumentException("MessageEntity is not in list", "messageEntityId");
-            }
-        }
-        #endregion
-        #endregion
-        #endregion
-
-        #region Private Helper Methods
         /// <summary>
         /// Initialize the CrmService
         /// </summary>
@@ -1175,145 +1328,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("MessageEntityId must be set to valid Guid");
             }
         }
-        #endregion */
 
-        #region ICrmTreeNode Members
-        [XmlIgnore]
-        public string NodeText
-        {
-            get
-            {
-                return m_friendlyName;
-            }
-        }
-
-        [XmlIgnore]
-        public Guid NodeId
-        {
-            get
-            {
-                return m_organizationId;
-            }
-        }
-
-        [XmlIgnore]
-        public ICrmTreeNode[] NodeChildren
-        {
-            get
-            {
-                return new ICrmTreeNode[0];
-            }
-        }
-
-        [XmlIgnore]
-        public CrmTreeNodeImageType NodeImageType
-        {
-            get
-            {
-                return CrmTreeNodeImageType.Organization;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmTreeNodeImageType NodeSelectedImageType
-        {
-            get
-            {
-                return CrmTreeNodeImageType.OrganizationSelected;
-            }
-        }
-
-        [XmlIgnore]
-        public CrmTreeNodeType NodeType
-        {
-            get
-            {
-                return CrmTreeNodeType.Organization;
-            }
-        }
-
-        [XmlIgnore]
-        public string NodeTypeLabel
-        {
-            get
-            {
-                return "Organization";
-            }
-        }
-        #endregion
-
-        public ConnectionDetail ConnectionDetail { get; set; }
+        #endregion Private Methods
     }
-
-    #region Public Classes & Enums
-
-
-    #region Public Interfaces
-    public interface IWcfAuthenticationHeader
-    {
-        Guid CallerId { get; set; }
-        string CrmTicket { get; set; }
-        string OrganizationName { get; }
-    }
-    #endregion
-
-    public interface ICrmEntity
-    {
-        bool IsSystemCrmEntity { get; }
-        string EntityType { get; }
-        Guid EntityId { get; }
-        Dictionary<string, object> GenerateCrmEntities();
-        Dictionary<string, object> Values { get; }
-
-        void UpdateDates(DateTime? createdOn, DateTime? modifiedOn);
-    }
-
-    public class CrmEntityColumn
-    {
-        private string m_name;
-        private string m_label;
-        private Type m_type;
-
-        public CrmEntityColumn(string name, string label, Type type)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-
-            m_name = name;
-            m_label = label;
-            m_type = type;
-        }
-
-        public string Name
-        {
-            get
-            {
-                return m_name;
-            }
-        }
-
-        public string Label
-        {
-            get
-            {
-                return m_label;
-            }
-        }
-
-        public Type Type
-        {
-            get
-            {
-                return m_type;
-            }
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
-    #endregion
 }

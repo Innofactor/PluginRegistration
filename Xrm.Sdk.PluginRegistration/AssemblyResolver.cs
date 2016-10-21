@@ -18,14 +18,16 @@
 namespace Xrm.Sdk.PluginRegistration
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     internal static class AssemblyResolver
     {
+        #region Private Fields
+
         /// <summary>
         /// Subdirectories that may contain an assembly (if it can't be located).
         /// </summary>
@@ -36,43 +38,18 @@ namespace Xrm.Sdk.PluginRegistration
         private static readonly string[] AssemblyProbeSubdirectories = new string[] { string.Empty, "amd64", "i386", @"..\..\..\..\..\private\lib" };
 
         /// <summary>
-        /// Contains a list of the assemblies that were resolved via the custom assembly resolve event
-        /// </summary>
-        private static Dictionary<string, Assembly> _resolvedAssemblies = new Dictionary<string, Assembly>();
-
-        /// <summary>
         /// List of base directories that should be checked
         /// </summary>
         private static Collection<string> _baseDirectories = SetLocations();
 
-        private static Collection<string> SetLocations()
-        {
-            var list = new Collection<string>();
-            var location = string.Empty;
+        /// <summary>
+        /// Contains a list of the assemblies that were resolved via the custom assembly resolve event
+        /// </summary>
+        private static Dictionary<string, Assembly> _resolvedAssemblies = new Dictionary<string, Assembly>();
 
-            // Adding current AppDomain location
-            location = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory).ToUpperInvariant();
-            list.Add(location);
+        #endregion Private Fields
 
-            // Searching for plugins in subfolder of current AppDomain location
-            location = Path.Combine(location, "Plugins").ToUpperInvariant();
-
-            // Adding (if different) current working folder location
-            location = Path.GetDirectoryName(Environment.CurrentDirectory).ToUpperInvariant();
-            if (!list.Contains(location))
-            {
-                list.Add(location);
-            }
-
-            // Searching for plugins in subfolder of current working folder location
-            location = Path.Combine(location, "Plugins").ToUpperInvariant();
-            if (!list.Contains(location))
-            {
-                list.Add(location);
-            }
-
-            return list;
-        }
+        #region Internal Methods
 
         /// <summary>
         /// Attaches the resolver to the current app domain
@@ -96,6 +73,10 @@ namespace Xrm.Sdk.PluginRegistration
 
             domain.AssemblyResolve += new ResolveEventHandler(ResolveAssembly);
         }
+
+        #endregion Internal Methods
+
+        #region Private Methods
 
         private static Assembly ResolveAssembly(object sender, ResolveEventArgs args)
         {
@@ -149,5 +130,36 @@ namespace Xrm.Sdk.PluginRegistration
             _resolvedAssemblies[args.Name] = null;
             return null;
         }
+
+        private static Collection<string> SetLocations()
+        {
+            var list = new Collection<string>();
+            var location = string.Empty;
+
+            // Adding current AppDomain location
+            location = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory).ToUpperInvariant();
+            list.Add(location);
+
+            // Searching for plugins in subfolder of current AppDomain location
+            location = Path.Combine(location, "Plugins").ToUpperInvariant();
+
+            // Adding (if different) current working folder location
+            location = Path.GetDirectoryName(Environment.CurrentDirectory).ToUpperInvariant();
+            if (!list.Contains(location))
+            {
+                list.Add(location);
+            }
+
+            // Searching for plugins in subfolder of current working folder location
+            location = Path.Combine(location, "Plugins").ToUpperInvariant();
+            if (!list.Contains(location))
+            {
+                list.Add(location);
+            }
+
+            return list;
+        }
+
+        #endregion Private Methods
     }
 }

@@ -17,21 +17,21 @@
 
 namespace Xrm.Sdk.PluginRegistration.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Reflection;
-    using System.ServiceModel;
+    using Entities;
+    using Entities.Transformation;
     using Microsoft.Crm.Sdk.Messages;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Client;
     using Microsoft.Xrm.Sdk.Messages;
     using Microsoft.Xrm.Sdk.Metadata;
     using Microsoft.Xrm.Sdk.Query;
-    using Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Reflection;
+    using System.ServiceModel;
     using Wrappers;
-    using Entities.Transformation;
 
     public static class OrganizationHelper
     {
@@ -251,7 +251,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
                 loadedCompletely = true;
             }
-
             finally
             {
                 org.Connected = loadedCompletely;
@@ -313,6 +312,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 org.AddServiceEndpoint(new CrmServiceEndpoint(org, serviceEndPoint));
             }
         }
+
         /// <summary>
         /// Retrieves a list of attributes for a specified attribute in a DataTable
         /// </summary>
@@ -354,7 +354,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             foreach (AttributeMetadata att in entityMd.Attributes)
             {
-                // Do not add the child attributes 
+                // Do not add the child attributes
                 // Do not add the attributes that are not valid for Read
                 if (att.IsValidForRead.Value && null == att.AttributeOf)
                 {
@@ -452,7 +452,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 return;
             }
 
-            //Create the base query that will be used       
+            //Create the base query that will be used
 
             string[] colsArray = new string[] { "modifiedon", "createdon" };
             var idCon = new ConditionExpression();
@@ -487,6 +487,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                                 case "createdon":
                                     created = dateValue.Value;
                                     break;
+
                                 case "modifiedon":
                                     modified = dateValue.Value;
                                     break;
@@ -605,6 +606,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 return new System.IO.FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
             }
         }
+
         /// <summary>
         /// Indicates that the step can be exported
         /// </summary>
@@ -623,6 +625,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     case "Microsoft.Crm.ServiceBus.ServiceBusPlugin":
                         return true;
+
                     default:
                         return false;
                 }
@@ -651,6 +654,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     case "Microsoft.Crm.ServiceBus.ServiceBusPlugin":
                         return true;
+
                     default:
                         return false;
                 }
@@ -662,6 +666,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         }
 
         #region Private Helper Methods
+
         private static CrmMessage UpdateMessageProperties(CrmMessage message)
         {
             switch (message.Name)
@@ -670,26 +675,32 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Target, "Assigned Entity"));
                     break;
+
                 case "Create":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Id, "Created Entity"));
                     break;
+
                 case "Delete":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Target, "Deleted Entity"));
                     break;
+
                 case "DeliverIncoming":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.EmailId, "Delivered E-mail Id"));
                     break;
+
                 case "DeliverPromote":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.EmailId, "Delivered E-mail Id"));
                     break;
+
                 case "ExecuteWorkflow":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Target, "Workflow Entity", null));
                     break;
+
                 case "Merge":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Target,
@@ -698,29 +709,35 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                         new ImageMessagePropertyName(ParameterName.SubordinateId,
                         "Child Entity", "Entity that is being merged into the Parent Entity."));
                     break;
+
                 case "Route":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Target, "Routed Entity", null));
                     break;
+
                 case "Send":
                     //This is only applicable for Send message when the entity is e-mail. If the entity is template
                     //or fax, then the parameter should be ParameterName.FaxId or ParameterName.TemplateId
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.EmailId, "Sent Entity Id"));
                     break;
+
                 case "SetState":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.EntityMoniker, "Entity"));
                     break;
+
                 case "SetStateDynamicEntity":
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.EntityMoniker, "Entity"));
                     break;
+
                 case "Update":
                     message.SupportsFilteredAttributes = true;
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Target, "Updated Entity"));
                     break;
+
                 default:
                     //There are no valid message property names for images for any other messages
                     break;
@@ -844,7 +861,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Initialize the map
             bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
             typeList = new Dictionary<Guid, CrmPlugin>();
-            
+
             foreach (var plugin in results.Entities.Select(x => Magic.CastTo<PluginType>(x)))
             {
                 var assembly = org.Assemblies[plugin.PluginAssemblyId.Id];
@@ -994,7 +1011,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 }
             }
 
-            //Looping through each step that is being profiled and mark it with the corresponding "Profiler Step" (plug-in instance of 
+            //Looping through each step that is being profiled and mark it with the corresponding "Profiler Step" (plug-in instance of
             //the Plug-in Profiler that takes the place of the original plug-in) so that it can be rendered correctly in the UI
             foreach (KeyValuePair<Guid, CrmPluginStep> pair in profiledStepList)
             {
@@ -1103,112 +1120,112 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     case ServiceEndpoint.EntityLogicalName:
                         cols.AddColumns(
-                            "name", 
-                            "createdon", 
-                            "modifiedon", 
-                            "serviceendpointid", 
-                            "path", 
-                            "contract", 
-                            "userclaim", 
-                            "solutionnamespace", 
-                            "connectionmode", 
+                            "name",
+                            "createdon",
+                            "modifiedon",
+                            "serviceendpointid",
+                            "path",
+                            "contract",
+                            "userclaim",
+                            "solutionnamespace",
+                            "connectionmode",
                             "description");
                         break;
 
                     case PluginAssembly.EntityLogicalName:
                         cols.AddColumns(
-                            "name", 
-                            "createdon", 
-                            "modifiedon", 
-                            "customizationlevel", 
-                            "pluginassemblyid", 
-                            "sourcetype", 
-                            "path", 
-                            "version", 
-                            "publickeytoken", 
-                            "culture", 
-                            "isolationmode", 
+                            "name",
+                            "createdon",
+                            "modifiedon",
+                            "customizationlevel",
+                            "pluginassemblyid",
+                            "sourcetype",
+                            "path",
+                            "version",
+                            "publickeytoken",
+                            "culture",
+                            "isolationmode",
                             "description");
                         break;
 
                     case PluginType.EntityLogicalName:
                         cols.AddColumns(
-                            "plugintypeid", 
-                            "friendlyname", 
-                            "createdon", 
-                            "modifiedon", 
-                            "customizationlevel", 
-                            "assemblyname", 
-                            "typename", 
-                            "pluginassemblyid", 
-                            "isworkflowactivity", 
-                            "name", 
-                            "description", 
+                            "plugintypeid",
+                            "friendlyname",
+                            "createdon",
+                            "modifiedon",
+                            "customizationlevel",
+                            "assemblyname",
+                            "typename",
+                            "pluginassemblyid",
+                            "isworkflowactivity",
+                            "name",
+                            "description",
                             "workflowactivitygroupname");
                         break;
 
                     case SdkMessage.EntityLogicalName:
                         cols.AddColumns(
-                            "sdkmessageid", 
-                            "createdon", 
-                            "modifiedon", 
-                            "name", 
+                            "sdkmessageid",
+                            "createdon",
+                            "modifiedon",
+                            "name",
                             "customizationlevel");
                         break;
 
                     case SdkMessageFilter.EntityLogicalName:
                         cols.AddColumns(
-                            "sdkmessagefilterid", 
-                            "createdon", 
-                            "modifiedon", 
-                            "sdkmessageid", 
-                            "primaryobjecttypecode", 
-                            "secondaryobjecttypecode", 
-                            "customizationlevel", 
+                            "sdkmessagefilterid",
+                            "createdon",
+                            "modifiedon",
+                            "sdkmessageid",
+                            "primaryobjecttypecode",
+                            "secondaryobjecttypecode",
+                            "customizationlevel",
                             "availability");
                         break;
 
                     case SdkMessageProcessingStep.EntityLogicalName:
                         cols.AddColumns(
-                            "name", 
-                            "mode", 
-                            "customizationlevel", 
-                            "stage", 
-                            "rank", 
+                            "name",
+                            "mode",
+                            "customizationlevel",
+                            "stage",
+                            "rank",
                             "sdkmessageid",
-                            "sdkmessagefilterid", 
-                            "plugintypeid", 
-                            "supporteddeployment", 
-                            "description", 
+                            "sdkmessagefilterid",
+                            "plugintypeid",
+                            "supporteddeployment",
+                            "description",
                             "asyncautodelete",
-                            "impersonatinguserid", 
-                            "configuration", 
+                            "impersonatinguserid",
+                            "configuration",
                             "sdkmessageprocessingstepsecureconfigid",
-                            "statecode", 
-                            "invocationsource", 
-                            "modifiedon", 
-                            "createdon", 
-                            "filteringattributes", 
+                            "statecode",
+                            "invocationsource",
+                            "modifiedon",
+                            "createdon",
+                            "filteringattributes",
                             "eventhandler");
                         break;
 
                     case SdkMessageProcessingStepImage.EntityLogicalName:
                         cols.AddColumns(
-                            "name", 
-                            "attributes", 
-                            "customizationlevel", 
-                            "entityalias", 
-                            "createdon", 
-                            "modifiedon", 
-                            "imagetype", 
-                            "sdkmessageprocessingstepid", 
-                            "messagepropertyname", 
+                            "name",
+                            "attributes",
+                            "customizationlevel",
+                            "entityalias",
+                            "createdon",
+                            "modifiedon",
+                            "imagetype",
+                            "sdkmessageprocessingstepid",
+                            "messagepropertyname",
                             "relatedattributename");
                         break;
 
                     case SdkMessageProcessingStepSecureConfig.EntityLogicalName:
                         cols.AddColumns(
-                            "sdkmessageprocessingstepsecureconfigid", 
+                            "sdkmessageprocessingstepsecureconfigid",
                             "secureconfig");
                         break;
 
@@ -1272,9 +1289,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             WhoAmIResponse resp = (WhoAmIResponse)org.OrganizationService.Execute(new WhoAmIRequest());
             return org.Users[resp.UserId];
         }
-        #endregion
+
+        #endregion Private Helper Methods
 
         #region Private Classes
+
         private static class ParameterName
         {
             public const string EmailId = "EmailId";
@@ -1283,6 +1302,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             public const string SubordinateId = "SubordinateId";
             public const string Target = "Target";
         }
-        #endregion
+
+        #endregion Private Classes
     }
 }

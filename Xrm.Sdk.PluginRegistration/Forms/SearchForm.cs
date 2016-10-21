@@ -24,7 +24,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.Drawing;
     using System.Text;
     using System.Windows.Forms;
-    using Xrm.Sdk.PluginRegistration.Controls;
+    using Controls;
     using Wrappers;
 
     public partial class SearchForm : Form

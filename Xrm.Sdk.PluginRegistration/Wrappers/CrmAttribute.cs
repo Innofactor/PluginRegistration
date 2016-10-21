@@ -17,18 +17,24 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
-    using System;
     using Microsoft.Xrm.Sdk.Metadata;
+    using System;
 
     public sealed class CrmAttribute
     {
-        private string m_schemaName;
-        private string m_friendlyName;
+        #region Private Fields
+
         private AttributeTypeCode m_attributeType;
-        private bool m_validForCreate = false;
-        private bool m_validForUpdate = false;
-        private bool m_validForRead = false;
+        private string m_friendlyName;
         private bool m_isPrimaryId = false;
+        private string m_schemaName;
+        private bool m_validForCreate = false;
+        private bool m_validForRead = false;
+        private bool m_validForUpdate = false;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmAttribute(string schemaName, string friendlyName, AttributeTypeCode type,
             bool validForCreate, bool validForUpdate, bool validForRead, bool isPrimaryId)
@@ -75,20 +81,31 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_isPrimaryId = isPrimaryId;
         }
 
-        #region Properties
-        public string LogicalName
-        {
-            get
-            {
-                return m_schemaName;
-            }
-        }
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public string FriendlyName
         {
             get
             {
                 return m_friendlyName;
+            }
+        }
+
+        public bool IsPrimaryId
+        {
+            get
+            {
+                return m_isPrimaryId;
+            }
+        }
+
+        public string LogicalName
+        {
+            get
+            {
+                return m_schemaName;
             }
         }
 
@@ -108,14 +125,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        public bool ValidForUpdate
-        {
-            get
-            {
-                return m_validForUpdate;
-            }
-        }
-
         public bool ValidForRead
         {
             get
@@ -124,13 +133,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        public bool IsPrimaryId
+        public bool ValidForUpdate
         {
             get
             {
-                return m_isPrimaryId;
+                return m_validForUpdate;
             }
         }
-        #endregion
+
+        #endregion Public Properties
     }
 }

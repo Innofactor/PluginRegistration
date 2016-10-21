@@ -5,8 +5,14 @@
     public sealed class AppDomainContext<T> : IDisposable
         where T : class, new()
     {
-        private AppDomain _domain;
+        #region Private Fields
+
         private bool _disposed;
+        private AppDomain _domain;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public AppDomainContext()
             : this("TemporaryDomain")
@@ -33,12 +39,18 @@
             Proxy = (T)_domain.CreateInstanceFromAndUnwrap(typeof(T).Assembly.Location, typeof(T).FullName);
         }
 
+        #endregion Public Constructors
+
+        #region Private Destructors
+
         ~AppDomainContext()
         {
             Dispose(false);
         }
 
-        #region Properties
+        #endregion Private Destructors
+
+        #region Public Properties
 
         public T Proxy
         {
@@ -46,9 +58,9 @@
             private set;
         }
 
-        #endregion Properties
+        #endregion Public Properties
 
-        #region Methods
+        #region Public Methods
 
         public void Dispose()
         {
@@ -56,7 +68,7 @@
             GC.SuppressFinalize(this);
         }
 
-        #endregion Methods
+        #endregion Public Methods
 
         #region Private Methods
 

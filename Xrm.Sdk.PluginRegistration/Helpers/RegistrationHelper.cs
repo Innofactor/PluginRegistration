@@ -31,30 +31,23 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
     public static class RegistrationHelper
     {
-        /// <summary>
-        /// Extracts all Workflow Activities and Plugins from the Assembly
-        /// </summary>
-        /// <param name="pathToAssembly">Path to the DLL file that is needed to gather information</param>
-        /// <returns>List of Plugins in the Assembly</returns>
-        public static CrmPluginAssembly RetrievePluginsFromAssembly(string pathToAssembly)
-        {
-            using (var context = new AppDomainContext<AssemblyReader>())
-            {
-                return context.Proxy.RetrievePluginsFromAssembly(pathToAssembly);
-            }
-        }
+        #region Public Methods
 
         /// <summary>
-        /// Extracts the properties for the plugin assembly
+        /// Generate the default group name for an activity
         /// </summary>
-        /// <param name="pathToAssembly">Path to the DLL file that is needed to gather information</param>
-        /// <returns>Properties Assembly</returns>
-        public static CrmPluginAssembly RetrieveAssemblyProperties(string pathToAssembly)
+        public static string GenerateDefaultGroupName(string assemblyName, Version version)
         {
-            using (var context = new AppDomainContext<AssemblyReader>())
+            if (string.IsNullOrWhiteSpace(assemblyName))
             {
-                return context.Proxy.RetrieveAssemblyProperties(pathToAssembly);
+                throw new ArgumentNullException("assemblyName");
             }
+            else if (null == version)
+            {
+                throw new ArgumentNullException("version");
+            }
+
+            return string.Format(CultureInfo.InvariantCulture, "{0} ({1})", assemblyName, version);
         }
 
         /// <summary>
@@ -114,25 +107,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         }
 
         /// <summary>
-        /// Generate the default group name for an activity
-        /// </summary>
-        public static string GenerateDefaultGroupName(string assemblyName, Version version)
-        {
-            if (string.IsNullOrWhiteSpace(assemblyName))
-            {
-                throw new ArgumentNullException("assemblyName");
-            }
-            else if (null == version)
-            {
-                throw new ArgumentNullException("version");
-            }
-
-            return string.Format(CultureInfo.InvariantCulture, "{0} ({1})", assemblyName, version);
-        }
-
-        #region Check for Existance Methods
-
-        /// <summary>
         /// Determines if the given TypeName is in use for the given assembly id
         /// </summary>
         /// <param name="org">Organization to check</param>
@@ -173,41 +147,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        #endregion Check for Existance Methods
-
-        #region Registration, Update, Unregister Methods
-
-        public static Guid RegisterServiceEndpoint(CrmOrganization org, CrmServiceEndpoint serviceEndpoint)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (serviceEndpoint == null)
-            {
-                throw new ArgumentNullException("serviceEndpoint");
-            }
-            ServiceEndpoint sep = serviceEndpoint.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
-
-            return org.OrganizationService.Create(sep);
-        }
-
-        public static void UpdateServiceEndpoint(CrmOrganization org, CrmServiceEndpoint serviceEndpoint)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (serviceEndpoint == null)
-            {
-                throw new ArgumentNullException("serviceEndpoint");
-            }
-            ServiceEndpoint sep = serviceEndpoint.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
-
-            org.OrganizationService.Update(sep);
-            OrganizationHelper.RefreshServiceEndpoint(org, serviceEndpoint);
-        }
-
         public static Guid RegisterAssembly(CrmOrganization org, string pathToAssembly, CrmPluginAssembly assembly)
         {
             if (org == null)
@@ -230,405 +169,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             return org.OrganizationService.Create(ptl);
-        }
-
-        /// <summary>
-        /// Assembly is Uploaded if it is database.
-        /// We dont do Smart updates
-        /// </summary>
-        /// <param name="org"></param>
-        /// <param name="pathToAssembly"></param>
-        /// <param name="assembly"></param>
-        public static void UpdateAssembly(CrmOrganization org, string pathToAssembly, CrmPluginAssembly assembly,
-            params PluginType[] type)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (assembly == null)
-            {
-                throw new ArgumentNullException("assembly");
-            }
-
-            PluginAssembly ptl = (PluginAssembly)assembly.GenerateCrmEntities()[PluginAssembly.EntityLogicalName];
-
-            //If the assembly path is not set, then the content does not need to be updated
-            if (!string.IsNullOrEmpty(pathToAssembly) &&
-                assembly.SourceType == CrmAssemblySourceType.Database)
-            {
-                ptl.Content = Convert.ToBase64String(File.ReadAllBytes(pathToAssembly));
-            }
-
-            if (null != type && 0 != type.Length)
-            {
-                ptl.pluginassembly_plugintype = type;
-            }
-
-            org.OrganizationService.Update(ptl);
-            OrganizationHelper.RefreshAssembly(org, assembly);
-        }
-
-        public static void UpdateAssembly(CrmOrganization org, string description, Guid assemblyId)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (assemblyId == Guid.Empty)
-            {
-                throw new ArgumentNullException("assemblyId");
-            }
-
-            // Work around as updating only description is failing with publickeytoken not null
-            PluginAssembly pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)) as PluginAssembly;
-            //PluginAssembly pt1 = new PluginAssembly();
-            pt1.Description = description;
-            org.OrganizationService.Update(pt1);
-        }
-
-        public static Guid RegisterPlugin(CrmOrganization org, CrmPlugin plugin)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (plugin == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-
-            PluginType pt = (PluginType)plugin.GenerateCrmEntities()[PluginType.EntityLogicalName];
-
-            return org.OrganizationService.Create(pt);
-        }
-
-        public static void UpdatePluginFriendlyName(CrmOrganization org, Guid pluginId, string friendlyName)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (pluginId == Guid.Empty)
-            {
-                throw new ArgumentException("Invalid Guid", "pluginId");
-            }
-            else if (friendlyName == null)
-            {
-                //No updates will occur if friendly name is null. Don't need to do anything
-                return;
-            }
-
-            PluginType updatePlugin = new PluginType();
-
-            updatePlugin.PluginTypeId = new Guid?();
-            updatePlugin["plugintypeid"] = pluginId;
-
-            updatePlugin.FriendlyName = friendlyName;
-
-            org.OrganizationService.Update(updatePlugin);
-            return;
-        }
-
-        public static void UpdatePlugin(CrmOrganization org, CrmPlugin plugin)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (plugin == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-
-            PluginType ptl = (PluginType)plugin.GenerateCrmEntities()[PluginType.EntityLogicalName];
-
-            org.OrganizationService.Update(ptl);
-            OrganizationHelper.RefreshPlugin(org, plugin);
-        }
-
-        public static void UpdatePlugin(CrmOrganization org, Guid pluginId, string typeName, string friendlyName)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            if (pluginId == Guid.Empty)
-            {
-                throw new ArgumentException("Invalid Guid", "pluginId");
-            }
-            if (string.IsNullOrEmpty(typeName))
-            {
-                throw new ArgumentException("Invalid typeName", "typeName");
-            }
-
-            if (friendlyName == null)
-            {
-                //No updates will occur if friendly name is null. Don't need to do anything
-                return;
-            }
-
-            PluginType updatePlugin = new PluginType();
-
-            updatePlugin.PluginTypeId = new Guid?();
-            updatePlugin["plugintypeid"] = pluginId;
-
-            updatePlugin.FriendlyName = friendlyName;
-            updatePlugin.TypeName = typeName;
-            org.OrganizationService.Update(updatePlugin);
-            return;
-        }
-
-        public static Guid RegisterStep(CrmOrganization org, CrmPluginStep step)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-
-            Dictionary<string, object> entityList = step.GenerateCrmEntities();
-            SdkMessageProcessingStep sdkStep = (SdkMessageProcessingStep)entityList[SdkMessageProcessingStep.EntityLogicalName];
-
-            //This is a sanity check. The UI won't allow a user to set the secure configuration.
-            if (org.SecureConfigurationPermissionDenied)
-            {
-                sdkStep.Attributes.Remove("sdkmessageprocessingstepsecureconfigid");
-                sdkStep.RelatedEntities.Clear();
-            }
-            else if (entityList.ContainsKey(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
-            {
-                Guid secureConfigId = Guid.NewGuid();
-
-                //Create the related secure config in the related entities
-                SdkMessageProcessingStepSecureConfig sdkSecureConfig =
-                    (SdkMessageProcessingStepSecureConfig)entityList[SdkMessageProcessingStepSecureConfig.EntityLogicalName];
-                sdkSecureConfig.Id = secureConfigId;
-                sdkStep.RelatedEntities[new Relationship(CrmPluginStep.RelationshipStepToSecureConfig)] =
-                    new EntityCollection(new Entity[] { sdkSecureConfig }) { EntityName = sdkSecureConfig.LogicalName };
-                step.SecureConfigurationId = secureConfigId;
-            }
-
-            return org.OrganizationService.Create(sdkStep);
-        }
-
-        public static bool UpdateStep(CrmOrganization org, CrmPluginStep step, Guid? origSecureConfigId,
-            IList<CrmPluginImage> updateImages)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-
-            Dictionary<string, object> entityList = step.GenerateCrmEntities();
-            SdkMessageProcessingStep sdkStep = (SdkMessageProcessingStep)entityList[SdkMessageProcessingStep.EntityLogicalName];
-
-            // Loop through each image and set the new message property
-            List<SdkMessageProcessingStepImage> sdkImages = null;
-            if (null != updateImages)
-            {
-                // Ensure that the given message supports images
-                CrmMessage message = org.Messages[step.MessageId];
-                if (0 == message.ImageMessagePropertyNames.Count && step.Images.Count > 0)
-                {
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture,
-                        "The step has images registered, but the \"{0}\" message doesn't support images.{1}In order to change the message to \"{0}\", delete the existing images.",
-                        message.Name, Environment.NewLine));
-                }
-
-                // Loop through the existing images and update their message property name values
-                sdkImages = new List<SdkMessageProcessingStepImage>(updateImages.Count);
-                foreach (CrmPluginImage image in updateImages)
-                {
-                    // Set the message property name for each of the images
-                    string propertyName = MessagePropertyNameForm.SelectMessagePropertyName(message);
-                    if (string.IsNullOrWhiteSpace(propertyName))
-                    {
-                        return false;
-                    }
-                    else if (string.Equals(image.MessagePropertyName, propertyName, StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    // Create the entity to update the value
-                    SdkMessageProcessingStepImage sdkImage = new SdkMessageProcessingStepImage();
-                    sdkImage.Id = image.ImageId;
-                    sdkImage.MessagePropertyName = propertyName;
-                    sdkImage.EntityState = EntityState.Changed;
-
-                    sdkImages.Add(sdkImage);
-                }
-            }
-
-            //This is a sanity check. The UI won't allow a user to set the secure configuration.
-            if (org.SecureConfigurationPermissionDenied)
-            {
-                sdkStep.Attributes.Remove("sdkmessageprocessingstepsecureconfigid");
-                sdkStep.RelatedEntities.Clear();
-                origSecureConfigId = null;
-            }
-            else if (entityList.ContainsKey(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
-            {
-                if (null == origSecureConfigId)
-                {
-                    entityList.Remove(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName);
-                }
-                else
-                {
-                    SdkMessageProcessingStepSecureConfig sdkSecureConfig =
-                        (SdkMessageProcessingStepSecureConfig)entityList[SdkMessageProcessingStepSecureConfig.EntityLogicalName];
-
-                    Guid secureConfigId;
-                    EntityState secureConfigState;
-                    if (step.SecureConfigurationId == origSecureConfigId && origSecureConfigId.GetValueOrDefault() != Guid.Empty)
-                    {
-                        //Set the ID of the secure configuration to be the
-                        secureConfigId = origSecureConfigId.GetValueOrDefault();
-                        secureConfigState = EntityState.Changed;
-
-                        //Set the original secure config id so that the current id is not deleted
-                        sdkStep.SdkMessageProcessingStepSecureConfigId =
-                            new EntityReference(SdkMessageProcessingStepSecureConfig.EntityLogicalName, secureConfigId);
-                    }
-                    else
-                    {
-                        secureConfigId = Guid.NewGuid();
-                        secureConfigState = EntityState.Created;
-                    }
-
-                    //Set the configuration id for the step
-                    step.SecureConfigurationId = secureConfigId;
-
-                    //Populate the secure configuration object and add it to the related entities
-                    sdkSecureConfig.SdkMessageProcessingStepSecureConfigId = secureConfigId;
-                    sdkSecureConfig.EntityState = secureConfigState;
-
-                    //Update the related entities
-                    sdkStep.sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep = sdkSecureConfig;
-
-                    //Reset the original secure configuration
-                    origSecureConfigId = null;
-                }
-            }
-            else if (null != origSecureConfigId)
-            {
-                // To null out if it was set before
-                sdkStep.SdkMessageProcessingStepSecureConfigId = null;
-                step.SecureConfigurationId = Guid.Empty;
-
-                if (Guid.Empty == origSecureConfigId)
-                {
-                    origSecureConfigId = null;
-                }
-            }
-
-            // If the images need to be updated, there are two possible scenarios:
-            // 1) The step is profiled -- The parent of the image is not the step that is currently being updated
-            //    but rather the profiler step itself. In order to avoid changing this, there will have to be two SDK
-            //    operations (update the step and update the images). Otherwise, the next time the profiled step executes,
-            //    the images won't be present.
-            // 2) The step is not profiled -- The image can be added to the related entities because the parent step is the
-            //    current step being updated.
-            if (null != sdkImages && sdkImages.Count > 0)
-            {
-                if (!step.IsProfiled || step.ProfilerStepId == step.StepId)
-                {
-                    sdkStep.sdkmessageprocessingstepid_sdkmessageprocessingstepimage = sdkImages;
-                }
-            }
-
-            //Update the step
-            org.OrganizationService.Update(sdkStep);
-
-            if (step.IsProfiled && null != sdkImages && sdkImages.Count > 0)
-            {
-                // Update the Profiler step with the new property values as a single transaction to minimize the
-                // possibility of data corruption.
-                SdkMessageProcessingStep profilerStep = new SdkMessageProcessingStep();
-                profilerStep.Id = step.ProfilerStepId.GetValueOrDefault();
-                profilerStep.sdkmessageprocessingstepid_sdkmessageprocessingstepimage = sdkImages;
-                org.OrganizationService.Update(profilerStep);
-            }
-
-            // Refresh the objects so that the caller has up-to-date data
-            OrganizationHelper.RefreshStep(org, step);
-            if (null != updateImages)
-            {
-                foreach (CrmPluginImage image in updateImages)
-                {
-                    OrganizationHelper.RefreshImage(org, image, step);
-                }
-            }
-
-            // Delete the orphaned Secure config when nulling out the value on the step
-            if (null != origSecureConfigId)
-            {
-                org.OrganizationService.Delete(SdkMessageProcessingStepSecureConfig.EntityLogicalName, origSecureConfigId.GetValueOrDefault());
-            }
-
-            return true;
-        }
-
-        public static void UpdateStepStatus(CrmOrganization org, Guid stepId, bool isEnable)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (stepId == Guid.Empty)
-            {
-                throw new ArgumentException("Invalid Guid", "stepId");
-            }
-
-            Microsoft.Crm.Sdk.Messages.SetStateRequest request = new Microsoft.Crm.Sdk.Messages.SetStateRequest();
-            request.EntityMoniker = new EntityReference(SdkMessageProcessingStep.EntityLogicalName, stepId);
-            if (isEnable)
-            {
-                request.State = new OptionSetValue((int)SdkMessageProcessingStepState.Enabled);
-            }
-            else
-            {
-                request.State = new OptionSetValue((int)SdkMessageProcessingStepState.Disabled);
-            }
-            request.Status = new OptionSetValue(-1);
-            org.OrganizationService.Execute(request);
-
-            return;
-        }
-
-        public static void UpdateStepDescription(CrmOrganization org, Guid stepId, string description)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (stepId == Guid.Empty)
-            {
-                throw new ArgumentException("Invalid Guid", "stepId");
-            }
-            else if (description == null)
-            {
-                //No updates will occur if description is null. Don't need to do anything
-                return;
-            }
-
-            SdkMessageProcessingStep updateStep = new SdkMessageProcessingStep();
-
-            updateStep.SdkMessageProcessingStepId = new Guid?();
-            updateStep["sdkmessageprocessingstepid"] = stepId;
-
-            updateStep.Description = description;
-
-            org.OrganizationService.Update(updateStep);
-            return;
         }
 
         public static Guid RegisterImage(CrmOrganization org, CrmPluginImage image)
@@ -673,48 +213,103 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return org.OrganizationService.Create(sdkImage);
         }
 
-        public static void UpdateImage(CrmOrganization org, CrmPluginImage image)
+        public static Guid RegisterPlugin(CrmOrganization org, CrmPlugin plugin)
         {
-            if (null == org)
+            if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
-            else if (null == image)
+            else if (plugin == null)
             {
-                throw new ArgumentNullException("image");
+                throw new ArgumentNullException("plugin");
             }
 
-            UpdateImage(org, image, org[image.AssemblyId][image.PluginId][image.StepId]);
+            PluginType pt = (PluginType)plugin.GenerateCrmEntities()[PluginType.EntityLogicalName];
+
+            return org.OrganizationService.Create(pt);
         }
 
-        public static void UpdateImage(CrmOrganization org, CrmPluginImage image, CrmPluginStep step)
+        public static Guid RegisterServiceEndpoint(CrmOrganization org, CrmServiceEndpoint serviceEndpoint)
         {
-            if (null == org)
+            if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
-            else if (null == image)
+            else if (serviceEndpoint == null)
             {
-                throw new ArgumentNullException("image");
+                throw new ArgumentNullException("serviceEndpoint");
             }
-            else if (null == step)
+            ServiceEndpoint sep = serviceEndpoint.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
+
+            return org.OrganizationService.Create(sep);
+        }
+
+        public static Guid RegisterStep(CrmOrganization org, CrmPluginStep step)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (step == null)
             {
                 throw new ArgumentNullException("step");
             }
 
-            //Retrieve the SDK entity equivalent of the given image
-            Dictionary<string, object> entityList = image.GenerateCrmEntities(step.MessageId, step.MessageEntityId);
-            SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[SdkMessageProcessingStepImage.EntityLogicalName];
+            Dictionary<string, object> entityList = step.GenerateCrmEntities();
+            SdkMessageProcessingStep sdkStep = (SdkMessageProcessingStep)entityList[SdkMessageProcessingStep.EntityLogicalName];
 
-            //If the step that owns this image is a profiled step, the step will be the original step (the step that is being profiled),
-            //not the profiler step. The Profiler step is what should be set on the server, since that is the step that is actually enabled.
-            if (step.IsProfiled && null != sdkImage.SdkMessageProcessingStepId)
+            //This is a sanity check. The UI won't allow a user to set the secure configuration.
+            if (org.SecureConfigurationPermissionDenied)
             {
-                sdkImage.SdkMessageProcessingStepId.Id = step.ProfilerStepId.GetValueOrDefault();
+                sdkStep.Attributes.Remove("sdkmessageprocessingstepsecureconfigid");
+                sdkStep.RelatedEntities.Clear();
+            }
+            else if (entityList.ContainsKey(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
+            {
+                Guid secureConfigId = Guid.NewGuid();
+
+                //Create the related secure config in the related entities
+                SdkMessageProcessingStepSecureConfig sdkSecureConfig =
+                    (SdkMessageProcessingStepSecureConfig)entityList[SdkMessageProcessingStepSecureConfig.EntityLogicalName];
+                sdkSecureConfig.Id = secureConfigId;
+                sdkStep.RelatedEntities[new Relationship(CrmPluginStep.RelationshipStepToSecureConfig)] =
+                    new EntityCollection(new Entity[] { sdkSecureConfig }) { EntityName = sdkSecureConfig.LogicalName };
+                step.SecureConfigurationId = secureConfigId;
             }
 
-            org.OrganizationService.Update(sdkImage);
-            OrganizationHelper.RefreshImage(org, image, step);
+            return org.OrganizationService.Create(sdkStep);
+        }
+
+        /// <summary>
+        /// Extracts the properties for the plugin assembly
+        /// </summary>
+        /// <param name="pathToAssembly">Path to the DLL file that is needed to gather information</param>
+        /// <returns>Properties Assembly</returns>
+        public static CrmPluginAssembly RetrieveAssemblyProperties(string pathToAssembly)
+        {
+            using (var context = new AppDomainContext<AssemblyReader>())
+            {
+                return context.Proxy.RetrieveAssemblyProperties(pathToAssembly);
+            }
+        }
+
+        /// <summary>
+        /// Extracts all Workflow Activities and Plugins from the Assembly
+        /// </summary>
+        /// <param name="pathToAssembly">Path to the DLL file that is needed to gather information</param>
+        /// <returns>List of Plugins in the Assembly</returns>
+        public static CrmPluginAssembly RetrievePluginsFromAssembly(string pathToAssembly)
+        {
+            using (var context = new AppDomainContext<AssemblyReader>())
+            {
+                return context.Proxy.RetrievePluginsFromAssembly(pathToAssembly);
+            }
+        }
+
+        public static List<Guid> RetrieveSecureConfigIdsForStepId(CrmOrganization org, IList<Guid> stepIds)
+        {
+            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
+                "sdkmessageprocessingstepsecureconfigid", "sdkmessageprocessingstepid", stepIds);
         }
 
         /// <summary>
@@ -963,26 +558,437 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return deleteStats;
         }
 
-        public static List<Guid> RetrieveSecureConfigIdsForStepId(CrmOrganization org, IList<Guid> stepIds)
+        /// <summary>
+        /// Assembly is Uploaded if it is database.
+        /// We dont do Smart updates
+        /// </summary>
+        /// <param name="org"></param>
+        /// <param name="pathToAssembly"></param>
+        /// <param name="assembly"></param>
+        public static void UpdateAssembly(CrmOrganization org, string pathToAssembly, CrmPluginAssembly assembly,
+            params PluginType[] type)
         {
-            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
-                "sdkmessageprocessingstepsecureconfigid", "sdkmessageprocessingstepid", stepIds);
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+
+            PluginAssembly ptl = (PluginAssembly)assembly.GenerateCrmEntities()[PluginAssembly.EntityLogicalName];
+
+            //If the assembly path is not set, then the content does not need to be updated
+            if (!string.IsNullOrEmpty(pathToAssembly) &&
+                assembly.SourceType == CrmAssemblySourceType.Database)
+            {
+                ptl.Content = Convert.ToBase64String(File.ReadAllBytes(pathToAssembly));
+            }
+
+            if (null != type && 0 != type.Length)
+            {
+                ptl.pluginassembly_plugintype = type;
+            }
+
+            org.OrganizationService.Update(ptl);
+            OrganizationHelper.RefreshAssembly(org, assembly);
         }
 
-        #endregion Registration, Update, Unregister Methods
-
-        #region Private Helper Methods
-
-        private static List<Guid> RetrieveStepIdsForServiceEndpoint(CrmOrganization org, IList<Guid> serviceEndpointIds)
+        public static void UpdateAssembly(CrmOrganization org, string description, Guid assemblyId)
         {
-            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
-                "sdkmessageprocessingstepid", "eventhandler", serviceEndpointIds);
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (assemblyId == Guid.Empty)
+            {
+                throw new ArgumentNullException("assemblyId");
+            }
+
+            // Work around as updating only description is failing with publickeytoken not null
+            PluginAssembly pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)) as PluginAssembly;
+            //PluginAssembly pt1 = new PluginAssembly();
+            pt1.Description = description;
+            org.OrganizationService.Update(pt1);
         }
 
-        private static List<Guid> RetrieveStepIdsForPlugins(CrmOrganization org, IList<Guid> pluginIds)
+        public static void UpdateImage(CrmOrganization org, CrmPluginImage image)
         {
-            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
-                "sdkmessageprocessingstepid", "plugintypeid", pluginIds);
+            if (null == org)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (null == image)
+            {
+                throw new ArgumentNullException("image");
+            }
+
+            UpdateImage(org, image, org[image.AssemblyId][image.PluginId][image.StepId]);
+        }
+
+        public static void UpdateImage(CrmOrganization org, CrmPluginImage image, CrmPluginStep step)
+        {
+            if (null == org)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (null == image)
+            {
+                throw new ArgumentNullException("image");
+            }
+            else if (null == step)
+            {
+                throw new ArgumentNullException("step");
+            }
+
+            //Retrieve the SDK entity equivalent of the given image
+            Dictionary<string, object> entityList = image.GenerateCrmEntities(step.MessageId, step.MessageEntityId);
+            SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[SdkMessageProcessingStepImage.EntityLogicalName];
+
+            //If the step that owns this image is a profiled step, the step will be the original step (the step that is being profiled),
+            //not the profiler step. The Profiler step is what should be set on the server, since that is the step that is actually enabled.
+            if (step.IsProfiled && null != sdkImage.SdkMessageProcessingStepId)
+            {
+                sdkImage.SdkMessageProcessingStepId.Id = step.ProfilerStepId.GetValueOrDefault();
+            }
+
+            org.OrganizationService.Update(sdkImage);
+            OrganizationHelper.RefreshImage(org, image, step);
+        }
+
+        public static void UpdatePlugin(CrmOrganization org, CrmPlugin plugin)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (plugin == null)
+            {
+                throw new ArgumentNullException("plugin");
+            }
+
+            PluginType ptl = (PluginType)plugin.GenerateCrmEntities()[PluginType.EntityLogicalName];
+
+            org.OrganizationService.Update(ptl);
+            OrganizationHelper.RefreshPlugin(org, plugin);
+        }
+
+        public static void UpdatePlugin(CrmOrganization org, Guid pluginId, string typeName, string friendlyName)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            if (pluginId == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid Guid", "pluginId");
+            }
+            if (string.IsNullOrEmpty(typeName))
+            {
+                throw new ArgumentException("Invalid typeName", "typeName");
+            }
+
+            if (friendlyName == null)
+            {
+                //No updates will occur if friendly name is null. Don't need to do anything
+                return;
+            }
+
+            PluginType updatePlugin = new PluginType();
+
+            updatePlugin.PluginTypeId = new Guid?();
+            updatePlugin["plugintypeid"] = pluginId;
+
+            updatePlugin.FriendlyName = friendlyName;
+            updatePlugin.TypeName = typeName;
+            org.OrganizationService.Update(updatePlugin);
+            return;
+        }
+
+        public static void UpdatePluginFriendlyName(CrmOrganization org, Guid pluginId, string friendlyName)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (pluginId == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid Guid", "pluginId");
+            }
+            else if (friendlyName == null)
+            {
+                //No updates will occur if friendly name is null. Don't need to do anything
+                return;
+            }
+
+            PluginType updatePlugin = new PluginType();
+
+            updatePlugin.PluginTypeId = new Guid?();
+            updatePlugin["plugintypeid"] = pluginId;
+
+            updatePlugin.FriendlyName = friendlyName;
+
+            org.OrganizationService.Update(updatePlugin);
+            return;
+        }
+
+        public static void UpdateServiceEndpoint(CrmOrganization org, CrmServiceEndpoint serviceEndpoint)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (serviceEndpoint == null)
+            {
+                throw new ArgumentNullException("serviceEndpoint");
+            }
+            ServiceEndpoint sep = serviceEndpoint.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
+
+            org.OrganizationService.Update(sep);
+            OrganizationHelper.RefreshServiceEndpoint(org, serviceEndpoint);
+        }
+
+        public static bool UpdateStep(CrmOrganization org, CrmPluginStep step, Guid? origSecureConfigId,
+            IList<CrmPluginImage> updateImages)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+
+            Dictionary<string, object> entityList = step.GenerateCrmEntities();
+            SdkMessageProcessingStep sdkStep = (SdkMessageProcessingStep)entityList[SdkMessageProcessingStep.EntityLogicalName];
+
+            // Loop through each image and set the new message property
+            List<SdkMessageProcessingStepImage> sdkImages = null;
+            if (null != updateImages)
+            {
+                // Ensure that the given message supports images
+                CrmMessage message = org.Messages[step.MessageId];
+                if (0 == message.ImageMessagePropertyNames.Count && step.Images.Count > 0)
+                {
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture,
+                        "The step has images registered, but the \"{0}\" message doesn't support images.{1}In order to change the message to \"{0}\", delete the existing images.",
+                        message.Name, Environment.NewLine));
+                }
+
+                // Loop through the existing images and update their message property name values
+                sdkImages = new List<SdkMessageProcessingStepImage>(updateImages.Count);
+                foreach (CrmPluginImage image in updateImages)
+                {
+                    // Set the message property name for each of the images
+                    string propertyName = MessagePropertyNameForm.SelectMessagePropertyName(message);
+                    if (string.IsNullOrWhiteSpace(propertyName))
+                    {
+                        return false;
+                    }
+                    else if (string.Equals(image.MessagePropertyName, propertyName, StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
+                    // Create the entity to update the value
+                    SdkMessageProcessingStepImage sdkImage = new SdkMessageProcessingStepImage();
+                    sdkImage.Id = image.ImageId;
+                    sdkImage.MessagePropertyName = propertyName;
+                    sdkImage.EntityState = EntityState.Changed;
+
+                    sdkImages.Add(sdkImage);
+                }
+            }
+
+            //This is a sanity check. The UI won't allow a user to set the secure configuration.
+            if (org.SecureConfigurationPermissionDenied)
+            {
+                sdkStep.Attributes.Remove("sdkmessageprocessingstepsecureconfigid");
+                sdkStep.RelatedEntities.Clear();
+                origSecureConfigId = null;
+            }
+            else if (entityList.ContainsKey(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName))
+            {
+                if (null == origSecureConfigId)
+                {
+                    entityList.Remove(Entities.SdkMessageProcessingStepSecureConfig.EntityLogicalName);
+                }
+                else
+                {
+                    SdkMessageProcessingStepSecureConfig sdkSecureConfig =
+                        (SdkMessageProcessingStepSecureConfig)entityList[SdkMessageProcessingStepSecureConfig.EntityLogicalName];
+
+                    Guid secureConfigId;
+                    EntityState secureConfigState;
+                    if (step.SecureConfigurationId == origSecureConfigId && origSecureConfigId.GetValueOrDefault() != Guid.Empty)
+                    {
+                        //Set the ID of the secure configuration to be the
+                        secureConfigId = origSecureConfigId.GetValueOrDefault();
+                        secureConfigState = EntityState.Changed;
+
+                        //Set the original secure config id so that the current id is not deleted
+                        sdkStep.SdkMessageProcessingStepSecureConfigId =
+                            new EntityReference(SdkMessageProcessingStepSecureConfig.EntityLogicalName, secureConfigId);
+                    }
+                    else
+                    {
+                        secureConfigId = Guid.NewGuid();
+                        secureConfigState = EntityState.Created;
+                    }
+
+                    //Set the configuration id for the step
+                    step.SecureConfigurationId = secureConfigId;
+
+                    //Populate the secure configuration object and add it to the related entities
+                    sdkSecureConfig.SdkMessageProcessingStepSecureConfigId = secureConfigId;
+                    sdkSecureConfig.EntityState = secureConfigState;
+
+                    //Update the related entities
+                    sdkStep.sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep = sdkSecureConfig;
+
+                    //Reset the original secure configuration
+                    origSecureConfigId = null;
+                }
+            }
+            else if (null != origSecureConfigId)
+            {
+                // To null out if it was set before
+                sdkStep.SdkMessageProcessingStepSecureConfigId = null;
+                step.SecureConfigurationId = Guid.Empty;
+
+                if (Guid.Empty == origSecureConfigId)
+                {
+                    origSecureConfigId = null;
+                }
+            }
+
+            // If the images need to be updated, there are two possible scenarios:
+            // 1) The step is profiled -- The parent of the image is not the step that is currently being updated
+            //    but rather the profiler step itself. In order to avoid changing this, there will have to be two SDK
+            //    operations (update the step and update the images). Otherwise, the next time the profiled step executes,
+            //    the images won't be present.
+            // 2) The step is not profiled -- The image can be added to the related entities because the parent step is the
+            //    current step being updated.
+            if (null != sdkImages && sdkImages.Count > 0)
+            {
+                if (!step.IsProfiled || step.ProfilerStepId == step.StepId)
+                {
+                    sdkStep.sdkmessageprocessingstepid_sdkmessageprocessingstepimage = sdkImages;
+                }
+            }
+
+            //Update the step
+            org.OrganizationService.Update(sdkStep);
+
+            if (step.IsProfiled && null != sdkImages && sdkImages.Count > 0)
+            {
+                // Update the Profiler step with the new property values as a single transaction to minimize the
+                // possibility of data corruption.
+                SdkMessageProcessingStep profilerStep = new SdkMessageProcessingStep();
+                profilerStep.Id = step.ProfilerStepId.GetValueOrDefault();
+                profilerStep.sdkmessageprocessingstepid_sdkmessageprocessingstepimage = sdkImages;
+                org.OrganizationService.Update(profilerStep);
+            }
+
+            // Refresh the objects so that the caller has up-to-date data
+            OrganizationHelper.RefreshStep(org, step);
+            if (null != updateImages)
+            {
+                foreach (CrmPluginImage image in updateImages)
+                {
+                    OrganizationHelper.RefreshImage(org, image, step);
+                }
+            }
+
+            // Delete the orphaned Secure config when nulling out the value on the step
+            if (null != origSecureConfigId)
+            {
+                org.OrganizationService.Delete(SdkMessageProcessingStepSecureConfig.EntityLogicalName, origSecureConfigId.GetValueOrDefault());
+            }
+
+            return true;
+        }
+
+        public static void UpdateStepDescription(CrmOrganization org, Guid stepId, string description)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (stepId == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid Guid", "stepId");
+            }
+            else if (description == null)
+            {
+                //No updates will occur if description is null. Don't need to do anything
+                return;
+            }
+
+            SdkMessageProcessingStep updateStep = new SdkMessageProcessingStep();
+
+            updateStep.SdkMessageProcessingStepId = new Guid?();
+            updateStep["sdkmessageprocessingstepid"] = stepId;
+
+            updateStep.Description = description;
+
+            org.OrganizationService.Update(updateStep);
+            return;
+        }
+
+        public static void UpdateStepStatus(CrmOrganization org, Guid stepId, bool isEnable)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (stepId == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid Guid", "stepId");
+            }
+
+            Microsoft.Crm.Sdk.Messages.SetStateRequest request = new Microsoft.Crm.Sdk.Messages.SetStateRequest();
+            request.EntityMoniker = new EntityReference(SdkMessageProcessingStep.EntityLogicalName, stepId);
+            if (isEnable)
+            {
+                request.State = new OptionSetValue((int)SdkMessageProcessingStepState.Enabled);
+            }
+            else
+            {
+                request.State = new OptionSetValue((int)SdkMessageProcessingStepState.Disabled);
+            }
+            request.Status = new OptionSetValue(-1);
+            org.OrganizationService.Execute(request);
+
+            return;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static object[] ConvertIdArrayToObjectArray(IList<Guid> idList)
+        {
+            if (idList == null)
+            {
+                return null;
+            }
+
+            List<object> newIdList = new List<object>();
+            if (idList != null && idList.Count != 0)
+            {
+                foreach (Guid id in idList)
+                {
+                    if (id != Guid.Empty)
+                    {
+                        newIdList.Add(id);
+                    }
+                }
+            }
+
+            return newIdList.ToArray();
         }
 
         private static List<Guid> RetrieveImageIdsForStepId(CrmOrganization org, IList<Guid> stepIds)
@@ -1076,28 +1082,18 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return resultList;
         }
 
-        private static object[] ConvertIdArrayToObjectArray(IList<Guid> idList)
+        private static List<Guid> RetrieveStepIdsForPlugins(CrmOrganization org, IList<Guid> pluginIds)
         {
-            if (idList == null)
-            {
-                return null;
-            }
-
-            List<object> newIdList = new List<object>();
-            if (idList != null && idList.Count != 0)
-            {
-                foreach (Guid id in idList)
-                {
-                    if (id != Guid.Empty)
-                    {
-                        newIdList.Add(id);
-                    }
-                }
-            }
-
-            return newIdList.ToArray();
+            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
+                "sdkmessageprocessingstepid", "plugintypeid", pluginIds);
         }
 
-        #endregion Private Helper Methods
+        private static List<Guid> RetrieveStepIdsForServiceEndpoint(CrmOrganization org, IList<Guid> serviceEndpointIds)
+        {
+            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
+                "sdkmessageprocessingstepid", "eventhandler", serviceEndpointIds);
+        }
+
+        #endregion Private Methods
     }
 }

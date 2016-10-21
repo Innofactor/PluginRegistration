@@ -17,13 +17,14 @@
 
 namespace Xrm.Sdk.PluginRegistration
 {
-    using System;
-    using System.Reflection;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Query;
+    using System;
 
     public static class OrganizationServiceExtensions
     {
+        #region Public Methods
+
         /// <summary>
         /// Retrieves all pages for a given query
         /// </summary>
@@ -69,5 +70,7 @@ namespace Xrm.Sdk.PluginRegistration
 
             return fullResults;
         }
+
+        #endregion Public Methods
     }
 }

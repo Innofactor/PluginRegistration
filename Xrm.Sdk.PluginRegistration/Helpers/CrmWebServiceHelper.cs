@@ -22,21 +22,13 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
     internal static class CrmWebServiceHelper
     {
+        #region Private Fields
+
         private volatile static List<Thread> m_threadList = new List<Thread>(2);
 
-        public static void InitializeWebServices()
-        {
-            lock (m_threadList)
-            {
-                m_threadList.Add(new Thread(new ThreadStart(InitializeCrmService)));
-                m_threadList.Add(new Thread(new ThreadStart(InitializeDiscoveryService)));
+        #endregion Private Fields
 
-                for (int i = 0; i < m_threadList.Count; i++)
-                {
-                    m_threadList[i].Start();
-                }
-            }
-        }
+        #region Public Methods
 
         public static void CancelInitialization()
         {
@@ -52,7 +44,24 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
+        public static void InitializeWebServices()
+        {
+            lock (m_threadList)
+            {
+                m_threadList.Add(new Thread(new ThreadStart(InitializeCrmService)));
+                m_threadList.Add(new Thread(new ThreadStart(InitializeDiscoveryService)));
+
+                for (int i = 0; i < m_threadList.Count; i++)
+                {
+                    m_threadList[i].Start();
+                }
+            }
+        }
+
+        #endregion Public Methods
+
         #region Private Methods
+
         private static void InitializeCrmService()
         {
             //Microsoft.Xrm.Sdk.IOrganizationService service = new Microsoft.Xrm.Sdk.IOrganizationService();
@@ -62,6 +71,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         {
             //Microsoft.Xrm.Sdk.Discovery.IDiscoveryService service = new Microsoft.Xrm.Sdk.Discovery.IDiscoveryService();
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

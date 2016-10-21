@@ -23,9 +23,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.IO;
     using System.Windows.Forms;
     using Microsoft.Xrm.Sdk;
-    using Xrm.Sdk.PluginRegistration.Controls;
+    using Controls;
     using Entities;
-    using Xrm.Sdk.PluginRegistration.Helpers;
+    using Helpers;
     using Wrappers;
     using System.Threading.Tasks;
 

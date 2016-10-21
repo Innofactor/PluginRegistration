@@ -17,31 +17,45 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Entities;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Text;
     using System.Xml.Serialization;
-    using Microsoft.Xrm.Sdk;
-    using Xrm.Sdk.PluginRegistration.Controls;
-    using Entities;
+    using Controls;
+
+    public enum CrmPluginImageType
+    {
+        PreImage = 0,
+        PostImage = 1,
+        Both = 2
+    }
 
     public sealed class CrmPluginImage : ICrmEntity, ICrmTreeNode, ICloneable
     {
-        private CrmOrganization m_org;
+        #region Private Fields
+
+        private static CrmEntityColumn[] m_entityColumns = null;
         private Guid m_assemblyId = Guid.Empty;
-        private Guid m_pluginId = Guid.Empty;
-        private Guid m_stepId = Guid.Empty;
-        private Guid m_imageId = Guid.Empty;
         private string m_attributes = null;
+        private DateTime? m_createdOn = null;
+        private int m_customizationLevel = 1;
         private string m_entityAlias = null;
-        private string m_relatedAttribute = null;
-        private CrmPluginImageType m_type = CrmPluginImageType.PostImage;
+        private Guid m_imageId = Guid.Empty;
+        private DateTime? m_modifiedOn = null;
+        private CrmOrganization m_org;
+        private Guid m_pluginId = Guid.Empty;
         private string m_propertyName;
         private string m_propertyTitle = null;
-        private DateTime? m_createdOn = null;
-        private DateTime? m_modifiedOn = null;
-        private int m_customizationLevel = 1;
+        private string m_relatedAttribute = null;
+        private Guid m_stepId = Guid.Empty;
+        private CrmPluginImageType m_type = CrmPluginImageType.PostImage;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmPluginImage(CrmOrganization org)
         {
@@ -72,28 +86,27 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             RefreshFromSdkMessageProcessingStepImage(assemblyId, pluginId, image);
         }
 
-        #region Properties
-        [Browsable(false)]
-        public CrmOrganization Organization
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        [XmlIgnore]
+        public static CrmEntityColumn[] Columns
         {
             get
             {
-                return m_org;
-            }
-            set
-            {
-                if (value == null)
+                if (m_entityColumns == null)
                 {
-                    throw new ArgumentNullException();
+                    m_entityColumns = new CrmEntityColumn[] {
+                        new CrmEntityColumn("Name", "Name", typeof(string)),
+                        new CrmEntityColumn("EntityAlias", "Entity Alias", typeof(string)),
+                        new CrmEntityColumn("Type", "Image Type", typeof(string)),
+                        new CrmEntityColumn("Attributes", "Attributes", typeof(string)),
+                        new CrmEntityColumn("PropertyName", "Property Name", typeof(string)) ,
+                        new CrmEntityColumn("Id", "ImageId", typeof(Guid))};
                 }
-                else if (m_org == null)
-                {
-                    m_org = value;
-                }
-                else
-                {
-                    throw new NotSupportedException("Cannot change the Organization once it has been set");
-                }
+
+                return m_entityColumns;
             }
         }
 
@@ -112,48 +125,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
-        public Guid PluginId
-        {
-            get
-            {
-                return m_pluginId;
-            }
-
-            set
-            {
-                m_pluginId = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public Guid StepId
-        {
-            get
-            {
-                return m_stepId;
-            }
-
-            set
-            {
-                m_stepId = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public Guid ImageId
-        {
-            get
-            {
-                return m_imageId;
-            }
-
-            set
-            {
-                m_imageId = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Attributes
         {
             get
@@ -167,12 +138,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string Name
-        {
-            get;
-            set;
-        }
         /// <summary>
         /// Retrieves the Created On date of the entity. To update, see UpdateDates.
         /// </summary>
@@ -182,78 +147,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 return m_createdOn;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
-        /// </summary>
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public DateTime? ModifiedOn
-        {
-            get
-            {
-                return m_modifiedOn;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string RelatedAttribute
-        {
-            get
-            {
-                return m_relatedAttribute;
-            }
-
-            set
-            {
-                m_relatedAttribute = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string EntityAlias
-        {
-            get
-            {
-                return m_entityAlias;
-            }
-
-            set
-            {
-                m_entityAlias = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmPluginImageType ImageType
-        {
-            get
-            {
-                return m_type;
-            }
-
-            set
-            {
-                m_type = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string MessagePropertyName
-        {
-            get
-            {
-                return m_propertyName;
-            }
-
-            set
-            {
-                if (!string.Equals(m_propertyName, value))
-                {
-                    m_propertyName = value;
-                    m_propertyTitle = null;
-                }
             }
         }
 
@@ -275,93 +168,156 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 m_customizationLevel = value;
             }
         }
-        #endregion
 
-        #region Public Helper Methods
-        public void RefreshFromSdkMessageProcessingStepImage(Guid assemblyId, Guid pluginId, SdkMessageProcessingStepImage image)
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string EntityAlias
         {
-            if (image == null)
+            get
             {
-                throw new ArgumentNullException("image");
+                return m_entityAlias;
             }
 
-            AssemblyId = assemblyId;
-            PluginId = pluginId;
-
-            if (image.SdkMessageProcessingStepImageId != null)
+            set
             {
-                ImageId = image.SdkMessageProcessingStepImageId.Value;
+                m_entityAlias = value;
             }
-
-            if (image.Attributes != null)
-            {
-                Attributes = image.Attributes1;
-            }
-
-            if (image.EntityAlias != null)
-            {
-                EntityAlias = image.EntityAlias;
-            }
-
-            if (image.MessagePropertyName != null)
-            {
-                MessagePropertyName = image.MessagePropertyName;
-            }
-
-            if (image.RelatedAttributeName != null)
-            {
-                RelatedAttribute = image.RelatedAttributeName;
-            }
-
-            if (image.SdkMessageProcessingStepId != null)
-            {
-                StepId = image.SdkMessageProcessingStepId.Id;
-            }
-
-            if (image.ImageType != null)
-            {
-                ImageType = (CrmPluginImageType)Enum.ToObject(typeof(CrmPluginImageType), image.ImageType.Value);
-            }
-
-            if (image.CustomizationLevel != null)
-            {
-                m_customizationLevel = image.CustomizationLevel.Value;
-            }
-
-            if (image.CreatedOn != null && (image.CreatedOn.HasValue))
-            {
-                m_createdOn = image.CreatedOn.Value;
-            }
-
-            if (image.ModifiedOn != null && (image.ModifiedOn.HasValue))
-            {
-                m_modifiedOn = image.ModifiedOn.Value;
-            }
-
-            Name = image.Name;
         }
 
-        public override string ToString()
+        [XmlIgnore]
+        [Browsable(false)]
+        public Guid EntityId
         {
-            return NodeText;
-        }
-        #endregion
-
-        #region Private Helper Methods
-        private string ConvertNullStringToEmpty(string val)
-        {
-            if (string.IsNullOrEmpty(val))
+            get
             {
-                return string.Empty;
-            }
-            else
-            {
-                return val;
+                return m_imageId;
             }
         }
-        #endregion
 
-        #region ICrmTreeNode Members
+        [XmlIgnore]
+        [Browsable(false)]
+        public string EntityType
+        {
+            get
+            {
+                return SdkMessageProcessingStepImage.EntityLogicalName;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public Guid ImageId
+        {
+            get
+            {
+                return m_imageId;
+            }
+
+            set
+            {
+                m_imageId = value;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmPluginImageType ImageType
+        {
+            get
+            {
+                return m_type;
+            }
+
+            set
+            {
+                m_type = value;
+            }
+        }
+
+        [XmlIgnore]
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public bool IsSystemCrmEntity
+        {
+            get
+            {
+                return CustomizationLevel == 0;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string MessagePropertyName
+        {
+            get
+            {
+                return m_propertyName;
+            }
+
+            set
+            {
+                if (!string.Equals(m_propertyName, value))
+                {
+                    m_propertyName = value;
+                    m_propertyTitle = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
+        /// </summary>
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public DateTime? ModifiedOn
+        {
+            get
+            {
+                return m_modifiedOn;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public ICrmTreeNode[] NodeChildren
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Guid NodeId
+        {
+            get
+            {
+                return m_imageId;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeImageType
+        {
+            get
+            {
+                return CrmTreeNodeImageType.Image;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeSelectedImageType
+        {
+            get
+            {
+                return CrmTreeNodeImageType.ImageSelected;
+            }
+        }
+
         [XmlIgnore]
         [Browsable(false)]
         public string NodeText
@@ -384,12 +340,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     case CrmPluginImageType.PreImage:
                         imageLabel = "Pre Image";
                         break;
+
                     case CrmPluginImageType.PostImage:
                         imageLabel = "Post Image";
                         break;
+
                     case CrmPluginImageType.Both:
                         imageLabel = "Pre & Post Image";
                         break;
+
                     default:
                         throw new NotImplementedException("ImageType = " + ImageType.ToString());
                 }
@@ -418,7 +377,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                             messageId = messageEntity.MessageId;
                             primaryEntity = messageEntity.PrimaryEntity;
                         }
-
 
                         m_propertyTitle = string.Empty;
 
@@ -469,46 +427,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [XmlIgnore]
         [Browsable(false)]
-        public Guid NodeId
-        {
-            get
-            {
-                return m_imageId;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeImageType
-        {
-            get
-            {
-                return CrmTreeNodeImageType.Image;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeSelectedImageType
-        {
-            get
-            {
-                return CrmTreeNodeImageType.ImageSelected;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
         public CrmTreeNodeType NodeType
         {
             get
@@ -526,27 +444,155 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 return "Image";
             }
         }
-        #endregion
 
-        #region ICrmEntity Members
-        [XmlIgnore]
         [Browsable(false)]
-        public string EntityType
+        public CrmOrganization Organization
         {
             get
             {
-                return SdkMessageProcessingStepImage.EntityLogicalName;
+                return m_org;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                else if (m_org == null)
+                {
+                    m_org = value;
+                }
+                else
+                {
+                    throw new NotSupportedException("Cannot change the Organization once it has been set");
+                }
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public Guid PluginId
+        {
+            get
+            {
+                return m_pluginId;
+            }
+
+            set
+            {
+                m_pluginId = value;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string RelatedAttribute
+        {
+            get
+            {
+                return m_relatedAttribute;
+            }
+
+            set
+            {
+                m_relatedAttribute = value;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public Guid StepId
+        {
+            get
+            {
+                return m_stepId;
+            }
+
+            set
+            {
+                m_stepId = value;
             }
         }
 
         [XmlIgnore]
         [Browsable(false)]
-        public Guid EntityId
+        public Dictionary<string, object> Values
         {
             get
             {
-                return m_imageId;
+                Dictionary<string, object> valueList = new Dictionary<string, object>();
+                valueList.Add("Id", ImageId);
+                valueList.Add("Name", String.IsNullOrEmpty(Name) ? string.Empty : Name);
+                valueList.Add("EntityAlias", EntityAlias);
+                valueList.Add("PropertyName", MessagePropertyName);
+
+                if (string.IsNullOrEmpty(Attributes))
+                {
+                    valueList.Add("Attributes", "All Attributes");
+                }
+                else
+                {
+                    valueList.Add("Attributes", Attributes);
+                }
+
+                switch (ImageType)
+                {
+                    case CrmPluginImageType.PreImage:
+
+                        valueList.Add("Type", "Pre Image");
+                        break;
+
+                    case CrmPluginImageType.PostImage:
+
+                        valueList.Add("Type", "Post Image");
+                        break;
+
+                    case CrmPluginImageType.Both:
+
+                        valueList.Add("Type", "Pre & Post Image");
+                        break;
+
+                    default:
+                        throw new NotImplementedException("ImageType = " + ImageType.ToString());
+                }
+
+                return valueList;
             }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public object Clone()
+        {
+            return Clone(true);
+        }
+
+        public CrmPluginImage Clone(bool includeOrganization)
+        {
+            CrmPluginImage newImage;
+            if (includeOrganization)
+            {
+                newImage = new CrmPluginImage(m_org);
+            }
+            else
+            {
+                newImage = new CrmPluginImage(null);
+            }
+
+            newImage.m_assemblyId = m_assemblyId;
+            newImage.m_attributes = m_attributes;
+            newImage.m_createdOn = m_createdOn;
+            newImage.m_customizationLevel = m_customizationLevel;
+            newImage.m_entityAlias = m_entityAlias;
+            newImage.m_imageId = m_imageId;
+            newImage.m_modifiedOn = m_modifiedOn;
+            newImage.m_pluginId = m_pluginId;
+            newImage.m_propertyName = m_propertyName;
+            newImage.m_propertyTitle = m_propertyTitle;
+            newImage.m_relatedAttribute = m_relatedAttribute;
+            newImage.m_stepId = m_stepId;
+            newImage.m_type = m_type;
+
+            return newImage;
         }
 
         public Dictionary<string, object> GenerateCrmEntities()
@@ -615,79 +661,73 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             return entityList;
         }
-        private static CrmEntityColumn[] m_entityColumns = null;
-        [XmlIgnore]
-        public static CrmEntityColumn[] Columns
-        {
-            get
-            {
-                if (m_entityColumns == null)
-                {
-                    m_entityColumns = new CrmEntityColumn[] { 
-                        new CrmEntityColumn("Name", "Name", typeof(string)),
-                        new CrmEntityColumn("EntityAlias", "Entity Alias", typeof(string)),
-                        new CrmEntityColumn("Type", "Image Type", typeof(string)),
-                        new CrmEntityColumn("Attributes", "Attributes", typeof(string)),
-                        new CrmEntityColumn("PropertyName", "Property Name", typeof(string)) ,
-                        new CrmEntityColumn("Id", "ImageId", typeof(Guid))};
-                }
 
-                return m_entityColumns;
+        public void RefreshFromSdkMessageProcessingStepImage(Guid assemblyId, Guid pluginId, SdkMessageProcessingStepImage image)
+        {
+            if (image == null)
+            {
+                throw new ArgumentNullException("image");
             }
+
+            AssemblyId = assemblyId;
+            PluginId = pluginId;
+
+            if (image.SdkMessageProcessingStepImageId != null)
+            {
+                ImageId = image.SdkMessageProcessingStepImageId.Value;
+            }
+
+            if (image.Attributes != null)
+            {
+                Attributes = image.Attributes1;
+            }
+
+            if (image.EntityAlias != null)
+            {
+                EntityAlias = image.EntityAlias;
+            }
+
+            if (image.MessagePropertyName != null)
+            {
+                MessagePropertyName = image.MessagePropertyName;
+            }
+
+            if (image.RelatedAttributeName != null)
+            {
+                RelatedAttribute = image.RelatedAttributeName;
+            }
+
+            if (image.SdkMessageProcessingStepId != null)
+            {
+                StepId = image.SdkMessageProcessingStepId.Id;
+            }
+
+            if (image.ImageType != null)
+            {
+                ImageType = (CrmPluginImageType)Enum.ToObject(typeof(CrmPluginImageType), image.ImageType.Value);
+            }
+
+            if (image.CustomizationLevel != null)
+            {
+                m_customizationLevel = image.CustomizationLevel.Value;
+            }
+
+            if (image.CreatedOn != null && (image.CreatedOn.HasValue))
+            {
+                m_createdOn = image.CreatedOn.Value;
+            }
+
+            if (image.ModifiedOn != null && (image.ModifiedOn.HasValue))
+            {
+                m_modifiedOn = image.ModifiedOn.Value;
+            }
+
+            Name = image.Name;
         }
 
-        [XmlIgnore]
-        [Browsable(false)]
-        public Dictionary<string, object> Values
+        public override string ToString()
         {
-            get
-            {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", ImageId);
-                valueList.Add("Name", String.IsNullOrEmpty(Name) ? string.Empty : Name);
-                valueList.Add("EntityAlias", EntityAlias);
-                valueList.Add("PropertyName", MessagePropertyName);
-
-                if (string.IsNullOrEmpty(Attributes))
-                {
-                    valueList.Add("Attributes", "All Attributes");
-                }
-                else
-                {
-                    valueList.Add("Attributes", Attributes);
-                }
-
-                switch (ImageType)
-                {
-                    case CrmPluginImageType.PreImage:
-
-                        valueList.Add("Type", "Pre Image");
-                        break;
-                    case CrmPluginImageType.PostImage:
-
-                        valueList.Add("Type", "Post Image");
-                        break;
-
-                    case CrmPluginImageType.Both:
-
-                        valueList.Add("Type", "Pre & Post Image");
-                        break;
-                    default:
-                        throw new NotImplementedException("ImageType = " + ImageType.ToString());
-                }
-
-                return valueList;
-            }
-        }
-
-        [XmlIgnore]
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public bool IsSystemCrmEntity
-        {
-            get
-            {
-                return CustomizationLevel == 0;
-            }
+            return NodeText;
         }
 
         public void UpdateDates(DateTime? createdOn, DateTime? modifiedOn)
@@ -702,49 +742,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 m_modifiedOn = modifiedOn;
             }
         }
-        #endregion
 
-        #region ICloneable Members
-        public object Clone()
-        {
-            return Clone(true);
-        }
+        #endregion Public Methods
 
-        public CrmPluginImage Clone(bool includeOrganization)
+        #region Private Methods
+
+        private string ConvertNullStringToEmpty(string val)
         {
-            CrmPluginImage newImage;
-            if (includeOrganization)
+            if (string.IsNullOrEmpty(val))
             {
-                newImage = new CrmPluginImage(m_org);
+                return string.Empty;
             }
             else
             {
-                newImage = new CrmPluginImage(null);
+                return val;
             }
-
-            newImage.m_assemblyId = m_assemblyId;
-            newImage.m_attributes = m_attributes;
-            newImage.m_createdOn = m_createdOn;
-            newImage.m_customizationLevel = m_customizationLevel;
-            newImage.m_entityAlias = m_entityAlias;
-            newImage.m_imageId = m_imageId;
-            newImage.m_modifiedOn = m_modifiedOn;
-            newImage.m_pluginId = m_pluginId;
-            newImage.m_propertyName = m_propertyName;
-            newImage.m_propertyTitle = m_propertyTitle;
-            newImage.m_relatedAttribute = m_relatedAttribute;
-            newImage.m_stepId = m_stepId;
-            newImage.m_type = m_type;
-
-            return newImage;
         }
-        #endregion
-    }
 
-    public enum CrmPluginImageType
-    {
-        PreImage = 0,
-        PostImage = 1,
-        Both = 2
+        #endregion Private Methods
     }
 }

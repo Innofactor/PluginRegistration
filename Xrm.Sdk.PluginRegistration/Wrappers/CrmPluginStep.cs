@@ -17,13 +17,13 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Entities;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Microsoft.Xrm.Sdk;
-    using Xrm.Sdk.PluginRegistration.Controls;
-    using Entities;
+    using Controls;
 
     public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
     {
@@ -94,6 +94,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         #region Properties
+
         /// <summary>
         /// Retrieves the Created On date of the entity. To update, see UpdateDates.
         /// </summary>
@@ -108,7 +109,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         /// <summary>
         /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
-        /// </summary>      
+        /// </summary>
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? ModifiedOn
         {
@@ -335,9 +336,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         /// </summary>
         [Browsable(false)]
         public Guid? ProfilerOriginalStepId { get; set; }
-        #endregion
+
+        #endregion Properties
 
         #region Public Helper Methods
+
         public void RefreshFromSdkMessageProcessingStep(Guid assemblyId, SdkMessageProcessingStep step, string secureConfig)
         {
             if (step == null)
@@ -466,6 +469,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         #region Management Methods
+
         public void AddImage(CrmPluginImage image)
         {
             if (image == null)
@@ -507,10 +511,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("Invalid Image Id", "imageId");
             }
         }
-        #endregion
-        #endregion
+
+        #endregion Management Methods
+
+        #endregion Public Helper Methods
 
         #region Private Helper Methods
+
         private string ConvertNullStringToEmpty(string val)
         {
             if (string.IsNullOrEmpty(val))
@@ -522,9 +529,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 return val;
             }
         }
-        #endregion
+
+        #endregion Private Helper Methods
 
         #region ICrmTreeItem Members
+
         [XmlIgnore]
         [Browsable(false)]
         public string NodeText
@@ -617,7 +626,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-
         [XmlIgnore]
         [Browsable(false)]
         public string NodeTypeLabel
@@ -627,9 +635,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 return "Step";
             }
         }
-        #endregion
+
+        #endregion ICrmTreeItem Members
 
         #region ICrmEntity Members
+
         [XmlIgnore]
         [Browsable(false)]
         public string EntityType
@@ -692,7 +702,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             sdkStep.Configuration = UnsecureConfiguration;
 
-
             if (ServiceBusConfigurationId == Guid.Empty)
             {
                 sdkStep.EventHandler = new EntityReference(PluginType.EntityLogicalName, PluginId);
@@ -703,7 +712,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             sdkStep.Name = Name;
-
 
             sdkStep.Mode = new OptionSetValue();
             sdkStep.Mode.Value = (int)Mode;
@@ -777,6 +785,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         private static CrmEntityColumn[] m_entityColumns = null;
+
         [XmlIgnore]
         public static CrmEntityColumn[] Columns
         {
@@ -784,7 +793,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 if (m_entityColumns == null)
                 {
-                    m_entityColumns = new CrmEntityColumn[] { 
+                    m_entityColumns = new CrmEntityColumn[] {
                         new CrmEntityColumn("Name", "Name", typeof(string)),
                         new CrmEntityColumn("CreatedOn", "Created On", typeof(string)),
                         new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
@@ -908,18 +917,22 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
                         valueList.Add("Stage", "Pre Stage - Outside Transaction");
                         break;
+
                     case CrmPluginStepStage.PreOperation:
 
                         valueList.Add("Stage", "Pre Stage - Inside Transaction");
                         break;
+
                     case CrmPluginStepStage.PostOperation:
 
                         valueList.Add("Stage", "Post Stage - Inside Transaction");
                         break;
+
                     case CrmPluginStepStage.PostOperationDeprecated:
 
                         valueList.Add("Stage", "Post Stage - Outside Transaction");
                         break;
+
                     default:
                         throw new NotImplementedException("Stage = " + Stage.ToString());
                 }
@@ -1018,9 +1031,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 m_modifiedOn = modifiedOn;
             }
         }
-        #endregion
+
+        #endregion ICrmEntity Members
 
         #region ICloneable Members
+
         public object Clone()
         {
             return Clone(true);
@@ -1075,7 +1090,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             return newStep;
         }
-        #endregion
+
+        #endregion ICloneable Members
     }
 
     public enum CrmPluginStepMode

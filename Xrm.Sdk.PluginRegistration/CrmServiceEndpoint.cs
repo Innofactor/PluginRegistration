@@ -26,14 +26,46 @@ namespace Xrm.Sdk.PluginRegistration
     using System.Xml.Serialization;
     using Wrappers;
 
+    public enum CrmServiceEndpointConnectionMode
+    {
+        Normal = 1,
+        Federated = 2
+    }
+
+    public enum CrmServiceEndpointContract
+    {
+        OneWay = 1,
+        Queue = 2,
+        Rest = 3,
+        TwoWay = 4
+    }
+
+    public enum CrmServiceEndpointUserClaim
+    {
+        None = 1,
+        UserId = 2,
+        UserInfo = 3
+    }
+
     public sealed class CrmServiceEndpoint : ICrmEntity, ICrmTreeNode
     {
-        public readonly Guid ServiceBusPlugin = new Guid("EF521E63-CD2B-4170-99F6-447466A7161E");
-        public const string ServiceBusPluginName = "Microsoft.Crm.ServiceBus.ServiceBusPlugin";
+        #region Public Fields
+
         public const string ServiceBusPluginAssemblyName = "Microsoft.Crm.ServiceBus";
+        public const string ServiceBusPluginName = "Microsoft.Crm.ServiceBus.ServiceBusPlugin";
+        public readonly Guid ServiceBusPlugin = new Guid("EF521E63-CD2B-4170-99F6-447466A7161E");
         public readonly Guid ServiceBusPluginAssembly = new Guid("A430B185-D19D-428C-B156-5EBE3F391564");
 
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static CrmEntityColumn[] m_entityColumns = null;
         private CrmOrganization m_org = null;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmServiceEndpoint(CrmOrganization org)
         {
@@ -46,73 +78,42 @@ namespace Xrm.Sdk.PluginRegistration
             RefreshFromServiceEndpoint(serviceEndpoint);
         }
 
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string Name
-        {
-            get;
-            set;
-        }
+        #endregion Public Constructors
 
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string Description
-        {
-            get;
-            set;
-        }
+        #region Public Properties
 
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string SolutionNamespace
-        {
-            get;
-            set;
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string Path
-        {
-            get;
-            set;
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmServiceEndpointContract Contract
-        {
-            get;
-            set;
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmServiceEndpointUserClaim UserClaim
-        {
-            get;
-            set;
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmServiceEndpointConnectionMode ConnectionMode
-        {
-            get;
-            set;
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public Guid ServiceEndpointId
-        {
-            get;
-            set;
-        }
-
+        [XmlIgnore]
         [Browsable(false)]
-        public Guid PluginId
+        public static CrmEntityColumn[] Columns
         {
-            get { return ServiceBusPlugin; }
+            get
+            {
+                if (m_entityColumns == null)
+                {
+                    m_entityColumns = new CrmEntityColumn[] {
+                        new CrmEntityColumn("Id", "ServiceEndpointId", typeof(Guid)),
+                        new CrmEntityColumn("Name", "Name", typeof(string)),
+                        new CrmEntityColumn("Description", "Description", typeof(string)),
+                        new CrmEntityColumn("SolutionNamespace", "Solution Namespace", typeof(string)),
+                        new CrmEntityColumn("Path", "Path", typeof(string)),
+                        new CrmEntityColumn("Contract", "Path", typeof(string)),
+                        new CrmEntityColumn("UserClaim", "Path", typeof(string)),
+                        new CrmEntityColumn("ConnectionMode", "Connection Mode", typeof(string)),
+                        new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
+                        new CrmEntityColumn("Isolatable", "Isolatable", typeof(string)),
+                        };
+                }
+
+                return m_entityColumns;
+            }
         }
 
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public DateTime? CreatedOn { get; private set; }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public DateTime? ModifiedOn { get; private set; }
+        [Category("Information"), Browsable(false), ReadOnly(true)]
+        public String AcsIssuerName
+        {
+            get;
+            set;
+        }
 
         [Category("Information"), Browsable(false), ReadOnly(true)]
         public String AcsManagementKey
@@ -128,19 +129,34 @@ namespace Xrm.Sdk.PluginRegistration
             set;
         }
 
-        [Category("Information"), Browsable(false), ReadOnly(true)]
-        public String AcsIssuerName
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmServiceEndpointConnectionMode ConnectionMode
         {
             get;
             set;
         }
 
-        #region ICrmEntity Members
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmServiceEndpointContract Contract
+        {
+            get;
+            set;
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public DateTime? CreatedOn { get; private set; }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string Description
+        {
+            get;
+            set;
+        }
 
         [Browsable(false)]
-        public bool IsSystemCrmEntity
+        public Guid EntityId
         {
-            get { return false; }
+            get { return ServiceEndpointId; }
         }
 
         [Browsable(false)]
@@ -150,10 +166,154 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         [Browsable(false)]
-        public Guid EntityId
+        public bool IsSystemCrmEntity
+        {
+            get { return false; }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public DateTime? ModifiedOn { get; private set; }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        public ICrmTreeNode[] NodeChildren
+        {
+            get
+            {
+                List<CrmPluginStep> steps = new List<CrmPluginStep>();
+
+                foreach (CrmPluginStep step in m_org.Steps.Values)
+                {
+                    if (step.ServiceBusConfigurationId == ServiceEndpointId)
+                    {
+                        steps.Add(step);
+                    }
+                }
+                return steps.ToArray();
+            }
+        }
+
+        [Browsable(false)]
+        public Guid NodeId
         {
             get { return ServiceEndpointId; }
         }
+
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeImageType
+        {
+            get { return CrmTreeNodeImageType.ServiceEndpoint; }
+        }
+
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeSelectedImageType
+        {
+            get { return CrmTreeNodeImageType.ServiceEndpointSelected; }
+        }
+
+        [Browsable(false)]
+        public string NodeText
+        {
+            get
+            {
+                return string.Format("({0}) {1}", NodeTypeLabel, string.IsNullOrWhiteSpace(Name) ? Description : Name);
+            }
+        }
+
+        [Browsable(false)]
+        public CrmTreeNodeType NodeType
+        {
+            get { return CrmTreeNodeType.ServiceEndpoint; }
+        }
+
+        [Browsable(false)]
+        public string NodeTypeLabel
+        {
+            get { return "ServiceEndpoint"; }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string Path
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        public Guid PluginId
+        {
+            get { return ServiceBusPlugin; }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public Guid ServiceEndpointId
+        {
+            get;
+            set;
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string SolutionNamespace
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        public CrmEntityDictionary<CrmPluginStep> Steps
+        {
+            get
+            {
+                Dictionary<Guid, CrmPluginStep> steps = new Dictionary<Guid, CrmPluginStep>();
+
+                foreach (CrmPluginStep step in m_org.Steps.Values)
+                {
+                    if (step.ServiceBusConfigurationId == ServiceEndpointId)
+                    {
+                        steps.Add(step.StepId, step);
+                    }
+                }
+                return new CrmEntityDictionary<CrmPluginStep>(steps);
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmServiceEndpointUserClaim UserClaim
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Dictionary<string, object> Values
+        {
+            get
+            {
+                Dictionary<string, object> valueList = new Dictionary<string, object>();
+                valueList.Add("Id", ServiceEndpointId.ToString());
+                valueList.Add("Name", Name);
+                valueList.Add("Description", Description);
+                valueList.Add("SolutionNamespace", SolutionNamespace);
+                valueList.Add("Path", Path);
+                valueList.Add("Contract", Contract.ToString());
+                valueList.Add("UserClaim", UserClaim.ToString());
+                valueList.Add("ConnectionMode", ConnectionMode.ToString());
+                valueList.Add("ModifiedOn", ModifiedOn);
+                valueList.Add("CreatedOn", CreatedOn);
+                return valueList;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public Dictionary<string, object> GenerateCrmEntities()
         {
@@ -227,55 +387,6 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        private static CrmEntityColumn[] m_entityColumns = null;
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public static CrmEntityColumn[] Columns
-        {
-            get
-            {
-                if (m_entityColumns == null)
-                {
-                    m_entityColumns = new CrmEntityColumn[] {
-                        new CrmEntityColumn("Id", "ServiceEndpointId", typeof(Guid)),
-                        new CrmEntityColumn("Name", "Name", typeof(string)),
-                        new CrmEntityColumn("Description", "Description", typeof(string)),
-                        new CrmEntityColumn("SolutionNamespace", "Solution Namespace", typeof(string)),
-                        new CrmEntityColumn("Path", "Path", typeof(string)),
-                        new CrmEntityColumn("Contract", "Path", typeof(string)),
-                        new CrmEntityColumn("UserClaim", "Path", typeof(string)),
-                        new CrmEntityColumn("ConnectionMode", "Connection Mode", typeof(string)),
-                        new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
-                        new CrmEntityColumn("Isolatable", "Isolatable", typeof(string)),
-                        };
-                }
-
-                return m_entityColumns;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Dictionary<string, object> Values
-        {
-            get
-            {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", ServiceEndpointId.ToString());
-                valueList.Add("Name", Name);
-                valueList.Add("Description", Description);
-                valueList.Add("SolutionNamespace", SolutionNamespace);
-                valueList.Add("Path", Path);
-                valueList.Add("Contract", Contract.ToString());
-                valueList.Add("UserClaim", UserClaim.ToString());
-                valueList.Add("ConnectionMode", ConnectionMode.ToString());
-                valueList.Add("ModifiedOn", ModifiedOn);
-                valueList.Add("CreatedOn", CreatedOn);
-                return valueList;
-            }
-        }
-
         public void UpdateDates(DateTime? createdOn, DateTime? modifiedOn)
         {
             if (createdOn != null)
@@ -289,106 +400,6 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        [Browsable(false)]
-        public CrmEntityDictionary<CrmPluginStep> Steps
-        {
-            get
-            {
-                Dictionary<Guid, CrmPluginStep> steps = new Dictionary<Guid, CrmPluginStep>();
-
-                foreach (CrmPluginStep step in m_org.Steps.Values)
-                {
-                    if (step.ServiceBusConfigurationId == ServiceEndpointId)
-                    {
-                        steps.Add(step.StepId, step);
-                    }
-                }
-                return new CrmEntityDictionary<CrmPluginStep>(steps);
-            }
-        }
-
-        #endregion ICrmEntity Members
-
-        #region ICrmTreeNode Members
-
-        [Browsable(false)]
-        public Guid NodeId
-        {
-            get { return ServiceEndpointId; }
-        }
-
-        [Browsable(false)]
-        public CrmTreeNodeType NodeType
-        {
-            get { return CrmTreeNodeType.ServiceEndpoint; }
-        }
-
-        [Browsable(false)]
-        public string NodeTypeLabel
-        {
-            get { return "ServiceEndpoint"; }
-        }
-
-        [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
-        {
-            get
-            {
-                List<CrmPluginStep> steps = new List<CrmPluginStep>();
-
-                foreach (CrmPluginStep step in m_org.Steps.Values)
-                {
-                    if (step.ServiceBusConfigurationId == ServiceEndpointId)
-                    {
-                        steps.Add(step);
-                    }
-                }
-                return steps.ToArray();
-            }
-        }
-
-        [Browsable(false)]
-        public string NodeText
-        {
-            get
-            {
-                return string.Format("({0}) {1}", NodeTypeLabel, string.IsNullOrWhiteSpace(Name) ? Description : Name);
-            }
-        }
-
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeImageType
-        {
-            get { return CrmTreeNodeImageType.ServiceEndpoint; }
-        }
-
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeSelectedImageType
-        {
-            get { return CrmTreeNodeImageType.ServiceEndpointSelected; }
-        }
-
-        #endregion ICrmTreeNode Members
-    }
-
-    public enum CrmServiceEndpointContract
-    {
-        OneWay = 1,
-        Queue = 2,
-        Rest = 3,
-        TwoWay = 4
-    }
-
-    public enum CrmServiceEndpointUserClaim
-    {
-        None = 1,
-        UserId = 2,
-        UserInfo = 3
-    }
-
-    public enum CrmServiceEndpointConnectionMode
-    {
-        Normal = 1,
-        Federated = 2
+        #endregion Public Methods
     }
 }

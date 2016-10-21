@@ -17,37 +17,60 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Entities;
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Microsoft.Xrm.Sdk;
-    using Xrm.Sdk.PluginRegistration.Controls;
-    using Entities;
+    using Controls;
+
+    public enum CrmPluginIsolatable
+    {
+        Yes,
+        No,
+        Unknown
+    }
+
+    public enum CrmPluginType
+    {
+        Plugin,
+        WorkflowActivity
+    }
 
     [Serializable]
     public sealed class CrmPlugin : ICrmEntity, ICrmTreeNode, ICloneable
     {
-        private const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
+        #region Public Fields
+
         public const string RelationshipTypeToStep = "plugintype_sdkmessageprocessingstep";
 
-        private string m_typeName = null;
-        private bool m_friendlyNameIgnore;
-        private string m_friendlyName;
-        private CrmOrganization m_org;
-        private CrmPluginType m_plugType = CrmPluginType.Plugin;
-        private Guid m_pluginId = Guid.Empty;
-        private Guid m_pluginAssemblyId = Guid.Empty;
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
+        private static CrmEntityColumn[] m_entityColumns = null;
         private string m_assemblyName = null;
         private DateTime? m_createdOn = null;
-        private DateTime? m_modifiedOn = null;
         private int m_customizationLevel = 1;
+        private string m_friendlyName;
+        private bool m_friendlyNameIgnore;
         private CrmPluginIsolatable m_isolatable = CrmPluginIsolatable.Unknown;
+        private DateTime? m_modifiedOn = null;
         private string m_name = null;
+        private CrmOrganization m_org;
+        private Guid m_pluginAssemblyId = Guid.Empty;
+        private Guid m_pluginId = Guid.Empty;
+        private CrmPluginType m_plugType = CrmPluginType.Plugin;
+        private Dictionary<Guid, CrmPluginStep> m_stepList = new Dictionary<Guid, CrmPluginStep>();
+        private CrmEntityDictionary<CrmPluginStep> m_stepReadOnlyList = null;
+        private string m_typeName = null;
         private string m_workflowActivityGroupName = null;
 
-        private CrmEntityDictionary<CrmPluginStep> m_stepReadOnlyList = null;
-        private Dictionary<Guid, CrmPluginStep> m_stepList = new Dictionary<Guid, CrmPluginStep>();
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmPlugin(CrmOrganization org)
         {
@@ -76,7 +99,348 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             RefreshFromPluginType(type);
         }
 
-        #region Properties
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public static CrmEntityColumn[] Columns
+        {
+            get
+            {
+                if (m_entityColumns == null)
+                {
+                    m_entityColumns = new CrmEntityColumn[] {
+                        new CrmEntityColumn("Assembly", "Assembly", typeof(string)),
+                        new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
+                        new CrmEntityColumn("FriendlyName", "Friendly Name", typeof(string)),
+                        new CrmEntityColumn("Name", "Name", typeof(string)),
+                        new CrmEntityColumn("TypeName", "Type Name", typeof(string)),
+                        new CrmEntityColumn("WorkflowActivityGroupName", "WorkflowActivityGroupName", typeof(string)),
+                        new CrmEntityColumn("Description", "Description", typeof(string)),
+                        new CrmEntityColumn("Isolatable", "Isolatable", typeof(string)),
+                        new CrmEntityColumn("Id", "PluginId", typeof(Guid)) };
+                }
+
+                return m_entityColumns;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public Guid AssemblyId
+        {
+            get
+            {
+                return m_pluginAssemblyId;
+            }
+            set
+            {
+                if (value == m_pluginAssemblyId)
+                {
+                    return;
+                }
+
+                m_pluginAssemblyId = value;
+
+                foreach (CrmPluginStep step in m_stepList.Values)
+                {
+                    step.AssemblyId = value;
+                }
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public string AssemblyName
+        {
+            get
+            {
+                return m_assemblyName;
+            }
+
+            set
+            {
+                m_assemblyName = value;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the Created On date of the entity. To update, see UpdateDates.
+        /// </summary>
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public DateTime? CreatedOn
+        {
+            get
+            {
+                return m_createdOn;
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public int CustomizationLevel
+        {
+            get
+            {
+                return m_customizationLevel;
+            }
+
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Invalid CustomizationLevel specified");
+                }
+
+                m_customizationLevel = value;
+            }
+        }
+
+        [Category("Editable"), Browsable(true), ReadOnly(false)]
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Guid EntityId
+        {
+            get
+            {
+                return m_pluginId;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string EntityType
+        {
+            get
+            {
+                return Entities.PluginType.EntityLogicalName;
+            }
+        }
+
+        [Category("Editable"), Browsable(true), ReadOnly(false)]
+        public string FriendlyName
+        {
+            get
+            {
+                return m_friendlyName;
+            }
+            set
+            {
+                m_friendlyName = GenerateFriendlyName(value, out m_friendlyNameIgnore);
+            }
+        }
+
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public CrmPluginIsolatable Isolatable
+        {
+            get
+            {
+                return m_isolatable;
+            }
+
+            set
+            {
+                m_isolatable = value;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsProfilerPlugin { get; set; }
+
+        [XmlIgnore]
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public bool IsSystemCrmEntity
+        {
+            get
+            {
+                return CustomizationLevel == 0;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
+        /// </summary>
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public DateTime? ModifiedOn
+        {
+            get
+            {
+                return m_modifiedOn;
+            }
+        }
+
+        [Category("Editable"), Browsable(true), ReadOnly(false)]
+        public string Name
+        {
+            get
+            {
+                return m_name;
+            }
+            set
+            {
+                m_name = value;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public ICrmTreeNode[] NodeChildren
+        {
+            get
+            {
+                if (m_stepList == null || m_stepList.Count == 0)
+                {
+                    return new CrmPluginStep[0];
+                }
+                else
+                {
+                    CrmPluginStep[] children = new CrmPluginStep[m_stepList.Count];
+                    m_stepList.Values.CopyTo(children, 0);
+
+                    return children;
+                }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public Guid NodeId
+        {
+            get
+            {
+                return m_pluginId;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeImageType
+        {
+            get
+            {
+                if (IsProfilerPlugin)
+                {
+                    return CrmTreeNodeImageType.PluginProfiler;
+                }
+                else
+                {
+                    switch (m_plugType)
+                    {
+                        case CrmPluginType.Plugin:
+                            return CrmTreeNodeImageType.Plugin;
+
+                        case CrmPluginType.WorkflowActivity:
+                            return CrmTreeNodeImageType.WorkflowActivity;
+
+                        default:
+                            throw new NotImplementedException("PluginType = " + m_plugType);
+                    }
+                }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeImageType NodeSelectedImageType
+        {
+            get
+            {
+                if (IsProfilerPlugin)
+                {
+                    return CrmTreeNodeImageType.PluginProfilerSelected;
+                }
+                else
+                {
+                    switch (m_plugType)
+                    {
+                        case CrmPluginType.Plugin:
+                            return CrmTreeNodeImageType.PluginSelected;
+
+                        case CrmPluginType.WorkflowActivity:
+                            return CrmTreeNodeImageType.WorkflowActivitySelected;
+
+                        default:
+                            throw new NotImplementedException("PluginType = " + m_plugType);
+                    }
+                }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string NodeText
+        {
+            get
+            {
+                if (IsProfilerPlugin)
+                {
+                    return "Plug-in Profiler";
+                }
+
+                string format;
+                if (CrmPluginIsolatable.Yes == Isolatable)
+                {
+                    format = "({0}) {2} - Isolatable";
+                }
+                else if (string.IsNullOrWhiteSpace(WorkflowActivityGroupName) ||
+                    WorkflowActivityGroupName.StartsWith(AssemblyName + " (", StringComparison.Ordinal))
+                {
+                    format = "({0}) {2}";
+                }
+                else
+                {
+                    format = "({0}) {1}: {2}";
+                }
+
+                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name);
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public CrmTreeNodeType NodeType
+        {
+            get
+            {
+                switch (m_plugType)
+                {
+                    case CrmPluginType.Plugin:
+                        return CrmTreeNodeType.Plugin;
+
+                    case CrmPluginType.WorkflowActivity:
+                        return CrmTreeNodeType.WorkflowActivity;
+
+                    default:
+                        throw new NotImplementedException("PluginType = " + m_plugType);
+                }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string NodeTypeLabel
+        {
+            get
+            {
+                switch (PluginType)
+                {
+                    case CrmPluginType.Plugin:
+                        return "Plugin";
+
+                    case CrmPluginType.WorkflowActivity:
+                        return "Workflow Activity";
+
+                    default:
+                        throw new NotImplementedException("PluginType = " + PluginType.ToString());
+                }
+            }
+        }
+
         [Browsable(false)]
         public CrmOrganization Organization
         {
@@ -112,105 +476,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string AssemblyName
-        {
-            get
-            {
-                return m_assemblyName;
-            }
-
-            set
-            {
-                m_assemblyName = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public string TypeName
-        {
-            get
-            {
-                return m_typeName;
-            }
-
-            set
-            {
-                m_typeName = value;
-            }
-        }
-
-        [Category("Editable"), Browsable(true), ReadOnly(false)]
-        public string Description
-        {
-            get;
-            set;
-        }
-
-        [Category("Editable"), Browsable(true), ReadOnly(false)]
-        public string FriendlyName
-        {
-            get
-            {
-                return m_friendlyName;
-            }
-            set
-            {
-                m_friendlyName = GenerateFriendlyName(value, out m_friendlyNameIgnore);
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmPluginType PluginType
-        {
-            get
-            {
-                return m_plugType;
-            }
-            set
-            {
-                m_plugType = value;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves the Created On date of the entity. To update, see UpdateDates.
-        /// </summary>
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public DateTime? CreatedOn
-        {
-            get
-            {
-                return m_createdOn;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves the Modified On date of the entity. To update, see UpdateDates.
-        /// </summary>
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public DateTime? ModifiedOn
-        {
-            get
-            {
-                return m_modifiedOn;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public CrmPluginIsolatable Isolatable
-        {
-            get
-            {
-                return m_isolatable;
-            }
-
-            set
-            {
-                m_isolatable = value;
-            }
-        }
-
-        [Category("Information"), Browsable(true), ReadOnly(true)]
         public Guid PluginId
         {
             get
@@ -233,61 +498,16 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
-        [Category("Editable"), Browsable(true), ReadOnly(false)]
-        public string Name
-        {
-            get
-            {
-                return m_name;
-            }
-            set
-            {
-                m_name = value;
-            }
-        }
-
-        [Category("Editable"), Browsable(true), ReadOnly(false)]
-        public string WorkflowActivityGroupName
-        {
-            get
-            {
-                return m_workflowActivityGroupName;
-            }
-            set
-            {
-                m_workflowActivityGroupName = value;
-            }
-        }
-
         [Category("Information"), Browsable(true), ReadOnly(true)]
-        public Guid AssemblyId
+        public CrmPluginType PluginType
         {
             get
             {
-                return m_pluginAssemblyId;
+                return m_plugType;
             }
             set
             {
-                if (value == m_pluginAssemblyId)
-                {
-                    return;
-                }
-
-                m_pluginAssemblyId = value;
-
-                foreach (CrmPluginStep step in m_stepList.Values)
-                {
-                    step.AssemblyId = value;
-                }
-            }
-        }
-
-        [Browsable(false)]
-        public CrmPluginStep this[Guid stepId]
-        {
-            get
-            {
-                return m_stepList[stepId];
+                m_plugType = value;
             }
         }
 
@@ -306,32 +526,190 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
-        public int CustomizationLevel
+        public string TypeName
         {
             get
             {
-                return m_customizationLevel;
+                return m_typeName;
             }
 
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Invalid CustomizationLevel specified");
-                }
-
-                m_customizationLevel = value;
+                m_typeName = value;
             }
         }
 
+        [XmlIgnore]
         [Browsable(false)]
-        public bool IsProfilerPlugin { get; set; }
-        #endregion
+        public Dictionary<string, object> Values
+        {
+            get
+            {
+                Dictionary<string, object> valueList = new Dictionary<string, object>();
+                valueList.Add("Id", PluginId);
+                valueList.Add("Assembly", AssemblyName);
+                valueList.Add("ModifiedOn", ModifiedOn);
+                valueList.Add("FriendlyName", FriendlyName);
+                valueList.Add("Name", Name);
+                valueList.Add("TypeName", TypeName);
+                valueList.Add("WorkflowActivityGroupName", WorkflowActivityGroupName);
+                valueList.Add("Isolatable", Isolatable.ToString());
+                valueList.Add("Description", Description);
+                return valueList;
+            }
+        }
 
-        #region Public Helper Methods
+        [Category("Editable"), Browsable(true), ReadOnly(false)]
+        public string WorkflowActivityGroupName
+        {
+            get
+            {
+                return m_workflowActivityGroupName;
+            }
+            set
+            {
+                m_workflowActivityGroupName = value;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Public Indexers
+
+        [Browsable(false)]
+        public CrmPluginStep this[Guid stepId]
+        {
+            get
+            {
+                return m_stepList[stepId];
+            }
+        }
+
+        #endregion Public Indexers
+
+        #region Public Methods
+
+        public void AddStep(CrmPluginStep step)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+
+            m_stepList.Add(step.StepId, step);
+
+            if (Organization != null)
+            {
+                Organization.AddStep(this, step);
+            }
+        }
+
+        public void ClearSteps()
+        {
+            m_stepList.Clear();
+
+            if (Organization != null)
+            {
+                Organization.ClearSteps(PluginId);
+            }
+        }
+
+        public object Clone()
+        {
+            return Clone(true);
+        }
+
+        public CrmPlugin Clone(bool includeOrganization)
+        {
+            CrmPlugin newPlugin;
+            if (includeOrganization)
+            {
+                newPlugin = new CrmPlugin(m_org);
+            }
+            else
+            {
+                newPlugin = new CrmPlugin(null);
+            }
+
+            newPlugin.m_assemblyName = m_assemblyName;
+            newPlugin.m_createdOn = m_createdOn;
+            newPlugin.m_customizationLevel = m_customizationLevel;
+            newPlugin.m_friendlyName = m_friendlyName;
+            newPlugin.m_friendlyNameIgnore = m_friendlyNameIgnore;
+            newPlugin.m_isolatable = m_isolatable;
+            newPlugin.m_modifiedOn = m_modifiedOn;
+            newPlugin.m_pluginAssemblyId = m_pluginAssemblyId;
+            newPlugin.m_pluginId = m_pluginId;
+            newPlugin.m_plugType = m_plugType;
+            newPlugin.m_typeName = m_typeName;
+
+            //Create a new step list
+            Dictionary<Guid, CrmPluginStep> newStepList = new Dictionary<Guid, CrmPluginStep>();
+            foreach (CrmPluginStep step in m_stepList.Values)
+            {
+                //Clone the step
+                CrmPluginStep clonedStep = (CrmPluginStep)step.Clone(includeOrganization);
+
+                //Add the step to the new list
+                newStepList.Add(clonedStep.StepId, clonedStep);
+            }
+
+            //Assign the list to the new object
+            newPlugin.m_stepList = newStepList;
+
+            return newPlugin;
+        }
+
+        public Dictionary<string, object> GenerateCrmEntities()
+        {
+            PluginType plugin = new PluginType();
+            if (PluginId != Guid.Empty)
+            {
+                plugin["plugintypeid"] = new Guid?();
+                plugin["plugintypeid"] = PluginId;
+            }
+
+            if (AssemblyId != Guid.Empty)
+            {
+                plugin.PluginAssemblyId = new EntityReference();
+                plugin.PluginAssemblyId.LogicalName = PluginAssembly.EntityLogicalName;
+                plugin.PluginAssemblyId.Id = AssemblyId;
+            }
+            else
+            {
+                throw new ArgumentException("PluginAssembly has not been set", "plugin");
+            }
+
+            plugin.TypeName = TypeName;
+            plugin.FriendlyName = m_friendlyName;
+
+            plugin.Name = Name;
+            plugin.Description = Description;
+            plugin.WorkflowActivityGroupName = WorkflowActivityGroupName;
+
+            Dictionary<string, object> entityList = new Dictionary<string, object>();
+            entityList.Add(Entities.PluginType.EntityLogicalName, plugin);
+
+            return entityList;
+        }
+
+        public string GenerateNodeText(string newFriendlyName)
+        {
+            bool ignoreFriendlyName;
+            string newText = GenerateFriendlyName(newFriendlyName, out ignoreFriendlyName);
+
+            if (ignoreFriendlyName)
+            {
+                return TypeName;
+            }
+            else
+            {
+                return newText;
+            }
+        }
+
         public void RefreshFromPluginType(PluginType type)
         {
-
             if (type == null)
             {
                 throw new ArgumentNullException("type");
@@ -399,52 +777,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             WorkflowActivityGroupName = type.WorkflowActivityGroupName;
         }
 
-        public string GenerateNodeText(string newFriendlyName)
-        {
-            bool ignoreFriendlyName;
-            string newText = GenerateFriendlyName(newFriendlyName, out ignoreFriendlyName);
-
-            if (ignoreFriendlyName)
-            {
-                return TypeName;
-            }
-            else
-            {
-                return newText;
-            }
-        }
-
-        public override string ToString()
-        {
-            return NodeText;
-        }
-
-        #region Management Methods
-        public void AddStep(CrmPluginStep step)
-        {
-            if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-
-            m_stepList.Add(step.StepId, step);
-
-            if (Organization != null)
-            {
-                Organization.AddStep(this, step);
-            }
-        }
-
-        public void ClearSteps()
-        {
-            m_stepList.Clear();
-
-            if (Organization != null)
-            {
-                Organization.ClearSteps(PluginId);
-            }
-        }
-
         public void RemoveStep(Guid stepId)
         {
             if (m_stepList.ContainsKey(stepId))
@@ -461,10 +793,29 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 throw new ArgumentException("Invalid Step Id", "stepId");
             }
         }
-        #endregion
-        #endregion
 
-        #region Private Helper Methods
+        public override string ToString()
+        {
+            return NodeText;
+        }
+
+        public void UpdateDates(DateTime? createdOn, DateTime? modifiedOn)
+        {
+            if (createdOn != null)
+            {
+                m_createdOn = createdOn;
+            }
+
+            if (modifiedOn != null)
+            {
+                m_modifiedOn = modifiedOn;
+            }
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         private string ConvertNullStringToEmpty(string val)
         {
             if (string.IsNullOrEmpty(val))
@@ -494,351 +845,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
             else
             {
-                // Checking if name should be ignored 
+                // Checking if name should be ignored
                 var guidOutput = Guid.Empty;
                 ignoreFriendlyName = Guid.TryParse(newName, out guidOutput);
 
                 return newName;
             }
         }
-        #endregion
 
-        #region ICrmTreeNode Members
-        [XmlIgnore]
-        [Browsable(false)]
-        public string NodeText
-        {
-            get
-            {
-                if (IsProfilerPlugin)
-                {
-                    return "Plug-in Profiler";
-                }
-
-                string format;
-                if (CrmPluginIsolatable.Yes == Isolatable)
-                {
-                    format = "({0}) {2} - Isolatable";
-                }
-                else if (string.IsNullOrWhiteSpace(WorkflowActivityGroupName) ||
-                    WorkflowActivityGroupName.StartsWith(AssemblyName + " (", StringComparison.Ordinal))
-                {
-                    format = "({0}) {2}";
-                }
-                else
-                {
-                    format = "({0}) {1}: {2}";
-                }
-
-                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name);
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Guid NodeId
-        {
-            get
-            {
-                return m_pluginId;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
-        {
-            get
-            {
-                if (m_stepList == null || m_stepList.Count == 0)
-                {
-                    return new CrmPluginStep[0];
-                }
-                else
-                {
-                    CrmPluginStep[] children = new CrmPluginStep[m_stepList.Count];
-                    m_stepList.Values.CopyTo(children, 0);
-
-                    return children;
-                }
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeImageType
-        {
-            get
-            {
-                if (IsProfilerPlugin)
-                {
-                    return CrmTreeNodeImageType.PluginProfiler;
-                }
-                else
-                {
-                    switch (m_plugType)
-                    {
-                        case CrmPluginType.Plugin:
-                            return CrmTreeNodeImageType.Plugin;
-
-                        case CrmPluginType.WorkflowActivity:
-                            return CrmTreeNodeImageType.WorkflowActivity;
-
-                        default:
-                            throw new NotImplementedException("PluginType = " + m_plugType);
-                    }
-                }
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeImageType NodeSelectedImageType
-        {
-            get
-            {
-                if (IsProfilerPlugin)
-                {
-                    return CrmTreeNodeImageType.PluginProfilerSelected;
-                }
-                else
-                {
-                    switch (m_plugType)
-                    {
-                        case CrmPluginType.Plugin:
-                            return CrmTreeNodeImageType.PluginSelected;
-
-                        case CrmPluginType.WorkflowActivity:
-                            return CrmTreeNodeImageType.WorkflowActivitySelected;
-
-                        default:
-                            throw new NotImplementedException("PluginType = " + m_plugType);
-                    }
-                }
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public CrmTreeNodeType NodeType
-        {
-            get
-            {
-                switch (m_plugType)
-                {
-                    case CrmPluginType.Plugin:
-                        return CrmTreeNodeType.Plugin;
-
-                    case CrmPluginType.WorkflowActivity:
-                        return CrmTreeNodeType.WorkflowActivity;
-
-                    default:
-                        throw new NotImplementedException("PluginType = " + m_plugType);
-                }
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public string NodeTypeLabel
-        {
-            get
-            {
-                switch (PluginType)
-                {
-                    case CrmPluginType.Plugin:
-                        return "Plugin";
-                    case CrmPluginType.WorkflowActivity:
-                        return "Workflow Activity";
-                    default:
-                        throw new NotImplementedException("PluginType = " + PluginType.ToString());
-                }
-            }
-        }
-        #endregion
-
-        #region ICrmEntity Members
-        [XmlIgnore]
-        [Browsable(false)]
-        public string EntityType
-        {
-            get
-            {
-                return Entities.PluginType.EntityLogicalName;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Guid EntityId
-        {
-            get
-            {
-                return m_pluginId;
-            }
-        }
-
-        public Dictionary<string, object> GenerateCrmEntities()
-        {
-            PluginType plugin = new PluginType();
-            if (PluginId != Guid.Empty)
-            {
-                plugin["plugintypeid"] = new Guid?();
-                plugin["plugintypeid"] = PluginId;
-            }
-
-            if (AssemblyId != Guid.Empty)
-            {
-                plugin.PluginAssemblyId = new EntityReference();
-                plugin.PluginAssemblyId.LogicalName = PluginAssembly.EntityLogicalName;
-                plugin.PluginAssemblyId.Id = AssemblyId;
-            }
-            else
-            {
-                throw new ArgumentException("PluginAssembly has not been set", "plugin");
-            }
-
-            plugin.TypeName = TypeName;
-            plugin.FriendlyName = m_friendlyName;
-
-            plugin.Name = Name;
-            plugin.Description = Description;
-            plugin.WorkflowActivityGroupName = WorkflowActivityGroupName;
-
-            Dictionary<string, object> entityList = new Dictionary<string, object>();
-            entityList.Add(Entities.PluginType.EntityLogicalName, plugin);
-
-            return entityList;
-        }
-
-        private static CrmEntityColumn[] m_entityColumns = null;
-        [XmlIgnore]
-        [Browsable(false)]
-        public static CrmEntityColumn[] Columns
-        {
-            get
-            {
-                if (m_entityColumns == null)
-                {
-                    m_entityColumns = new CrmEntityColumn[] {
-                        new CrmEntityColumn("Assembly", "Assembly", typeof(string)),
-                        new CrmEntityColumn("ModifiedOn", "Modified On", typeof(string)),
-                        new CrmEntityColumn("FriendlyName", "Friendly Name", typeof(string)),
-                        new CrmEntityColumn("Name", "Name", typeof(string)),
-                        new CrmEntityColumn("TypeName", "Type Name", typeof(string)),
-                        new CrmEntityColumn("WorkflowActivityGroupName", "WorkflowActivityGroupName", typeof(string)),
-                        new CrmEntityColumn("Description", "Description", typeof(string)),
-                        new CrmEntityColumn("Isolatable", "Isolatable", typeof(string)),
-                        new CrmEntityColumn("Id", "PluginId", typeof(Guid)) };
-                }
-
-                return m_entityColumns;
-            }
-        }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public Dictionary<string, object> Values
-        {
-            get
-            {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", PluginId);
-                valueList.Add("Assembly", AssemblyName);
-                valueList.Add("ModifiedOn", ModifiedOn);
-                valueList.Add("FriendlyName", FriendlyName);
-                valueList.Add("Name", Name);
-                valueList.Add("TypeName", TypeName);
-                valueList.Add("WorkflowActivityGroupName", WorkflowActivityGroupName);
-                valueList.Add("Isolatable", Isolatable.ToString());
-                valueList.Add("Description", Description);
-                return valueList;
-            }
-        }
-
-        [XmlIgnore]
-        [Category("Information"), Browsable(true), ReadOnly(true)]
-        public bool IsSystemCrmEntity
-        {
-            get
-            {
-                return CustomizationLevel == 0;
-            }
-        }
-
-        public void UpdateDates(DateTime? createdOn, DateTime? modifiedOn)
-        {
-            if (createdOn != null)
-            {
-                m_createdOn = createdOn;
-            }
-
-            if (modifiedOn != null)
-            {
-                m_modifiedOn = modifiedOn;
-            }
-        }
-        #endregion
-
-        #region ICloneable Members
-        public object Clone()
-        {
-            return Clone(true);
-        }
-
-        public CrmPlugin Clone(bool includeOrganization)
-        {
-            CrmPlugin newPlugin;
-            if (includeOrganization)
-            {
-                newPlugin = new CrmPlugin(m_org);
-            }
-            else
-            {
-                newPlugin = new CrmPlugin(null);
-            }
-
-            newPlugin.m_assemblyName = m_assemblyName;
-            newPlugin.m_createdOn = m_createdOn;
-            newPlugin.m_customizationLevel = m_customizationLevel;
-            newPlugin.m_friendlyName = m_friendlyName;
-            newPlugin.m_friendlyNameIgnore = m_friendlyNameIgnore;
-            newPlugin.m_isolatable = m_isolatable;
-            newPlugin.m_modifiedOn = m_modifiedOn;
-            newPlugin.m_pluginAssemblyId = m_pluginAssemblyId;
-            newPlugin.m_pluginId = m_pluginId;
-            newPlugin.m_plugType = m_plugType;
-            newPlugin.m_typeName = m_typeName;
-
-            //Create a new step list
-            Dictionary<Guid, CrmPluginStep> newStepList = new Dictionary<Guid, CrmPluginStep>();
-            foreach (CrmPluginStep step in m_stepList.Values)
-            {
-                //Clone the step
-                CrmPluginStep clonedStep = (CrmPluginStep)step.Clone(includeOrganization);
-
-                //Add the step to the new list
-                newStepList.Add(clonedStep.StepId, clonedStep);
-            }
-
-            //Assign the list to the new object
-            newPlugin.m_stepList = newStepList;
-
-            return newPlugin;
-        }
-        #endregion
-    }
-
-    public enum CrmPluginType
-    {
-        Plugin,
-        WorkflowActivity
-    }
-
-    public enum CrmPluginIsolatable
-    {
-        Yes,
-        No,
-        Unknown
+        #endregion Private Methods
     }
 }
