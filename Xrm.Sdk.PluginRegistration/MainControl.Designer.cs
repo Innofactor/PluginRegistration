@@ -38,8 +38,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeSep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuContextNodeProfilerEnable = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuContextNodeSepProfiler = new System.Windows.Forms.ToolStripSeparator();
             this.mnuContextNodeEnable = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeUnregister = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,8 +47,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextGeneralImageRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralServiceEndpointRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralSep1 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuContextGeneralProfilerInstall = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuContextGeneralSepProfiler = new System.Windows.Forms.ToolStripSeparator();
             this.mnuContextGeneralRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.grpGrid = new System.Windows.Forms.GroupBox();
@@ -107,13 +103,11 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeSearch,
             this.mnuContextNodeRefresh,
             this.mnuContextNodeSep2,
-            this.mnuContextNodeProfilerEnable,
-            this.mnuContextNodeSepProfiler,
             this.mnuContextNodeEnable,
             this.mnuContextNodeUpdate,
             this.mnuContextNodeUnregister});
             this.mnuContextNode.Name = "mnuContextNode";
-            this.mnuContextNode.Size = new System.Drawing.Size(208, 242);
+            this.mnuContextNode.Size = new System.Drawing.Size(208, 236);
             // 
             // mnuContextNodeAssemblyRegister
             // 
@@ -167,18 +161,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeSep2.Name = "mnuContextNodeSep2";
             this.mnuContextNodeSep2.Size = new System.Drawing.Size(204, 6);
             // 
-            // mnuContextNodeProfilerEnable
-            // 
-            this.mnuContextNodeProfilerEnable.Name = "mnuContextNodeProfilerEnable";
-            this.mnuContextNodeProfilerEnable.Size = new System.Drawing.Size(207, 22);
-            this.mnuContextNodeProfilerEnable.Text = "Start P&rofiling";
-            this.mnuContextNodeProfilerEnable.Click += new System.EventHandler(this.toolProfilerEnable_Click);
-            // 
-            // mnuContextNodeSepProfiler
-            // 
-            this.mnuContextNodeSepProfiler.Name = "mnuContextNodeSepProfiler";
-            this.mnuContextNodeSepProfiler.Size = new System.Drawing.Size(204, 6);
-            // 
             // mnuContextNodeEnable
             // 
             this.mnuContextNodeEnable.Name = "mnuContextNodeEnable";
@@ -209,12 +191,10 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextGeneralImageRegister,
             this.mnuContextGeneralServiceEndpointRegister,
             this.mnuContextGeneralSep1,
-            this.mnuContextGeneralProfilerInstall,
-            this.mnuContextGeneralSepProfiler,
             this.mnuContextGeneralRefresh,
             this.mnuContextGeneralSearch});
             this.mnuContextGeneral.Name = "mnuContextTree";
-            this.mnuContextGeneral.Size = new System.Drawing.Size(235, 170);
+            this.mnuContextGeneral.Size = new System.Drawing.Size(235, 142);
             // 
             // mnuContextGeneralAssemblyRegister
             // 
@@ -248,20 +228,6 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.mnuContextGeneralSep1.Name = "mnuContextGeneralSep1";
             this.mnuContextGeneralSep1.Size = new System.Drawing.Size(231, 6);
-            // 
-            // mnuContextGeneralProfilerInstall
-            // 
-            this.mnuContextGeneralProfilerInstall.Name = "mnuContextGeneralProfilerInstall";
-            this.mnuContextGeneralProfilerInstall.Size = new System.Drawing.Size(234, 22);
-            this.mnuContextGeneralProfilerInstall.Text = "Install P&rofiler";
-            this.mnuContextGeneralProfilerInstall.Visible = false;
-            this.mnuContextGeneralProfilerInstall.Click += new System.EventHandler(this.toolProfilerInstall_Click);
-            // 
-            // mnuContextGeneralSepProfiler
-            // 
-            this.mnuContextGeneralSepProfiler.Name = "mnuContextGeneralSepProfiler";
-            this.mnuContextGeneralSepProfiler.Size = new System.Drawing.Size(231, 6);
-            this.mnuContextGeneralSepProfiler.Visible = false;
             // 
             // mnuContextGeneralRefresh
             // 
@@ -437,7 +403,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerInstall.Size = new System.Drawing.Size(83, 22);
             this.toolProfilerInstall.Text = "Install Pr&ofiler";
             this.toolProfilerInstall.Visible = false;
-            this.toolProfilerInstall.Click += new System.EventHandler(this.toolProfilerInstall_Click);
             // 
             // toolProfilerDebug
             // 
@@ -445,7 +410,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerDebug.Size = new System.Drawing.Size(46, 22);
             this.toolProfilerDebug.Text = "D&ebug";
             this.toolProfilerDebug.Visible = false;
-            this.toolProfilerDebug.Click += new System.EventHandler(this.toolProfilerDebug_Click);
             // 
             // toolProfilerEnable
             // 
@@ -453,7 +417,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerEnable.Size = new System.Drawing.Size(87, 22);
             this.toolProfilerEnable.Text = "Enable Pro&filer";
             this.toolProfilerEnable.Visible = false;
-            this.toolProfilerEnable.Click += new System.EventHandler(this.toolProfilerEnable_Click);
             // 
             // toolSepCommon1
             // 
@@ -588,7 +551,7 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(303, 635);
+            this.btnSave.Location = new System.Drawing.Point(299, 635);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(112, 35);
@@ -605,7 +568,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Location = new System.Drawing.Point(0, 0);
             this.propGridEntity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.propGridEntity.Name = "propGridEntity";
-            this.propGridEntity.Size = new System.Drawing.Size(417, 626);
+            this.propGridEntity.Size = new System.Drawing.Size(413, 626);
             this.propGridEntity.TabIndex = 4;
             // 
             // MainControl
@@ -682,10 +645,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripMenuItem toolServiceEndpointRegister;
         private System.Windows.Forms.ToolStripMenuItem mnuContextNodeServiceEndpointRegister;
         private System.Windows.Forms.ToolStripMenuItem mnuContextGeneralServiceEndpointRegister;
-        private System.Windows.Forms.ToolStripMenuItem mnuContextGeneralProfilerInstall;
-        private System.Windows.Forms.ToolStripSeparator mnuContextGeneralSepProfiler;
-        private System.Windows.Forms.ToolStripMenuItem mnuContextNodeProfilerEnable;
-        private System.Windows.Forms.ToolStripSeparator mnuContextNodeSepProfiler;
         private System.Windows.Forms.ToolStripButton toolProfilerInstall;
         private System.Windows.Forms.ToolStripSeparator toolProfilerSep;
         private System.Windows.Forms.ToolStripButton toolProfilerEnable;
