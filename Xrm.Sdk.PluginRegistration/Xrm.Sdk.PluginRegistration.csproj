@@ -228,12 +228,6 @@
       <DependentUpon>MainControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\OrganizationHelper.cs" />
-    <Compile Include="Forms\OrganizationsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OrganizationsForm.Designer.cs">
-      <DependentUpon>OrganizationsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\PluginRegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -315,10 +309,6 @@
     <EmbeddedResource Include="MainControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OrganizationsForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OrganizationsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PluginRegistrationForm.resx">
       <SubType>Designer</SubType>
