@@ -78,7 +78,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolSearch = new System.Windows.Forms.ToolStripButton();
             this.toolCommonSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolClose = new System.Windows.Forms.ToolStripButton();
-            this.toolDisplayTester = new System.Windows.Forms.ToolStripButton();
             this.imlEnableImages = new System.Windows.Forms.ImageList(this.components);
             this.splitterDisplay = new System.Windows.Forms.SplitContainer();
             this.grpPlugins = new System.Windows.Forms.GroupBox();
@@ -285,9 +284,11 @@ namespace Xrm.Sdk.PluginRegistration
             this.grpGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpGrid.Controls.Add(this.grvData);
-            this.grpGrid.Location = new System.Drawing.Point(0, 479);
+            this.grpGrid.Location = new System.Drawing.Point(0, 737);
+            this.grpGrid.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpGrid.Name = "grpGrid";
-            this.grpGrid.Size = new System.Drawing.Size(845, 218);
+            this.grpGrid.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpGrid.Size = new System.Drawing.Size(1268, 335);
             this.grpGrid.TabIndex = 1;
             this.grpGrid.TabStop = false;
             // 
@@ -305,13 +306,14 @@ namespace Xrm.Sdk.PluginRegistration
             this.grvData.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.grvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grvData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.grvData.Location = new System.Drawing.Point(6, 12);
+            this.grvData.Location = new System.Drawing.Point(9, 18);
+            this.grvData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grvData.Name = "grvData";
             this.grvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grvData.ShowCellErrors = false;
             this.grvData.ShowEditingIcon = false;
             this.grvData.ShowRowErrors = false;
-            this.grvData.Size = new System.Drawing.Size(833, 200);
+            this.grvData.Size = new System.Drawing.Size(1250, 308);
             this.grvData.TabIndex = 1;
             this.grvData.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grvData_RowEnter);
             this.grvData.DoubleClick += new System.EventHandler(this.grvData_DoubleClick);
@@ -333,11 +335,11 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolRefresh,
             this.toolSearch,
             this.toolCommonSep3,
-            this.toolClose,
-            this.toolDisplayTester});
+            this.toolClose});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
             this.toolBar.Name = "toolBar";
-            this.toolBar.Size = new System.Drawing.Size(851, 25);
+            this.toolBar.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolBar.Size = new System.Drawing.Size(1276, 25);
             this.toolBar.TabIndex = 9;
             this.toolBar.Text = "toolStrip1";
             // 
@@ -519,11 +521,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolClose.ToolTipText = "Close Tool (Ctrl+F4)";
             this.toolClose.Click += new System.EventHandler(this.toolClose_Click);
             // 
-            // toolDisplayTester
-            // 
-            this.toolDisplayTester.Name = "toolDisplayTester";
-            this.toolDisplayTester.Size = new System.Drawing.Size(23, 22);
-            // 
             // imlEnableImages
             // 
             this.imlEnableImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -535,7 +532,8 @@ namespace Xrm.Sdk.PluginRegistration
             this.splitterDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitterDisplay.Location = new System.Drawing.Point(0, 28);
+            this.splitterDisplay.Location = new System.Drawing.Point(0, 43);
+            this.splitterDisplay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitterDisplay.Name = "splitterDisplay";
             // 
             // splitterDisplay.Panel1
@@ -546,8 +544,9 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.splitterDisplay.Panel2.Controls.Add(this.btnSave);
             this.splitterDisplay.Panel2.Controls.Add(this.propGridEntity);
-            this.splitterDisplay.Size = new System.Drawing.Size(848, 445);
-            this.splitterDisplay.SplitterDistance = 563;
+            this.splitterDisplay.Size = new System.Drawing.Size(1272, 685);
+            this.splitterDisplay.SplitterDistance = 844;
+            this.splitterDisplay.SplitterWidth = 6;
             this.splitterDisplay.TabIndex = 11;
             // 
             // grpPlugins
@@ -557,8 +556,10 @@ namespace Xrm.Sdk.PluginRegistration
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPlugins.Controls.Add(this.trvPlugins);
             this.grpPlugins.Location = new System.Drawing.Point(0, 0);
+            this.grpPlugins.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpPlugins.Name = "grpPlugins";
-            this.grpPlugins.Size = new System.Drawing.Size(560, 442);
+            this.grpPlugins.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpPlugins.Size = new System.Drawing.Size(840, 680);
             this.grpPlugins.TabIndex = 1;
             this.grpPlugins.TabStop = false;
             this.grpPlugins.Text = "Registered Plugins && Custom Workflow Activities";
@@ -572,11 +573,12 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins.ContextMenuStrip = this.mnuContextNode;
             this.trvPlugins.CrmTreeNodeSorter = null;
             this.trvPlugins.LabelEdit = true;
-            this.trvPlugins.Location = new System.Drawing.Point(6, 14);
+            this.trvPlugins.Location = new System.Drawing.Point(9, 22);
+            this.trvPlugins.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.trvPlugins.Name = "trvPlugins";
             this.trvPlugins.SelectedNode = null;
             this.trvPlugins.ShowNodeToolTips = false;
-            this.trvPlugins.Size = new System.Drawing.Size(548, 422);
+            this.trvPlugins.Size = new System.Drawing.Size(822, 649);
             this.trvPlugins.TabIndex = 0;
             this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
             this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
@@ -586,9 +588,10 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(202, 413);
+            this.btnSave.Location = new System.Drawing.Point(303, 635);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(112, 35);
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -600,20 +603,22 @@ namespace Xrm.Sdk.PluginRegistration
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.propGridEntity.Location = new System.Drawing.Point(0, 0);
+            this.propGridEntity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.propGridEntity.Name = "propGridEntity";
-            this.propGridEntity.Size = new System.Drawing.Size(278, 407);
+            this.propGridEntity.Size = new System.Drawing.Size(417, 626);
             this.propGridEntity.TabIndex = 4;
             // 
             // MainControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ContextMenuStrip = this.mnuContextGeneral;
             this.Controls.Add(this.splitterDisplay);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.grpGrid);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainControl";
-            this.Size = new System.Drawing.Size(851, 697);
+            this.Size = new System.Drawing.Size(1276, 1072);
             this.mnuContextNode.ResumeLayout(false);
             this.mnuContextGeneral.ResumeLayout(false);
             this.grpGrid.ResumeLayout(false);
@@ -672,7 +677,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.SplitContainer splitterDisplay;
         private System.Windows.Forms.GroupBox grpPlugins;
         private Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl trvPlugins;
-        private System.Windows.Forms.ToolStripButton toolDisplayTester;
         private System.Windows.Forms.PropertyGrid propGridEntity;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ToolStripMenuItem toolServiceEndpointRegister;
