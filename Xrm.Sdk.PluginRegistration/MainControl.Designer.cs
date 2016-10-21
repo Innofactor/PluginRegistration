@@ -60,10 +60,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolViewEntity = new System.Windows.Forms.ToolStripMenuItem();
             this.toolViewMessage = new System.Windows.Forms.ToolStripMenuItem();
             this.toolProfilerSep = new System.Windows.Forms.ToolStripSeparator();
-            this.toolProfilerInstall = new System.Windows.Forms.ToolStripButton();
-            this.toolProfilerDebug = new System.Windows.Forms.ToolStripButton();
-            this.toolProfilerEnable = new System.Windows.Forms.ToolStripButton();
-            this.toolSepCommon1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolUpdate = new System.Windows.Forms.ToolStripButton();
             this.toolEnable = new System.Windows.Forms.ToolStripButton();
             this.toolUnregister = new System.Windows.Forms.ToolStripButton();
@@ -183,7 +179,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextGeneralRefresh,
             this.mnuContextGeneralSearch});
             this.mnuContextGeneral.Name = "mnuContextTree";
-            this.mnuContextGeneral.Size = new System.Drawing.Size(198, 142);
+            this.mnuContextGeneral.Size = new System.Drawing.Size(198, 120);
             // 
             // mnuContextGeneralAssemblyRegister
             // 
@@ -272,10 +268,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolRegister,
             this.toolView,
             this.toolProfilerSep,
-            this.toolProfilerInstall,
-            this.toolProfilerDebug,
-            this.toolProfilerEnable,
-            this.toolSepCommon1,
             this.toolUpdate,
             this.toolEnable,
             this.toolUnregister,
@@ -377,32 +369,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerSep.Name = "toolProfilerSep";
             this.toolProfilerSep.Size = new System.Drawing.Size(6, 25);
             this.toolProfilerSep.Visible = false;
-            // 
-            // toolProfilerInstall
-            // 
-            this.toolProfilerInstall.Name = "toolProfilerInstall";
-            this.toolProfilerInstall.Size = new System.Drawing.Size(83, 22);
-            this.toolProfilerInstall.Text = "Install Pr&ofiler";
-            this.toolProfilerInstall.Visible = false;
-            // 
-            // toolProfilerDebug
-            // 
-            this.toolProfilerDebug.Name = "toolProfilerDebug";
-            this.toolProfilerDebug.Size = new System.Drawing.Size(46, 22);
-            this.toolProfilerDebug.Text = "D&ebug";
-            this.toolProfilerDebug.Visible = false;
-            // 
-            // toolProfilerEnable
-            // 
-            this.toolProfilerEnable.Name = "toolProfilerEnable";
-            this.toolProfilerEnable.Size = new System.Drawing.Size(87, 22);
-            this.toolProfilerEnable.Text = "Enable Pro&filer";
-            this.toolProfilerEnable.Visible = false;
-            // 
-            // toolSepCommon1
-            // 
-            this.toolSepCommon1.Name = "toolSepCommon1";
-            this.toolSepCommon1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolUpdate
             // 
@@ -588,7 +554,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripMenuItem toolAssemblyRegister;
         private System.Windows.Forms.ToolStripMenuItem toolStepRegister;
         private System.Windows.Forms.ToolStripMenuItem toolImageRegister;
-        private System.Windows.Forms.ToolStripSeparator toolSepCommon1;
         private System.Windows.Forms.ToolStripButton toolUpdate;
         private System.Windows.Forms.ToolStripButton toolEnable;
         private System.Windows.Forms.ToolStripButton toolUnregister;
@@ -624,10 +589,7 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.PropertyGrid propGridEntity;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ToolStripMenuItem toolServiceEndpointRegister;
-        private System.Windows.Forms.ToolStripButton toolProfilerInstall;
         private System.Windows.Forms.ToolStripSeparator toolProfilerSep;
-        private System.Windows.Forms.ToolStripButton toolProfilerEnable;
-        private System.Windows.Forms.ToolStripButton toolProfilerDebug;
         private System.Windows.Forms.ToolStripSeparator toolCommonSep3;
         private System.Windows.Forms.ToolStripButton toolClose;
     }
