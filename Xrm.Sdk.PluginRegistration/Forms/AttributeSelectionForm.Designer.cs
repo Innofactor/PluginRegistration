@@ -33,17 +33,17 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.btnOK = new System.Windows.Forms.Button();
             this.chkSelectAll = new System.Windows.Forms.CheckBox();
             this.lsvAttributes = new System.Windows.Forms.ListView();
-            this.hdrName = new System.Windows.Forms.ColumnHeader();
-            this.hdrLogicalName = new System.Windows.Forms.ColumnHeader();
-            this.hdrType = new System.Windows.Forms.ColumnHeader();
+            this.hdrName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrLogicalName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.hdrType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grpSelect.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpSelect
             // 
-            this.grpSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSelect.Controls.Add(this.btnCancel);
             this.grpSelect.Controls.Add(this.btnOK);
             this.grpSelect.Controls.Add(this.chkSelectAll);
@@ -90,8 +90,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // lsvAttributes
             // 
-            this.lsvAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lsvAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lsvAttributes.CheckBoxes = true;
             this.lsvAttributes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.hdrName,
