@@ -143,11 +143,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     builder.AppendFormat(CultureInfo.InvariantCulture, $"Detail: {Environment.NewLine}{Environment.NewLine}{ConvertDataContractToString(faultException.Detail)}");
                 }
 
-                if (current.InnerException != null)
-                {
-                    prefix = "Inner ";
-                    current = current.InnerException;
-                }
+                prefix = "Inner ";
+                current = current.InnerException;
             }
 
             return builder.ToString();
