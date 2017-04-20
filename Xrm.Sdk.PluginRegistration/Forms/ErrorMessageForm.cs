@@ -103,42 +103,44 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
+        /// <summary>
+        /// Build readable representation of exception happened
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public static string StringizeException(Exception ex)
         {
-            StringBuilder builder = new StringBuilder(1024);
+            var builder = new StringBuilder(1024);
 
-            string prefix = "Unhandled ";
-            Exception current = ex;
+            var prefix = "Unhandled ";
+            var current = ex;
 
             while (current != null)
             {
-                builder.AppendFormat(
-                    CultureInfo.InvariantCulture,
-                    "{0}Exception: {1}",
-                    prefix,
-                    current.GetType().FullName);
+                builder.AppendFormat(CultureInfo.InvariantCulture, $"{prefix}Exception of type: {current.GetType().Name}");
+
+                builder.Append(Environment.NewLine);
+                builder.Append(Environment.NewLine);
 
                 if (current.Message.Length > 0)
                 {
-                    builder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        ": {0}",
-                        current.Message);
+                    builder.AppendFormat(CultureInfo.InvariantCulture, $"{current.Message}");
                 }
 
                 builder.Append(Environment.NewLine);
+                builder.Append(Environment.NewLine);
 
-                FaultException<OrganizationServiceFault> faultException = current as FaultException<OrganizationServiceFault>;
-                if ((faultException != null) && (faultException.Detail != null))
+                if ((current is FaultException<OrganizationServiceFault> faultException) && (faultException.Detail != null))
                 {
-                    builder.AppendFormat(
-                        CultureInfo.InvariantCulture,
-                        "Detail: {1}{0}",
-                        Environment.NewLine,
-                        ConvertDataContractToString(faultException.Detail));
+                    builder.AppendFormat(CultureInfo.InvariantCulture, $"Detail: {Environment.NewLine}{Environment.NewLine}{ConvertDataContractToString(faultException.Detail)}");
                 }
 
+                builder.Append(Environment.NewLine);
+                builder.Append(Environment.NewLine);
+
                 builder.Append(current.StackTrace);
+
+                builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
 
                 prefix = "Inner ";
