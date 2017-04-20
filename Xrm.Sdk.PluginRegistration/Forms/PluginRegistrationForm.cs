@@ -226,7 +226,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             // Create a list of currently selected plugins
-            bool assemblyCanBeIsolated = true;
+            var assemblyCanBeIsolated = true;
             var checkedPluginList = new Dictionary<string, CrmPlugin>();
 
             foreach (ICrmTreeNode node in trvPlugins.CheckedNodes)
@@ -255,7 +255,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 return;
             }
 
-            //Verify that a valid isolation mode has been selected
+            // Verify that a valid isolation mode has been selected
             if (radIsolationSandbox.Checked && !assemblyCanBeIsolated)
             {
                 MessageBox.Show(
@@ -272,8 +272,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             CrmPluginAssembly assembly;
             if (string.IsNullOrEmpty(assemblyPath))
             {
-                //Clone the existing assembly
-                assembly = (CrmPluginAssembly)m_currentAssembly.Clone(false);
+                // Clone the existing assembly
+                assembly = m_currentAssembly.Clone(false);
             }
             else
             {
@@ -281,6 +281,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 //Retrieve the source type and determine if the 
                 assembly.SourceType = GetAssemblySourceType();
+
                 if (CrmAssemblySourceType.Disk != assembly.SourceType)
                 {
                     assembly.ServerFileName = null;
@@ -288,6 +289,34 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 else
                 {
                     assembly.ServerFileName = txtServerFileName.Text;
+                }
+            }
+
+            if (m_currentAssembly != null)
+            {
+                var oldVersion = new Version(m_currentAssembly.Version);
+                var newVersion = new Version(assembly.Version);
+
+                if (oldVersion.Major != newVersion.Major)
+                {
+                    MessageBox.Show(
+                        $"Assembly's major version has changed from {oldVersion} to {newVersion}.\n\nSuch an update is not supported, please register another instance of this assembly instead!",
+                        "Assembly's version missmatch",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (oldVersion.Minor != newVersion.Minor)
+                {
+                    MessageBox.Show(
+                        $"Assembly's minor version has changed from {oldVersion} to {newVersion}.\n\nSuch an update is not supported, please register another instance of this assembly instead!",
+                        "Assembly's version missmatch",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
                 }
             }
 
