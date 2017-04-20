@@ -198,11 +198,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             string ERROR_MESSAGE;
             if (m_currentAssembly == null)
             {
-                ERROR_MESSAGE = "There was an error while registering the selected plugins. Please check the Registration Log for more information.";
+                ERROR_MESSAGE = "There was an error while registering the selected plugins.";
             }
             else
             {
-                ERROR_MESSAGE = "There was an error while updating the selected plugins. Please check the Registration Log for more information.";
+                ERROR_MESSAGE = "There was an error while updating the selected plugins.";
             }
 
             #region Extract Plugin Registration Information
@@ -213,8 +213,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 if (string.IsNullOrEmpty(txtServerFileName.Text.Trim()))
                 {
-                    MessageBox.Show("If the Registration Location is Disk, the \"File Name on Server\" must be specified",
-                        "Missing Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(
+                        "If the Registration Location is Disk, the \"File Name on Server\" must be specified",
+                        "Missing Information", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Warning);
                     m_progRegistration.Complete(false);
                     return;
                 }
@@ -254,7 +257,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             //Reload the assembly
-            string assemblyPath = AssemblyPathControl.FileName;
+            var assemblyPath = AssemblyPathControl.FileName;
             CrmPluginAssembly assembly;
             if (string.IsNullOrEmpty(assemblyPath))
             {
@@ -479,7 +482,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
                 catch (Exception ex)
                 {
-                    m_progRegistration.Increment("ERROR: Error occurred while registering the assembly");
+                    var chunks = ex.Message.Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (chunks.Length > 1)
+                    {
+                        // Replacing generic error message extracted from exception to the title of the window
+                        ERROR_MESSAGE = chunks[chunks.Length - 1];
+                    }
+
+                    m_progRegistration.Increment($"ERROR: {ERROR_MESSAGE}");
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
