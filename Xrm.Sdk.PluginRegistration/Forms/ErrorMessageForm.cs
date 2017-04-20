@@ -80,6 +80,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         public static void ShowErrorMessageBox(IWin32Window owner, string message, string caption, Exception ex)
         {
+            message += " Please check the Log for more information.";
+
             ShowErrorMessageBox(owner, message, caption, StringizeException(ex));
         }
 
