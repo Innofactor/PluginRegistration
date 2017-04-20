@@ -218,19 +218,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         "Missing Information", 
                         MessageBoxButtons.OK, 
                         MessageBoxIcon.Warning);
+
                     m_progRegistration.Complete(false);
+
                     return;
                 }
             }
 
-            //Create a list of currently selected plugins
+            // Create a list of currently selected plugins
             bool assemblyCanBeIsolated = true;
-            Dictionary<string, CrmPlugin> checkedPluginList = new Dictionary<string, CrmPlugin>();
+            var checkedPluginList = new Dictionary<string, CrmPlugin>();
+
             foreach (ICrmTreeNode node in trvPlugins.CheckedNodes)
             {
                 if (node.NodeType == CrmTreeNodeType.Plugin || node.NodeType == CrmTreeNodeType.WorkflowActivity)
                 {
-                    CrmPlugin plugin = (CrmPlugin)node;
+                    var plugin = (CrmPlugin)node;
                     if (CrmPluginIsolatable.No == plugin.Isolatable)
                     {
                         assemblyCanBeIsolated = false;
@@ -243,16 +246,24 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             //Check if there are any plugins selected
             if (checkedPluginList.Count == 0)
             {
-                MessageBox.Show("No plugins have been selected from the list. Please select at least one and try again.",
-                    "No Plugins Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "No plugins have been selected from the list. Please select at least one and try again.",
+                    "No Plugins Selected", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
             //Verify that a valid isolation mode has been selected
             if (radIsolationSandbox.Checked && !assemblyCanBeIsolated)
             {
-                MessageBox.Show("Since some of the plug-ins cannot be isolated, the assembly cannot be marked as Isolated.",
-                    "Isolation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Since some of the plug-ins cannot be isolated, the assembly cannot be marked as Isolated.",
+                    "Isolation", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
@@ -325,38 +336,50 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             catch (Exception ex)
             {
-                ErrorMessageForm.ShowErrorMessageBox(this, "Unable to load the specified Plugin Assembly", "Plugins", ex);
+                ErrorMessageForm.ShowErrorMessageBox(this, "Unable to load the specified Plugin Assembly.", "Plugins", ex);
                 return;
             }
 
-            //Update the assembly with the information specified by the user
+            // Update the assembly with the information specified by the user
             assembly.IsolationMode = GetIsolationMode();
 
             if (missingPluginList.Count != 0)
             {
                 var list = missingPluginList.Select(x => x.TypeName).Aggregate((name01, name02) => name01 + "\n" + name02);
 
-                MessageBox.Show($"Following plugin are missing in the assembly:\n\n{list}\n\nRegistration cannot continue!", 
-                    "Plugins are missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    $"Following plugin are missing in the assembly:\n\n{list}\n\nRegistration cannot continue!", 
+                    "Plugins are missing", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-            //An assembly with plugins must be strongly signed
+            // An assembly with plugins must be strongly signed
             if (pluginList.Count != 0)
             {
                 if (string.IsNullOrEmpty(assembly.PublicKeyToken))
                 {
-                    MessageBox.Show("Assemblies containing Plugins must be strongly signed. Sign the Assembly using a KeyFile.",
-                        "Strong Names Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(
+                        "Assemblies containing Plugins must be strongly signed. Sign the Assembly using a KeyFile.",
+                        "Strong Names Error", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Warning);
+
                     return;
                 }
             }
 
-            //Check if there are any plugins selected that were in the assembly.
+            // Check if there are any plugins selected that were in the assembly.
             if (registerPluginList.Count == 0)
             {
-                MessageBox.Show("No plugins have been selected from the list. Please select at least one and try again.",
-                    "No Plugins Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "No plugins have been selected from the list. Please select at least one and try again.",
+                    "No Plugins Selected", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Warning);
+
                 return;
             }
             else
@@ -364,7 +387,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 assembly.ClearPlugins();
             }
 
-            //If we are doing an Update, do some special processing
+            // If we are doing an Update, do some special processing
             if (m_currentAssembly != null)
             {
                 assembly.AssemblyId = m_currentAssembly.AssemblyId;
@@ -388,8 +411,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     if (chkUpdateAssembly.Checked)
                     {
-                        string originalGroupName = RegistrationHelper.GenerateDefaultGroupName(m_currentAssembly.Name, new Version(m_currentAssembly.Version));
-                        string newGroupName = RegistrationHelper.GenerateDefaultGroupName(assembly.Name, new Version(assembly.Version));
+                        var originalGroupName = RegistrationHelper.GenerateDefaultGroupName(m_currentAssembly.Name, new Version(m_currentAssembly.Version));
+                        var newGroupName = RegistrationHelper.GenerateDefaultGroupName(assembly.Name, new Version(assembly.Version));
 
                         var updateGroupNameList = new List<PluginType>();
                         foreach (var plugin in m_currentAssembly.Plugins)
@@ -462,7 +485,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             catch (Exception ex)
             {
-                m_progRegistration.Increment("ERROR: Occurred while checking whether the assembly exists");
+                if (!string.IsNullOrEmpty(ex.Message))
+                {
+                    ERROR_MESSAGE = ex.Message;
+                }
+
+                m_progRegistration.Increment($"ERROR: {ERROR_MESSAGE}");
 
                 ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
