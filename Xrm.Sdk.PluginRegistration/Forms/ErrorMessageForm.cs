@@ -117,7 +117,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             while (current != null)
             {
-                builder.AppendFormat(CultureInfo.InvariantCulture, $"{prefix}Exception of type: {current.GetType().Name}");
+                builder.AppendFormat(CultureInfo.InvariantCulture, $"{prefix}Exception: {current.GetType().BaseType.FullName}");
 
                 builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
@@ -126,13 +126,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     // Adding actual error message
                     builder.AppendFormat(CultureInfo.InvariantCulture, $"{current.Message}");
+
+                    builder.Append(Environment.NewLine);
+                    builder.Append(Environment.NewLine);
                 }
 
-                builder.Append(Environment.NewLine);
-                builder.Append(Environment.NewLine);
-
                 // Adding stack trace
-                builder.AppendFormat(CultureInfo.InvariantCulture, $"Trace: {current.StackTrace}");
+                builder.Append(current.StackTrace);
 
                 builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
@@ -140,7 +140,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 if ((current is FaultException<OrganizationServiceFault> faultException) && (faultException.Detail != null))
                 {
                     // Adding details of exception
-                    builder.AppendFormat(CultureInfo.InvariantCulture, $"Detail: {Environment.NewLine}{Environment.NewLine}{ConvertDataContractToString(faultException.Detail)}");
+                    builder.AppendFormat(CultureInfo.InvariantCulture, $"Detail: {Environment.NewLine}{ConvertDataContractToString(faultException.Detail)}");
                 }
 
                 prefix = "Inner ";
