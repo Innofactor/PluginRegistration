@@ -286,7 +286,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             try
             {
                 Parallel.ForEach(assembly.Plugins.Values, (currentPlugin) => {
-                    var foundPlugin = m_registeredPluginList.Where(x => x.TypeName.ToLowerInvariant() == currentPlugin.TypeName.ToLowerInvariant()).FirstOrDefault();
+                    var foundPlugin = m_registeredPluginList?.Where(x => x.TypeName.ToLowerInvariant() == currentPlugin.TypeName.ToLowerInvariant()).FirstOrDefault();
                     var alreadyExisted = (m_registeredPluginList != null && foundPlugin != null);
 
                     if (alreadyExisted)
