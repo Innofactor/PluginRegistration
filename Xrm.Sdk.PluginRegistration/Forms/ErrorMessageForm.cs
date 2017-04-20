@@ -124,27 +124,30 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 if (current.Message.Length > 0)
                 {
+                    // Adding actual error message
                     builder.AppendFormat(CultureInfo.InvariantCulture, $"{current.Message}");
                 }
 
                 builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
 
+                // Adding stack trace
+                builder.AppendFormat(CultureInfo.InvariantCulture, $"Trace: {current.StackTrace}");
+
+                builder.Append(Environment.NewLine);
+                builder.Append(Environment.NewLine);
+
                 if ((current is FaultException<OrganizationServiceFault> faultException) && (faultException.Detail != null))
                 {
+                    // Adding details of exception
                     builder.AppendFormat(CultureInfo.InvariantCulture, $"Detail: {Environment.NewLine}{Environment.NewLine}{ConvertDataContractToString(faultException.Detail)}");
                 }
 
-                builder.Append(Environment.NewLine);
-                builder.Append(Environment.NewLine);
-
-                builder.Append(current.StackTrace);
-
-                builder.Append(Environment.NewLine);
-                builder.Append(Environment.NewLine);
-
-                prefix = "Inner ";
-                current = current.InnerException;
+                if (current.InnerException != null)
+                {
+                    prefix = "Inner ";
+                    current = current.InnerException;
+                }
             }
 
             return builder.ToString();
@@ -162,49 +165,48 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 throw new ArgumentNullException("value");
             }
 
-            //Retrieve the type for the value
-            Type valueType = value.GetType();
+            // Retrieve the type for the value
+            var valueType = value.GetType();
 
-            //Verify that this is a data contract
-            DataContractAttribute[] contractAttributeList =
-                (DataContractAttribute[])valueType.GetCustomAttributes(typeof(DataContractAttribute), true);
+            // Verify that this is a data contract
+            var contractAttributeList = (DataContractAttribute[])valueType.GetCustomAttributes(typeof(DataContractAttribute), true);
             if (null == contractAttributeList || 0 == contractAttributeList.Length)
             {
                 throw new ArgumentException("The argument does not have a DataContract attribute.", "value");
             }
 
-            //Create the stream
-            using (MemoryStream stream = new MemoryStream())
+            // Create the stream
+            using (var stream = new MemoryStream())
             {
-                //Create the serializer for the object
-                DataContractSerializer serializer = new DataContractSerializer(valueType);
+                // Create the serializer for the object
+                var serializer = new DataContractSerializer(valueType);
 
-                //Write the object to the stream
+                // Write the object to the stream
                 serializer.WriteObject(stream, value);
 
-                //In order to format the XML document (since this is being output), it has to go
-                //through the XmlWriter. The MemoryStream can be reused to create a string
-                //Reset the stream's position
+                // In order to format the XML document (since this is being output), it has to go
+                // through the XmlWriter. The MemoryStream can be reused to create a string
+                // Reset the stream's position
                 stream.Seek(0, SeekOrigin.Begin);
 
-                //Create an XML document from the stream
-                XmlDocument doc = new XmlDocument();
+                // Create an XML document from the stream
+                var doc = new XmlDocument();
                 doc.Load(stream);
 
-                //Create the writer settings
-                XmlWriterSettings settings = new XmlWriterSettings();
+                // Create the writer settings
+                var settings = new XmlWriterSettings();
                 settings.Indent = true;
                 settings.OmitXmlDeclaration = true;
 
-                //Write the data
-                using (StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture))
+                // Write the data
+                using (var stringWriter = new StringWriter(CultureInfo.InvariantCulture))
                 {
-                    using (XmlWriter writer = XmlWriter.Create(stringWriter, settings))
+                    using (var writer = XmlWriter.Create(stringWriter, settings))
                     {
                         doc.Save(writer);
                     }
 
-                    //Return the writer's contents
+                    // Return the writer's contents
                     return stringWriter.ToString();
                 }
             }
