@@ -33,9 +33,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtErrorMessage
             // 
-            this.txtErrorMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtErrorMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtErrorMessage.Location = new System.Drawing.Point(3, 4);
             this.txtErrorMessage.MaxLength = 0;
             this.txtErrorMessage.Multiline = true;
@@ -44,10 +44,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.txtErrorMessage.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtErrorMessage.Size = new System.Drawing.Size(601, 293);
             this.txtErrorMessage.TabIndex = 0;
-            this.txtErrorMessage.WordWrap = false;
             this.txtErrorMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CloseErrorMessage);
             // 
-            // ErrorMessage
+            // ErrorMessageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -55,11 +54,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Controls.Add(this.txtErrorMessage);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ErrorMessage";
+            this.Name = "ErrorMessageForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Error Message - Detail";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CloseErrorMessage);
             this.Load += new System.EventHandler(this.ErrorMessage_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CloseErrorMessage);
             this.ResumeLayout(false);
             this.PerformLayout();
 
