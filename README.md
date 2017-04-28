@@ -1,19 +1,19 @@
 # The Classic Microsoft Dynamics CRM tool
 ## Now in the XrmToolBox suite
 
-#####Project description
+##### Project description
 
 ![Plugin Registration](http://i.imgur.com/83pJL6K.png)
 
 This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of [XrmToolBox](http://www.xrmtoolbox.com/) plugin and itended to work with the same set of the Dynamics CRM versions as supported by main application.
 
-#####Project status
+##### Project status
 
 * All main operations are working (but still use carefully on production environments!);
 * Azure-related code was stripped away;
 * Plugin might 'freeze' for couple seconds during calls to CRM backend (user should be notified about operation performed in `XrmToolBox`-like way);
 
-#####Project needs
+##### Project needs
 
 * Your bug-reports;
 * Your pull-requests;
