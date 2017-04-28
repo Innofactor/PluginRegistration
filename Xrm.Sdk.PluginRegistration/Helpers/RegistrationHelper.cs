@@ -343,15 +343,15 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("crmEntity");
             }
 
-            Collection<Guid> serviceEndpointList = new Collection<Guid>();
-            Collection<Guid> assemblyList = new Collection<Guid>();
-            Collection<Guid> pluginList = new Collection<Guid>();
-            Collection<Guid> stepList = new Collection<Guid>();
-            Collection<Guid> secureConfigList = new Collection<Guid>();
-            Collection<Guid> imageList = new Collection<Guid>();
+            var serviceEndpointList = new Collection<Guid>();
+            var assemblyList = new Collection<Guid>();
+            var pluginList = new Collection<Guid>();
+            var stepList = new Collection<Guid>();
+            var secureConfigList = new Collection<Guid>();
+            var imageList = new Collection<Guid>();
 
             //Create the list of various objects that need to be unregistered
-            foreach (ICrmEntity entity in crmEntity)
+            foreach (var entity in crmEntity)
             {
                 switch (entity.EntityType)
                 {
@@ -367,7 +367,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                         pluginList.Add(entity.EntityId);
                         break;
 
-                    case Entities.SdkMessageProcessingStep.EntityLogicalName:
+                    case SdkMessageProcessingStep.EntityLogicalName:
                         stepList.Add(entity.EntityId);
                         break;
 
@@ -381,7 +381,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve the up-to-date list of steps for the service endpoints and add them to the unregister list
-            foreach (Guid stepId in RetrieveStepIdsForServiceEndpoint(org, serviceEndpointList))
+            foreach (var stepId in RetrieveStepIdsForServiceEndpoint(org, serviceEndpointList))
             {
                 if (!stepList.Contains(stepId))
                 {
@@ -389,7 +389,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 }
             }
             //Retrieve the up-to-date list of plugins for the assemblies and add them to the unregister list
-            foreach (Guid pluginId in RetrievePluginIdsForAssembly(org, assemblyList))
+            foreach (var pluginId in RetrievePluginIdsForAssembly(org, assemblyList))
             {
                 if (!pluginList.Contains(pluginId))
                 {
@@ -398,7 +398,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve the up-to-date list of steps for the plugins and add them to the unregister list
-            foreach (Guid stepId in RetrieveStepIdsForPlugins(org, pluginList))
+            foreach (var stepId in RetrieveStepIdsForPlugins(org, pluginList))
             {
                 if (!stepList.Contains(stepId))
                 {
@@ -412,7 +412,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 CrmPluginStep step;
                 if (org.Steps.TryGetValue(stepList[i], out step))
                 {
-                    Guid profilerStepId = step.ProfilerStepId.GetValueOrDefault();
+                    var profilerStepId = step.ProfilerStepId.GetValueOrDefault();
                     if (Guid.Empty != profilerStepId && profilerStepId != step.StepId)
                     {
                         stepList.Add(profilerStepId);
@@ -421,7 +421,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve the up-to-date list of secure configs for the steps and add them to the unregister list
-            foreach (Guid secureConfigId in RetrieveSecureConfigIdsForStepId(org, stepList))
+            foreach (var secureConfigId in RetrieveSecureConfigIdsForStepId(org, stepList))
             {
                 if (!secureConfigList.Contains(secureConfigId))
                 {
@@ -430,7 +430,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve the up-to-date list of images for the steps and add them to the unregister list
-            foreach (Guid imageId in RetrieveImageIdsForStepId(org, stepList))
+            foreach (var imageId in RetrieveImageIdsForStepId(org, stepList))
             {
                 if (!imageList.Contains(imageId))
                 {
@@ -439,7 +439,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Loop through each object and delete them
-            Dictionary<string, int> deleteStats = new Dictionary<string, int>();
+            var deleteStats = new Dictionary<string, int>();
             int totalSteps = secureConfigList.Count + 1;
             if (serviceEndpointList.Count != 0)
             {
@@ -473,7 +473,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.Initialize(totalSteps, "Unregistering Images");
                 }
-                foreach (Guid imageId in imageList)
+                foreach (var imageId in imageList)
                 {
                     org.OrganizationService.Delete(SdkMessageProcessingStepImage.EntityLogicalName, imageId);
                     if (prog != null)
@@ -486,7 +486,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Steps");
                 }
-                foreach (Guid stepId in stepList)
+                foreach (var stepId in stepList)
                 {
                     org.OrganizationService.Delete(SdkMessageProcessingStep.EntityLogicalName, stepId);
                     if (prog != null)
@@ -512,7 +512,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Plugins");
                 }
-                foreach (Guid pluginId in pluginList)
+                foreach (var pluginId in pluginList)
                 {
                     org.OrganizationService.Delete(PluginType.EntityLogicalName, pluginId);
                     if (prog != null)
@@ -525,7 +525,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Assemblies");
                 }
-                foreach (Guid assemblyId in assemblyList)
+                foreach (var assemblyId in assemblyList)
                 {
                     org.OrganizationService.Delete(PluginAssembly.EntityLogicalName, assemblyId);
                     if (prog != null)
@@ -538,7 +538,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering ServiceEndpoints");
                 }
-                foreach (Guid serviceEndpointId in serviceEndpointList)
+                foreach (var serviceEndpointId in serviceEndpointList)
                 {
                     org.OrganizationService.Delete(ServiceEndpoint.EntityLogicalName, serviceEndpointId);
                     if (prog != null)
@@ -565,8 +565,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// <param name="org"></param>
         /// <param name="pathToAssembly"></param>
         /// <param name="assembly"></param>
-        public static void UpdateAssembly(CrmOrganization org, string pathToAssembly, CrmPluginAssembly assembly,
-            params PluginType[] type)
+        public static void UpdateAssembly(CrmOrganization org, string pathToAssembly, CrmPluginAssembly assembly, params PluginType[] type)
         {
             if (org == null)
             {
@@ -577,7 +576,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("assembly");
             }
 
-            PluginAssembly ptl = (PluginAssembly)assembly.GenerateCrmEntities()[PluginAssembly.EntityLogicalName];
+            var ptl = (PluginAssembly)assembly.GenerateCrmEntities()[PluginAssembly.EntityLogicalName];
 
             //If the assembly path is not set, then the content does not need to be updated
             if (!string.IsNullOrEmpty(pathToAssembly) &&
@@ -607,7 +606,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             // Work around as updating only description is failing with publickeytoken not null
-            PluginAssembly pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)) as PluginAssembly;
+            var pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)) as PluginAssembly;
             //PluginAssembly pt1 = new PluginAssembly();
             pt1.Description = description;
             org.OrganizationService.Update(pt1);
@@ -643,8 +642,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Retrieve the SDK entity equivalent of the given image
-            Dictionary<string, object> entityList = image.GenerateCrmEntities(step.MessageId, step.MessageEntityId);
-            SdkMessageProcessingStepImage sdkImage = (SdkMessageProcessingStepImage)entityList[SdkMessageProcessingStepImage.EntityLogicalName];
+            var entityList = image.GenerateCrmEntities(step.MessageId, step.MessageEntityId);
+            var sdkImage = (SdkMessageProcessingStepImage)entityList[SdkMessageProcessingStepImage.EntityLogicalName];
 
             //If the step that owns this image is a profiled step, the step will be the original step (the step that is being profiled),
             //not the profiler step. The Profiler step is what should be set on the server, since that is the step that is actually enabled.
@@ -668,7 +667,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("plugin");
             }
 
-            PluginType ptl = (PluginType)plugin.GenerateCrmEntities()[PluginType.EntityLogicalName];
+            var ptl = (PluginType)plugin.GenerateCrmEntities()[PluginType.EntityLogicalName];
 
             org.OrganizationService.Update(ptl);
             OrganizationHelper.RefreshPlugin(org, plugin);
@@ -743,14 +742,13 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 throw new ArgumentNullException("serviceEndpoint");
             }
-            ServiceEndpoint sep = serviceEndpoint.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
+            var sep = serviceEndpoint.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
 
             org.OrganizationService.Update(sep);
             OrganizationHelper.RefreshServiceEndpoint(org, serviceEndpoint);
         }
 
-        public static bool UpdateStep(CrmOrganization org, CrmPluginStep step, Guid? origSecureConfigId,
-            IList<CrmPluginImage> updateImages)
+        public static bool UpdateStep(CrmOrganization org, CrmPluginStep step, Guid? origSecureConfigId, IList<CrmPluginImage> updateImages)
         {
             if (org == null)
             {
@@ -761,15 +759,15 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("step");
             }
 
-            Dictionary<string, object> entityList = step.GenerateCrmEntities();
-            SdkMessageProcessingStep sdkStep = (SdkMessageProcessingStep)entityList[SdkMessageProcessingStep.EntityLogicalName];
+            var entityList = step.GenerateCrmEntities();
+            var sdkStep = (SdkMessageProcessingStep)entityList[SdkMessageProcessingStep.EntityLogicalName];
 
             // Loop through each image and set the new message property
             List<SdkMessageProcessingStepImage> sdkImages = null;
             if (null != updateImages)
             {
                 // Ensure that the given message supports images
-                CrmMessage message = org.Messages[step.MessageId];
+                var message = org.Messages[step.MessageId];
                 if (0 == message.ImageMessagePropertyNames.Count && step.Images.Count > 0)
                 {
                     throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture,
@@ -793,7 +791,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     }
 
                     // Create the entity to update the value
-                    SdkMessageProcessingStepImage sdkImage = new SdkMessageProcessingStepImage();
+                    var sdkImage = new SdkMessageProcessingStepImage();
                     sdkImage.Id = image.ImageId;
                     sdkImage.MessagePropertyName = propertyName;
                     sdkImage.EntityState = EntityState.Changed;
@@ -993,21 +991,18 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
         private static List<Guid> RetrieveImageIdsForStepId(CrmOrganization org, IList<Guid> stepIds)
         {
-            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStepImage.EntityLogicalName,
-                "sdkmessageprocessingstepimageid", "sdkmessageprocessingstepid", stepIds);
+            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStepImage.EntityLogicalName, "sdkmessageprocessingstepimageid", "sdkmessageprocessingstepid", stepIds);
         }
 
         private static List<Guid> RetrievePluginIdsForAssembly(CrmOrganization org, IList<Guid> assemblyIds)
         {
-            return RetrieveReferenceAttributeIds(org, PluginType.EntityLogicalName,
-                "plugintypeid", "pluginassemblyid", assemblyIds);
+            return RetrieveReferenceAttributeIds(org, PluginType.EntityLogicalName, "plugintypeid", "pluginassemblyid", assemblyIds);
         }
 
         /// <summary>
         /// Retrieve the Id for each entityName that has a filterAttribute value in the filterIdList.
         /// </summary>
-        private static List<Guid> RetrieveReferenceAttributeIds(CrmOrganization org, string entityName,
-            string retrieveAttribute, string filterAttribute, IList<Guid> filterIdList)
+        private static List<Guid> RetrieveReferenceAttributeIds(CrmOrganization org, string entityName, string retrieveAttribute, string filterAttribute, IList<Guid> filterIdList)
         {
             #region Argument Validation
 
@@ -1062,7 +1057,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     if (prop.Key == retrieveAttribute)
                     {
-                        Type propType = prop.Value.GetType();
+                        var propType = prop.Value.GetType();
                         if (propType == typeof(Guid))
                         {
                             resultList.Add((Guid)prop.Value);
@@ -1084,14 +1079,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
         private static List<Guid> RetrieveStepIdsForPlugins(CrmOrganization org, IList<Guid> pluginIds)
         {
-            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
-                "sdkmessageprocessingstepid", "plugintypeid", pluginIds);
+            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName, "sdkmessageprocessingstepid", "plugintypeid", pluginIds);
         }
 
         private static List<Guid> RetrieveStepIdsForServiceEndpoint(CrmOrganization org, IList<Guid> serviceEndpointIds)
         {
-            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
-                "sdkmessageprocessingstepid", "eventhandler", serviceEndpointIds);
+            return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName, "sdkmessageprocessingstepid", "eventhandler", serviceEndpointIds);
         }
 
         #endregion Private Methods
