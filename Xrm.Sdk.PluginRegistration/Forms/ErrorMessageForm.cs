@@ -139,7 +139,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
 
-                if ((current is FaultException<OrganizationServiceFault> faultException) && (faultException.Detail != null))
+                var faultException = current as FaultException<OrganizationServiceFault>;
+                if ((faultException != null) && (faultException.Detail != null))
                 {
                     // Adding details of exception
                     builder.AppendFormat(CultureInfo.InvariantCulture, $"Detail: {Environment.NewLine}{ConvertDataContractToString(faultException.Detail)}");
