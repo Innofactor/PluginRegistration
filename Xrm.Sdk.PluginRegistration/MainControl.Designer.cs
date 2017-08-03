@@ -164,7 +164,7 @@ namespace Xrm.Sdk.PluginRegistration
             // mnuContextNodeUnregister
             // 
             this.mnuContextNodeUnregister.Name = "mnuContextNodeUnregister";
-            this.mnuContextNodeUnregister.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.mnuContextNodeUnregister.ShortcutKeyDisplayString = "Delete";
             this.mnuContextNodeUnregister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeUnregister.Text = "U&nregister";
             this.mnuContextNodeUnregister.Click += new System.EventHandler(this.toolUnregister_Click);
@@ -210,7 +210,7 @@ namespace Xrm.Sdk.PluginRegistration
             // mnuContextGeneralRefresh
             // 
             this.mnuContextGeneralRefresh.Name = "mnuContextGeneralRefresh";
-            this.mnuContextGeneralRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.mnuContextGeneralRefresh.ShortcutKeyDisplayString = "F5";
             this.mnuContextGeneralRefresh.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralRefresh.Text = "Re&fresh";
             this.mnuContextGeneralRefresh.Click += new System.EventHandler(this.toolRefresh_Click);
@@ -218,7 +218,7 @@ namespace Xrm.Sdk.PluginRegistration
             // mnuContextGeneralSearch
             // 
             this.mnuContextGeneralSearch.Name = "mnuContextGeneralSearch";
-            this.mnuContextGeneralSearch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.mnuContextGeneralSearch.ShortcutKeyDisplayString = "Ctrl+F";
             this.mnuContextGeneralSearch.Size = new System.Drawing.Size(197, 22);
             this.mnuContextGeneralSearch.Text = "&Search";
             this.mnuContextGeneralSearch.Click += new System.EventHandler(this.toolSearch_Click);
@@ -294,7 +294,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolAssemblyRegister
             // 
             this.toolAssemblyRegister.Name = "toolAssemblyRegister";
-            this.toolAssemblyRegister.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.toolAssemblyRegister.ShortcutKeyDisplayString = "Ctrl+A";
             this.toolAssemblyRegister.Size = new System.Drawing.Size(274, 22);
             this.toolAssemblyRegister.Text = "Register New &Assembly";
             this.toolAssemblyRegister.Click += new System.EventHandler(this.toolAssemblyRegister_Click);
@@ -302,7 +302,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolStepRegister
             // 
             this.toolStepRegister.Name = "toolStepRegister";
-            this.toolStepRegister.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.toolStepRegister.ShortcutKeyDisplayString = "Ctrl+T";
             this.toolStepRegister.Size = new System.Drawing.Size(274, 22);
             this.toolStepRegister.Text = "Register New S&tep";
             this.toolStepRegister.Click += new System.EventHandler(this.toolStepRegister_Click);
@@ -310,7 +310,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolImageRegister
             // 
             this.toolImageRegister.Name = "toolImageRegister";
-            this.toolImageRegister.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.toolImageRegister.ShortcutKeyDisplayString = "Ctrl+I";
             this.toolImageRegister.Size = new System.Drawing.Size(274, 22);
             this.toolImageRegister.Text = "Register New &Image";
             this.toolImageRegister.Click += new System.EventHandler(this.toolImageRegister_Click);
@@ -318,7 +318,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolServiceEndpointRegister
             // 
             this.toolServiceEndpointRegister.Name = "toolServiceEndpointRegister";
-            this.toolServiceEndpointRegister.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.toolServiceEndpointRegister.ShortcutKeyDisplayString = "Ctrl+E";
             this.toolServiceEndpointRegister.Size = new System.Drawing.Size(274, 22);
             this.toolServiceEndpointRegister.Text = "Register New Service &Endpoint";
             // 
@@ -336,8 +336,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolViewAssembly
             // 
             this.toolViewAssembly.Name = "toolViewAssembly";
-            this.toolViewAssembly.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.A)));
+            this.toolViewAssembly.ShortcutKeyDisplayString = "Ctrl+Shift+A";
             this.toolViewAssembly.Size = new System.Drawing.Size(256, 22);
             this.toolViewAssembly.Text = "Display by &Assembly";
             this.toolViewAssembly.Click += new System.EventHandler(this.toolView_Click);
@@ -345,8 +344,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolViewEntity
             // 
             this.toolViewEntity.Name = "toolViewEntity";
-            this.toolViewEntity.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.E)));
+            this.toolViewEntity.ShortcutKeyDisplayString = "Ctrl+Shift+E";
             this.toolViewEntity.Size = new System.Drawing.Size(256, 22);
             this.toolViewEntity.Text = "Display by &Entity";
             this.toolViewEntity.Click += new System.EventHandler(this.toolView_Click);
@@ -354,8 +352,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolViewMessage
             // 
             this.toolViewMessage.Name = "toolViewMessage";
-            this.toolViewMessage.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.M)));
+            this.toolViewMessage.ShortcutKeyDisplayString = "Ctrl+Shift+M";
             this.toolViewMessage.Size = new System.Drawing.Size(256, 22);
             this.toolViewMessage.Text = "Display by &Message";
             this.toolViewMessage.Click += new System.EventHandler(this.toolView_Click);

@@ -32,7 +32,7 @@ namespace Xrm.Sdk.PluginRegistration
     using XrmToolBox.Extensibility.Args;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin
+    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver
     {
         #region Private Fields
 
@@ -214,6 +214,69 @@ namespace Xrm.Sdk.PluginRegistration
         #region Public Events
 
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
+
+        public void ReceiveKeyDownShortcut(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled)
+            {
+                mnuContextNodeUnregister.PerformClick();
+            }
+            else if (e.KeyCode == Keys.F5 && mnuContextGeneralRefresh.Enabled)
+            {
+                mnuContextGeneralRefresh.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.F && mnuContextGeneralSearch.Enabled)
+            {
+                mnuContextGeneralSearch.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.A && toolAssemblyRegister.Enabled)
+            {
+                toolAssemblyRegister.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.T && toolStepRegister.Enabled)
+            {
+                toolStepRegister.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.I && toolImageRegister.Enabled)
+            {
+                toolImageRegister.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.E && toolServiceEndpointRegister.Enabled)
+            {
+                toolServiceEndpointRegister.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.A && toolViewAssembly.Enabled)
+            {
+                toolViewAssembly.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.M && toolViewMessage.Enabled)
+            {
+                toolViewMessage.PerformClick();
+            }
+
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+        }
+
+        public void ReceiveKeyPressShortcut(KeyPressEventArgs e) { }
+
+        public void ReceiveKeyUpShortcut(KeyEventArgs e) { }
+
+        public void ReceivePreviewKeyDownShortcut(PreviewKeyDownEventArgs e) { }
 
         #endregion Public Events
 
@@ -1167,7 +1230,7 @@ namespace Xrm.Sdk.PluginRegistration
             var regForm = new ImageRegistrationForm(m_org, this, trvPlugins.RootNodes, null, nodeId);
             regForm.ShowDialog();
         }
-        
+
         private void toolRefresh_Click(object sender, EventArgs e)
         {
             var instruction = new WorkAsyncInfo()
