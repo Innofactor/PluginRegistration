@@ -9,8 +9,9 @@
     <projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite
-      This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of XrmToolBox plugin and itended to work with the same set of the Dynamics CRM versions as supported by main application.
+      The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite.
+
+This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of XrmToolBox plugin and itended to work with the same set of the Dynamics CRM versions as supported by main application.
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
