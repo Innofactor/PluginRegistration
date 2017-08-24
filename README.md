@@ -1,6 +1,8 @@
 # The Classic Microsoft Dynamics CRM tool
 ## Now in the XrmToolBox suite
 
+[![Join the chat at https://gitter.im/Innofactor/PluginRegistration](https://badges.gitter.im/Innofactor/PluginRegistration.svg)](https://gitter.im/Innofactor/PluginRegistration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ##### Project description
 
 ![Plugin Registration](http://i.imgur.com/83pJL6K.png)
