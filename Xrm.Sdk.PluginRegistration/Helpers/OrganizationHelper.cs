@@ -275,10 +275,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("org");
             }
 
-            var query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName);
-            query.Criteria = CreateAssemblyFilter();
-            query.EntityName = PluginAssembly.EntityLogicalName;
+            var query = new QueryExpression
+            {
+                ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName),
+                Criteria = CreateAssemblyFilter(),
+                EntityName = PluginAssembly.EntityLogicalName
+            };
 
             //Clear the assemblies list since we are reloading from scratch
             org.ClearAssemblies();
@@ -299,10 +301,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("org");
             }
 
-            QueryExpression query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(ServiceEndpoint.EntityLogicalName);
-            query.Criteria = new FilterExpression();
-            query.EntityName = ServiceEndpoint.EntityLogicalName;
+            QueryExpression query = new QueryExpression
+            {
+                ColumnSet = GetColumnSet(ServiceEndpoint.EntityLogicalName),
+                Criteria = new FilterExpression(),
+                EntityName = ServiceEndpoint.EntityLogicalName
+            };
 
             //Clear the Service Endpoints list since we are reloading from scratch
             org.ClearServiceEndpoints();
@@ -340,10 +344,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("entityName");
             }
 
-            RetrieveEntityRequest request = new RetrieveEntityRequest();
-            request.EntityFilters = EntityFilters.Attributes;
-            request.LogicalName = entityName;
-            request.RetrieveAsIfPublished = false;
+            RetrieveEntityRequest request = new RetrieveEntityRequest
+            {
+                EntityFilters = EntityFilters.Attributes,
+                LogicalName = entityName,
+                RetrieveAsIfPublished = false
+            };
 
             //Execute the request
             RetrieveEntityResponse response = (RetrieveEntityResponse)org.OrganizationService.Execute(request);
@@ -437,8 +443,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     }
                     else
                     {
-                        List<Guid> idList = new List<Guid>();
-                        idList.Add(entity.EntityId);
+                        List<Guid> idList = new List<Guid>
+                        {
+                            entity.EntityId
+                        };
 
                         queryList.Add(entity.EntityType, idList);
                     }
@@ -455,9 +463,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Create the base query that will be used
 
             string[] colsArray = new string[] { "modifiedon", "createdon" };
-            var idCon = new ConditionExpression();
-            idCon.AttributeName = string.Empty;
-            idCon.Operator = ConditionOperator.In;
+            var idCon = new ConditionExpression
+            {
+                AttributeName = string.Empty,
+                Operator = ConditionOperator.In
+            };
 
             var query = new QueryExpression();
             query.Criteria.Conditions.Add(idCon);
@@ -837,9 +847,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Create the query
-            var query = new QueryExpression(PluginType.EntityLogicalName);
-            query.ColumnSet = GetColumnSet(PluginType.EntityLogicalName);
-            query.Criteria = new FilterExpression();
+            var query = new QueryExpression(PluginType.EntityLogicalName)
+            {
+                ColumnSet = GetColumnSet(PluginType.EntityLogicalName),
+                Criteria = new FilterExpression()
+            };
             query.Criteria.AddCondition("typename", ConditionOperator.NotLike, "Compiled.Workflow%");
 
             //Add a filter to only include the desired system plugins
@@ -905,9 +917,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             var secureConfigIdList = new List<object>();
 
             //Create the query for the step
-            var query = new QueryExpression(SdkMessageProcessingStep.EntityLogicalName);
-            query.ColumnSet = GetColumnSet(SdkMessageProcessingStep.EntityLogicalName);
-            query.Criteria = CreateStepFilter();
+            var query = new QueryExpression(SdkMessageProcessingStep.EntityLogicalName)
+            {
+                ColumnSet = GetColumnSet(SdkMessageProcessingStep.EntityLogicalName),
+                Criteria = CreateStepFilter()
+            };
 
             //Only add this link if retrieval of the secure configuration has not failed previously
             LinkEntity secureConfigurationLink;
