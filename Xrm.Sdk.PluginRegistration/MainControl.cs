@@ -1160,6 +1160,15 @@ namespace Xrm.Sdk.PluginRegistration
         {
             CloseTool();
         }
+        private void toolExport_Click(object sender, EventArgs e)
+        {
+            ExportTool();
+        }
+
+        private void ExportTool()
+        {
+            throw new NotImplementedException();
+        }
 
         private void toolEnable_Click(object sender, EventArgs e)
         {
@@ -2034,5 +2043,7 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
+
+        
     }
 }

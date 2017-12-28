@@ -74,6 +74,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
+            this.toolExport = new System.Windows.Forms.ToolStripButton();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -272,7 +273,8 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolRefresh,
             this.toolSearch,
             this.toolCommonSep3,
-            this.toolClose});
+            this.toolClose,
+            this.toolExport});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
             this.toolBar.Name = "toolBar";
             this.toolBar.Size = new System.Drawing.Size(851, 25);
@@ -505,6 +507,15 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Size = new System.Drawing.Size(274, 407);
             this.propGridEntity.TabIndex = 4;
             // 
+            // toolExport
+            // 
+            this.toolExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolExport.Name = "toolExport";
+            this.toolExport.Size = new System.Drawing.Size(44, 22);
+            this.toolExport.Text = "E&xport";
+            this.toolExport.ToolTipText = "Export to Excel";
+            this.toolExport.Click += new System.EventHandler(this.toolExport_Click);
+            // 
             // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -578,5 +589,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripSeparator toolProfilerSep;
         private System.Windows.Forms.ToolStripSeparator toolCommonSep3;
         private System.Windows.Forms.ToolStripButton toolClose;
+        private System.Windows.Forms.ToolStripButton toolExport;
     }
 }
