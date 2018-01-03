@@ -1,4 +1,4 @@
-﻿namespace Xrm.Sdk.PluginRegistration.Serializers
+﻿namespace Xrm.Sdk.PluginRegistration.Models
 {
     using CsvHelper.Configuration.Attributes;
 
