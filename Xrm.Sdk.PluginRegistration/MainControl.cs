@@ -31,6 +31,7 @@ namespace Xrm.Sdk.PluginRegistration
     using System.Text;
     using System.Windows.Forms;
     using Wrappers;
+    using Xrm.Sdk.PluginRegistration.Extensions;
     using Xrm.Sdk.PluginRegistration.Models;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Args;
@@ -1246,12 +1247,12 @@ namespace Xrm.Sdk.PluginRegistration
 
                 var record = new CsvModel
                 {
-                    Stage = step.Stage.ToString(),
-                    ExecutionMode = step.Mode.ToString(),
+                    Stage = step.Stage.GetDescription(),
+                    ExecutionMode = step.Mode.GetDescription(),
                     ExecutionOrder = step.Rank.ToString(),
                     Message = messageName,
                     FilteringAttributes = step.FilteringAttributes,
-                    Deployment = step.Deployment.ToString(),
+                    Deployment = step.Deployment.GetDescription(),
                     PrimaryEntity = primaryEntity,
                     SecondayEntity = secondayEntity,
                 };
