@@ -4,7 +4,7 @@
     <id>Xrm.Sdk.PluginRegistration</id>
     <version>1.0.0</version>
     <title>Plugin Registration for XrmToolBox</title>
-    <authors>Microsoft, Alexey, Jonas</authors>
+    <authors>Microsoft, Alexey, Jonas and Imran</authors>
     <owners>Innofactor</owners>
     <projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

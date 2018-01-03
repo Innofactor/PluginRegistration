@@ -1102,16 +1102,23 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
     public enum CrmPluginStepStage
     {
+        [Description("Pre-validation")]
         PreValidation = 10,
+        [Description("Pre-operation")]
         PreOperation = 20,
+        [Description("Post-operation")]
         PostOperation = 40,
+        [Description("Post-operation Deprecated")]
         PostOperationDeprecated = 50
     }
 
     public enum CrmPluginStepDeployment
     {
+        [Description("Server only")]
         ServerOnly = 0,
+        [Description("Offline only")]
         OfflineOnly = 1,
+        [Description("Both")]
         Both = 2
     }
 

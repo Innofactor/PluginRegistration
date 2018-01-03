@@ -126,8 +126,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentNullException("typeName");
             }
 
-            QueryByAttribute query = new QueryByAttribute(PluginType.EntityLogicalName);
-            query.ColumnSet = new ColumnSet();
+            QueryByAttribute query = new QueryByAttribute(PluginType.EntityLogicalName)
+            {
+                ColumnSet = new ColumnSet()
+            };
             query.AddAttributeValue("typename", typeName);
             if (pluginAssemblyId != Guid.Empty)
             {
@@ -694,9 +696,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 return;
             }
 
-            PluginType updatePlugin = new PluginType();
-
-            updatePlugin.PluginTypeId = new Guid?();
+            PluginType updatePlugin = new PluginType
+            {
+                PluginTypeId = new Guid?()
+            };
             updatePlugin["plugintypeid"] = pluginId;
 
             updatePlugin.FriendlyName = friendlyName;
@@ -721,9 +724,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 return;
             }
 
-            PluginType updatePlugin = new PluginType();
-
-            updatePlugin.PluginTypeId = new Guid?();
+            PluginType updatePlugin = new PluginType
+            {
+                PluginTypeId = new Guid?()
+            };
             updatePlugin["plugintypeid"] = pluginId;
 
             updatePlugin.FriendlyName = friendlyName;
@@ -791,10 +795,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     }
 
                     // Create the entity to update the value
-                    var sdkImage = new SdkMessageProcessingStepImage();
-                    sdkImage.Id = image.ImageId;
-                    sdkImage.MessagePropertyName = propertyName;
-                    sdkImage.EntityState = EntityState.Changed;
+                    var sdkImage = new SdkMessageProcessingStepImage
+                    {
+                        Id = image.ImageId,
+                        MessagePropertyName = propertyName,
+                        EntityState = EntityState.Changed
+                    };
 
                     sdkImages.Add(sdkImage);
                 }
@@ -884,9 +890,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 // Update the Profiler step with the new property values as a single transaction to minimize the
                 // possibility of data corruption.
-                SdkMessageProcessingStep profilerStep = new SdkMessageProcessingStep();
-                profilerStep.Id = step.ProfilerStepId.GetValueOrDefault();
-                profilerStep.sdkmessageprocessingstepid_sdkmessageprocessingstepimage = sdkImages;
+                SdkMessageProcessingStep profilerStep = new SdkMessageProcessingStep
+                {
+                    Id = step.ProfilerStepId.GetValueOrDefault(),
+                    sdkmessageprocessingstepid_sdkmessageprocessingstepimage = sdkImages
+                };
                 org.OrganizationService.Update(profilerStep);
             }
 
@@ -925,9 +933,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 return;
             }
 
-            SdkMessageProcessingStep updateStep = new SdkMessageProcessingStep();
-
-            updateStep.SdkMessageProcessingStepId = new Guid?();
+            SdkMessageProcessingStep updateStep = new SdkMessageProcessingStep
+            {
+                SdkMessageProcessingStepId = new Guid?()
+            };
             updateStep["sdkmessageprocessingstepid"] = stepId;
 
             updateStep.Description = description;
@@ -947,8 +956,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 throw new ArgumentException("Invalid Guid", "stepId");
             }
 
-            Microsoft.Crm.Sdk.Messages.SetStateRequest request = new Microsoft.Crm.Sdk.Messages.SetStateRequest();
-            request.EntityMoniker = new EntityReference(SdkMessageProcessingStep.EntityLogicalName, stepId);
+            Microsoft.Crm.Sdk.Messages.SetStateRequest request = new Microsoft.Crm.Sdk.Messages.SetStateRequest
+            {
+                EntityMoniker = new EntityReference(SdkMessageProcessingStep.EntityLogicalName, stepId)
+            };
             if (isEnable)
             {
                 request.State = new OptionSetValue((int)SdkMessageProcessingStepState.Enabled);
