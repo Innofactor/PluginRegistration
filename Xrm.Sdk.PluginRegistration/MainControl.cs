@@ -1180,19 +1180,20 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void ExportTool()
         {
-            var saveFileDialog1 = new SaveFileDialog
+            var saveFileDialog = new SaveFileDialog
             {
                 Filter = "Comma Separated Values File|*.csv",
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
 
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var filePath = Path.GetFullPath(saveFileDialog1.FileName);
+                var filePath = Path.GetFullPath(saveFileDialog.FileName);
 
                 using (var csv = new CsvWriter(new StreamWriter(filePath)))
                 {
+                    csv.Configuration.CultureInfo = System.Globalization.CultureInfo.CurrentCulture;
                     csv.WriteHeader(typeof(CsvModel));
                     csv.NextRecord();
 
