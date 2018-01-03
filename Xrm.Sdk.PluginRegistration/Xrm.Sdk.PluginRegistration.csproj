@@ -58,6 +58,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=6.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.6.1.0\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="McTools.Xrm.Connection, Version=1.2017.5.14, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
       <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2017.5.14\lib\net452\McTools.Xrm.Connection.dll</HintPath>
     </Reference>
@@ -175,6 +178,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Serializers\CsvModel.cs" />
     <Compile Include="Wrappers\CrmAttribute.cs" />
     <Compile Include="Wrappers\CrmEntityDictionary.cs" />
     <Compile Include="Wrappers\CrmMessageEntity.cs" />
