@@ -18,16 +18,20 @@
 namespace Xrm.Sdk.PluginRegistration
 {
     using Controls;
+    using CsvHelper;
     using Forms;
     using Helpers;
     using McTools.Xrm.Connection;
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics;
     using System.Drawing;
+    using System.IO;
     using System.Text;
     using System.Windows.Forms;
     using Wrappers;
+    using Xrm.Sdk.PluginRegistration.Models;
     using XrmToolBox.Extensibility;
     using XrmToolBox.Extensibility.Args;
     using XrmToolBox.Extensibility.Interfaces;
@@ -257,7 +261,6 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 toolViewMessage.PerformClick();
             }
-
             else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
             {
                 toolViewEntity.PerformClick();
@@ -272,11 +275,17 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        public void ReceiveKeyPressShortcut(KeyPressEventArgs e) { }
+        public void ReceiveKeyPressShortcut(KeyPressEventArgs e)
+        {
+        }
 
-        public void ReceiveKeyUpShortcut(KeyEventArgs e) { }
+        public void ReceiveKeyUpShortcut(KeyEventArgs e)
+        {
+        }
 
-        public void ReceivePreviewKeyDownShortcut(PreviewKeyDownEventArgs e) { }
+        public void ReceivePreviewKeyDownShortcut(PreviewKeyDownEventArgs e)
+        {
+        }
 
         #endregion Public Events
 
@@ -892,7 +901,7 @@ namespace Xrm.Sdk.PluginRegistration
                         break;
 
                     default:
-                        throw new NotImplementedException("View = " + view.ToString());
+                        throw new NotImplementedException(@"View = {view.ToString()}");
                 }
 
                 m_currentView = view;
@@ -1160,6 +1169,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             CloseTool();
         }
+
         private void toolExport_Click(object sender, EventArgs e)
         {
             ExportTool();
@@ -1167,7 +1177,87 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void ExportTool()
         {
-            throw new NotImplementedException();
+            var saveFileDialog1 = new SaveFileDialog
+            {
+                Filter = "Comma Separated Values File|*.csv",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var filePath = Path.GetFullPath(saveFileDialog1.FileName);
+
+                using (var csv = new CsvWriter(new StreamWriter(filePath)))
+                {
+                    csv.WriteHeader(typeof(CsvModel));
+                    csv.NextRecord();
+
+                    var model = new List<CsvModel>();
+                    foreach (CrmPluginAssembly assembly in Organization.Assemblies)
+                    {
+                        // If the same assembly name used for any other custom plugin assembly then that need to be added
+                        if ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != assembly.Name || 0 != assembly.CustomizationLevel) &&
+                            !assembly.IsProfilerAssembly)
+                        {
+                            foreach (CrmPlugin plugin in assembly.Plugins)
+                            {
+                                foreach (CrmPluginStep step in plugin.Steps)
+                                {
+                                    var record = GetInfoForStep(step);
+
+                                    record.Module = plugin.AssemblyName;
+
+                                    csv.WriteRecord(record);
+                                    csv.NextRecord();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    Process.Start(filePath);
+                }
+            }
+        }
+
+        private CsvModel GetInfoForStep(CrmPluginStep step)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+            else
+            {
+                var messageName = Organization.Messages[step.MessageId].Name;
+                var message = m_org.FindMessage(messageName);
+                var primaryEntity = "none";
+                var secondayEntity = "none";
+
+                if (Organization.MessageEntities.ContainsKey(step.MessageEntityId))
+                {
+                    CrmMessageEntity msgEntity = message[step.MessageEntityId];
+
+                    primaryEntity = msgEntity.PrimaryEntity;
+                    secondayEntity = msgEntity.SecondaryEntity;
+                }
+
+                var record = new CsvModel
+                {
+                    Stage = step.Stage.ToString(),
+                    ExecutionMode = step.Mode.ToString(),
+                    ExecutionOrder = step.Rank.ToString(),
+                    Message = messageName,
+                    FilteringAttributes = step.FilteringAttributes,
+                    Deployment = step.Deployment.ToString(),
+                    PrimaryEntity = primaryEntity,
+                    SecondayEntity = secondayEntity,
+                };
+
+                return record;
+            }
         }
 
         private void toolEnable_Click(object sender, EventArgs e)
@@ -1270,8 +1360,10 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolSearch_Click(object sender, EventArgs e)
         {
-            var searchForm = new SearchForm(Organization, this, trvPlugins.RootNodes, trvPlugins.SelectedNode);
-            searchForm.StartPosition = FormStartPosition.CenterParent;
+            var searchForm = new SearchForm(Organization, this, trvPlugins.RootNodes, trvPlugins.SelectedNode)
+            {
+                StartPosition = FormStartPosition.CenterParent
+            };
             searchForm.ShowDialog(this);
         }
 
@@ -2043,7 +2135,5 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
-
-        
     }
 }
