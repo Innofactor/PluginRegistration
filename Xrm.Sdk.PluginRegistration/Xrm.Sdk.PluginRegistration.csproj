@@ -335,6 +335,7 @@
     <Content Include="Images\Export.gif" />
     <Content Include="Images\Import.gif" />
     <Content Include="Images\Register.gif" />
+    <Content Include="Images\Save.png" />
     <Content Include="Images\Search.gif" />
     <Content Include="Images\ServiceEndpoint.png" />
     <None Include="Images\ServiceEndpointSelected.gif" />

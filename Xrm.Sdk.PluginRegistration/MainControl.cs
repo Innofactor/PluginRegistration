@@ -133,7 +133,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "DisableProfiler",
                     "UninstallProfiler",
                     "Debug",
-                    "Close");
+                    "Close",
+                    "Save");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -153,6 +154,7 @@ namespace Xrm.Sdk.PluginRegistration
                 mnuContextGeneralRefresh.Image = toolRefresh.Image;
 
                 toolClose.Image = imageList["Close"];
+                toolExport.Image = imageList["Save"];
 
                 imlEnableImages.Images.Add("installProfiler", imageList["InstallProfiler"]);
                 imlEnableImages.Images.Add("enableProfiler", imageList["EnableProfiler"]);
