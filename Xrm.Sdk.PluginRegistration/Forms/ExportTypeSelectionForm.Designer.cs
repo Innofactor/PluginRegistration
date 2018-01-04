@@ -58,9 +58,9 @@
             this.lblText.AutoSize = true;
             this.lblText.Location = new System.Drawing.Point(12, 26);
             this.lblText.Name = "lblText";
-            this.lblText.Size = new System.Drawing.Size(192, 26);
+            this.lblText.Size = new System.Drawing.Size(193, 26);
             this.lblText.TabIndex = 2;
-            this.lblText.Text = "Export all or selected item?\r\n(assembly, plugin and workflow activity)\r\n";
+            this.lblText.Text = "Export all or selected item?\r\n(Assembly, plugin and workflow activity)\r\n";
             // 
             // ExportTypeSelectionForm
             // 
