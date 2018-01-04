@@ -1175,7 +1175,130 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolExport_Click(object sender, EventArgs e)
         {
-            ExportTool();
+            var exportForm = new ExportTypeSelectionForm();
+            //if (MessageBox.Show("Export all (Yes) or selected (No)?", "File saved successfully", MessageBoxButtons.YesNo) == DialogResult.Yes)
+
+            switch (exportForm.ShowDialog())
+            {
+                case DialogResult.Yes:
+                    ExportTool();
+                    break;
+                case DialogResult.No:
+                    ExportSelected();
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        private static bool VerifySelectedNode(ICrmTreeNode node)
+        {
+            return (node == null || node.NodeType == CrmTreeNodeType.Step 
+                || node.NodeType == CrmTreeNodeType.Image || node.NodeType == CrmTreeNodeType.ServiceEndpoint 
+                || node.NodeType == CrmTreeNodeType.Message || node.NodeType == CrmTreeNodeType.MessageEntity
+                || node.NodeType == CrmTreeNodeType.Connection || node.NodeType == CrmTreeNodeType.None);
+        }
+
+        private void GetSelectItemForExport(ICrmTreeNode node)
+        {
+            if (VerifySelectedNode(node))
+            {
+                MessageBox.Show("Please select an assembly, plugin or workflow activity", "Invalid selection", MessageBoxButtons.OK);
+                return;
+            }
+            //SaveFileDialog saveFileDialog = ShowSaveFileDialog();
+            //if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            //{
+            var filePath = ShowSaveFileDialog(); //Path.GetFullPath(saveFileDialog.FileName);
+            if (string.IsNullOrEmpty(filePath))
+            {
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            using (var csv = InitializeCsvWriter(filePath))
+            {
+                switch (node.NodeType)
+                {
+                    case CrmTreeNodeType.Assembly:
+                        {
+                            ForEachAssemblyExport(csv, (CrmPluginAssembly)node);
+                        }
+                        break;
+
+                    case CrmTreeNodeType.Plugin:
+                    case CrmTreeNodeType.WorkflowActivity:
+                        {
+                            ForEachPluginExport(csv, (CrmPlugin)node);
+                        }
+                        break;
+
+                    //case CrmTreeNodeType.Step:
+                    //    {
+                    //        CrmPluginStep step = (CrmPluginStep)node;
+                    //        ExportStepInfo(csv, plugin, step);
+                    //        step.
+
+                    //    }
+                    //    break;
+
+                    default:
+                        throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
+                }
+            }
+            OpenExportedFile(filePath);
+
+        }
+        /// <summary>
+        /// Get full path of the file specified in the SaveFileDialog, in case of cancel it returns null
+        /// </summary>
+        /// <returns></returns>
+        private static string ShowSaveFileDialog()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Comma Separated Values File|*.csv",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                return Path.GetFullPath(saveFileDialog.FileName);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void ForEachAssemblyExport(CsvWriter csv, CrmPluginAssembly assembly)
+        {
+            if ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != assembly.Name || 0 != assembly.CustomizationLevel) &&
+                !assembly.IsProfilerAssembly)
+            {
+                foreach (CrmPlugin plugin in assembly.Plugins)
+                {
+                    ForEachPluginExport(csv, plugin);
+                }
+            }
+         
+        }
+
+        private void ForEachPluginExport(CsvWriter csv, CrmPlugin plugin)
+        {
+            foreach (CrmPluginStep step in plugin.Steps)
+            {
+                var record = GetInfoForStep(step);
+                record.Module = plugin.AssemblyName;
+
+                csv.WriteRecord(record);
+                csv.NextRecord();
+            }
+        }
+        
+        private void ExportSelected()
+        {
+            GetSelectItemForExport(trvPlugins.SelectedNode);
+
         }
 
         private void ExportTool()
@@ -1191,12 +1314,8 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 var filePath = Path.GetFullPath(saveFileDialog.FileName);
 
-                using (var csv = new CsvWriter(new StreamWriter(filePath)))
+                using (var csv = InitializeCsvWriter(filePath))
                 {
-                    csv.Configuration.CultureInfo = System.Globalization.CultureInfo.CurrentCulture;
-                    csv.WriteHeader(typeof(CsvModel));
-                    csv.NextRecord();
-
                     var model = new List<CsvModel>();
                     foreach (CrmPluginAssembly assembly in Organization.Assemblies)
                     {
@@ -1220,10 +1339,24 @@ namespace Xrm.Sdk.PluginRegistration
                     }
                 }
 
-                if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    Process.Start(filePath);
-                }
+                OpenExportedFile(filePath);
+            }
+        }
+
+        private static CsvWriter InitializeCsvWriter(string filePath)
+        {
+            var csv = new CsvWriter(new StreamWriter(filePath));
+            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.CurrentCulture;
+            csv.WriteHeader(typeof(CsvModel));
+            csv.NextRecord();
+            return csv;
+        }
+
+        private static void OpenExportedFile(string filePath)
+        {
+            if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Process.Start(filePath);
             }
         }
 
@@ -1238,14 +1371,14 @@ namespace Xrm.Sdk.PluginRegistration
                 var messageName = Organization.Messages[step.MessageId].Name;
                 var message = m_org.FindMessage(messageName);
                 var primaryEntity = "none";
-                var secondayEntity = "none";
+                var secondaryEntity = "none";
 
                 if (Organization.MessageEntities.ContainsKey(step.MessageEntityId))
                 {
                     CrmMessageEntity msgEntity = message[step.MessageEntityId];
 
                     primaryEntity = msgEntity.PrimaryEntity;
-                    secondayEntity = msgEntity.SecondaryEntity;
+                    secondaryEntity = msgEntity.SecondaryEntity;
                 }
 
                 var record = new CsvModel
@@ -1257,7 +1390,7 @@ namespace Xrm.Sdk.PluginRegistration
                     FilteringAttributes = step.FilteringAttributes,
                     Deployment = step.Deployment.GetDescription(),
                     PrimaryEntity = primaryEntity,
-                    SecondayEntity = secondayEntity,
+                    SecondaryEntity = secondaryEntity,
                 };
 
                 return record;
