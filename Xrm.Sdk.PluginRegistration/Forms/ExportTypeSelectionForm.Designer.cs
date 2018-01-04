@@ -35,7 +35,7 @@
             // 
             // btnExportAll
             // 
-            this.btnExportAll.Location = new System.Drawing.Point(50, 57);
+            this.btnExportAll.Location = new System.Drawing.Point(15, 57);
             this.btnExportAll.Name = "btnExportAll";
             this.btnExportAll.Size = new System.Drawing.Size(75, 23);
             this.btnExportAll.TabIndex = 0;
@@ -45,7 +45,7 @@
             // 
             // btnExportSelected
             // 
-            this.btnExportSelected.Location = new System.Drawing.Point(131, 57);
+            this.btnExportSelected.Location = new System.Drawing.Point(96, 57);
             this.btnExportSelected.Name = "btnExportSelected";
             this.btnExportSelected.Size = new System.Drawing.Size(70, 23);
             this.btnExportSelected.TabIndex = 1;
@@ -58,16 +58,16 @@
             this.lblText.AutoSize = true;
             this.lblText.Location = new System.Drawing.Point(12, 26);
             this.lblText.Name = "lblText";
-            this.lblText.Size = new System.Drawing.Size(250, 13);
+            this.lblText.Size = new System.Drawing.Size(192, 26);
             this.lblText.TabIndex = 2;
-            this.lblText.Text = "Export all or selected item (assembly or plugin only)?";
+            this.lblText.Text = "Export all or selected item?\r\n(assembly, plugin and workflow activity)\r\n";
             // 
             // ExportTypeSelectionForm
             // 
             this.AccessibleName = "Export all or selected";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 108);
+            this.ClientSize = new System.Drawing.Size(214, 99);
             this.Controls.Add(this.lblText);
             this.Controls.Add(this.btnExportSelected);
             this.Controls.Add(this.btnExportAll);
