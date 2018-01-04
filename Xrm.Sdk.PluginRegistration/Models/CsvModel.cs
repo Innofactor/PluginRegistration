@@ -4,8 +4,10 @@
 
     public class CsvModel
     {
-        [Name("Module")]
-        public string Module { get; set; }
+        [Name("Assembly")]
+        public string AssemblyName { get; set; }
+        [Name("Plugin/Workflow")]
+        public string TypeName { get; set; }
         [Name("Description")]
         public string Description { get; set; }
         [Name("Primary Entity")]
@@ -27,6 +29,6 @@
         public string Deployment { get; set; }
         [Name("Filtering Attributes ")]
         public string FilteringAttributes { get; set; }
-        
+       
     }
 }

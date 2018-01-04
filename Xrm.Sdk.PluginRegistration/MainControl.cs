@@ -1236,7 +1236,8 @@ namespace Xrm.Sdk.PluginRegistration
             foreach (CrmPluginStep step in plugin.Steps)
             {
                 var record = GetInfoForStep(step);
-                record.Module = plugin.AssemblyName;
+                record.AssemblyName = plugin.AssemblyName;
+                record.TypeName = plugin.Name;
 
                 csv.WriteRecord(record);
                 csv.NextRecord();
