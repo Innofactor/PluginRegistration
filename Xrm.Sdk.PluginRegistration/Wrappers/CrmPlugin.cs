@@ -34,7 +34,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
     public enum CrmPluginType
     {
+        [Description("Plugin")]
         Plugin,
+        [Description("Workflow Activity")]
         WorkflowActivity
     }
 
