@@ -1225,22 +1225,43 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void ForEachAssemblyExport(CsvWriter csv, CrmPluginAssembly assembly)
         {
-            foreach (CrmPlugin plugin in assembly.Plugins)
+            foreach (var node in assembly.NodeChildren)
             {
-                ForEachPluginExport(csv, plugin);
+                ForEachPluginExport(csv, node);
             }
         }
 
-        private void ForEachPluginExport(CsvWriter csv, CrmPlugin plugin)
+        private void ForEachPluginExport(CsvWriter csv, ICrmTreeNode node)
         {
-            foreach (CrmPluginStep step in plugin.Steps)
+            switch (node.NodeType)
             {
-                var record = GetInfoForStep(step);
-                record.AssemblyName = plugin.AssemblyName;
-                record.TypeName = plugin.Name;
+                case CrmTreeNodeType.Plugin:
+                    var plugin = (CrmPlugin)node;
+                    foreach (CrmPluginStep step in plugin.Steps)
+                    {
+                        var record = GetInfoForStep(step);
+                        record.AssemblyName = plugin.AssemblyName;
+                        record.TypeName = plugin.Name;
+                        record.PluginType = plugin.PluginType.GetDescription();
 
-                csv.WriteRecord(record);
-                csv.NextRecord();
+                        csv.WriteRecord(record);
+                        csv.NextRecord();
+                    }
+                    break;
+
+                case CrmTreeNodeType.WorkflowActivity:
+                    {
+                        var workflow = (CrmPlugin)node;
+                        var record = new CsvModel
+                        {
+                            TypeName = workflow.Name,
+                            AssemblyName = workflow.AssemblyName,
+                            PluginType = workflow.PluginType.GetDescription()
+                        };
+                        csv.WriteRecord(record);
+                        csv.NextRecord();
+                    }
+                    break;
             }
         }
 
@@ -1306,7 +1327,7 @@ namespace Xrm.Sdk.PluginRegistration
         private static CsvWriter InitializeCsvWriter(string filePath)
         {
             var csv = new CsvWriter(new StreamWriter(filePath));
-            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.CurrentCulture;
+            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
             csv.WriteHeader(typeof(CsvModel));
             csv.NextRecord();
             return csv;
@@ -1350,7 +1371,7 @@ namespace Xrm.Sdk.PluginRegistration
                     FilteringAttributes = step.FilteringAttributes,
                     Deployment = step.Deployment.GetDescription(),
                     PrimaryEntity = primaryEntity,
-                    SecondaryEntity = secondaryEntity,
+                    SecondaryEntity = secondaryEntity
                 };
 
                 return record;
@@ -1506,7 +1527,7 @@ namespace Xrm.Sdk.PluginRegistration
                         break;
 
                     default:
-                        throw new NotImplementedException("NodeType = " + trvPlugins.SelectedNode.NodeType.ToString());
+                        throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}" );
                 }
 
                 if (Guid.Empty != pluginId)
