@@ -25,7 +25,6 @@
         /// ServerOnly, Offline, Both
         /// </summary>
         public string Deployment { get; set; }
-        //public string Rank { get; set; }
         [Name("Filtering Attributes ")]
         public string FilteringAttributes { get; set; }
         
