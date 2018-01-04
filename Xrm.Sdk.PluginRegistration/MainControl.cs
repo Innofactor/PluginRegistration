@@ -1259,11 +1259,8 @@ namespace Xrm.Sdk.PluginRegistration
                 //user cancelled on SaveFileDialog so exit and do nothing.
                 return;
             }
-            using (var csv = new CsvWriter(new StreamWriter(filePath)))
+            using (var csv = InitializeCsvWriter(filePath))
             {
-                csv.Configuration.CultureInfo = System.Globalization.CultureInfo.CurrentCulture;
-                csv.WriteHeader(typeof(CsvModel));
-                csv.NextRecord();
                 switch (node.NodeType)
                 {
                     case CrmTreeNodeType.Assembly:
@@ -1294,11 +1291,8 @@ namespace Xrm.Sdk.PluginRegistration
                 //user cancelled on SaveFileDialog so exit and do nothing.
                 return;
             }
-            using (var csv = new CsvWriter(new StreamWriter(filePath)))
+            using (var csv = InitializeCsvWriter(filePath))
             {
-                csv.Configuration.CultureInfo = System.Globalization.CultureInfo.CurrentCulture;
-                csv.WriteHeader(typeof(CsvModel));
-                csv.NextRecord();
                 foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
                                                                                             || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)))
                 {
