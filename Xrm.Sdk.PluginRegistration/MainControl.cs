@@ -1298,9 +1298,8 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     ForEachAssemblyExport(csv, assembly);
                 }
-
-                OpenExportedFile(filePath);
             }
+            OpenExportedFile(filePath);
         }
 
         private static CsvWriter InitializeCsvWriter(string filePath)
