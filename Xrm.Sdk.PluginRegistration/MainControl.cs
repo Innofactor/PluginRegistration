@@ -28,6 +28,7 @@ namespace Xrm.Sdk.PluginRegistration
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Windows.Forms;
     using Wrappers;
@@ -1176,78 +1177,30 @@ namespace Xrm.Sdk.PluginRegistration
         private void toolExport_Click(object sender, EventArgs e)
         {
             var exportForm = new ExportTypeSelectionForm();
-            //if (MessageBox.Show("Export all (Yes) or selected (No)?", "File saved successfully", MessageBoxButtons.YesNo) == DialogResult.Yes)
 
             switch (exportForm.ShowDialog())
             {
                 case DialogResult.Yes:
                     ExportTool();
                     break;
+
                 case DialogResult.No:
                     ExportSelected();
                     break;
+
                 default:
                     break;
             }
-            
         }
+
         private static bool VerifySelectedNode(ICrmTreeNode node)
         {
-            return (node == null || node.NodeType == CrmTreeNodeType.Step 
-                || node.NodeType == CrmTreeNodeType.Image || node.NodeType == CrmTreeNodeType.ServiceEndpoint 
+            return (node == null || node.NodeType == CrmTreeNodeType.Step
+                || node.NodeType == CrmTreeNodeType.Image || node.NodeType == CrmTreeNodeType.ServiceEndpoint
                 || node.NodeType == CrmTreeNodeType.Message || node.NodeType == CrmTreeNodeType.MessageEntity
                 || node.NodeType == CrmTreeNodeType.Connection || node.NodeType == CrmTreeNodeType.None);
         }
 
-        private void GetSelectItemForExport(ICrmTreeNode node)
-        {
-            if (VerifySelectedNode(node))
-            {
-                MessageBox.Show("Please select an assembly, plugin or workflow activity", "Invalid selection", MessageBoxButtons.OK);
-                return;
-            }
-            //SaveFileDialog saveFileDialog = ShowSaveFileDialog();
-            //if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            //{
-            var filePath = ShowSaveFileDialog(); //Path.GetFullPath(saveFileDialog.FileName);
-            if (string.IsNullOrEmpty(filePath))
-            {
-                //user cancelled on SaveFileDialog so exit and do nothing.
-                return;
-            }
-            using (var csv = InitializeCsvWriter(filePath))
-            {
-                switch (node.NodeType)
-                {
-                    case CrmTreeNodeType.Assembly:
-                        {
-                            ForEachAssemblyExport(csv, (CrmPluginAssembly)node);
-                        }
-                        break;
-
-                    case CrmTreeNodeType.Plugin:
-                    case CrmTreeNodeType.WorkflowActivity:
-                        {
-                            ForEachPluginExport(csv, (CrmPlugin)node);
-                        }
-                        break;
-
-                    //case CrmTreeNodeType.Step:
-                    //    {
-                    //        CrmPluginStep step = (CrmPluginStep)node;
-                    //        ExportStepInfo(csv, plugin, step);
-                    //        step.
-
-                    //    }
-                    //    break;
-
-                    default:
-                        throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
-                }
-            }
-            OpenExportedFile(filePath);
-
-        }
         /// <summary>
         /// Get full path of the file specified in the SaveFileDialog, in case of cancel it returns null
         /// </summary>
@@ -1272,15 +1225,10 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void ForEachAssemblyExport(CsvWriter csv, CrmPluginAssembly assembly)
         {
-            if ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != assembly.Name || 0 != assembly.CustomizationLevel) &&
-                !assembly.IsProfilerAssembly)
+            foreach (CrmPlugin plugin in assembly.Plugins)
             {
-                foreach (CrmPlugin plugin in assembly.Plugins)
-                {
-                    ForEachPluginExport(csv, plugin);
-                }
+                ForEachPluginExport(csv, plugin);
             }
-         
         }
 
         private void ForEachPluginExport(CsvWriter csv, CrmPlugin plugin)
@@ -1294,49 +1242,61 @@ namespace Xrm.Sdk.PluginRegistration
                 csv.NextRecord();
             }
         }
-        
+
         private void ExportSelected()
         {
-            GetSelectItemForExport(trvPlugins.SelectedNode);
+            var node = trvPlugins.SelectedNode;
 
+            if (VerifySelectedNode(node))
+            {
+                MessageBox.Show("Please select an assembly, plugin or workflow activity", "Invalid selection", MessageBoxButtons.OK);
+                return;
+            }
+
+            var filePath = ShowSaveFileDialog();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            using (var csv = InitializeCsvWriter(filePath))
+            {
+                switch (node.NodeType)
+                {
+                    case CrmTreeNodeType.Assembly:
+                        {
+                            ForEachAssemblyExport(csv, (CrmPluginAssembly)node);
+                        }
+                        break;
+
+                    case CrmTreeNodeType.Plugin:
+                    case CrmTreeNodeType.WorkflowActivity:
+                        {
+                            ForEachPluginExport(csv, (CrmPlugin)node);
+                        }
+                        break;
+
+                    default:
+                        throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
+                }
+            }
+            OpenExportedFile(filePath);
         }
 
         private void ExportTool()
         {
-            var saveFileDialog = new SaveFileDialog
+            var filePath = ShowSaveFileDialog();
+            if (string.IsNullOrEmpty(filePath))
             {
-                Filter = "Comma Separated Values File|*.csv",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            using (var csv = InitializeCsvWriter(filePath))
             {
-                var filePath = Path.GetFullPath(saveFileDialog.FileName);
-
-                using (var csv = InitializeCsvWriter(filePath))
+                foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
+                                                                                            || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)))
                 {
-                    var model = new List<CsvModel>();
-                    foreach (CrmPluginAssembly assembly in Organization.Assemblies)
-                    {
-                        // If the same assembly name used for any other custom plugin assembly then that need to be added
-                        if ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != assembly.Name || 0 != assembly.CustomizationLevel) &&
-                            !assembly.IsProfilerAssembly)
-                        {
-                            foreach (CrmPlugin plugin in assembly.Plugins)
-                            {
-                                foreach (CrmPluginStep step in plugin.Steps)
-                                {
-                                    var record = GetInfoForStep(step);
-
-                                    record.Module = plugin.AssemblyName;
-
-                                    csv.WriteRecord(record);
-                                    csv.NextRecord();
-                                }
-                            }
-                        }
-                    }
+                    ForEachAssemblyExport(csv, assembly);
                 }
 
                 OpenExportedFile(filePath);
