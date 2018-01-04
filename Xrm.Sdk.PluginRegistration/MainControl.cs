@@ -1326,8 +1326,10 @@ namespace Xrm.Sdk.PluginRegistration
 
         private static CsvWriter InitializeCsvWriter(string filePath)
         {
-            var csv = new CsvWriter(new StreamWriter(filePath));
+            var writer = new StreamWriter(filePath, false, Encoding.Default);
+            var csv = new CsvWriter(writer);
             csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+
             csv.WriteHeader(typeof(CsvModel));
             csv.NextRecord();
             return csv;
@@ -1527,7 +1529,7 @@ namespace Xrm.Sdk.PluginRegistration
                         break;
 
                     default:
-                        throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}" );
+                        throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}");
                 }
 
                 if (Guid.Empty != pluginId)
