@@ -1253,31 +1253,25 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 case CrmTreeNodeType.Plugin:
                     var plugin = (CrmPlugin)node;
-                    if (plugin.Steps.Count > 0)
+                    var pluginInfo = new CsvModel
                     {
-                        foreach (CrmPluginStep step in plugin.Steps)
-                        {
-                            var record = GetInfoForStep(step);
-                            record.AssemblyName = plugin.AssemblyName;
-                            record.TypeName = plugin.Name;
-                            record.PluginType = plugin.PluginType.GetDescription();
+                        AssemblyName = plugin.AssemblyName,
+                        TypeName = plugin.Name,
+                        PluginType = plugin.PluginType.GetDescription(),
+                        Description = plugin.Description
+                    };
+                    csv.WriteRecord(pluginInfo);
+                    csv.NextRecord();
+                    foreach (CrmPluginStep step in plugin.Steps)
+                    {
+                        var stepInfo = GetInfoForStep(step);
+                        stepInfo.AssemblyName = plugin.AssemblyName;
+                        stepInfo.TypeName = plugin.Name;
 
-                            csv.WriteRecord(record);
-                            csv.NextRecord();
-                        }
-                    }
-                    else
-                    {
-                        var record = new CsvModel
-                        {
-                            AssemblyName = plugin.AssemblyName,
-                            TypeName = plugin.Name,
-                            PluginType = plugin.PluginType.GetDescription(),
-                            Description = "No steps found"
-                        };
-                        csv.WriteRecord(record);
+                        csv.WriteRecord(stepInfo);
                         csv.NextRecord();
                     }
+
                     break;
 
                 case CrmTreeNodeType.WorkflowActivity:
@@ -1287,7 +1281,8 @@ namespace Xrm.Sdk.PluginRegistration
                         {
                             TypeName = workflow.Name,
                             AssemblyName = workflow.AssemblyName,
-                            PluginType = workflow.PluginType.GetDescription()
+                            PluginType = workflow.PluginType.GetDescription(),
+                            Description = workflow.Description
                         };
                         csv.WriteRecord(record);
                         csv.NextRecord();
@@ -1347,7 +1342,7 @@ namespace Xrm.Sdk.PluginRegistration
             using (var csv = InitializeCsvWriter(filePath))
             {
                 foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
-                                                                                            || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)))
+                                                                                            || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
                 {
                     ForEachAssemblyExport(csv, assembly);
                 }
@@ -1404,7 +1399,10 @@ namespace Xrm.Sdk.PluginRegistration
                     FilteringAttributes = step.FilteringAttributes,
                     Deployment = step.Deployment.GetDescription(),
                     PrimaryEntity = primaryEntity,
-                    SecondaryEntity = secondaryEntity
+                    SecondaryEntity = secondaryEntity,
+                    Description = step.Description,
+                    PluginType = step.NodeType.GetDescription(),
+                    IsEnabled = step.Enabled.ToString()
                 };
 
                 return record;
