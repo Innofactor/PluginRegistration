@@ -1225,6 +1225,14 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void ForEachAssemblyExport(CsvWriter csv, CrmPluginAssembly assembly)
         {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+            if (csv == null)
+            {
+                throw new ArgumentNullException("csv");
+            }
             foreach (var node in assembly.NodeChildren)
             {
                 ForEachPluginExport(csv, node);
@@ -1233,17 +1241,39 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void ForEachPluginExport(CsvWriter csv, ICrmTreeNode node)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            if (csv == null)
+            {
+                throw new ArgumentNullException("csv");
+            }
             switch (node.NodeType)
             {
                 case CrmTreeNodeType.Plugin:
                     var plugin = (CrmPlugin)node;
-                    foreach (CrmPluginStep step in plugin.Steps)
+                    if (plugin.Steps.Count > 0)
                     {
-                        var record = GetInfoForStep(step);
-                        record.AssemblyName = plugin.AssemblyName;
-                        record.TypeName = plugin.Name;
-                        record.PluginType = plugin.PluginType.GetDescription();
+                        foreach (CrmPluginStep step in plugin.Steps)
+                        {
+                            var record = GetInfoForStep(step);
+                            record.AssemblyName = plugin.AssemblyName;
+                            record.TypeName = plugin.Name;
+                            record.PluginType = plugin.PluginType.GetDescription();
 
+                            csv.WriteRecord(record);
+                            csv.NextRecord();
+                        }
+                    }
+                    else
+                    {
+                        var record = new CsvModel
+                        {
+                            AssemblyName = plugin.AssemblyName,
+                            TypeName = plugin.Name,
+                            PluginType = plugin.PluginType.GetDescription()
+                        };
                         csv.WriteRecord(record);
                         csv.NextRecord();
                     }
