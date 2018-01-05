@@ -1272,7 +1272,8 @@ namespace Xrm.Sdk.PluginRegistration
                         {
                             AssemblyName = plugin.AssemblyName,
                             TypeName = plugin.Name,
-                            PluginType = plugin.PluginType.GetDescription()
+                            PluginType = plugin.PluginType.GetDescription(),
+                            Description = "No steps found"
                         };
                         csv.WriteRecord(record);
                         csv.NextRecord();
