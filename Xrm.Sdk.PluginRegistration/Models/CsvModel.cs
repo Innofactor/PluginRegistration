@@ -42,6 +42,7 @@
 
         [Name("Filtering Attributes")]
         public string FilteringAttributes { get; set; }
+
         [Name("Is Enabled")]
         public string IsEnabled { get; set; }
     }
