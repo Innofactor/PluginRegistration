@@ -225,7 +225,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         public void ReceiveKeyDownShortcut(KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled)
+            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled && !propGridEntity.ContainsFocus)
             {
                 mnuContextNodeUnregister.PerformClick();
             }
