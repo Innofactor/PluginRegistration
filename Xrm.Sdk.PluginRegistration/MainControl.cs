@@ -1209,7 +1209,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             var saveFileDialog = new SaveFileDialog
             {
-                Filter = "Comma Separated Values File|*.csv",
+                Filter = "Comma Separated Values File|*.csv|Excel File Format|*.xlsx",
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
