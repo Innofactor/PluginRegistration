@@ -61,6 +61,9 @@
     <Reference Include="CsvHelper, Version=6.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.6.1.0\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="McTools.Xrm.Connection, Version=1.2017.10.15, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
       <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2017.10.15\lib\net462\McTools.Xrm.Connection.dll</HintPath>
     </Reference>
