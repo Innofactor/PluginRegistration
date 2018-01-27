@@ -27,14 +27,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
     public enum CrmAssemblyIsolationMode
     {
+        [Description("None")]
         None = 1,
+        [Description("Sandbox")]
         Sandbox = 2
     }
 
     public enum CrmAssemblySourceType
     {
+        [Description("Database")]
         Database = 0,
+        [Description("Disk")]
         Disk = 1,
+        [Description("GAC")]
         GAC = 2
     }
 
