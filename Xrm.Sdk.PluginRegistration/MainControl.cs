@@ -22,12 +22,14 @@ namespace Xrm.Sdk.PluginRegistration
     using Forms;
     using Helpers;
     using McTools.Xrm.Connection;
+    using OfficeOpenXml;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Windows.Forms;
     using Wrappers;
@@ -224,7 +226,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         public void ReceiveKeyDownShortcut(KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled)
+            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled && !propGridEntity.ContainsFocus)
             {
                 mnuContextNodeUnregister.PerformClick();
             }
@@ -1175,58 +1177,244 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolExport_Click(object sender, EventArgs e)
         {
-            ExportTool();
+            var exportForm = new ExportTypeSelectionForm();
+
+            switch (exportForm.ShowDialog())
+            {
+                case DialogResult.Yes:
+                    ExportTool();
+                    break;
+
+                case DialogResult.No:
+                    ExportSelected();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private static bool VerifySelectedNode(ICrmTreeNode node)
+        {
+            return (node == null || node.NodeType == CrmTreeNodeType.Step
+                || node.NodeType == CrmTreeNodeType.Image || node.NodeType == CrmTreeNodeType.ServiceEndpoint
+                || node.NodeType == CrmTreeNodeType.Message || node.NodeType == CrmTreeNodeType.MessageEntity
+                || node.NodeType == CrmTreeNodeType.Connection || node.NodeType == CrmTreeNodeType.None);
+        }
+
+        /// <summary>
+        /// Get full path of the file specified in the SaveFileDialog, in case of cancel it returns null
+        /// </summary>
+        /// <returns></returns>
+        private static string ShowSaveFileDialog()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Comma Separated Values File|*.csv|Excel File Format|*.xlsx",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                return Path.GetFullPath(saveFileDialog.FileName);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private List<ExportModel> ForEachAssemblyExport(CrmPluginAssembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+            var model = new List<ExportModel>();
+
+            var assemblyInfo = new ExportModel
+            {
+                AssemblyName = assembly.Name,
+                TypeName = string.Empty,
+                PluginType = "Assembly",
+                Description = assembly.Description,
+                IsolationMode = assembly.IsolationMode.GetDescription(),
+                SourceType = assembly.SourceType.GetDescription()
+            };
+            model.Add(assemblyInfo);
+            foreach (var node in assembly.NodeChildren)
+            {
+                model.AddRange(ForEachPluginExport(node));
+            }
+            return model;
+        }
+
+        private List<ExportModel> ForEachPluginExport(ICrmTreeNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            var csvModel = new List<ExportModel>();
+            switch (node.NodeType)
+            {
+                case CrmTreeNodeType.Plugin:
+                    var plugin = (CrmPlugin)node;
+                    var pluginInfo = new ExportModel
+                    {
+                        AssemblyName = plugin.AssemblyName,
+                        TypeName = plugin.Name,
+                        PluginType = plugin.PluginType.GetDescription(),
+                        Description = plugin.Description
+                    };
+                    csvModel.Add(pluginInfo);
+
+                    foreach (CrmPluginStep step in plugin.Steps)
+                    {
+                        var stepInfo = GetInfoForStep(step);
+                        stepInfo.AssemblyName = plugin.AssemblyName;
+                        stepInfo.TypeName = plugin.Name;
+                        csvModel.Add(stepInfo);
+                    }
+                    break;
+
+                case CrmTreeNodeType.WorkflowActivity:
+                    {
+                        var workflow = (CrmPlugin)node;
+                        var workflowInfo = new ExportModel
+                        {
+                            TypeName = workflow.Name,
+                            AssemblyName = workflow.AssemblyName,
+                            PluginType = workflow.PluginType.GetDescription(),
+                            Description = workflow.Description
+                        };
+                        csvModel.Add(workflowInfo);
+                    }
+                    break;
+            }
+            return csvModel;
+        }
+
+        private void ExportSelected()
+        {
+            var node = trvPlugins.SelectedNode;
+
+            if (VerifySelectedNode(node))
+            {
+                MessageBox.Show("Please select an assembly, plugin or workflow activity", "Invalid selection", MessageBoxButtons.OK);
+                return;
+            }
+
+            var filePath = ShowSaveFileDialog();
+            var fileInfo = new FileInfo(filePath);
+            var model = new List<ExportModel>();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            switch (node.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+                        model = ForEachAssemblyExport((CrmPluginAssembly)node);
+                    }
+                    break;
+
+                case CrmTreeNodeType.Plugin:
+                case CrmTreeNodeType.WorkflowActivity:
+                    {
+                        model = ForEachPluginExport((CrmPlugin)node);
+                    }
+                    break;
+
+                default:
+                    throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
+            }
+            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var xlPackage = new ExcelPackage(fileInfo))
+                {
+                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
+                    var worksheet = xlPackage.Workbook.Worksheets[1];
+
+                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
+                    xlPackage.Save();
+                }
+            }
+            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var csv = InitializeCsvWriter(filePath))
+                {
+                    csv.WriteRecords(model);
+                }
+            }
+
+            OpenExportedFile(filePath);
         }
 
         private void ExportTool()
         {
-            var saveFileDialog1 = new SaveFileDialog
+            var filePath = ShowSaveFileDialog();
+            if (string.IsNullOrEmpty(filePath))
             {
-                Filter = "Comma Separated Values File|*.csv",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            var fileInfo = new FileInfo(filePath);
 
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            var model = new List<ExportModel>();
+
+            foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
+                                                                                        || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
             {
-                var filePath = Path.GetFullPath(saveFileDialog1.FileName);
+                model.AddRange(ForEachAssemblyExport(assembly));
+            }
 
-                using (var csv = new CsvWriter(new StreamWriter(filePath)))
+            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var xlPackage = new ExcelPackage(fileInfo))
                 {
-                    csv.WriteHeader(typeof(CsvModel));
-                    csv.NextRecord();
+                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
+                    var worksheet = xlPackage.Workbook.Worksheets[1];
 
-                    var model = new List<CsvModel>();
-                    foreach (CrmPluginAssembly assembly in Organization.Assemblies)
-                    {
-                        // If the same assembly name used for any other custom plugin assembly then that need to be added
-                        if ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != assembly.Name || 0 != assembly.CustomizationLevel) &&
-                            !assembly.IsProfilerAssembly)
-                        {
-                            foreach (CrmPlugin plugin in assembly.Plugins)
-                            {
-                                foreach (CrmPluginStep step in plugin.Steps)
-                                {
-                                    var record = GetInfoForStep(step);
-
-                                    record.Module = plugin.AssemblyName;
-
-                                    csv.WriteRecord(record);
-                                    csv.NextRecord();
-                                }
-                            }
-                        }
-                    }
+                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
+                    xlPackage.Save();
                 }
-
-                if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            }
+            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var csv = InitializeCsvWriter(filePath))
                 {
-                    Process.Start(filePath);
+                    csv.WriteRecords(model);
                 }
+            }
+            else
+            {
+            }
+            OpenExportedFile(filePath);
+        }
+
+        private static CsvWriter InitializeCsvWriter(string filePath)
+        {
+            var writer = new StreamWriter(filePath, false, Encoding.Default);
+            var csv = new CsvWriter(writer);
+            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+
+            csv.WriteHeader(typeof(ExportModel));
+            csv.NextRecord();
+            return csv;
+        }
+
+        private static void OpenExportedFile(string filePath)
+        {
+            if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Process.Start(filePath);
             }
         }
 
-        private CsvModel GetInfoForStep(CrmPluginStep step)
+        private ExportModel GetInfoForStep(CrmPluginStep step)
         {
             if (step == null)
             {
@@ -1237,17 +1425,17 @@ namespace Xrm.Sdk.PluginRegistration
                 var messageName = Organization.Messages[step.MessageId].Name;
                 var message = m_org.FindMessage(messageName);
                 var primaryEntity = "none";
-                var secondayEntity = "none";
+                var secondaryEntity = "none";
 
                 if (Organization.MessageEntities.ContainsKey(step.MessageEntityId))
                 {
                     CrmMessageEntity msgEntity = message[step.MessageEntityId];
 
                     primaryEntity = msgEntity.PrimaryEntity;
-                    secondayEntity = msgEntity.SecondaryEntity;
+                    secondaryEntity = msgEntity.SecondaryEntity;
                 }
 
-                var record = new CsvModel
+                var record = new ExportModel
                 {
                     Stage = step.Stage.GetDescription(),
                     ExecutionMode = step.Mode.GetDescription(),
@@ -1256,7 +1444,10 @@ namespace Xrm.Sdk.PluginRegistration
                     FilteringAttributes = step.FilteringAttributes,
                     Deployment = step.Deployment.GetDescription(),
                     PrimaryEntity = primaryEntity,
-                    SecondayEntity = secondayEntity,
+                    SecondaryEntity = secondaryEntity,
+                    Description = step.Description,
+                    PluginType = step.NodeType.GetDescription(),
+                    IsEnabled = step.Enabled.ToString()
                 };
 
                 return record;
@@ -1412,7 +1603,7 @@ namespace Xrm.Sdk.PluginRegistration
                         break;
 
                     default:
-                        throw new NotImplementedException("NodeType = " + trvPlugins.SelectedNode.NodeType.ToString());
+                        throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}");
                 }
 
                 if (Guid.Empty != pluginId)
