@@ -188,7 +188,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\CsvModel.cs" />
+    <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Wrappers\CrmAttribute.cs" />
     <Compile Include="Wrappers\CrmEntityDictionary.cs" />
     <Compile Include="Wrappers\CrmMessageEntity.cs" />

@@ -2,7 +2,7 @@
 {
     using CsvHelper.Configuration.Attributes;
 
-    public class CsvModel
+    public class ExportModel
     {
         [Name("Plugin Type")]
         public string PluginType { get; set; }

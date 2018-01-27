@@ -1224,15 +1224,15 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        private List<CsvModel> ForEachAssemblyExport(CrmPluginAssembly assembly)
+        private List<ExportModel> ForEachAssemblyExport(CrmPluginAssembly assembly)
         {
             if (assembly == null)
             {
                 throw new ArgumentNullException("assembly");
             }
-            var model = new List<CsvModel>();
+            var model = new List<ExportModel>();
 
-            var assemblyInfo = new CsvModel
+            var assemblyInfo = new ExportModel
             {
                 AssemblyName = assembly.Name,
                 TypeName = string.Empty,
@@ -1249,18 +1249,18 @@ namespace Xrm.Sdk.PluginRegistration
             return model;
         }
 
-        private List<CsvModel> ForEachPluginExport(ICrmTreeNode node)
+        private List<ExportModel> ForEachPluginExport(ICrmTreeNode node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException("node");
             }
-            var csvModel = new List<CsvModel>();
+            var csvModel = new List<ExportModel>();
             switch (node.NodeType)
             {
                 case CrmTreeNodeType.Plugin:
                     var plugin = (CrmPlugin)node;
-                    var pluginInfo = new CsvModel
+                    var pluginInfo = new ExportModel
                     {
                         AssemblyName = plugin.AssemblyName,
                         TypeName = plugin.Name,
@@ -1281,7 +1281,7 @@ namespace Xrm.Sdk.PluginRegistration
                 case CrmTreeNodeType.WorkflowActivity:
                     {
                         var workflow = (CrmPlugin)node;
-                        var workflowInfo = new CsvModel
+                        var workflowInfo = new ExportModel
                         {
                             TypeName = workflow.Name,
                             AssemblyName = workflow.AssemblyName,
@@ -1307,7 +1307,7 @@ namespace Xrm.Sdk.PluginRegistration
 
             var filePath = ShowSaveFileDialog();
             var fileInfo = new FileInfo(filePath);
-            var model = new List<CsvModel>();
+            var model = new List<ExportModel>();
             if (string.IsNullOrEmpty(filePath))
             {
                 //user cancelled on SaveFileDialog so exit and do nothing.
@@ -1363,7 +1363,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
             var fileInfo = new FileInfo(filePath);
 
-            var model = new List<CsvModel>();
+            var model = new List<ExportModel>();
 
             foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
                                                                                         || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
@@ -1401,7 +1401,7 @@ namespace Xrm.Sdk.PluginRegistration
             var csv = new CsvWriter(writer);
             csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
 
-            csv.WriteHeader(typeof(CsvModel));
+            csv.WriteHeader(typeof(ExportModel));
             csv.NextRecord();
             return csv;
         }
@@ -1414,7 +1414,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        private CsvModel GetInfoForStep(CrmPluginStep step)
+        private ExportModel GetInfoForStep(CrmPluginStep step)
         {
             if (step == null)
             {
@@ -1435,7 +1435,7 @@ namespace Xrm.Sdk.PluginRegistration
                     secondaryEntity = msgEntity.SecondaryEntity;
                 }
 
-                var record = new CsvModel
+                var record = new ExportModel
                 {
                     Stage = step.Stage.GetDescription(),
                     ExecutionMode = step.Mode.GetDescription(),
