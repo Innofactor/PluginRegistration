@@ -22,6 +22,7 @@ namespace Xrm.Sdk.PluginRegistration
     using Forms;
     using Helpers;
     using McTools.Xrm.Connection;
+    using OfficeOpenXml;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -1223,32 +1224,38 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        private void ForEachAssemblyExport(CsvWriter csv, CrmPluginAssembly assembly)
+        private List<CsvModel> ForEachAssemblyExport(CrmPluginAssembly assembly)
         {
             if (assembly == null)
             {
                 throw new ArgumentNullException("assembly");
             }
-            if (csv == null)
+            var model = new List<CsvModel>();
+
+            var assemblyInfo = new CsvModel
             {
-                throw new ArgumentNullException("csv");
-            }
+                AssemblyName = assembly.Name,
+                TypeName = string.Empty,
+                PluginType = "Assembly",
+                Description = assembly.Description,
+                IsolationMode = assembly.IsolationMode.GetDescription(),
+                SourceType = assembly.SourceType.GetDescription()
+            };
+            model.Add(assemblyInfo);
             foreach (var node in assembly.NodeChildren)
             {
-                ForEachPluginExport(csv, node);
+                model.AddRange(ForEachPluginExport(node));
             }
+            return model;
         }
 
-        private void ForEachPluginExport(CsvWriter csv, ICrmTreeNode node)
+        private List<CsvModel> ForEachPluginExport(ICrmTreeNode node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException("node");
             }
-            if (csv == null)
-            {
-                throw new ArgumentNullException("csv");
-            }
+            var csvModel = new List<CsvModel>();
             switch (node.NodeType)
             {
                 case CrmTreeNodeType.Plugin:
@@ -1260,35 +1267,32 @@ namespace Xrm.Sdk.PluginRegistration
                         PluginType = plugin.PluginType.GetDescription(),
                         Description = plugin.Description
                     };
-                    csv.WriteRecord(pluginInfo);
-                    csv.NextRecord();
+                    csvModel.Add(pluginInfo);
+
                     foreach (CrmPluginStep step in plugin.Steps)
                     {
                         var stepInfo = GetInfoForStep(step);
                         stepInfo.AssemblyName = plugin.AssemblyName;
                         stepInfo.TypeName = plugin.Name;
-
-                        csv.WriteRecord(stepInfo);
-                        csv.NextRecord();
+                        csvModel.Add(stepInfo);
                     }
-
                     break;
 
                 case CrmTreeNodeType.WorkflowActivity:
                     {
                         var workflow = (CrmPlugin)node;
-                        var record = new CsvModel
+                        var workflowInfo = new CsvModel
                         {
                             TypeName = workflow.Name,
                             AssemblyName = workflow.AssemblyName,
                             PluginType = workflow.PluginType.GetDescription(),
                             Description = workflow.Description
                         };
-                        csv.WriteRecord(record);
-                        csv.NextRecord();
+                        csvModel.Add(workflowInfo);
                     }
                     break;
             }
+            return csvModel;
         }
 
         private void ExportSelected()
@@ -1302,32 +1306,50 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             var filePath = ShowSaveFileDialog();
+            var fileInfo = new FileInfo(filePath);
+            var model = new List<CsvModel>();
             if (string.IsNullOrEmpty(filePath))
             {
                 //user cancelled on SaveFileDialog so exit and do nothing.
                 return;
             }
-            using (var csv = InitializeCsvWriter(filePath))
+            switch (node.NodeType)
             {
-                switch (node.NodeType)
+                case CrmTreeNodeType.Assembly:
+                    {
+                        model = ForEachAssemblyExport((CrmPluginAssembly)node);
+                    }
+                    break;
+
+                case CrmTreeNodeType.Plugin:
+                case CrmTreeNodeType.WorkflowActivity:
+                    {
+                        model = ForEachPluginExport((CrmPlugin)node);
+                    }
+                    break;
+
+                default:
+                    throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
+            }
+            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var xlPackage = new ExcelPackage(fileInfo))
                 {
-                    case CrmTreeNodeType.Assembly:
-                        {
-                            ForEachAssemblyExport(csv, (CrmPluginAssembly)node);
-                        }
-                        break;
+                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
+                    var worksheet = xlPackage.Workbook.Worksheets[1];
 
-                    case CrmTreeNodeType.Plugin:
-                    case CrmTreeNodeType.WorkflowActivity:
-                        {
-                            ForEachPluginExport(csv, (CrmPlugin)node);
-                        }
-                        break;
-
-                    default:
-                        throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
+                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
+                    xlPackage.Save();
                 }
             }
+            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var csv = InitializeCsvWriter(filePath))
+                {
+                    csv.WriteRecords(model);
+                }
+            }
+
             OpenExportedFile(filePath);
         }
 
@@ -1339,13 +1361,36 @@ namespace Xrm.Sdk.PluginRegistration
                 //user cancelled on SaveFileDialog so exit and do nothing.
                 return;
             }
-            using (var csv = InitializeCsvWriter(filePath))
+            var fileInfo = new FileInfo(filePath);
+
+            var model = new List<CsvModel>();
+
+            foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
+                                                                                        || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
             {
-                foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
-                                                                                            || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
+                model.AddRange(ForEachAssemblyExport(assembly));
+            }
+
+            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var xlPackage = new ExcelPackage(fileInfo))
                 {
-                    ForEachAssemblyExport(csv, assembly);
+                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
+                    var worksheet = xlPackage.Workbook.Worksheets[1];
+
+                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
+                    xlPackage.Save();
                 }
+            }
+            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var csv = InitializeCsvWriter(filePath))
+                {
+                    csv.WriteRecords(model);
+                }
+            }
+            else
+            {
             }
             OpenExportedFile(filePath);
         }
