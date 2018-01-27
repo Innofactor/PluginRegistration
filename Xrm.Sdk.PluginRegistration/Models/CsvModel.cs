@@ -45,5 +45,18 @@
 
         [Name("Is Enabled")]
         public string IsEnabled { get; set; }
+
+        /// <summary>
+        /// None, Sandbox
+        /// </summary>
+        [Name("Isolation Mode")]
+        public string IsolationMode { get; set; }
+        /// <summary>
+        /// Database, Disk, GAC
+        /// </summary>
+        [Name("Source Type")]
+        public string SourceType{ get; set; }
+
+
     }
 }
