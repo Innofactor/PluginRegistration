@@ -5,6 +5,11 @@
 
     public static class EnumExtensions
     {
+        /// <summary>
+        /// Returns the description attribute on enum value, if that's not available, it returns the name
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string GetDescription(this Enum value)
         {
             var type = value.GetType();
