@@ -14,6 +14,10 @@
 This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of XrmToolBox plugin and intended to work with the same set of the Dynamics CRM versions as supported by main application.
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
+    <releaseNotes>
+      * Added new feature to export information of all or selected plugins as csv or excel file
+      * Bug fix - #33: Prompting of delete dialog when delete key was pressed while editing description of a plugin
+    </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
       <dependency id="XrmToolBox" version="1.2016.11.4" />
