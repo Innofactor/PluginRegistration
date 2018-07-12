@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyCompany("Microsoft Corporation and contributors")]
-[assembly: AssemblyTitle("Plugin Registration")]
-[assembly: AssemblyDescription("Classic tool in XrmToolBox plugin form")]
+[assembly: AssemblyTitle("Plugin Registration Tool")]
+[assembly: AssemblyDescription("Customized Plugin Registration Tool for XrmToolBox")]
 [assembly: AssemblyProduct("PluginRegistrationTool")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
