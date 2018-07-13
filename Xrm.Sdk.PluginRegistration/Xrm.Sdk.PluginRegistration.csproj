@@ -413,7 +413,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"ilmerge.exe" /target:library /copyattrs /targetplatform:v4,"$(windir)\Microsoft.NET\Framework\v4.0.30319" "/out:$(TargetName).Merged.dll" "$(TargetFileName)" "EPPlus.dll"  "CsvHelper.dll"
+    <PostBuildEvent>"ilmerge.exe" /target:library /targetplatform:v4,"$(windir)\Microsoft.NET\Framework\v4.0.30319" "/out:$(TargetName).Merged.dll" "$(TargetFileName)" "EPPlus.dll"  "CsvHelper.dll"
 
 if not exist "Plugins" mkdir "Plugins"
 
