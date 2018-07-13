@@ -1363,6 +1363,15 @@ namespace Xrm.Sdk.PluginRegistration
             }
             var fileInfo = new FileInfo(filePath);
 
+            if (fileInfo.Exists)
+            {
+                if (!DeleteExistingFile(fileInfo))
+                {
+                    MessageBox.Show("Unable to overwrite existing file. Please try again with a unique name.");
+                    return;
+                }
+            }
+
             var model = new List<ExportModel>();
 
             foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
@@ -1393,6 +1402,19 @@ namespace Xrm.Sdk.PluginRegistration
             {
             }
             OpenExportedFile(filePath);
+        }
+
+        private static bool DeleteExistingFile(FileInfo fileInfo)
+        {
+            try
+            {
+                fileInfo.Delete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private static CsvWriter InitializeCsvWriter(string filePath)
