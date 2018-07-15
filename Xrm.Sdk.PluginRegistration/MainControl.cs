@@ -339,21 +339,9 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        public string RepositoryName
-        {
-            get
-            {
-                return "PluginRegistration";
-            }
-        }
+        public string RepositoryName => "PluginRegistration";
 
-        public string UserName
-        {
-            get
-            {
-                return "Innofactor";
-            }
-        }
+        public string UserName => "Innofactor";
 
         #endregion Public Properties
 
