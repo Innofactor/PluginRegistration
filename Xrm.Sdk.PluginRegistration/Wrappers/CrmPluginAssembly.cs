@@ -17,18 +17,19 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Controls;
     using Entities;
     using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Controls;
 
     public enum CrmAssemblyIsolationMode
     {
         [Description("None")]
         None = 1,
+
         [Description("Sandbox")]
         Sandbox = 2
     }
@@ -37,8 +38,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     {
         [Description("Database")]
         Database = 0,
+
         [Description("Disk")]
         Disk = 1,
+
         [Description("GAC")]
         GAC = 2
     }
@@ -404,17 +407,21 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", AssemblyId);
-                valueList.Add("Description", String.IsNullOrEmpty(Description) ? string.Empty : Description);
-                valueList.Add("Name", Name);
-                valueList.Add("ModifiedOn",
-                    (ModifiedOn.HasValue ? ModifiedOn.ToString() : ""));
-                valueList.Add("SourceType", SourceType.ToString());
-                valueList.Add("Version", ConvertNullStringToEmpty(Version));
-                valueList.Add("Path", ConvertNullStringToEmpty(ServerFileName));
-                valueList.Add("PublicKeyToken", ConvertNullStringToEmpty(PublicKeyToken));
-                valueList.Add("Culture", ConvertNullStringToEmpty(Culture));
+                var valueList = new Dictionary<string, object>
+                {
+                    { "Id", AssemblyId },
+                    { "Description", String.IsNullOrEmpty(Description) ? string.Empty : Description },
+                    { "Name", Name },
+                    {
+                        "ModifiedOn",
+                        (ModifiedOn.HasValue ? ModifiedOn.ToString() : "")
+                    },
+                    { "SourceType", SourceType.ToString() },
+                    { "Version", ConvertNullStringToEmpty(Version) },
+                    { "Path", ConvertNullStringToEmpty(ServerFileName) },
+                    { "PublicKeyToken", ConvertNullStringToEmpty(PublicKeyToken) },
+                    { "Culture", ConvertNullStringToEmpty(Culture) }
+                };
 
                 if (CrmAssemblyIsolationMode.Sandbox == IsolationMode)
                 {
@@ -507,11 +514,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             newAssembly.Version = Version;
 
             //Create a new plugin list
-            Dictionary<Guid, CrmPlugin> newPluginList = new Dictionary<Guid, CrmPlugin>();
+            var newPluginList = new Dictionary<Guid, CrmPlugin>();
             foreach (CrmPlugin plugin in m_pluginList.Values)
             {
                 //Clone the plugin
-                CrmPlugin clonedPlugin = (CrmPlugin)plugin.Clone(includeOrganization);
+                var clonedPlugin = (CrmPlugin)plugin.Clone(includeOrganization);
 
                 //Add the plugin to the new list
                 newPluginList.Add(clonedPlugin.PluginId, clonedPlugin);
@@ -525,7 +532,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         public Dictionary<string, object> GenerateCrmEntities()
         {
-            Dictionary<string, object> entityList = new Dictionary<string, object>();
+            var entityList = new Dictionary<string, object>();
 
             PluginAssembly assembly = new PluginAssembly();
             if (AssemblyId != Guid.Empty)
@@ -534,11 +541,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 assembly["pluginassemblyid"] = AssemblyId;
             }
 
-            assembly.SourceType = new OptionSetValue();
-            assembly.SourceType.Value = (int)SourceType;
+            assembly.SourceType = new OptionSetValue
+            {
+                Value = (int)SourceType
+            };
 
-            assembly.IsolationMode = new OptionSetValue();
-            assembly.IsolationMode.Value = (int)IsolationMode;
+            assembly.IsolationMode = new OptionSetValue
+            {
+                Value = (int)IsolationMode
+            };
 
             assembly.Culture = Culture;
             assembly.PublicKeyToken = PublicKeyToken;
