@@ -1554,7 +1554,7 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         Invoke(new Action(() =>
                         {
-                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to the refresh the organization. Connection must close.", "Connection Error", ex);
+                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to refresh the organization. Connection must close.", "Connection Error", ex);
                         }));
                     }
                 }
