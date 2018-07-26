@@ -12,12 +12,14 @@
         {
             InitializeComponent();
         }
+
         public ExportTypeSelectionForm(string message, string header)
         {
             InitializeComponent();
             lblText.Text = message;
             this.Text = header;
         }
+
         private void btnExportAll_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Yes;
@@ -29,6 +31,5 @@
             DialogResult = DialogResult.No;
             Close();
         }
-        
     }
 }

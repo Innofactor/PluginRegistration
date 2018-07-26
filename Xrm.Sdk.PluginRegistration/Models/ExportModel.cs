@@ -51,12 +51,11 @@
         /// </summary>
         [Name("Isolation Mode")]
         public string IsolationMode { get; set; }
+
         /// <summary>
         /// Database, Disk, GAC
         /// </summary>
         [Name("Source Type")]
-        public string SourceType{ get; set; }
-
-
+        public string SourceType { get; set; }
     }
 }

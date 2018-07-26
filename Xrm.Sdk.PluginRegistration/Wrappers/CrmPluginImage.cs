@@ -17,6 +17,7 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Controls;
     using Entities;
     using Microsoft.Xrm.Sdk;
     using System;
@@ -24,7 +25,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using System.ComponentModel;
     using System.Text;
     using System.Xml.Serialization;
-    using Controls;
 
     public enum CrmPluginImageType
     {

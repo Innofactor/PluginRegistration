@@ -17,11 +17,11 @@
 
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
+    using Microsoft.Xrm.Sdk.Metadata;
     using System;
     using System.Collections;
     using System.Collections.ObjectModel;
     using System.Windows.Forms;
-    using Microsoft.Xrm.Sdk.Metadata;
     using Wrappers;
 
     public partial class AttributeSelectionForm : Form
@@ -79,6 +79,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                             item.Tag = attribute;
                         }
                         break;
+
                     case AttributeTypeCode.CalendarRules:
                     case AttributeTypeCode.Uniqueidentifier:
                     case AttributeTypeCode.Virtual:

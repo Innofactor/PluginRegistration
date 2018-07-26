@@ -15,7 +15,6 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageFilter : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
-
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -286,7 +285,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [AttributeLogicalName("versionnumber")]
         public long? VersionNumber

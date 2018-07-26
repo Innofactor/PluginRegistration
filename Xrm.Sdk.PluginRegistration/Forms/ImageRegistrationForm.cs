@@ -17,12 +17,12 @@
 
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
+    using Controls;
+    using Helpers;
     using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Windows.Forms;
-    using Controls;
-    using Helpers;
     using Wrappers;
 
     public partial class ImageRegistrationForm : Form
@@ -88,14 +88,17 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         chkImageTypePost.Checked = true;
                         chkImageTypePre.Checked = true;
                         break;
+
                     case CrmPluginImageType.PostImage:
                         chkImageTypePost.Checked = true;
                         chkImageTypePre.Checked = false;
                         break;
+
                     case CrmPluginImageType.PreImage:
                         chkImageTypePost.Checked = false;
                         chkImageTypePre.Checked = true;
                         break;
+
                     default:
                         throw new NotImplementedException("ImageType = " + image.ImageType.ToString());
                 }
@@ -128,6 +131,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             CrmPluginImage image = new CrmPluginImage(m_org);
 
             #region Extract Information
+
             if (trvPlugins.SelectedNode == null ||
                 (m_currentImage == null && trvPlugins.SelectedNode.NodeType != CrmTreeNodeType.Step))
             {
@@ -222,9 +226,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 image.ImageType = CrmPluginImageType.PostImage;
             }
-            #endregion
+
+            #endregion Extract Information
 
             #region Register the Image
+
             try
             {
                 if (m_currentImage == null)
@@ -264,7 +270,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ErrorMessageForm.ShowErrorMessageBox(this, "Unable to register the Image due to an error.", "Registration", ex);
                 return;
             }
-            #endregion
+
+            #endregion Register the Image
 
             DialogResult = DialogResult.OK;
             Close();
@@ -281,9 +288,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case CrmTreeNodeType.Step:
                         step = (CrmPluginStep)e.Node;
                         break;
+
                     case CrmTreeNodeType.Image:
                         step = m_org.Steps[((CrmPluginImage)e.Node).StepId];
                         break;
+
                     default:
                         throw new NotImplementedException("NodeType = " + e.Node.NodeType.ToString());
                 }

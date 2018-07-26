@@ -76,6 +76,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         }
 
         #region Methods
+
         public static string SelectMessagePropertyName(CrmMessage message)
         {
             if (null == message)
@@ -105,9 +106,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             return null;
         }
-        #endregion
+
+        #endregion Methods
 
         #region Properties
+
         public ImageMessagePropertyName SelectedMessagePropertyName
         {
             get
@@ -128,9 +131,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 return null;
             }
         }
-        #endregion
+
+        #endregion Properties
 
         #region Event Handlers
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (null == SelectedMessagePropertyName)
@@ -156,6 +161,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 txtDescription.Text = ((ImageMessagePropertyName)button.Tag).Description;
             }
         }
-        #endregion
+
+        #endregion Event Handlers
     }
 }

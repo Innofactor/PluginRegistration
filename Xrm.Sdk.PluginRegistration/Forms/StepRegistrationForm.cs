@@ -17,11 +17,11 @@
 
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
+    using Helpers;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Forms;
-    using Helpers;
     using Wrappers;
 
     public partial class StepRegistrationForm : Form
@@ -58,7 +58,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             txtMessageName.AutoCompleteCustomSource = msgList;
 
-            //Check whether system plugins should be added to the list            
+            //Check whether system plugins should be added to the list
             if (step != null && org[step.AssemblyId][step.PluginId].IsSystemCrmEntity && (!OrganizationHelper.AllowStepRegistrationForPlugin(plugin)))
             {
                 cmbPlugins.Enabled = false;
@@ -143,7 +143,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             CrmServiceEndpoint selectServiceEndpoint = null;
             foreach (CrmServiceEndpoint currentServiceEndpoint in org.ServiceEndpoints.Values)
             {
-
                 if (serviceEndpoint != null && serviceEndpoint.ServiceEndpointId == currentServiceEndpoint.ServiceEndpointId)
                 {
                     selectServiceEndpoint = currentServiceEndpoint;
@@ -209,15 +208,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case CrmPluginStepStage.PreValidation:
                         radStagePreValidation.Checked = true;
                         break;
+
                     case CrmPluginStepStage.PreOperation:
                         radStagePreOperation.Checked = true;
                         break;
+
                     case CrmPluginStepStage.PostOperation:
                         radStagePostOperation.Checked = true;
                         break;
+
                     case CrmPluginStepStage.PostOperationDeprecated:
                         radStagePostOperationDeprecated.Checked = true;
                         break;
+
                     default:
                         throw new NotImplementedException("CrmPluginStepStage = " + m_currentStep.Stage.ToString());
                 }
@@ -228,6 +231,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         radModeAsync.Checked = true;
                         break;
+
                     case CrmPluginStepMode.Synchronous:
 
                         radModeSync.Checked = true;
@@ -244,16 +248,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         chkDeploymentOffline.Checked = true;
                         chkDeploymentServer.Checked = true;
                         break;
+
                     case CrmPluginStepDeployment.ServerOnly:
 
                         chkDeploymentOffline.Checked = false;
                         chkDeploymentServer.Checked = true;
                         break;
+
                     case CrmPluginStepDeployment.OfflineOnly:
 
                         chkDeploymentOffline.Checked = true;
                         chkDeploymentServer.Checked = false;
                         break;
+
                     default:
                         throw new NotImplementedException("Deployment = " + m_currentStep.Deployment.ToString());
                 }
@@ -265,10 +272,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         radInvocationParent.Checked = true;
                         break;
+
                     case CrmPluginStepInvocationSource.Child:
 
                         radInvocationChild.Checked = true;
                         break;
+
                     default:
                         throw new NotImplementedException("InvocationSource = " + m_currentStep.InvocationSource.ToString());
                 }
@@ -287,8 +296,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 //}
                 //else
                 //{
-                    txtUnsecureConfiguration.Text = m_currentStep.UnsecureConfiguration;
-                    stepName = m_currentStep.Name;
+                txtUnsecureConfiguration.Text = m_currentStep.UnsecureConfiguration;
+                stepName = m_currentStep.Name;
                 //}
 
                 if (stepName == GenerateDescription())
@@ -397,6 +406,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         }
 
         #region Events
+
         private void btnRegister_Click(object sender, EventArgs e)
         {
             CrmPluginStep step = new CrmPluginStep(m_org);
@@ -408,6 +418,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             bool isDeploymentServerChecked = (chkDeploymentServer.Enabled && chkDeploymentServer.Checked) || cmbServiceEndpoint.Visible;
 
             #region Extract Information
+
             //Validate information
             if (!isDeploymentOfflineChecked && !isDeploymentServerChecked)
             {
@@ -595,9 +606,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 step.ProfilerOriginalStepId = m_currentStep.ProfilerOriginalStepId;
                 step.ProfilerStepId = m_currentStep.ProfilerStepId;
             }
-            #endregion
+
+            #endregion Extract Information
 
             #region Register the Step
+
             bool rankChanged = false;
             try
             {
@@ -689,8 +702,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
 
                     step = m_currentStep;
-
-
                 }
                 else
                 {
@@ -709,7 +720,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ErrorMessageForm.ShowErrorMessageBox(this, "Error occurred while registering the step", "Registration Error", ex);
                 return;
             }
-            #endregion
+
+            #endregion Register the Step
 
             DialogResult = DialogResult.OK;
             Close();
@@ -744,6 +756,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         }
 
         private string m_stepName = string.Empty;
+
         private void MessageData_TextChanged(object sender, EventArgs e)
         {
             if (m_stepName != null)
@@ -837,6 +850,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case 4:
                         enable2011Controls = false;
                         break;
+
                     case 5:
                         enableV4Controls = false;
                         break;
@@ -868,11 +882,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             lblInvalidSecureConfigurationId.Visible = false;
             lnkInvalidSecureConfigurationId.Visible = false;
         }
-        #endregion
+
+        #endregion Events
 
         #region Properties
+
         private string m_messageRetrieved = null;
         private CrmMessage m_message = null;
+
         public CrmMessage Message
         {
             get
@@ -906,6 +923,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private string m_messageEntityPrimaryRetrieved = null;
         private string m_messageEntitySecondaryRetrieved = null;
         private CrmMessageEntity m_messageEntityRetrieved = null;
+
         public CrmMessageEntity MessageEntity
         {
             get
@@ -942,10 +960,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 return m_messageEntityRetrieved;
             }
         }
-        #endregion
+
+        #endregion Properties
 
         #region Private Helper Methods
+
         private CrmMessage m_messageLoaded = null;
+
         private void LoadEntities()
         {
             if (m_messageLoaded == Message)
@@ -1084,19 +1105,23 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         chkDeploymentOffline.Enabled = true;
                         chkDeploymentServer.Enabled = false;
                         break;
+
                     case CrmPluginStepDeployment.ServerOnly:
                         chkDeploymentOffline.Enabled = false;
                         chkDeploymentServer.Enabled = true;
                         break;
+
                     case CrmPluginStepDeployment.Both:
                         chkDeploymentOffline.Enabled = true;
                         chkDeploymentServer.Enabled = true;
                         break;
+
                     default:
                         throw new NotImplementedException("CrmPluginStepDeployment = " + MessageEntity.Availability);
                 }
             }
         }
-        #endregion
+
+        #endregion Private Helper Methods
     }
 }

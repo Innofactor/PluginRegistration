@@ -15,7 +15,6 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStepImage : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
-
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -199,7 +198,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [AttributeLogicalName("ismanaged")]
         public bool? IsManaged
@@ -406,7 +405,7 @@
         }
 
         /// <summary>
-        /// Number that identifies a specific revision of the step image. 
+        /// Number that identifies a specific revision of the step image.
         /// </summary>
         [AttributeLogicalName("versionnumber")]
         public long? VersionNumber

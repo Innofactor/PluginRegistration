@@ -17,13 +17,13 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Controls;
     using Entities;
     using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Controls;
 
     public enum CrmPluginIsolatable
     {
@@ -36,6 +36,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     {
         [Description("Plugin")]
         Plugin,
+
         [Description("Workflow Activity")]
         WorkflowActivity
     }

@@ -17,14 +17,14 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Controls;
+    using Helpers;
     using McTools.Xrm.Connection;
     using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.Xml;
     using System.Xml.Serialization;
-    using Controls;
-    using Helpers;
 
     public interface ICrmEntity
     {

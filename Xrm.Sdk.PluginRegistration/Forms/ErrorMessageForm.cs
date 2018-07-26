@@ -17,6 +17,7 @@
 
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
+    using Microsoft.Xrm.Sdk;
     using System;
     using System.Globalization;
     using System.IO;
@@ -25,7 +26,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.Text;
     using System.Windows.Forms;
     using System.Xml;
-    using Microsoft.Xrm.Sdk;
 
     public partial class ErrorMessageForm : Form
     {
@@ -97,7 +97,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 var dlg = new ErrorMessageForm();
-                
+
                 dlg.StartPosition = FormStartPosition.CenterParent;
                 dlg.Message = exceptionMessage;
                 dlg.ShowDialog();

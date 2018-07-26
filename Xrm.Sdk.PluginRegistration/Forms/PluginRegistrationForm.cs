@@ -17,17 +17,17 @@
 
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Windows.Forms;
-    using Microsoft.Xrm.Sdk;
     using Controls;
     using Entities;
     using Helpers;
-    using Wrappers;
+    using Microsoft.Xrm.Sdk;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using Wrappers;
 
     public partial class PluginRegistrationForm : Form
     {
@@ -90,9 +90,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case CrmAssemblyIsolationMode.Sandbox:
                         radIsolationSandbox.Checked = true;
                         break;
+
                     case CrmAssemblyIsolationMode.None:
                         radIsolationNone.Checked = true;
                         break;
+
                     default:
                         throw new NotImplementedException("IsolationMode = " + assembly.IsolationMode.ToString());
                 }
@@ -102,12 +104,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case CrmAssemblySourceType.Database:
                         radDB.Checked = true;
                         break;
+
                     case CrmAssemblySourceType.Disk:
                         radDisk.Checked = true;
                         break;
+
                     case CrmAssemblySourceType.GAC:
                         radGAC.Checked = true;
                         break;
+
                     default:
                         throw new NotImplementedException("SourceType = " + assembly.SourceType.ToString());
                 }
@@ -122,6 +127,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         }
 
         #region Control Events
+
         private void AssemblyPathControl_BrowseCompleted(object sender, EventArgs e)
         {
             btnLoadAssembly.PerformClick();
@@ -206,6 +212,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             #region Extract Plugin Registration Information
+
             m_progRegistration.Complete(true); //Just in case it has incorrect information
 
             //Determine the source type. If we are talking about an assembly on disk, verify that it exists
@@ -215,8 +222,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     MessageBox.Show(
                         "If the Registration Location is Disk, the \"File Name on Server\" must be specified",
-                        "Missing Information", 
-                        MessageBoxButtons.OK, 
+                        "Missing Information",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
 
                     m_progRegistration.Complete(false);
@@ -248,8 +255,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 MessageBox.Show(
                     "No plugins have been selected from the list. Please select at least one and try again.",
-                    "No Plugins Selected", 
-                    MessageBoxButtons.OK, 
+                    "No Plugins Selected",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
@@ -260,8 +267,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 MessageBox.Show(
                     "Since some of the plug-ins cannot be isolated, the assembly cannot be marked as Isolated.",
-                    "Isolation", 
-                    MessageBoxButtons.OK, 
+                    "Isolation",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
@@ -279,7 +286,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 assembly = RegistrationHelper.RetrievePluginsFromAssembly(assemblyPath);
 
-                //Retrieve the source type and determine if the 
+                //Retrieve the source type and determine if the
                 assembly.SourceType = GetAssemblySourceType();
 
                 if (CrmAssemblySourceType.Disk != assembly.SourceType)
@@ -328,7 +335,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             try
             {
-                Parallel.ForEach(assembly.Plugins.Values, (currentPlugin) => {
+                Parallel.ForEach(assembly.Plugins.Values, (currentPlugin) =>
+                {
                     var foundPlugin = m_registeredPluginList?.Where(x => x.TypeName.ToLowerInvariant() == currentPlugin.TypeName.ToLowerInvariant()).FirstOrDefault();
                     var alreadyExisted = (m_registeredPluginList != null && foundPlugin != null);
 
@@ -355,7 +363,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 if (m_registeredPluginList != null)
                 {
-                    Parallel.ForEach(m_registeredPluginList, (currentRecord) => {
+                    Parallel.ForEach(m_registeredPluginList, (currentRecord) =>
+                    {
                         if (!assembly.Plugins.Values.ToList().Any(x => x.TypeName.ToLowerInvariant() == currentRecord.TypeName.ToLowerInvariant()))
                         {
                             missingPluginList.Add(currentRecord);
@@ -377,9 +386,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 var list = missingPluginList.Select(x => x.TypeName).Aggregate((name01, name02) => name01 + "\n" + name02);
 
                 MessageBox.Show(
-                    $"Following plugin are missing in the assembly:\n\n{list}\n\nRegistration cannot continue!", 
-                    "Plugins are missing", 
-                    MessageBoxButtons.OK, 
+                    $"Following plugin are missing in the assembly:\n\n{list}\n\nRegistration cannot continue!",
+                    "Plugins are missing",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
@@ -392,8 +401,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     MessageBox.Show(
                         "Assemblies containing Plugins must be strongly signed. Sign the Assembly using a KeyFile.",
-                        "Strong Names Error", 
-                        MessageBoxButtons.OK, 
+                        "Strong Names Error",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
 
                     return;
@@ -405,8 +414,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 MessageBox.Show(
                     "No plugins have been selected from the list. Please select at least one and try again.",
-                    "No Plugins Selected", 
-                    MessageBoxButtons.OK, 
+                    "No Plugins Selected",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
@@ -421,9 +430,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 assembly.AssemblyId = m_currentAssembly.AssemblyId;
             }
-            #endregion
+
+            #endregion Extract Plugin Registration Information
 
             #region Register Plugin
+
             m_progRegistration.Initialize(registerPluginList.Count + removedPluginList.Count, "Preparing Registration");
 
             int registeredAssemblies = 0;
@@ -636,13 +647,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                                     currentPlugin.PluginId = pluginTypeId;
                                     currentPlugin.Organization = assembly.Organization;
                                     break;
+
                                 case DialogResult.No:
                                     createPlugin = true;
                                     break;
+
                                 case DialogResult.Cancel:
                                     m_progRegistration.AppendText("ABORTED: Plugin Registration has been aborted by the user.");
                                     m_progRegistration.Complete(false);
                                     return;
+
                                 default:
                                     throw new NotImplementedException();
                             }
@@ -772,7 +786,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 ErrorMessageForm.ShowErrorMessageBox(this, "Unable to update Created On / Modified On dates", "Update Error", ex);
             }
-            #endregion
+
+            #endregion Register Plugin
 
             m_progRegistration.AppendText("SUCCESS: Selected Plugins have been registered");
             m_progRegistration.Complete(false);
@@ -797,9 +812,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             chkSelectAll.Checked = trvPlugins.AllNodesChecked;
         }
-        #endregion
+
+        #endregion Control Events
 
         #region Helper Methods
+
         private void EnableRegistrationControls()
         {
             //Check if there are any nodes in the tree. If there are, the assembly must have been loaded or it is an update
@@ -882,9 +899,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
         }
-        #endregion
+
+        #endregion Helper Methods
 
         #region ProgressIndicator Implementation
+
         private void ProgressIndicatorInit(int min, int pluginCount, int initialValue)
         {
             const int STEPS_REGISTRATION_SETUP = 0;
@@ -902,7 +921,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 STEPS_REGISTRATION_ASSEMBLY +
 
                 //- Check Each Plugin Exist
-                //- Register Each Plugin (or Skip) 
+                //- Register Each Plugin (or Skip)
                 //- Update Main Form
                 (STEPS_REGISTRATION_PLUGIN * pluginCount) +
 
@@ -965,6 +984,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             barRegistration.Value = barRegistration.Minimum;
         }
-        #endregion
+
+        #endregion ProgressIndicator Implementation
     }
 }

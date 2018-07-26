@@ -17,13 +17,13 @@
 
 namespace Xrm.Sdk.PluginRegistration.Wrappers
 {
+    using Controls;
     using Entities;
     using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
-    using Controls;
 
     public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
     {
@@ -1104,10 +1104,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     {
         [Description("Pre-validation")]
         PreValidation = 10,
+
         [Description("Pre-operation")]
         PreOperation = 20,
+
         [Description("Post-operation")]
         PostOperation = 40,
+
         [Description("Post-operation Deprecated")]
         PostOperationDeprecated = 50
     }
@@ -1116,8 +1119,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     {
         [Description("Server only")]
         ServerOnly = 0,
+
         [Description("Offline only")]
         OfflineOnly = 1,
+
         [Description("Both")]
         Both = 2
     }

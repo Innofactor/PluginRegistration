@@ -18,11 +18,6 @@
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.Text;
     using System.Windows.Forms;
 
     public partial class WebServiceProgressForm : Form
@@ -53,6 +48,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         }
 
         #region ProgressIndicator Implementation
+
         private void ProgressIndicatorInit(int min, int waitMilliseconds, int initialValue)
         {
             barRegistration.Minimum = min;
@@ -74,7 +70,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             DialogResult = DialogResult.OK;
             Close();
         }
-        #endregion
+
+        #endregion ProgressIndicator Implementation
 
         private void tmrWait_Tick(object sender, EventArgs e)
         {

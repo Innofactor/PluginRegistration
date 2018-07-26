@@ -7,7 +7,7 @@
     using System;
 
     [TestFixture]
-    class SdkMessageFixture
+    internal class SdkMessageFixture
     {
         [Test]
         public void CheckLogicalName()

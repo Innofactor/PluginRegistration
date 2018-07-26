@@ -14,7 +14,6 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class ServiceEndpoint : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
-
         /// <summary>
         /// Default Constructor.
         /// </summary>
