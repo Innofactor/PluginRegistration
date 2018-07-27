@@ -132,7 +132,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            Collection<string> attributeList = new Collection<string>();
+            var attributeList = new Collection<string>();
             if (lsvAttributes.CheckedIndices.Count == lsvAttributes.Items.Count)
             {
                 m_updateAttributes(null, true);
@@ -153,7 +153,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void lsvAttributes_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            ListViewColumnSorter lsvSorter = (ListViewColumnSorter)lsvAttributes.ListViewItemSorter;
+            var lsvSorter = (ListViewColumnSorter)lsvAttributes.ListViewItemSorter;
 
             if (e.Column == lsvSorter.SortColumn)
             {

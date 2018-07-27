@@ -33,7 +33,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpGeneral = new System.Windows.Forms.GroupBox();
             this.cmbServiceEndpoint = new System.Windows.Forms.ComboBox();
             this.cmbPlugins = new System.Windows.Forms.ComboBox();
-            this.crmFilteringAttributes = new Xrm.Sdk.PluginRegistration.Controls.CrmAttributeSelectionControl();
+            this.crmFilteringAttributes = new Xrm.Sdk.PluginRegistration.Controls.CrmAttributeSelectionControl(m_orgControl);
             this.lblFilteringAttributes = new System.Windows.Forms.Label();
             this.lblEventHandler = new System.Windows.Forms.Label();
             this.txtRank = new System.Windows.Forms.TextBox();

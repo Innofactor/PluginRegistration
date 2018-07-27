@@ -41,23 +41,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 throw new ArgumentNullException("control");
             }
-
-            InitializeComponent();
-
             m_org = org;
             m_orgControl = orgControl;
             m_currentStep = step;
 
+            InitializeComponent();
+
             crmFilteringAttributes.Organization = org;
 
             //Initialize the auto-complete on the Message field
-            AutoCompleteStringCollection msgList = new AutoCompleteStringCollection();
+            var msgList = new AutoCompleteStringCollection();
             foreach (CrmMessage msg in org.Messages.Values)
             {
                 msgList.Add(msg.Name);
             }
             txtMessageName.AutoCompleteCustomSource = msgList;
-
+            
             //Check whether system plugins should be added to the list
             if (step != null && org[step.AssemblyId][step.PluginId].IsSystemCrmEntity && (!OrganizationHelper.AllowStepRegistrationForPlugin(plugin)))
             {
@@ -111,10 +110,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             //Create a user that represents the current user
-            CrmUser callingUser = new CrmUser(org);
-            callingUser.UserId = Guid.Empty;
-            callingUser.Name = "Calling User";
-            callingUser.Enabled = true;
+            CrmUser callingUser = new CrmUser(org)
+            {
+                UserId = Guid.Empty,
+                Name = "Calling User",
+                Enabled = true
+            };
             cmbUsers.Items.Add(callingUser);
 
             //Add the users. We do not want to sort because the users list is sorted already and then the calling user

@@ -26,6 +26,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
     using System.Windows.Forms;
     using System.Windows.Forms.Design;
     using Wrappers;
+    using XrmToolBox.Extensibility;
+    using XrmToolBox.Extensibility.Args;
 
     [Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
     public partial class CrmAttributeSelectionControl : UserControl
@@ -34,12 +36,23 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         private Collection<string> m_attributeList = new Collection<string>();
         private CrmOrganization m_org;
         private string m_entityName;
+        private ProgressIndicator m_progressIndicator = null;
+        private MainControl m_orgControl = null;
+
+        public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
 
         public event EventHandler<EventArgs> AttributesChanged;
 
-        public CrmAttributeSelectionControl()
+        public CrmAttributeSelectionControl(MainControl orgControl)
         {
+            m_orgControl = orgControl;
+
             InitializeComponent();
+
+            m_progressIndicator = new ProgressIndicator(new Action<StatusBarMessageEventArgs>((message) =>
+            {
+                SendMessageToStatusBar?.Invoke(this, message);
+            }));
         }
 
         [Browsable(false)]
@@ -185,9 +198,33 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 }
             }
 
-            AttributeSelectionForm selectorForm = new AttributeSelectionForm(UpdateParameters, m_org,
-                Organization.RetrieveEntityAttributes(EntityName), m_attributeList, m_allAttributes);
-            selectorForm.ShowDialog();
+            var instruction = new WorkAsyncInfo()
+            {
+                Message = "Getting attribute information...",
+                Work = (worker, argument) =>
+                {
+                    try
+                    {
+                        AttributeSelectionForm selectorForm = new AttributeSelectionForm(UpdateParameters, m_org,
+                        Organization.RetrieveEntityAttributes(EntityName), m_attributeList, m_allAttributes);
+
+                        argument.Result = selectorForm;
+                    }
+                    catch (Exception ex)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to get the attribute information.", "Error in a", ex);
+                        }));
+                    }
+                },
+                PostWorkCallBack = (argument) =>
+                {
+                    if (argument.Result != null)
+                        ((AttributeSelectionForm)argument.Result).ShowDialog();
+                }
+            };
+            m_orgControl.WorkAsync(instruction);
         }
 
         private void CrmAttributeSelectionControl_EnabledChanged(object sender, EventArgs e)

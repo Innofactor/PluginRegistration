@@ -36,7 +36,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpEntityAlias = new System.Windows.Forms.GroupBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
-            this.crmParameters = new Xrm.Sdk.PluginRegistration.Controls.CrmAttributeSelectionControl();
+            this.crmParameters = new Xrm.Sdk.PluginRegistration.Controls.CrmAttributeSelectionControl(m_orgControl);
             this.lblImageParameters = new System.Windows.Forms.Label();
             this.txtEntityAlias = new System.Windows.Forms.TextBox();
             this.lblEntityAlias = new System.Windows.Forms.Label();

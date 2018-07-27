@@ -46,12 +46,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 throw new ArgumentNullException("rootNodes");
             }
-
-            InitializeComponent();
-
             m_org = org;
             m_orgControl = orgControl;
             m_currentImage = image;
+
+            InitializeComponent();
 
             crmParameters.Organization = org;
 
