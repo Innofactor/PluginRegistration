@@ -55,9 +55,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
                 else
                 {
-                    button = new RadioButton();
-                    button.Left = radTemplateItem.Left;
-                    button.Top = radioTop;
+                    button = new RadioButton
+                    {
+                        Left = radTemplateItem.Left,
+                        Top = radioTop
+                    };
                     grpMessageProperties.Controls.Add(button);
 
                     radioTop += radioSpace;
