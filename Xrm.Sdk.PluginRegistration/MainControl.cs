@@ -1154,7 +1154,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolAssemblyRegister_Click(object sender, EventArgs e)
         {
-            PluginRegistrationForm regForm = new PluginRegistrationForm(Organization, this, null);
+            var regForm = new PluginRegistrationForm(Organization, this, null);
             regForm.ShowDialog(ParentForm);
         }
 
@@ -1651,7 +1651,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                 try
                 {
-                    StringBuilder builder = new StringBuilder();
+                    var builder = new StringBuilder();
                     foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(m_org, (ICrmEntity)trvPlugins.SelectedNode))
                     {
                         builder.AppendLine(string.Format("{0} {1} Unregistered Successfully", stat.Value, stat.Key));
@@ -1698,7 +1698,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 case CrmTreeNodeType.Assembly:
                     {
-                        PluginRegistrationForm regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
                         regForm.ShowDialog(ParentForm);
                     }
                     break;

@@ -829,36 +829,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void cmbPlugins_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Determine the version of the SDK that this plug-in depends on
-            Version sdkVersion;
-            CrmPlugin plugin = (CrmPlugin)cmbPlugins.SelectedItem;
-            if (null == plugin)
-            {
-                sdkVersion = null;
-            }
-            else
-            {
-                sdkVersion = plugin.Organization.Assemblies[plugin.AssemblyId].SdkVersion;
-            }
-
             //Determine what boxes to enable
-            bool enableV4Controls = true;
-            bool enable2011Controls = true;
-            if (null != sdkVersion)
-            {
-                switch (sdkVersion.Major)
-                {
-                    case 4:
-                        enable2011Controls = false;
-                        break;
-
-                    case 5:
-                        enableV4Controls = false;
-                        break;
-                }
-            }
-
-            //Enable the correct controls
+            var enableV4Controls = false;
+            var enable2011Controls = true;
+         
+            //Todo: After removing SdkVersion property, removing v4 based features.
+            //Enable the correct controls _(CRM2011 and above)
             grpInvocation.Enabled = enableV4Controls;
             radStagePreOperation.Enabled = enable2011Controls;
             radStagePostOperation.Enabled = enable2011Controls;
@@ -869,7 +845,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             if (MessageBox.Show(this, "The current value of the secure configuration will be overwritten when this step is saved. Continue?",
                     "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                    MessageBoxDefaultButton.Button2) != System.Windows.Forms.DialogResult.Yes)
+                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
             {
                 return;
             }

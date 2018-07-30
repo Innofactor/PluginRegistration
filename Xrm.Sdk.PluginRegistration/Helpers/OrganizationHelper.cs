@@ -1154,7 +1154,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                             "customizationlevel",
                             "pluginassemblyid",
                             "sourcetype",
-                            "path",
                             "version",
                             "publickeytoken",
                             "culture",

@@ -107,9 +107,6 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     type = CrmPluginType.Plugin;
                     isolatable = CrmPluginIsolatable.No;
-
-                    //It may be that the version of Microsoft.Crm.Sdk.dll will be the v5 version, but it will still be a v4 plug-in.
-                    sdkVersion = new Version(4, 0);
                 }
                 else if (t.IsSubclassOf(typeof(CodeActivity)) || t.IsSubclassOf(typeof(Activity)))
                 {
@@ -119,12 +116,6 @@ namespace Xrm.Sdk.PluginRegistration
                 else
                 {
                     continue;
-                }
-
-                //If the SDK version has been set, extract the Major/Minor number
-                if (null != sdkVersion)
-                {
-                    pluginAssembly.SdkVersion = new Version(sdkVersion.Major, sdkVersion.Minor);
                 }
 
                 if (errorMessage != null)

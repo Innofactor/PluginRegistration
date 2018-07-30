@@ -179,12 +179,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     throw new ArgumentException("Invalid CustomizationLevel specified");
                 }
 
-                //If the customization level is 0, then this is a system assembly (which will depend on the current version of CRM)
-                if (0 == value && null == SdkVersion)
-                {
-                    SdkVersion = Organization.ServerBuild;
-                }
-
                 m_customizationLevel = value;
             }
         }
@@ -390,10 +384,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string PublicKeyToken { get; set; }
-
-        [Category("Information"), DisplayName("SDK Version"), Description("Version of the CRM SDK Assemblies referenced by this Assembly.")]
-        [Browsable(true), ReadOnly(true)]
-        public Version SdkVersion { get; set; }
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string ServerFileName { get; set; }
@@ -651,14 +641,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             Description = assembly.Description;
 
-            if (null == SdkVersion && CrmAssemblyIsolationMode.Sandbox == IsolationMode &&
-                null != m_org)
-            {
-                //Sandbox was not supported in CRM 4. It is safe to assume CRM 2011 is used here.
-                //TODO: When the next version of CRM rolls out, will this assumption create problems?
-                SdkVersion = new Version(5, 0);
             }
-        }
 
         public void RemovePlugin(Guid pluginId)
         {
