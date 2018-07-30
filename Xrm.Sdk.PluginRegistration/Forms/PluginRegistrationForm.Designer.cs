@@ -66,8 +66,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpPath
             // 
-            this.grpPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPath.Controls.Add(this.AssemblyPathControl);
             this.grpPath.Controls.Add(this.chkUpdateAssembly);
             this.grpPath.Controls.Add(this.btnLoadAssembly);
@@ -76,7 +76,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpPath.Size = new System.Drawing.Size(618, 75);
             this.grpPath.TabIndex = 0;
             this.grpPath.TabStop = false;
-            this.grpPath.Text = "Step #1: Specify the Location of the Assembly to Analyze";
+            this.grpPath.Text = "Step #1: Select the Assembly to Load";
             // 
             // chkUpdateAssembly
             // 
@@ -109,9 +109,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpPlugins
             // 
-            this.grpPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPlugins.Controls.Add(this.trvPlugins);
             this.grpPlugins.Controls.Add(this.chkSelectAll);
             this.grpPlugins.Location = new System.Drawing.Point(5, 86);
@@ -137,8 +137,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpRegLoc
             // 
-            this.grpRegLoc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpRegLoc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpRegLoc.Controls.Add(this.lblServerFileName);
             this.grpRegLoc.Controls.Add(this.txtServerFileName);
             this.grpRegLoc.Controls.Add(this.lblGAC);
@@ -166,8 +166,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtServerFileName
             // 
-            this.txtServerFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtServerFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtServerFileName.Enabled = false;
             this.txtServerFileName.Location = new System.Drawing.Point(117, 126);
             this.txtServerFileName.Name = "txtServerFileName";
@@ -195,8 +195,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // lblDisk
             // 
-            this.lblDisk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDisk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDisk.Location = new System.Drawing.Point(3, 94);
             this.lblDisk.Name = "lblDisk";
             this.lblDisk.Size = new System.Drawing.Size(602, 32);
@@ -217,8 +217,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // lblDatabase
             // 
-            this.lblDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDatabase.Location = new System.Drawing.Point(3, 43);
             this.lblDatabase.Name = "lblDatabase";
             this.lblDatabase.Size = new System.Drawing.Size(607, 28);
@@ -264,8 +264,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpProgress
             // 
-            this.grpProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpProgress.Controls.Add(this.txtProgress);
             this.grpProgress.Controls.Add(this.barRegistration);
             this.grpProgress.Location = new System.Drawing.Point(5, 558);
@@ -277,9 +277,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtProgress
             // 
-            this.txtProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtProgress.Location = new System.Drawing.Point(7, 19);
             this.txtProgress.Multiline = true;
             this.txtProgress.Name = "txtProgress";
@@ -290,8 +290,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // barRegistration
             // 
-            this.barRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.barRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.barRegistration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.barRegistration.Location = new System.Drawing.Point(6, 114);
             this.barRegistration.Name = "barRegistration";
@@ -301,8 +301,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpIsolationMode
             // 
-            this.grpIsolationMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpIsolationMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpIsolationMode.Controls.Add(this.lblIsolated);
             this.grpIsolationMode.Controls.Add(this.radIsolationSandbox);
             this.grpIsolationMode.Controls.Add(this.radIsolationNone);
@@ -315,14 +315,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // lblIsolated
             // 
-            this.lblIsolated.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblIsolated.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblIsolated.Location = new System.Drawing.Point(4, 39);
             this.lblIsolated.Name = "lblIsolated";
             this.lblIsolated.Size = new System.Drawing.Size(607, 16);
             this.lblIsolated.TabIndex = 1;
             this.lblIsolated.Text = "All code in this assembly will be run in a secure sandbox (reduced functionality)" +
-                "";
+    "";
             // 
             // radIsolationSandbox
             // 
@@ -350,9 +350,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // trvPlugins
             // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trvPlugins.AutoExpand = false;
             this.trvPlugins.CheckBoxes = true;
             this.trvPlugins.CrmTreeNodeSorter = null;
@@ -369,6 +369,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.AssemblyPathControl.BackColor = System.Drawing.Color.Transparent;
             this.AssemblyPathControl.DefaultExtension = "*.dll";
+            this.AssemblyPathControl.DialogTitle = "";
             this.AssemblyPathControl.FileName = "";
             this.AssemblyPathControl.Filter = "Assembly Files (*.dll)|*.dll|All Files (*.*)|*.*";
             this.AssemblyPathControl.InitialDirectory = "";
