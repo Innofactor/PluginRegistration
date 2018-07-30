@@ -27,9 +27,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class ImageRegistrationForm : Form
     {
+        #region Private Fields
+
+        private CrmPluginImage m_currentImage;
         private CrmOrganization m_org;
         private MainControl m_orgControl;
-        private CrmPluginImage m_currentImage;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public ImageRegistrationForm(CrmOrganization org, MainControl orgControl,
             ICrmTreeNode[] rootNodes, CrmPluginImage image, Guid selectNodeId)
@@ -124,6 +130,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 crmParameters.Attributes = null;
             }
         }
+
+        #endregion Public Constructors
+
+        #region Private Methods
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
@@ -312,5 +322,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 btnRegister.Enabled = false;
             }
         }
+
+        #endregion Private Methods
     }
 }

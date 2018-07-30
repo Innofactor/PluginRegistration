@@ -640,8 +640,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             Description = assembly.Description;
-
-            }
+        }
 
         public void RemovePlugin(Guid pluginId)
         {

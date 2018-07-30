@@ -224,74 +224,6 @@ namespace Xrm.Sdk.PluginRegistration
 
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
 
-        public void ReceiveKeyDownShortcut(KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled && !propGridEntity.ContainsFocus)
-            {
-                mnuContextNodeUnregister.PerformClick();
-            }
-            else if (e.KeyCode == Keys.F5 && mnuContextGeneralRefresh.Enabled)
-            {
-                mnuContextGeneralRefresh.PerformClick();
-            }
-            else if (e.Control && !e.Shift && e.KeyCode == Keys.F && mnuContextGeneralSearch.Enabled)
-            {
-                mnuContextGeneralSearch.PerformClick();
-            }
-            else if (e.Control && !e.Shift && e.KeyCode == Keys.A && toolAssemblyRegister.Enabled)
-            {
-                toolAssemblyRegister.PerformClick();
-            }
-            else if (e.Control && !e.Shift && e.KeyCode == Keys.T && toolStepRegister.Enabled)
-            {
-                toolStepRegister.PerformClick();
-            }
-            else if (e.Control && !e.Shift && e.KeyCode == Keys.I && toolImageRegister.Enabled)
-            {
-                toolImageRegister.PerformClick();
-            }
-            else if (e.Control && !e.Shift && e.KeyCode == Keys.E && toolServiceEndpointRegister.Enabled)
-            {
-                toolServiceEndpointRegister.PerformClick();
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.A && toolViewAssembly.Enabled)
-            {
-                toolViewAssembly.PerformClick();
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
-            {
-                toolViewEntity.PerformClick();
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.M && toolViewMessage.Enabled)
-            {
-                toolViewMessage.PerformClick();
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
-            {
-                toolViewEntity.PerformClick();
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
-            {
-                toolViewEntity.PerformClick();
-            }
-            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
-            {
-                toolViewEntity.PerformClick();
-            }
-        }
-
-        public void ReceiveKeyPressShortcut(KeyPressEventArgs e)
-        {
-        }
-
-        public void ReceiveKeyUpShortcut(KeyEventArgs e)
-        {
-        }
-
-        public void ReceivePreviewKeyDownShortcut(PreviewKeyDownEventArgs e)
-        {
-        }
-
         #endregion Public Events
 
         #region Private Enums
@@ -487,6 +419,74 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        public void ReceiveKeyDownShortcut(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete && mnuContextNodeUnregister.Enabled && !propGridEntity.ContainsFocus)
+            {
+                mnuContextNodeUnregister.PerformClick();
+            }
+            else if (e.KeyCode == Keys.F5 && mnuContextGeneralRefresh.Enabled)
+            {
+                mnuContextGeneralRefresh.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.F && mnuContextGeneralSearch.Enabled)
+            {
+                mnuContextGeneralSearch.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.A && toolAssemblyRegister.Enabled)
+            {
+                toolAssemblyRegister.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.T && toolStepRegister.Enabled)
+            {
+                toolStepRegister.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.I && toolImageRegister.Enabled)
+            {
+                toolImageRegister.PerformClick();
+            }
+            else if (e.Control && !e.Shift && e.KeyCode == Keys.E && toolServiceEndpointRegister.Enabled)
+            {
+                toolServiceEndpointRegister.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.A && toolViewAssembly.Enabled)
+            {
+                toolViewAssembly.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.M && toolViewMessage.Enabled)
+            {
+                toolViewMessage.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+            else if (e.Control && e.Shift && e.KeyCode == Keys.E && toolViewEntity.Enabled)
+            {
+                toolViewEntity.PerformClick();
+            }
+        }
+
+        public void ReceiveKeyPressShortcut(KeyPressEventArgs e)
+        {
+        }
+
+        public void ReceiveKeyUpShortcut(KeyEventArgs e)
+        {
+        }
+
+        public void ReceivePreviewKeyDownShortcut(PreviewKeyDownEventArgs e)
+        {
+        }
+
         public void RefreshAssembly(CrmPluginAssembly assembly, bool reloadChildren)
         {
             if (assembly == null)
@@ -611,6 +611,68 @@ namespace Xrm.Sdk.PluginRegistration
         #endregion Public Methods
 
         #region Private Methods
+
+        private static bool DeleteExistingFile(FileInfo fileInfo)
+        {
+            try
+            {
+                fileInfo.Delete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static CsvWriter InitializeCsvWriter(string filePath)
+        {
+            var writer = new StreamWriter(filePath, false, Encoding.Default);
+            var csv = new CsvWriter(writer);
+            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+
+            csv.WriteHeader(typeof(ExportModel));
+            csv.NextRecord();
+            return csv;
+        }
+
+        private static void OpenExportedFile(string filePath)
+        {
+            if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Process.Start(filePath);
+            }
+        }
+
+        /// <summary>
+        /// Get full path of the file specified in the SaveFileDialog, in case of cancel it returns null
+        /// </summary>
+        /// <returns></returns>
+        private static string ShowSaveFileDialog()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Comma Separated Values File|*.csv|Excel File Format|*.xlsx",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                return Path.GetFullPath(saveFileDialog.FileName);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static bool VerifySelectedNode(ICrmTreeNode node)
+        {
+            return (node == null || node.NodeType == CrmTreeNodeType.Step
+                || node.NodeType == CrmTreeNodeType.Image || node.NodeType == CrmTreeNodeType.ServiceEndpoint
+                || node.NodeType == CrmTreeNodeType.Message || node.NodeType == CrmTreeNodeType.MessageEntity
+                || node.NodeType == CrmTreeNodeType.Connection || node.NodeType == CrmTreeNodeType.None);
+        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -739,6 +801,226 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             return childNode;
+        }
+
+        private void ExportSelected()
+        {
+            var node = trvPlugins.SelectedNode;
+
+            if (VerifySelectedNode(node))
+            {
+                MessageBox.Show("Please select an assembly, plugin or workflow activity", "Invalid selection", MessageBoxButtons.OK);
+                return;
+            }
+
+            var filePath = ShowSaveFileDialog();
+            var fileInfo = new FileInfo(filePath);
+            var model = new List<ExportModel>();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            switch (node.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+                        model = ForEachAssemblyExport((CrmPluginAssembly)node);
+                    }
+                    break;
+
+                case CrmTreeNodeType.Plugin:
+                case CrmTreeNodeType.WorkflowActivity:
+                    {
+                        model = ForEachPluginExport((CrmPlugin)node);
+                    }
+                    break;
+
+                default:
+                    throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
+            }
+            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var xlPackage = new ExcelPackage(fileInfo))
+                {
+                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
+                    var worksheet = xlPackage.Workbook.Worksheets[1];
+
+                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
+                    xlPackage.Save();
+                }
+            }
+            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var csv = InitializeCsvWriter(filePath))
+                {
+                    csv.WriteRecords(model);
+                }
+            }
+
+            OpenExportedFile(filePath);
+        }
+
+        private void ExportTool()
+        {
+            var filePath = ShowSaveFileDialog();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                //user cancelled on SaveFileDialog so exit and do nothing.
+                return;
+            }
+            var fileInfo = new FileInfo(filePath);
+
+            if (fileInfo.Exists)
+            {
+                if (!DeleteExistingFile(fileInfo))
+                {
+                    MessageBox.Show("Unable to overwrite existing file. Please try again with a unique name.");
+                    return;
+                }
+            }
+
+            var model = new List<ExportModel>();
+
+            foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
+                                                                                        || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
+            {
+                model.AddRange(ForEachAssemblyExport(assembly));
+            }
+
+            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var xlPackage = new ExcelPackage(fileInfo))
+                {
+                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
+                    var worksheet = xlPackage.Workbook.Worksheets[1];
+
+                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
+                    xlPackage.Save();
+                }
+            }
+            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
+            {
+                using (var csv = InitializeCsvWriter(filePath))
+                {
+                    csv.WriteRecords(model);
+                }
+            }
+            else
+            {
+            }
+            OpenExportedFile(filePath);
+        }
+
+        private List<ExportModel> ForEachAssemblyExport(CrmPluginAssembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+            var model = new List<ExportModel>();
+
+            var assemblyInfo = new ExportModel
+            {
+                AssemblyName = assembly.Name,
+                TypeName = string.Empty,
+                PluginType = "Assembly",
+                Description = assembly.Description,
+                IsolationMode = assembly.IsolationMode.GetDescription(),
+                SourceType = assembly.SourceType.GetDescription()
+            };
+            model.Add(assemblyInfo);
+            foreach (var node in assembly.NodeChildren)
+            {
+                model.AddRange(ForEachPluginExport(node));
+            }
+            return model;
+        }
+
+        private List<ExportModel> ForEachPluginExport(ICrmTreeNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            var csvModel = new List<ExportModel>();
+            switch (node.NodeType)
+            {
+                case CrmTreeNodeType.Plugin:
+                    var plugin = (CrmPlugin)node;
+                    var pluginInfo = new ExportModel
+                    {
+                        AssemblyName = plugin.AssemblyName,
+                        TypeName = plugin.Name,
+                        PluginType = plugin.PluginType.GetDescription(),
+                        Description = plugin.Description
+                    };
+                    csvModel.Add(pluginInfo);
+
+                    foreach (CrmPluginStep step in plugin.Steps)
+                    {
+                        var stepInfo = GetInfoForStep(step);
+                        stepInfo.AssemblyName = plugin.AssemblyName;
+                        stepInfo.TypeName = plugin.Name;
+                        csvModel.Add(stepInfo);
+                    }
+                    break;
+
+                case CrmTreeNodeType.WorkflowActivity:
+                    {
+                        var workflow = (CrmPlugin)node;
+                        var workflowInfo = new ExportModel
+                        {
+                            TypeName = workflow.Name,
+                            AssemblyName = workflow.AssemblyName,
+                            PluginType = workflow.PluginType.GetDescription(),
+                            Description = workflow.Description
+                        };
+                        csvModel.Add(workflowInfo);
+                    }
+                    break;
+            }
+            return csvModel;
+        }
+
+        private ExportModel GetInfoForStep(CrmPluginStep step)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+            else
+            {
+                var messageName = Organization.Messages[step.MessageId].Name;
+                var message = m_org.FindMessage(messageName);
+                var primaryEntity = "none";
+                var secondaryEntity = "none";
+
+                if (Organization.MessageEntities.ContainsKey(step.MessageEntityId))
+                {
+                    CrmMessageEntity msgEntity = message[step.MessageEntityId];
+
+                    primaryEntity = msgEntity.PrimaryEntity;
+                    secondaryEntity = msgEntity.SecondaryEntity;
+                }
+
+                var record = new ExportModel
+                {
+                    Stage = step.Stage.GetDescription(),
+                    ExecutionMode = step.Mode.GetDescription(),
+                    ExecutionOrder = step.Rank.ToString(),
+                    Message = messageName,
+                    FilteringAttributes = step.FilteringAttributes,
+                    Deployment = step.Deployment.GetDescription(),
+                    PrimaryEntity = primaryEntity,
+                    SecondaryEntity = secondaryEntity,
+                    Description = step.Description,
+                    PluginType = step.NodeType.GetDescription(),
+                    IsEnabled = step.Enabled.ToString()
+                };
+
+                return record;
+            }
         }
 
         private void grvData_DoubleClick(object sender, EventArgs e)
@@ -1163,307 +1445,6 @@ namespace Xrm.Sdk.PluginRegistration
             CloseTool();
         }
 
-        private void toolExport_Click(object sender, EventArgs e)
-        {
-            var exportForm = new ExportTypeSelectionForm();
-
-            switch (exportForm.ShowDialog())
-            {
-                case DialogResult.Yes:
-                    ExportTool();
-                    break;
-
-                case DialogResult.No:
-                    ExportSelected();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private static bool VerifySelectedNode(ICrmTreeNode node)
-        {
-            return (node == null || node.NodeType == CrmTreeNodeType.Step
-                || node.NodeType == CrmTreeNodeType.Image || node.NodeType == CrmTreeNodeType.ServiceEndpoint
-                || node.NodeType == CrmTreeNodeType.Message || node.NodeType == CrmTreeNodeType.MessageEntity
-                || node.NodeType == CrmTreeNodeType.Connection || node.NodeType == CrmTreeNodeType.None);
-        }
-
-        /// <summary>
-        /// Get full path of the file specified in the SaveFileDialog, in case of cancel it returns null
-        /// </summary>
-        /// <returns></returns>
-        private static string ShowSaveFileDialog()
-        {
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "Comma Separated Values File|*.csv|Excel File Format|*.xlsx",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                return Path.GetFullPath(saveFileDialog.FileName);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private List<ExportModel> ForEachAssemblyExport(CrmPluginAssembly assembly)
-        {
-            if (assembly == null)
-            {
-                throw new ArgumentNullException("assembly");
-            }
-            var model = new List<ExportModel>();
-
-            var assemblyInfo = new ExportModel
-            {
-                AssemblyName = assembly.Name,
-                TypeName = string.Empty,
-                PluginType = "Assembly",
-                Description = assembly.Description,
-                IsolationMode = assembly.IsolationMode.GetDescription(),
-                SourceType = assembly.SourceType.GetDescription()
-            };
-            model.Add(assemblyInfo);
-            foreach (var node in assembly.NodeChildren)
-            {
-                model.AddRange(ForEachPluginExport(node));
-            }
-            return model;
-        }
-
-        private List<ExportModel> ForEachPluginExport(ICrmTreeNode node)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-            var csvModel = new List<ExportModel>();
-            switch (node.NodeType)
-            {
-                case CrmTreeNodeType.Plugin:
-                    var plugin = (CrmPlugin)node;
-                    var pluginInfo = new ExportModel
-                    {
-                        AssemblyName = plugin.AssemblyName,
-                        TypeName = plugin.Name,
-                        PluginType = plugin.PluginType.GetDescription(),
-                        Description = plugin.Description
-                    };
-                    csvModel.Add(pluginInfo);
-
-                    foreach (CrmPluginStep step in plugin.Steps)
-                    {
-                        var stepInfo = GetInfoForStep(step);
-                        stepInfo.AssemblyName = plugin.AssemblyName;
-                        stepInfo.TypeName = plugin.Name;
-                        csvModel.Add(stepInfo);
-                    }
-                    break;
-
-                case CrmTreeNodeType.WorkflowActivity:
-                    {
-                        var workflow = (CrmPlugin)node;
-                        var workflowInfo = new ExportModel
-                        {
-                            TypeName = workflow.Name,
-                            AssemblyName = workflow.AssemblyName,
-                            PluginType = workflow.PluginType.GetDescription(),
-                            Description = workflow.Description
-                        };
-                        csvModel.Add(workflowInfo);
-                    }
-                    break;
-            }
-            return csvModel;
-        }
-
-        private void ExportSelected()
-        {
-            var node = trvPlugins.SelectedNode;
-
-            if (VerifySelectedNode(node))
-            {
-                MessageBox.Show("Please select an assembly, plugin or workflow activity", "Invalid selection", MessageBoxButtons.OK);
-                return;
-            }
-
-            var filePath = ShowSaveFileDialog();
-            var fileInfo = new FileInfo(filePath);
-            var model = new List<ExportModel>();
-            if (string.IsNullOrEmpty(filePath))
-            {
-                //user cancelled on SaveFileDialog so exit and do nothing.
-                return;
-            }
-            switch (node.NodeType)
-            {
-                case CrmTreeNodeType.Assembly:
-                    {
-                        model = ForEachAssemblyExport((CrmPluginAssembly)node);
-                    }
-                    break;
-
-                case CrmTreeNodeType.Plugin:
-                case CrmTreeNodeType.WorkflowActivity:
-                    {
-                        model = ForEachPluginExport((CrmPlugin)node);
-                    }
-                    break;
-
-                default:
-                    throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
-            }
-            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
-            {
-                using (var xlPackage = new ExcelPackage(fileInfo))
-                {
-                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
-                    var worksheet = xlPackage.Workbook.Worksheets[1];
-
-                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
-                    xlPackage.Save();
-                }
-            }
-            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
-            {
-                using (var csv = InitializeCsvWriter(filePath))
-                {
-                    csv.WriteRecords(model);
-                }
-            }
-
-            OpenExportedFile(filePath);
-        }
-
-        private void ExportTool()
-        {
-            var filePath = ShowSaveFileDialog();
-            if (string.IsNullOrEmpty(filePath))
-            {
-                //user cancelled on SaveFileDialog so exit and do nothing.
-                return;
-            }
-            var fileInfo = new FileInfo(filePath);
-
-            if (fileInfo.Exists)
-            {
-                if (!DeleteExistingFile(fileInfo))
-                {
-                    MessageBox.Show("Unable to overwrite existing file. Please try again with a unique name.");
-                    return;
-                }
-            }
-
-            var model = new List<ExportModel>();
-
-            foreach (CrmPluginAssembly assembly in Organization.Assemblies.Where(x => ((CrmServiceEndpoint.ServiceBusPluginAssemblyName != x.Name
-                                                                                        || 0 != x.CustomizationLevel) && !x.IsProfilerAssembly)).OrderBy(x => x.Name))
-            {
-                model.AddRange(ForEachAssemblyExport(assembly));
-            }
-
-            if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
-            {
-                using (var xlPackage = new ExcelPackage(fileInfo))
-                {
-                    xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
-                    var worksheet = xlPackage.Workbook.Worksheets[1];
-
-                    worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
-                    xlPackage.Save();
-                }
-            }
-            else if (string.Equals(fileInfo.Extension, ".csv", StringComparison.OrdinalIgnoreCase))
-            {
-                using (var csv = InitializeCsvWriter(filePath))
-                {
-                    csv.WriteRecords(model);
-                }
-            }
-            else
-            {
-            }
-            OpenExportedFile(filePath);
-        }
-
-        private static bool DeleteExistingFile(FileInfo fileInfo)
-        {
-            try
-            {
-                fileInfo.Delete();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        private static CsvWriter InitializeCsvWriter(string filePath)
-        {
-            var writer = new StreamWriter(filePath, false, Encoding.Default);
-            var csv = new CsvWriter(writer);
-            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
-
-            csv.WriteHeader(typeof(ExportModel));
-            csv.NextRecord();
-            return csv;
-        }
-
-        private static void OpenExportedFile(string filePath)
-        {
-            if (MessageBox.Show("Would you like to open the saved file?", "File saved successfully", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                Process.Start(filePath);
-            }
-        }
-
-        private ExportModel GetInfoForStep(CrmPluginStep step)
-        {
-            if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-            else
-            {
-                var messageName = Organization.Messages[step.MessageId].Name;
-                var message = m_org.FindMessage(messageName);
-                var primaryEntity = "none";
-                var secondaryEntity = "none";
-
-                if (Organization.MessageEntities.ContainsKey(step.MessageEntityId))
-                {
-                    CrmMessageEntity msgEntity = message[step.MessageEntityId];
-
-                    primaryEntity = msgEntity.PrimaryEntity;
-                    secondaryEntity = msgEntity.SecondaryEntity;
-                }
-
-                var record = new ExportModel
-                {
-                    Stage = step.Stage.GetDescription(),
-                    ExecutionMode = step.Mode.GetDescription(),
-                    ExecutionOrder = step.Rank.ToString(),
-                    Message = messageName,
-                    FilteringAttributes = step.FilteringAttributes,
-                    Deployment = step.Deployment.GetDescription(),
-                    PrimaryEntity = primaryEntity,
-                    SecondaryEntity = secondaryEntity,
-                    Description = step.Description,
-                    PluginType = step.NodeType.GetDescription(),
-                    IsEnabled = step.Enabled.ToString()
-                };
-
-                return record;
-            }
-        }
-
         private void toolEnable_Click(object sender, EventArgs e)
         {
             if (trvPlugins.SelectedNode.NodeType != CrmTreeNodeType.Step)
@@ -1516,6 +1497,25 @@ namespace Xrm.Sdk.PluginRegistration
             finally
             {
                 Enabled = true;
+            }
+        }
+
+        private void toolExport_Click(object sender, EventArgs e)
+        {
+            var exportForm = new ExportTypeSelectionForm();
+
+            switch (exportForm.ShowDialog())
+            {
+                case DialogResult.Yes:
+                    ExportTool();
+                    break;
+
+                case DialogResult.No:
+                    ExportSelected();
+                    break;
+
+                default:
+                    break;
             }
         }
 

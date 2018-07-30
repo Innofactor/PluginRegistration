@@ -16,6 +16,16 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class PluginAssembly : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
+        #region Public Fields
+
+        public const string EntityLogicalName = "pluginassembly";
+
+        public const int EntityTypeCode = 4605;
+
+        #endregion Public Fields
+
+        #region Public Constructors
+
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -24,29 +34,17 @@
         {
         }
 
-        public const string EntityLogicalName = "pluginassembly";
+        #endregion Public Constructors
 
-        public const int EntityTypeCode = 4605;
+        #region Public Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if ((PropertyChanged != null))
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        #endregion Public Events
 
-        private void OnPropertyChanging(string propertyName)
-        {
-            if ((PropertyChanging != null))
-            {
-                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
-            }
-        }
+        #region Public Properties
 
         /// <summary>
         /// For internal use only.
@@ -159,6 +157,19 @@
                 OnPropertyChanging("Description");
                 SetAttributeValue("description", value);
                 OnPropertyChanged("Description");
+            }
+        }
+
+        [AttributeLogicalName("pluginassemblyid")]
+        public override Guid Id
+        {
+            get
+            {
+                return base.Id;
+            }
+            set
+            {
+                PluginAssemblyId = value;
             }
         }
 
@@ -331,6 +342,24 @@
         }
 
         /// <summary>
+        /// 1:N pluginassembly_plugintype
+        /// </summary>
+        [RelationshipSchemaName("pluginassembly_plugintype")]
+        public IEnumerable<PluginType> pluginassembly_plugintype
+        {
+            get
+            {
+                return GetRelatedEntities<PluginType>("pluginassembly_plugintype", null);
+            }
+            set
+            {
+                OnPropertyChanging("pluginassembly_plugintype");
+                SetRelatedEntities("pluginassembly_plugintype", null, value);
+                OnPropertyChanged("pluginassembly_plugintype");
+            }
+        }
+
+        /// <summary>
         /// Unique identifier of the plug-in assembly.
         /// </summary>
         [AttributeLogicalName("pluginassemblyid")]
@@ -353,19 +382,6 @@
                     base.Id = System.Guid.Empty;
                 }
                 OnPropertyChanged("PluginAssemblyId");
-            }
-        }
-
-        [AttributeLogicalName("pluginassemblyid")]
-        public override Guid Id
-        {
-            get
-            {
-                return base.Id;
-            }
-            set
-            {
-                PluginAssemblyId = value;
             }
         }
 
@@ -477,22 +493,26 @@
             }
         }
 
-        /// <summary>
-        /// 1:N pluginassembly_plugintype
-        /// </summary>
-        [RelationshipSchemaName("pluginassembly_plugintype")]
-        public IEnumerable<PluginType> pluginassembly_plugintype
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void OnPropertyChanged(string propertyName)
         {
-            get
+            if ((PropertyChanged != null))
             {
-                return GetRelatedEntities<PluginType>("pluginassembly_plugintype", null);
-            }
-            set
-            {
-                OnPropertyChanging("pluginassembly_plugintype");
-                SetRelatedEntities("pluginassembly_plugintype", null, value);
-                OnPropertyChanged("pluginassembly_plugintype");
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        private void OnPropertyChanging(string propertyName)
+        {
+            if ((PropertyChanging != null))
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion Private Methods
     }
 }

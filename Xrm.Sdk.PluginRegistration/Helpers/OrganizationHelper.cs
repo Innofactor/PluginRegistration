@@ -75,7 +75,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     m_messageList = OrganizationHelper.LoadMessages(org, null);
                 }
 
-                Dictionary<Guid, CrmMessage> messageList = new Dictionary<Guid, CrmMessage>();
+                var messageList = new Dictionary<Guid, CrmMessage>();
                 foreach (CrmMessage msg in m_messageList)
                 {
                     CrmMessage newMessage = new CrmMessage(null, msg.MessageId, msg.Name,
@@ -108,8 +108,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             //Generate the query
-            var query = new QueryExpression();
-            query.ColumnSet = GetColumnSet(SdkMessage.EntityLogicalName);
+            var query = new QueryExpression
+            {
+                ColumnSet = GetColumnSet(SdkMessage.EntityLogicalName)
+            };
             query.Criteria.AddCondition("isprivate", ConditionOperator.Equal, false);
             query.AddOrder("name", OrderType.Ascending);
             query.EntityName = SdkMessage.EntityLogicalName;
@@ -356,7 +358,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             EntityMetadata entityMd = response.EntityMetadata;
 
-            List<CrmAttribute> attList = new List<CrmAttribute>();
+            var attList = new List<CrmAttribute>();
 
             foreach (AttributeMetadata att in entityMd.Attributes)
             {

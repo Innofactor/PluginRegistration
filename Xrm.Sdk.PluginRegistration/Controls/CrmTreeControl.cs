@@ -27,21 +27,120 @@ namespace Xrm.Sdk.PluginRegistration.Controls
     using System.Windows.Forms;
     using System.Windows.Forms.Design;
 
+    public enum CrmTreeNodeImageType
+    {
+        Assembly,
+        AssemblySelected,
+        Plugin,
+        PluginSelected,
+        PluginProfiler,
+        PluginProfilerSelected,
+        WorkflowActivity,
+        WorkflowActivitySelected,
+        StepEnabled,
+        StepEnabledSelected,
+        StepProfiled,
+        StepProfiledSelected,
+        StepDisabled,
+        StepDisabledSelected,
+        Image,
+        ImageSelected,
+        Connection,
+        ConnectionSelected,
+        Organization,
+        OrganizationSelected,
+        Message,
+        MessageSelected,
+        MessageEntity,
+        MessageEntitySelected,
+        ServiceEndpoint,
+        ServiceEndpointSelected
+    }
+
+    [Flags]
+    public enum CrmTreeNodeType
+    {
+        /// <summary>
+        /// A node of this type will never be listed.
+        /// </summary>
+        None = 0,
+
+        Connection = 1,
+        Organization = 2,
+        Assembly = 4,
+        Plugin = 8,
+        WorkflowActivity = 16,
+        Step = 32,
+        Image = 64,
+        Message = 128,
+        MessageEntity = 256,
+        ServiceEndpoint = 512
+    }
+
+    public interface ICrmEditableTreeNode : ICrmTreeNode
+    {
+        #region Public Properties
+
+        /// <summary>
+        /// Text that will be displayed while the label is being edited
+        /// </summary>
+        string NodeEditText { get; set; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        /// <summary>
+        /// Simulates behavior of NodeEditText without updating the property's value
+        /// </summary>
+        /// <param name="newText">Value to be simulated</param>
+        /// <returns>Value that would have been returned from NodeEditText had it been updated</returns>
+        string GetNodeEditTextForLabel(string newText);
+
+        #endregion Public Methods
+    }
+
+    public interface ICrmTreeNode
+    {
+        #region Public Properties
+
+        ICrmTreeNode[] NodeChildren { get; }
+        Guid NodeId { get; }
+        CrmTreeNodeImageType NodeImageType { get; }
+        CrmTreeNodeImageType NodeSelectedImageType { get; }
+
+        /// <summary>
+        /// Text that will be displayed in the node
+        /// </summary>
+        string NodeText { get; }
+
+        CrmTreeNodeType NodeType { get; }
+        string NodeTypeLabel { get; }
+
+        #endregion Public Properties
+    }
+
     [Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
     [DefaultEvent("SelectionChanged")]
     public partial class CrmTreeControl : UserControl, IRootDesigner
     {
+        #region Private Fields
+
         private bool m_autoExpand = true;
-        private bool m_singleParentCheck = false;
-        private CrmTreeNodeType m_excludeTypes = CrmTreeNodeType.None;
-        private Dictionary<Guid?, CrmTreeNode> m_nodeList = new Dictionary<Guid?, CrmTreeNode>();
-        private NodeSorter m_sorter = new NodeSorter();
-        private bool m_disableSelectionChange = false;
-        private bool m_disableCheckChange = false;
-        private ContextMenuStrip m_contextMenuStrip = null;
         private ContextMenu m_contextMenu = null;
         private Dictionary<CrmTreeNodeType, ContextMenuStrip> m_contextMenuList = new Dictionary<CrmTreeNodeType, ContextMenuStrip>();
+        private ContextMenuStrip m_contextMenuStrip = null;
         private Guid m_currentlyEditing = Guid.Empty;
+        private bool m_disableCheckChange = false;
+        private bool m_disableSelectionChange = false;
+        private CrmTreeNodeType m_excludeTypes = CrmTreeNodeType.None;
+        private Dictionary<Guid?, CrmTreeNode> m_nodeList = new Dictionary<Guid?, CrmTreeNode>();
+        private bool m_singleParentCheck = false;
+        private NodeSorter m_sorter = new NodeSorter();
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmTreeControl()
             : this(null)
@@ -103,19 +202,28 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             trvPlugins.TreeViewNodeSorter = m_sorter;
         }
 
-        #region Properties & Events
+        #endregion Public Constructors
+
+        #region Public Events
 
         [Browsable(true)]
-        public event EventHandler<CrmTreeNodeTreeEventArgs> SelectionChanged;
-
-        [Browsable(true)]
-        public event EventHandler<CrmTreeNodeEventArgs> CheckStateChanged;
+        public event EventHandler<CrmTreeNodeLabelEditEventArgs> AfterLabelEdit;
 
         [Browsable(true)]
         public event EventHandler<CrmTreeNodeLabelEditEventArgs> BeforeLabelEdit;
 
         [Browsable(true)]
-        public event EventHandler<CrmTreeNodeLabelEditEventArgs> AfterLabelEdit;
+        public event EventHandler<CrmTreeNodeEventArgs> CheckStateChanged;
+
+        public new event EventHandler<CrmTreeNodeEventArgs> Click;
+
+        public new event EventHandler<CrmTreeNodeEventArgs> DoubleClick;
+
+        public new event KeyEventHandler KeyDown;
+
+        public new event KeyPressEventHandler KeyPress;
+
+        public new event KeyEventHandler KeyUp;
 
         [Browsable(true)]
         public event EventHandler<CrmTreeNodeEventArgs> LabelEditCanceled;
@@ -129,48 +237,55 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         [Browsable(true)]
         public event EventHandler<CrmTreeNodeEventArgs> NodeRemoved;
 
-        public new event EventHandler<CrmTreeNodeEventArgs> Click;
+        [Browsable(true)]
+        public event EventHandler<CrmTreeNodeTreeEventArgs> SelectionChanged;
 
-        public new event EventHandler<CrmTreeNodeEventArgs> DoubleClick;
+        #endregion Public Events
 
-        public new event KeyEventHandler KeyDown;
-
-        public new event KeyEventHandler KeyUp;
-
-        public new event KeyPressEventHandler KeyPress;
+        #region Public Properties
 
         /// <summary>
-        /// Lookup a node based on id
+        /// Gets whether every node is checked
         /// </summary>
-        /// <param name="nodeId">Id to be found</param>
-        /// <exception cref="ArgumentException">If the Guid cannot be found</exception>
-        /// <returns>Node that was found</returns>
         [Browsable(false)]
-        public ICrmTreeNode this[Guid? nodeId]
+        public bool AllNodesChecked
         {
             get
             {
-                if (HasNode(nodeId))
+                if (SingleCheckParent)
                 {
-                    return ((ICrmTreeNode)m_nodeList[nodeId].CrmNode);
+                    return (CheckedNodes.Count == m_nodeList.Count);
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid Guid");
+                    //If the parent is checked, then every child is checked.
+                    //If all of the parents are checked, then every node is checked
+                    foreach (TreeNode node in trvPlugins.Nodes)
+                    {
+                        if (!node.Checked)
+                        {
+                            return false;
+                        }
+                    }
                 }
+
+                return true;
             }
         }
 
-        public override Color ForeColor
+        /// <summary>
+        /// Expand new children automatically
+        /// </summary>
+        [DefaultValue(true)]
+        public bool AutoExpand
         {
             get
             {
-                return trvPlugins.ForeColor;
+                return m_autoExpand;
             }
-
             set
             {
-                trvPlugins.ForeColor = value;
+                m_autoExpand = value;
             }
         }
 
@@ -186,29 +301,40 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
-        [DefaultValue(null)]
-        public override ContextMenuStrip ContextMenuStrip
+        /// <summary>
+        /// Adds checkboxes to the nodes. This can be set at any time.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool CheckBoxes
         {
             get
             {
-                return m_contextMenuStrip;
+                return trvPlugins.CheckBoxes;
             }
+
             set
             {
-                if (value == m_contextMenuStrip)
-                {
-                    return;
-                }
-                else
-                {
-                    m_contextMenuStrip = value;
-
-                    foreach (CrmTreeNode node in m_nodeList.Values)
-                    {
-                        node.TreeNode.ContextMenuStrip = value;
-                    }
-                }
+                trvPlugins.CheckBoxes = value;
             }
+        }
+
+        /// <summary>
+        /// Retrieves a list of all of the checked nodes
+        /// </summary>
+        [Browsable(false)]
+        public ICollection<ICrmTreeNode> CheckedNodes
+        {
+            get
+            {
+                List<ICrmTreeNode> nodeList = new List<ICrmTreeNode>();
+                RetrieveCheckedNodes(trvPlugins.Nodes, nodeList, true);
+                return nodeList;
+            }
+        }
+
+        public IComponent Component
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
         }
 
         [Browsable(false)]
@@ -238,46 +364,58 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         }
 
         [DefaultValue(null)]
-        public ContextMenuStrip TreeContextMenuStrip
+        public override ContextMenuStrip ContextMenuStrip
         {
             get
             {
-                return trvPlugins.ContextMenuStrip;
+                return m_contextMenuStrip;
             }
             set
             {
-                trvPlugins.ContextMenuStrip = value;
+                if (value == m_contextMenuStrip)
+                {
+                    return;
+                }
+                else
+                {
+                    m_contextMenuStrip = value;
+
+                    foreach (CrmTreeNode node in m_nodeList.Values)
+                    {
+                        node.TreeNode.ContextMenuStrip = value;
+                    }
+                }
             }
         }
 
         [Browsable(false)]
-        [DefaultValue(null)]
-        public ContextMenu TreeContextMenu
+        public int CountRootNodes
         {
             get
             {
-                return trvPlugins.ContextMenu;
-            }
-            set
-            {
-                trvPlugins.ContextMenu = value;
+                return trvPlugins.Nodes.Count;
             }
         }
 
-        /// <summary>
-        /// Adds checkboxes to the nodes. This can be set at any time.
-        /// </summary>
-        [DefaultValue(false)]
-        public bool CheckBoxes
+        public int CountTotalNodes
         {
             get
             {
-                return trvPlugins.CheckBoxes;
+                return m_nodeList.Count;
+            }
+        }
+
+        [Browsable(false)]
+        public IComparer<ICrmTreeNode> CrmTreeNodeSorter
+        {
+            get
+            {
+                return m_sorter.Sorter;
             }
 
             set
             {
-                trvPlugins.CheckBoxes = value;
+                m_sorter.Sorter = value;
             }
         }
 
@@ -296,6 +434,75 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             set
             {
                 m_excludeTypes = value;
+            }
+        }
+
+        public override Color ForeColor
+        {
+            get
+            {
+                return trvPlugins.ForeColor;
+            }
+
+            set
+            {
+                trvPlugins.ForeColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or sets a value indicating whether a node's text can be edited
+        /// </summary>
+        public bool LabelEdit
+        {
+            get
+            {
+                return trvPlugins.LabelEdit;
+            }
+            set
+            {
+                trvPlugins.LabelEdit = value;
+            }
+        }
+
+        [Browsable(false)]
+        public AutoCompleteStringCollection NodeAutoCompleteCollection
+        {
+            get
+            {
+                AutoCompleteStringCollection autoCompleteList = new AutoCompleteStringCollection();
+                Collection<string> itemList = new Collection<string>();
+                foreach (CrmTreeNode node in m_nodeList.Values)
+                {
+                    string nodeKey = node.TreeNode.Text.ToLowerInvariant().Trim();
+                    if (!itemList.Contains(nodeKey))
+                    {
+                        autoCompleteList.Add(node.TreeNode.Text);
+                        itemList.Add(nodeKey);
+                    }
+                }
+
+                return autoCompleteList;
+            }
+        }
+
+        [Browsable(false)]
+        public ICrmTreeNode[] RootNodes
+        {
+            get
+            {
+                List<ICrmTreeNode> rootNodes = new List<ICrmTreeNode>();
+                foreach (TreeNode node in trvPlugins.Nodes)
+                {
+                    if (null == node)
+                    {
+                        continue;
+                    }
+
+                    rootNodes.Add(((CrmTreeNode)node.Tag).CrmNode);
+                }
+
+                return rootNodes.ToArray();
             }
         }
 
@@ -334,46 +541,16 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
-        /// <summary>
-        /// Retrieves a list of all of the checked nodes
-        /// </summary>
-        [Browsable(false)]
-        public ICollection<ICrmTreeNode> CheckedNodes
+        public bool ShowNodeToolTips
         {
             get
             {
-                List<ICrmTreeNode> nodeList = new List<ICrmTreeNode>();
-                RetrieveCheckedNodes(trvPlugins.Nodes, nodeList, true);
-                return nodeList;
+                return trvPlugins.ShowNodeToolTips;
             }
-        }
 
-        /// <summary>
-        /// Gets whether every node is checked
-        /// </summary>
-        [Browsable(false)]
-        public bool AllNodesChecked
-        {
-            get
+            set
             {
-                if (SingleCheckParent)
-                {
-                    return (CheckedNodes.Count == m_nodeList.Count);
-                }
-                else
-                {
-                    //If the parent is checked, then every child is checked.
-                    //If all of the parents are checked, then every node is checked
-                    foreach (TreeNode node in trvPlugins.Nodes)
-                    {
-                        if (!node.Checked)
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
+                trvPlugins.ShowNodeToolTips = value;
             }
         }
 
@@ -395,312 +572,378 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
+        public ViewTechnology[] SupportedTechnologies
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        [Browsable(false)]
+        [DefaultValue(null)]
+        public ContextMenu TreeContextMenu
+        {
+            get
+            {
+                return trvPlugins.ContextMenu;
+            }
+            set
+            {
+                trvPlugins.ContextMenu = value;
+            }
+        }
+
+        [DefaultValue(null)]
+        public ContextMenuStrip TreeContextMenuStrip
+        {
+            get
+            {
+                return trvPlugins.ContextMenuStrip;
+            }
+            set
+            {
+                trvPlugins.ContextMenuStrip = value;
+            }
+        }
+
+        public DesignerVerbCollection Verbs
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        #endregion Public Properties
+
+        #region Public Indexers
+
         /// <summary>
-        /// Expand new children automatically
+        /// Lookup a node based on id
         /// </summary>
-        [DefaultValue(true)]
-        public bool AutoExpand
-        {
-            get
-            {
-                return m_autoExpand;
-            }
-            set
-            {
-                m_autoExpand = value;
-            }
-        }
-
+        /// <param name="nodeId">Id to be found</param>
+        /// <exception cref="ArgumentException">If the Guid cannot be found</exception>
+        /// <returns>Node that was found</returns>
         [Browsable(false)]
-        public IComparer<ICrmTreeNode> CrmTreeNodeSorter
+        public ICrmTreeNode this[Guid? nodeId]
         {
             get
             {
-                return m_sorter.Sorter;
-            }
-
-            set
-            {
-                m_sorter.Sorter = value;
-            }
-        }
-
-        /// <summary>
-        /// Get or sets a value indicating whether a node's text can be edited
-        /// </summary>
-        public bool LabelEdit
-        {
-            get
-            {
-                return trvPlugins.LabelEdit;
-            }
-            set
-            {
-                trvPlugins.LabelEdit = value;
-            }
-        }
-
-        [Browsable(false)]
-        public ICrmTreeNode[] RootNodes
-        {
-            get
-            {
-                List<ICrmTreeNode> rootNodes = new List<ICrmTreeNode>();
-                foreach (TreeNode node in trvPlugins.Nodes)
+                if (HasNode(nodeId))
                 {
-                    if (null == node)
-                    {
-                        continue;
-                    }
-
-                    rootNodes.Add(((CrmTreeNode)node.Tag).CrmNode);
+                    return ((ICrmTreeNode)m_nodeList[nodeId].CrmNode);
                 }
-
-                return rootNodes.ToArray();
-            }
-        }
-
-        [Browsable(false)]
-        public AutoCompleteStringCollection NodeAutoCompleteCollection
-        {
-            get
-            {
-                AutoCompleteStringCollection autoCompleteList = new AutoCompleteStringCollection();
-                Collection<string> itemList = new Collection<string>();
-                foreach (CrmTreeNode node in m_nodeList.Values)
+                else
                 {
-                    string nodeKey = node.TreeNode.Text.ToLowerInvariant().Trim();
-                    if (!itemList.Contains(nodeKey))
-                    {
-                        autoCompleteList.Add(node.TreeNode.Text);
-                        itemList.Add(nodeKey);
-                    }
-                }
-
-                return autoCompleteList;
-            }
-        }
-
-        [Browsable(false)]
-        public int CountRootNodes
-        {
-            get
-            {
-                return trvPlugins.Nodes.Count;
-            }
-        }
-
-        public int CountTotalNodes
-        {
-            get
-            {
-                return m_nodeList.Count;
-            }
-        }
-
-        public bool ShowNodeToolTips
-        {
-            get
-            {
-                return trvPlugins.ShowNodeToolTips;
-            }
-
-            set
-            {
-                trvPlugins.ShowNodeToolTips = value;
-            }
-        }
-
-        #endregion Properties & Events
-
-        #region Event Handlers
-
-        private void trvPlugins_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (!m_disableSelectionChange && SelectionChanged != null)
-            {
-                SelectionChanged(this, new CrmTreeNodeTreeEventArgs(((CrmTreeNode)e.Node.Tag).CrmNode, e.Action));
-            }
-        }
-
-        private void trvPlugins_Click(object sender, EventArgs e)
-        {
-            TreeNode node = trvPlugins.HitTest(((MouseEventArgs)e).Location).Node;
-            if (node != null)
-            {
-                if (Click != null)
-                {
-                    Click(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
+                    throw new ArgumentException("Invalid Guid");
                 }
             }
         }
 
-        private void trvPlugins_DoubleClick(object sender, EventArgs e)
-        {
-            TreeNode node = trvPlugins.HitTest(((MouseEventArgs)e).Location).Node;
-            if (node != null)
-            {
-                if (DoubleClick != null)
-                {
-                    DoubleClick(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
-                }
-            }
-        }
-
-        private void trvPlugins_AfterCheck(object sender, TreeViewEventArgs e)
-        {
-            if (!m_disableCheckChange)
-            {
-                try
-                {
-                    m_disableCheckChange = true;
-
-                    CrmTreeNode node = (CrmTreeNode)e.Node.Tag;
-                    node.Checked = e.Node.Checked;
-                    if (CheckStateChanged != null)
-                    {
-                        CheckStateChanged(this, new CrmTreeNodeEventArgs(node.CrmNode));
-                    }
-                }
-                finally
-                {
-                    m_disableCheckChange = false;
-                }
-            }
-        }
-
-        private void trvPlugins_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && (ContextMenu != null || ContextMenuStrip != null))
-            {
-                TreeNode node = trvPlugins.HitTest(e.Location).Node;
-                if (node != null)
-                {
-                    trvPlugins.SelectedNode = node;
-                }
-            }
-        }
-
-        private void trvPlugins_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (KeyDown != null)
-            {
-                KeyDown(this, e);
-            }
-        }
-
-        private void trvPlugins_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (KeyPress != null)
-            {
-                KeyPress(this, e);
-            }
-        }
-
-        private void trvPlugins_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (KeyUp != null)
-            {
-                KeyUp(this, e);
-            }
-        }
-
-        private void trvPlugins_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            //Verify that the node can be edited
-            CrmTreeNode treeNode = (CrmTreeNode)e.Node.Tag;
-            if (!IsNodeTextEditable(treeNode.CrmNode))
-            {
-                e.CancelEdit = true;
-                m_currentlyEditing = Guid.Empty;
-                return;
-            }
-
-            ICrmEditableTreeNode node = (ICrmEditableTreeNode)treeNode.CrmNode;
-
-            if (BeforeLabelEdit != null)
-            {
-                CrmTreeNodeLabelEditEventArgs args = new CrmTreeNodeLabelEditEventArgs(node, node.NodeEditText);
-                BeforeLabelEdit(this, args);
-                e.CancelEdit = args.CancelEdit;
-            }
-
-            if (!e.CancelEdit)
-            {
-                m_currentlyEditing = node.NodeId;
-            }
-        }
-
-        private void trvPlugins_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            CrmTreeNode treeNode = (CrmTreeNode)e.Node.Tag;
-
-            if (!IsNodeTextEditable(treeNode.CrmNode))
-            {
-                e.CancelEdit = true;
-                if (null != LabelEditCanceled)
-                {
-                    LabelEditCanceled(this, new CrmTreeNodeEventArgs(treeNode.CrmNode));
-                }
-                return;
-            }
-
-            ICrmEditableTreeNode node = (ICrmEditableTreeNode)treeNode.CrmNode;
-
-            bool canceled = false;
-            if (string.Equals(node.NodeEditText, e.Label, StringComparison.CurrentCulture) ||
-                string.Equals(node.NodeText, e.Label, StringComparison.CurrentCulture))
-            {
-                canceled = true;
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(e.Label))
-                {
-                    canceled = true;
-                }
-                else if (AfterLabelEdit != null)
-                {
-                    CrmTreeNodeLabelEditEventArgs args = new CrmTreeNodeLabelEditEventArgs(node,
-                        node.GetNodeEditTextForLabel(e.Label));
-                    AfterLabelEdit(this, args);
-                    canceled = args.CancelEdit;
-                }
-
-                if (!canceled)
-                {
-                    ((ICrmEditableTreeNode)node).NodeEditText = e.Label;
-                    e.Node.Text = node.NodeText;
-                    e.CancelEdit = true;
-                }
-            }
-
-            if (canceled)
-            {
-                e.CancelEdit = true;
-            }
-
-            m_currentlyEditing = Guid.Empty;
-
-            if (canceled)
-            {
-                if (null != LabelEditCanceled)
-                {
-                    LabelEditCanceled(this, new CrmTreeNodeEventArgs(node));
-                }
-            }
-            else
-            {
-                if (null != LabelEdited)
-                {
-                    LabelEdited(this, new CrmTreeNodeEventArgs(node));
-                }
-            }
-        }
-
-        #endregion Event Handlers
+        #endregion Public Indexers
 
         #region Public Methods
+
+        /// <summary>
+        /// Adds a new node (and its children)
+        /// </summary>
+        public void AddNode(Guid parentNodeId, ICrmTreeNode node)
+        {
+            AddNode(parentNodeId, node, false);
+        }
+
+        /// <summary>
+        /// Adds a new node (and its children)
+        /// </summary>
+        public void AddNode(Guid parentNodeId, ICrmTreeNode node, bool checkNode)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            else if (Guid.Empty != parentNodeId && !HasNode(parentNodeId))
+            {
+                throw new ArgumentException("Invalid Node Id", "parentNodeId");
+            }
+            else if (HasNode(node.NodeId))
+            {
+                throw new ArgumentException("Node is already in the tree", "node");
+            }
+
+            TreeNodeCollection nodeList = RetrieveParentNodeCollection(parentNodeId);
+            bool hasChildren = (nodeList.Count != 0);
+            AddNodes(nodeList, new ICrmTreeNode[] { node }, checkNode);
+            if (m_autoExpand && !hasChildren)
+            {
+                if (parentNodeId == Guid.Empty)
+                {
+                    trvPlugins.ExpandAll();
+                }
+                else
+                {
+                    m_nodeList[parentNodeId].TreeNode.ExpandAll();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Begins the editing of the TreeNode
+        /// </summary>
+        public void BeginNodeTextEdit(Guid nodeId)
+        {
+            if (!LabelEdit)
+            {
+                throw new InvalidOperationException("BeginNodeTextEdit failed because LabelEdit is false");
+            }
+            else if (HasNode(nodeId))
+            {
+                m_nodeList[nodeId].TreeNode.BeginEdit();
+                m_currentlyEditing = nodeId;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Node Id", "nodeId");
+            }
+        }
+
+        /// <summary>
+        /// Apply the specified value to all nodes
+        /// </summary>
+        public void CheckAllNodes(bool checkValue)
+        {
+            foreach (TreeNode node in trvPlugins.Nodes)
+            {
+                if (null == node)
+                {
+                    continue;
+                }
+
+                node.Checked = checkValue;
+            }
+        }
+
+        /// <summary>
+        /// Check a specific node
+        /// </summary>
+        public void CheckNode(Guid nodeId, bool checkValue)
+        {
+            if (!HasNode(nodeId))
+            {
+                throw new ArgumentException("nodeId");
+            }
+            else
+            {
+                m_nodeList[nodeId].TreeNode.Checked = checkValue;
+            }
+        }
+
+        /// <summary>
+        /// Collapses the entire tree
+        /// </summary>
+        public void Collapse()
+        {
+            Collapse(Guid.Empty, true);
+        }
+
+        /// <summary>
+        /// Collapses the node. If none is specified, it applies to the entire tree
+        /// </summary>
+        /// <param name="nodeId">nodeId</param>
+        /// <param name="applyToChildren">Collapse child nodes as well</param>
+        public void Collapse(Guid nodeId, bool applyToChildren)
+        {
+            if (nodeId == Guid.Empty)
+            {
+                trvPlugins.CollapseAll();
+            }
+            else if (HasNode(nodeId))
+            {
+                if (applyToChildren)
+                {
+                    CollapseAll(m_nodeList[nodeId].TreeNode);
+                }
+                else
+                {
+                    m_nodeList[nodeId].TreeNode.Collapse();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Node Id", "nodeId");
+            }
+        }
+
+        public void DoDefaultAction()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        /// <summary>
+        /// Ends the editing of the tree node
+        /// </summary>
+        /// <param name="cancelChanges">Cancels the current changes being made</param>
+        public void EndNodeTextEdit(Guid nodeId, bool cancelChanges)
+        {
+            if (!LabelEdit)
+            {
+                throw new InvalidOperationException("EndNodeTextEdit failed because LabelEdit is false");
+            }
+            else if (HasNode(nodeId))
+            {
+                m_nodeList[nodeId].TreeNode.EndEdit(cancelChanges);
+                m_currentlyEditing = Guid.Empty;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Node Id", "nodeId");
+            }
+        }
+
+        /// <summary>
+        /// Expands the entire tree
+        /// </summary>
+        public void Expand()
+        {
+            Expand(Guid.Empty, true);
+        }
+
+        /// <summary>
+        /// Expands the node. If none is specified, it applies to the entire tree
+        /// </summary>
+        /// <param name="nodeId">nodeId</param>
+        /// <param name="applyToChildren">Expand child nodes as well</param>
+        public void Expand(Guid nodeId, bool applyToChildren)
+        {
+            if (nodeId == Guid.Empty)
+            {
+                trvPlugins.ExpandAll();
+            }
+            else if (HasNode(nodeId))
+            {
+                if (applyToChildren)
+                {
+                    m_nodeList[nodeId].TreeNode.ExpandAll();
+                }
+                else
+                {
+                    m_nodeList[nodeId].TreeNode.Expand();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Node Id", "nodeId");
+            }
+        }
+
+        /// <summary>
+        /// Gets a the ContextMenuStrip for the specified type
+        /// </summary>
+        public ContextMenuStrip GetContextMenuStrip(CrmTreeNodeType type)
+        {
+            if (HasContextMenuStrip(type))
+            {
+                return m_contextMenuList[type];
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Type specified", "type");
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the color of the specified node
+        /// </summary>
+        public Color GetNodeColor(Guid nodeId)
+        {
+            if (HasNode(nodeId))
+            {
+                return m_nodeList[nodeId].TreeNode.ForeColor;
+            }
+            else
+            {
+                throw new ArgumentException("Id is invalid", "nodeId");
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the ToolTipText of the specified node
+        /// </summary>
+        public string GetNodeToolTipText(Guid nodeId)
+        {
+            if (HasNode(nodeId))
+            {
+                return m_nodeList[nodeId].TreeNode.ToolTipText;
+            }
+            else
+            {
+                throw new ArgumentException("Id is invalid", "nodeId");
+            }
+        }
+
+        public object GetView(ViewTechnology technology)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified type has a ContextMenuStrip
+        /// </summary>
+        public bool HasContextMenuStrip(CrmTreeNodeType type)
+        {
+            return m_contextMenuList.ContainsKey(type);
+        }
+
+        /// <summary>
+        /// Checks whether a node is in the tree
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns>True if the node exists, False if it doesn't</returns>
+        public bool HasNode(Guid? nodeId)
+        {
+            return (m_nodeList.ContainsKey(nodeId));
+        }
+
+        public void Initialize(IComponent component)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        /// <summary>
+        /// Specifies whether the specified node is checked
+        /// </summary>
+        /// <exception cref="ArgumentException">Invalid nodeId given</exception>
+        public bool IsNodeChecked(Guid nodeId)
+        {
+            if (HasNode(nodeId))
+            {
+                return m_nodeList[nodeId].Checked;
+            }
+            else
+            {
+                throw new ArgumentException("nodeId");
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the given node's text can be edited
+        /// </summary>
+        /// <param name="node">Node to be checked</param>
+        /// <returns>Value indicating whether the given node's text can be edited</returns>
+        public bool IsNodeTextEditable(ICrmTreeNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
+            ICrmEditableTreeNode editableNode = node as ICrmEditableTreeNode;
+            return (editableNode != null);
+        }
+
+        /// <summary>
+        /// Indicates whether the given node's text can be edited
+        /// </summary>
+        /// <param name="nodeId">Id for the node to be checked</param>
+        /// <returns>Value indicating whether the given node's text can be edited</returns>
+        public bool IsNodeTextEditable(Guid nodeId)
+        {
+            return IsNodeTextEditable(m_nodeList[nodeId].CrmNode);
+        }
 
         /// <summary>
         /// Reloads the entire tree
@@ -719,18 +962,6 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 AddNodes(trvPlugins.Nodes, rootNodes, false);
                 trvPlugins.SelectedNode = null;
-            }
-        }
-
-        /// <summary>
-        /// Refeshes all nodes with new text and images
-        /// </summary>
-        /// <param name="checkChildren">Indicates that each child should be checked</param>
-        public void RefreshNodes(bool checkChildren)
-        {
-            foreach (TreeNode node in trvPlugins.Nodes)
-            {
-                RefreshNode(((CrmTreeNode)node.Tag).CrmNode.NodeId, true, checkChildren);
             }
         }
 
@@ -794,70 +1025,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         }
 
         /// <summary>
-        /// Checks whether a node is in the tree
+        /// Refeshes all nodes with new text and images
         /// </summary>
-        /// <param name="nodeId"></param>
-        /// <returns>True if the node exists, False if it doesn't</returns>
-        public bool HasNode(Guid? nodeId)
+        /// <param name="checkChildren">Indicates that each child should be checked</param>
+        public void RefreshNodes(bool checkChildren)
         {
-            return (m_nodeList.ContainsKey(nodeId));
-        }
-
-        /// <summary>
-        /// Specifies whether the specified node is checked
-        /// </summary>
-        /// <exception cref="ArgumentException">Invalid nodeId given</exception>
-        public bool IsNodeChecked(Guid nodeId)
-        {
-            if (HasNode(nodeId))
+            foreach (TreeNode node in trvPlugins.Nodes)
             {
-                return m_nodeList[nodeId].Checked;
-            }
-            else
-            {
-                throw new ArgumentException("nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Adds a new node (and its children)
-        /// </summary>
-        public void AddNode(Guid parentNodeId, ICrmTreeNode node)
-        {
-            AddNode(parentNodeId, node, false);
-        }
-
-        /// <summary>
-        /// Adds a new node (and its children)
-        /// </summary>
-        public void AddNode(Guid parentNodeId, ICrmTreeNode node, bool checkNode)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-            else if (Guid.Empty != parentNodeId && !HasNode(parentNodeId))
-            {
-                throw new ArgumentException("Invalid Node Id", "parentNodeId");
-            }
-            else if (HasNode(node.NodeId))
-            {
-                throw new ArgumentException("Node is already in the tree", "node");
-            }
-
-            TreeNodeCollection nodeList = RetrieveParentNodeCollection(parentNodeId);
-            bool hasChildren = (nodeList.Count != 0);
-            AddNodes(nodeList, new ICrmTreeNode[] { node }, checkNode);
-            if (m_autoExpand && !hasChildren)
-            {
-                if (parentNodeId == Guid.Empty)
-                {
-                    trvPlugins.ExpandAll();
-                }
-                else
-                {
-                    m_nodeList[parentNodeId].TreeNode.ExpandAll();
-                }
+                RefreshNode(((CrmTreeNode)node.Tag).CrmNode.NodeId, true, checkChildren);
             }
         }
 
@@ -887,224 +1062,6 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
             //Remove the item from the list
             m_nodeList.Remove(nodeId);
-        }
-
-        /// <summary>
-        /// Apply the specified value to all nodes
-        /// </summary>
-        public void CheckAllNodes(bool checkValue)
-        {
-            foreach (TreeNode node in trvPlugins.Nodes)
-            {
-                if (null == node)
-                {
-                    continue;
-                }
-
-                node.Checked = checkValue;
-            }
-        }
-
-        /// <summary>
-        /// Check a specific node
-        /// </summary>
-        public void CheckNode(Guid nodeId, bool checkValue)
-        {
-            if (!HasNode(nodeId))
-            {
-                throw new ArgumentException("nodeId");
-            }
-            else
-            {
-                m_nodeList[nodeId].TreeNode.Checked = checkValue;
-            }
-        }
-
-        /// <summary>
-        /// Retrieve the color of the specified node
-        /// </summary>
-        public Color GetNodeColor(Guid nodeId)
-        {
-            if (HasNode(nodeId))
-            {
-                return m_nodeList[nodeId].TreeNode.ForeColor;
-            }
-            else
-            {
-                throw new ArgumentException("Id is invalid", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Change the color of the specified node
-        /// </summary>
-        public void SetNodeColor(Guid nodeId, Color color)
-        {
-            if (HasNode(nodeId))
-            {
-                m_nodeList[nodeId].TreeNode.ForeColor = color;
-            }
-            else
-            {
-                throw new ArgumentException("Id is invalid", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Retrieve the ToolTipText of the specified node
-        /// </summary>
-        public string GetNodeToolTipText(Guid nodeId)
-        {
-            if (HasNode(nodeId))
-            {
-                return m_nodeList[nodeId].TreeNode.ToolTipText;
-            }
-            else
-            {
-                throw new ArgumentException("Id is invalid", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Change the ToolTipText of the specified node
-        /// </summary>
-        public void SetNodeToolTipText(Guid nodeId, string tip)
-        {
-            if (HasNode(nodeId))
-            {
-                m_nodeList[nodeId].TreeNode.ToolTipText = tip;
-            }
-            else
-            {
-                throw new ArgumentException("Id is invalid", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Sorts the items using the CrmTreeNodeSorter
-        /// </summary>
-        public void Sort()
-        {
-            m_disableSelectionChange = true;
-            TreeNode selectedNode = trvPlugins.SelectedNode;
-
-            trvPlugins.Sort();
-
-            trvPlugins.SelectedNode = selectedNode;
-            m_disableSelectionChange = false;
-        }
-
-        /// <summary>
-        /// Begins the editing of the TreeNode
-        /// </summary>
-        public void BeginNodeTextEdit(Guid nodeId)
-        {
-            if (!LabelEdit)
-            {
-                throw new InvalidOperationException("BeginNodeTextEdit failed because LabelEdit is false");
-            }
-            else if (HasNode(nodeId))
-            {
-                m_nodeList[nodeId].TreeNode.BeginEdit();
-                m_currentlyEditing = nodeId;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Node Id", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Ends the editing of the tree node
-        /// </summary>
-        /// <param name="cancelChanges">Cancels the current changes being made</param>
-        public void EndNodeTextEdit(Guid nodeId, bool cancelChanges)
-        {
-            if (!LabelEdit)
-            {
-                throw new InvalidOperationException("EndNodeTextEdit failed because LabelEdit is false");
-            }
-            else if (HasNode(nodeId))
-            {
-                m_nodeList[nodeId].TreeNode.EndEdit(cancelChanges);
-                m_currentlyEditing = Guid.Empty;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Node Id", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Expands the entire tree
-        /// </summary>
-        public void Expand()
-        {
-            Expand(Guid.Empty, true);
-        }
-
-        /// <summary>
-        /// Expands the node. If none is specified, it applies to the entire tree
-        /// </summary>
-        /// <param name="nodeId">nodeId</param>
-        /// <param name="applyToChildren">Expand child nodes as well</param>
-        public void Expand(Guid nodeId, bool applyToChildren)
-        {
-            if (nodeId == Guid.Empty)
-            {
-                trvPlugins.ExpandAll();
-            }
-            else if (HasNode(nodeId))
-            {
-                if (applyToChildren)
-                {
-                    m_nodeList[nodeId].TreeNode.ExpandAll();
-                }
-                else
-                {
-                    m_nodeList[nodeId].TreeNode.Expand();
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Node Id", "nodeId");
-            }
-        }
-
-        /// <summary>
-        /// Collapses the entire tree
-        /// </summary>
-        public void Collapse()
-        {
-            Collapse(Guid.Empty, true);
-        }
-
-        /// <summary>
-        /// Collapses the node. If none is specified, it applies to the entire tree
-        /// </summary>
-        /// <param name="nodeId">nodeId</param>
-        /// <param name="applyToChildren">Collapse child nodes as well</param>
-        public void Collapse(Guid nodeId, bool applyToChildren)
-        {
-            if (nodeId == Guid.Empty)
-            {
-                trvPlugins.CollapseAll();
-            }
-            else if (HasNode(nodeId))
-            {
-                if (applyToChildren)
-                {
-                    CollapseAll(m_nodeList[nodeId].TreeNode);
-                }
-                else
-                {
-                    m_nodeList[nodeId].TreeNode.Collapse();
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Node Id", "nodeId");
-            }
         }
 
         /// <summary>
@@ -1169,57 +1126,52 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified type has a ContextMenuStrip
+        /// Change the color of the specified node
         /// </summary>
-        public bool HasContextMenuStrip(CrmTreeNodeType type)
+        public void SetNodeColor(Guid nodeId, Color color)
         {
-            return m_contextMenuList.ContainsKey(type);
-        }
-
-        /// <summary>
-        /// Gets a the ContextMenuStrip for the specified type
-        /// </summary>
-        public ContextMenuStrip GetContextMenuStrip(CrmTreeNodeType type)
-        {
-            if (HasContextMenuStrip(type))
+            if (HasNode(nodeId))
             {
-                return m_contextMenuList[type];
+                m_nodeList[nodeId].TreeNode.ForeColor = color;
             }
             else
             {
-                throw new ArgumentException("Invalid Type specified", "type");
+                throw new ArgumentException("Id is invalid", "nodeId");
             }
         }
 
         /// <summary>
-        /// Indicates whether the given node's text can be edited
+        /// Change the ToolTipText of the specified node
         /// </summary>
-        /// <param name="node">Node to be checked</param>
-        /// <returns>Value indicating whether the given node's text can be edited</returns>
-        public bool IsNodeTextEditable(ICrmTreeNode node)
+        public void SetNodeToolTipText(Guid nodeId, string tip)
         {
-            if (node == null)
+            if (HasNode(nodeId))
             {
-                throw new ArgumentNullException("node");
+                m_nodeList[nodeId].TreeNode.ToolTipText = tip;
             }
-
-            ICrmEditableTreeNode editableNode = node as ICrmEditableTreeNode;
-            return (editableNode != null);
+            else
+            {
+                throw new ArgumentException("Id is invalid", "nodeId");
+            }
         }
 
         /// <summary>
-        /// Indicates whether the given node's text can be edited
+        /// Sorts the items using the CrmTreeNodeSorter
         /// </summary>
-        /// <param name="nodeId">Id for the node to be checked</param>
-        /// <returns>Value indicating whether the given node's text can be edited</returns>
-        public bool IsNodeTextEditable(Guid nodeId)
+        public void Sort()
         {
-            return IsNodeTextEditable(m_nodeList[nodeId].CrmNode);
+            m_disableSelectionChange = true;
+            TreeNode selectedNode = trvPlugins.SelectedNode;
+
+            trvPlugins.Sort();
+
+            trvPlugins.SelectedNode = selectedNode;
+            m_disableSelectionChange = false;
         }
 
         #endregion Public Methods
 
-        #region Private Helper Methods
+        #region Private Methods
 
         private void AddNodes(TreeNodeCollection parentNodeList, ICrmTreeNode[] nodes, bool checkNodes)
         {
@@ -1289,6 +1241,92 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
+        private bool CheckIfReSortNeeded(CrmTreeNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            else if (node.TreeNode.PrevNode == null && node.TreeNode.NextNode == null)
+            {
+                return false;
+            }
+
+            //Do a comparison on the sibling before & after. If the node appears in the correct place,
+            //there is no need to resort the entire tree
+
+            //Result should be -1 or 0 if we don't need to resort
+            int prevNode = m_sorter.Compare(node.TreeNode.PrevNode, node.TreeNode);
+
+            //Result should be -1 or 0 if we don't need to resort
+            int nextNode = m_sorter.Compare(node.TreeNode, node.TreeNode.NextNode);
+
+            return !(prevNode <= 0 && nextNode <= 0);
+        }
+
+        private void Clear(TreeNodeCollection nodeList)
+        {
+            if (nodeList == null)
+            {
+                throw new ArgumentNullException("nodeList");
+            }
+
+            foreach (TreeNode node in nodeList)
+            {
+                if (null == node)
+                {
+                    continue;
+                }
+                else if (node.Nodes.Count != 0)
+                {
+                    Clear(node.Nodes);
+                }
+
+                m_nodeList.Remove(((CrmTreeNode)node.Tag).CrmNode.NodeId);
+            }
+
+            nodeList.Clear();
+        }
+
+        private void CollapseAll(TreeNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
+            if (node.Nodes.Count != 0)
+            {
+                foreach (TreeNode childNode in node.Nodes)
+                {
+                    if (null == childNode)
+                    {
+                        continue;
+                    }
+
+                    CollapseAll(childNode);
+                }
+            }
+
+            node.Collapse();
+        }
+
+        private bool IncludeType(CrmTreeNodeType type)
+        {
+            if (type == CrmTreeNodeType.None)
+            {
+                return false;
+            }
+            else if (m_excludeTypes == CrmTreeNodeType.None)
+            {
+                return true;
+            }
+            else
+            {
+                return (((CrmTreeNodeType)m_excludeTypes & type) != type);
+            }
+        }
+
         private void RemoveNodes(TreeNodeCollection parentNodeList)
         {
             if (parentNodeList != null && parentNodeList.Count != 0)
@@ -1315,50 +1353,6 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         NodeRemoved(this, new CrmTreeNodeEventArgs(crmNode));
                     }
                 }
-            }
-        }
-
-        private TreeNodeCollection RetrieveParentNodeCollection(Guid parentId)
-        {
-            if (parentId == Guid.Empty)
-            {
-                return trvPlugins.Nodes;
-            }
-            else if (HasNode(parentId))
-            {
-                return m_nodeList[parentId].TreeNode.Nodes;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Node Id", "parentId");
-            }
-        }
-
-        private TreeNodeCollection RetrieveParentNodeCollection(TreeNode parentNode)
-        {
-            if (parentNode == null)
-            {
-                return trvPlugins.Nodes;
-            }
-            else
-            {
-                return parentNode.Nodes;
-            }
-        }
-
-        private bool IncludeType(CrmTreeNodeType type)
-        {
-            if (type == CrmTreeNodeType.None)
-            {
-                return false;
-            }
-            else if (m_excludeTypes == CrmTreeNodeType.None)
-            {
-                return true;
-            }
-            else
-            {
-                return (((CrmTreeNodeType)m_excludeTypes & type) != type);
             }
         }
 
@@ -1398,27 +1392,87 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
-        private bool CheckIfReSortNeeded(CrmTreeNode node)
+        private TreeNodeCollection RetrieveParentNodeCollection(Guid parentId)
+        {
+            if (parentId == Guid.Empty)
+            {
+                return trvPlugins.Nodes;
+            }
+            else if (HasNode(parentId))
+            {
+                return m_nodeList[parentId].TreeNode.Nodes;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Node Id", "parentId");
+            }
+        }
+
+        private TreeNodeCollection RetrieveParentNodeCollection(TreeNode parentNode)
+        {
+            if (parentNode == null)
+            {
+                return trvPlugins.Nodes;
+            }
+            else
+            {
+                return parentNode.Nodes;
+            }
+        }
+
+        private bool Search(TreeNode node, List<TreeNode> matchedNodes, List<TreeNode> unmatchedNodes, string text)
         {
             if (node == null)
             {
                 throw new ArgumentNullException("node");
             }
-            else if (node.TreeNode.PrevNode == null && node.TreeNode.NextNode == null)
+
+            //Loop through the child nodes to see if the data is found in one of those nodes
+            bool foundAtLeastOne = false;
+            foreach (TreeNode childNode in node.Nodes)
             {
-                return false;
+                if (Search(childNode, matchedNodes, unmatchedNodes, text))
+                {
+                    foundAtLeastOne = true;
+                }
             }
 
-            //Do a comparison on the sibling before & after. If the node appears in the correct place,
-            //there is no need to resort the entire tree
+            //If at least one child has a match, then this node is considered a match (so that all of a matching node's ancestors are displayed)
+            bool matchFound = foundAtLeastOne;
 
-            //Result should be -1 or 0 if we don't need to resort
-            int prevNode = m_sorter.Compare(node.TreeNode.PrevNode, node.TreeNode);
+            //Check if the text is an id. If it is, compare it to the id for this node
+            if (!matchFound)
+            {
+                //Convert the node id to text
+                string nodeIdText = ((CrmTreeNode)node.Tag).CrmNode.NodeId.ToString();
 
-            //Result should be -1 or 0 if we don't need to resort
-            int nextNode = m_sorter.Compare(node.TreeNode, node.TreeNode.NextNode);
+                //Check if the node id is found in the search text
+                matchFound = nodeIdText.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1;
+            }
 
-            return !(prevNode <= 0 && nextNode <= 0);
+            //If a match has not been found, look for the text in the text of the node
+            if (!matchFound)
+            {
+                matchFound = node.Text.IndexOf(text, StringComparison.CurrentCultureIgnoreCase) != -1;
+            }
+
+            //Process the node
+            if (matchFound)
+            {
+                if (matchedNodes != null)
+                {
+                    matchedNodes.Add(node);
+                }
+            }
+            else
+            {
+                if (unmatchedNodes != null)
+                {
+                    unmatchedNodes.Add(node);
+                }
+            }
+
+            return matchFound;
         }
 
         private void Sort(Guid nodeId)
@@ -1500,156 +1554,205 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
-        private void Clear(TreeNodeCollection nodeList)
+        private void trvPlugins_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            if (nodeList == null)
+            if (!m_disableCheckChange)
             {
-                throw new ArgumentNullException("nodeList");
-            }
-
-            foreach (TreeNode node in nodeList)
-            {
-                if (null == node)
+                try
                 {
-                    continue;
-                }
-                else if (node.Nodes.Count != 0)
-                {
-                    Clear(node.Nodes);
-                }
+                    m_disableCheckChange = true;
 
-                m_nodeList.Remove(((CrmTreeNode)node.Tag).CrmNode.NodeId);
-            }
-
-            nodeList.Clear();
-        }
-
-        private void CollapseAll(TreeNode node)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-
-            if (node.Nodes.Count != 0)
-            {
-                foreach (TreeNode childNode in node.Nodes)
-                {
-                    if (null == childNode)
+                    CrmTreeNode node = (CrmTreeNode)e.Node.Tag;
+                    node.Checked = e.Node.Checked;
+                    if (CheckStateChanged != null)
                     {
-                        continue;
+                        CheckStateChanged(this, new CrmTreeNodeEventArgs(node.CrmNode));
                     }
-
-                    CollapseAll(childNode);
+                }
+                finally
+                {
+                    m_disableCheckChange = false;
                 }
             }
-
-            node.Collapse();
         }
 
-        private bool Search(TreeNode node, List<TreeNode> matchedNodes, List<TreeNode> unmatchedNodes, string text)
+        private void trvPlugins_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if (node == null)
+            CrmTreeNode treeNode = (CrmTreeNode)e.Node.Tag;
+
+            if (!IsNodeTextEditable(treeNode.CrmNode))
             {
-                throw new ArgumentNullException("node");
+                e.CancelEdit = true;
+                if (null != LabelEditCanceled)
+                {
+                    LabelEditCanceled(this, new CrmTreeNodeEventArgs(treeNode.CrmNode));
+                }
+                return;
             }
 
-            //Loop through the child nodes to see if the data is found in one of those nodes
-            bool foundAtLeastOne = false;
-            foreach (TreeNode childNode in node.Nodes)
+            ICrmEditableTreeNode node = (ICrmEditableTreeNode)treeNode.CrmNode;
+
+            bool canceled = false;
+            if (string.Equals(node.NodeEditText, e.Label, StringComparison.CurrentCulture) ||
+                string.Equals(node.NodeText, e.Label, StringComparison.CurrentCulture))
             {
-                if (Search(childNode, matchedNodes, unmatchedNodes, text))
+                canceled = true;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(e.Label))
                 {
-                    foundAtLeastOne = true;
+                    canceled = true;
+                }
+                else if (AfterLabelEdit != null)
+                {
+                    CrmTreeNodeLabelEditEventArgs args = new CrmTreeNodeLabelEditEventArgs(node,
+                        node.GetNodeEditTextForLabel(e.Label));
+                    AfterLabelEdit(this, args);
+                    canceled = args.CancelEdit;
+                }
+
+                if (!canceled)
+                {
+                    ((ICrmEditableTreeNode)node).NodeEditText = e.Label;
+                    e.Node.Text = node.NodeText;
+                    e.CancelEdit = true;
                 }
             }
 
-            //If at least one child has a match, then this node is considered a match (so that all of a matching node's ancestors are displayed)
-            bool matchFound = foundAtLeastOne;
-
-            //Check if the text is an id. If it is, compare it to the id for this node
-            if (!matchFound)
+            if (canceled)
             {
-                //Convert the node id to text
-                string nodeIdText = ((CrmTreeNode)node.Tag).CrmNode.NodeId.ToString();
-
-                //Check if the node id is found in the search text
-                matchFound = nodeIdText.IndexOf(text, StringComparison.OrdinalIgnoreCase) != -1;
+                e.CancelEdit = true;
             }
 
-            //If a match has not been found, look for the text in the text of the node
-            if (!matchFound)
-            {
-                matchFound = node.Text.IndexOf(text, StringComparison.CurrentCultureIgnoreCase) != -1;
-            }
+            m_currentlyEditing = Guid.Empty;
 
-            //Process the node
-            if (matchFound)
+            if (canceled)
             {
-                if (matchedNodes != null)
+                if (null != LabelEditCanceled)
                 {
-                    matchedNodes.Add(node);
+                    LabelEditCanceled(this, new CrmTreeNodeEventArgs(node));
                 }
             }
             else
             {
-                if (unmatchedNodes != null)
+                if (null != LabelEdited)
                 {
-                    unmatchedNodes.Add(node);
+                    LabelEdited(this, new CrmTreeNodeEventArgs(node));
                 }
             }
-
-            return matchFound;
         }
 
-        #endregion Private Helper Methods
-
-        #region IRootDesigner Members
-
-        public object GetView(ViewTechnology technology)
+        private void trvPlugins_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (!m_disableSelectionChange && SelectionChanged != null)
+            {
+                SelectionChanged(this, new CrmTreeNodeTreeEventArgs(((CrmTreeNode)e.Node.Tag).CrmNode, e.Action));
+            }
         }
 
-        public ViewTechnology[] SupportedTechnologies
+        private void trvPlugins_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            //Verify that the node can be edited
+            CrmTreeNode treeNode = (CrmTreeNode)e.Node.Tag;
+            if (!IsNodeTextEditable(treeNode.CrmNode))
+            {
+                e.CancelEdit = true;
+                m_currentlyEditing = Guid.Empty;
+                return;
+            }
+
+            ICrmEditableTreeNode node = (ICrmEditableTreeNode)treeNode.CrmNode;
+
+            if (BeforeLabelEdit != null)
+            {
+                CrmTreeNodeLabelEditEventArgs args = new CrmTreeNodeLabelEditEventArgs(node, node.NodeEditText);
+                BeforeLabelEdit(this, args);
+                e.CancelEdit = args.CancelEdit;
+            }
+
+            if (!e.CancelEdit)
+            {
+                m_currentlyEditing = node.NodeId;
+            }
         }
 
-        #endregion IRootDesigner Members
-
-        #region IDesigner Members
-
-        public IComponent Component
+        private void trvPlugins_Click(object sender, EventArgs e)
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            TreeNode node = trvPlugins.HitTest(((MouseEventArgs)e).Location).Node;
+            if (node != null)
+            {
+                if (Click != null)
+                {
+                    Click(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
+                }
+            }
         }
 
-        public void DoDefaultAction()
+        private void trvPlugins_DoubleClick(object sender, EventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            TreeNode node = trvPlugins.HitTest(((MouseEventArgs)e).Location).Node;
+            if (node != null)
+            {
+                if (DoubleClick != null)
+                {
+                    DoubleClick(this, new CrmTreeNodeEventArgs(((CrmTreeNode)node.Tag).CrmNode));
+                }
+            }
         }
 
-        public void Initialize(IComponent component)
+        private void trvPlugins_KeyDown(object sender, KeyEventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (KeyDown != null)
+            {
+                KeyDown(this, e);
+            }
         }
 
-        public DesignerVerbCollection Verbs
+        private void trvPlugins_KeyPress(object sender, KeyPressEventArgs e)
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            if (KeyPress != null)
+            {
+                KeyPress(this, e);
+            }
         }
 
-        #endregion IDesigner Members
+        private void trvPlugins_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (KeyUp != null)
+            {
+                KeyUp(this, e);
+            }
+        }
+
+        private void trvPlugins_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && (ContextMenu != null || ContextMenuStrip != null))
+            {
+                TreeNode node = trvPlugins.HitTest(e.Location).Node;
+                if (node != null)
+                {
+                    trvPlugins.SelectedNode = node;
+                }
+            }
+        }
+
+        #endregion Private Methods
 
         #region Private Classes
 
         private sealed class CrmTreeNode
         {
-            private bool m_singleCheckParent;
-            private TreeNode m_node;
-            private ICrmTreeNode m_crmNode;
+            #region Private Fields
+
             private Dictionary<Guid, CrmTreeNode> m_checkedList = new Dictionary<Guid, CrmTreeNode>();
+            private ICrmTreeNode m_crmNode;
+            private TreeNode m_node;
+            private bool m_singleCheckParent;
+
+            #endregion Private Fields
+
+            #region Public Constructors
 
             public CrmTreeNode(bool singleCheckParent, TreeNode node, ICrmTreeNode crmNode)
             {
@@ -1659,11 +1762,21 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 ReloadChildren();
             }
 
-            public TreeNode TreeNode
+            #endregion Public Constructors
+
+            #region Public Properties
+
+            public bool Checked
             {
                 get
                 {
-                    return m_node;
+                    return m_node.Checked;
+                }
+
+                set
+                {
+                    UpdateParentChecked();
+                    UpdateChildChecked();
                 }
             }
 
@@ -1690,19 +1803,17 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 }
             }
 
-            public bool Checked
+            public TreeNode TreeNode
             {
                 get
                 {
-                    return m_node.Checked;
-                }
-
-                set
-                {
-                    UpdateParentChecked();
-                    UpdateChildChecked();
+                    return m_node;
                 }
             }
+
+            #endregion Public Properties
+
+            #region Public Methods
 
             public void ReloadChildren()
             {
@@ -1715,40 +1826,6 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         CrmTreeNode checkedNode = (CrmTreeNode)childNode.Tag;
                         m_checkedList.Add(checkedNode.m_crmNode.NodeId, checkedNode);
                     }
-                }
-            }
-
-            public void UpdateParentChecked()
-            {
-                if (m_node.Parent == null)
-                {
-                    return;
-                }
-
-                CrmTreeNode parentNode = ParentNode;
-                if (Checked && !parentNode.m_checkedList.ContainsKey(CrmNode.NodeId))
-                {
-                    parentNode.m_checkedList.Add(CrmNode.NodeId, this);
-                }
-                else if (!Checked && parentNode.m_checkedList.ContainsKey(CrmNode.NodeId))
-                {
-                    parentNode.m_checkedList.Remove(CrmNode.NodeId);
-                }
-
-                bool parentChecked;
-                if (m_singleCheckParent)
-                {
-                    parentChecked = (parentNode.m_checkedList.Count != 0);
-                }
-                else
-                {
-                    parentChecked = (parentNode.m_checkedList.Count == parentNode.m_node.Nodes.Count);
-                }
-
-                if (parentNode.m_node.Checked != parentChecked)
-                {
-                    parentNode.m_node.Checked = parentChecked;
-                    parentNode.UpdateParentChecked();
                 }
             }
 
@@ -1794,11 +1871,53 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     }
                 }
             }
+
+            public void UpdateParentChecked()
+            {
+                if (m_node.Parent == null)
+                {
+                    return;
+                }
+
+                CrmTreeNode parentNode = ParentNode;
+                if (Checked && !parentNode.m_checkedList.ContainsKey(CrmNode.NodeId))
+                {
+                    parentNode.m_checkedList.Add(CrmNode.NodeId, this);
+                }
+                else if (!Checked && parentNode.m_checkedList.ContainsKey(CrmNode.NodeId))
+                {
+                    parentNode.m_checkedList.Remove(CrmNode.NodeId);
+                }
+
+                bool parentChecked;
+                if (m_singleCheckParent)
+                {
+                    parentChecked = (parentNode.m_checkedList.Count != 0);
+                }
+                else
+                {
+                    parentChecked = (parentNode.m_checkedList.Count == parentNode.m_node.Nodes.Count);
+                }
+
+                if (parentNode.m_node.Checked != parentChecked)
+                {
+                    parentNode.m_node.Checked = parentChecked;
+                    parentNode.UpdateParentChecked();
+                }
+            }
+
+            #endregion Public Methods
         }
 
         private sealed class NodeSorter : IComparer
         {
+            #region Private Fields
+
             private IComparer<ICrmTreeNode> m_sorter = null;
+
+            #endregion Private Fields
+
+            #region Public Properties
 
             public IComparer<ICrmTreeNode> Sorter
             {
@@ -1812,6 +1931,10 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     m_sorter = value;
                 }
             }
+
+            #endregion Public Properties
+
+            #region Public Methods
 
             public int Compare(object x, object y)
             {
@@ -1828,7 +1951,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 }
             }
 
-            #region Private Helper Methods
+            #endregion Public Methods
+
+            #region Private Methods
 
             private ICrmTreeNode GetCrmNode(object item)
             {
@@ -1859,17 +1984,21 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 }
             }
 
-            #endregion Private Helper Methods
+            #endregion Private Methods
         }
 
         #endregion Private Classes
     }
 
-    #region Public Classes & Interfaces
-
     public sealed class CrmTreeNodeEventArgs : EventArgs
     {
+        #region Private Fields
+
         private ICrmTreeNode m_node;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmTreeNodeEventArgs(ICrmTreeNode node)
             : base()
@@ -1882,6 +2011,10 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             m_node = node;
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public ICrmTreeNode Node
         {
             get
@@ -1889,12 +2022,79 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 return m_node;
             }
         }
+
+        #endregion Public Properties
+    }
+
+    public sealed class CrmTreeNodeLabelEditEventArgs : EventArgs
+    {
+        #region Private Fields
+
+        private bool m_cancelEdit = false;
+        private string m_label;
+        private ICrmTreeNode m_node;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public CrmTreeNodeLabelEditEventArgs(ICrmTreeNode node, string label)
+            : base()
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
+            m_node = node;
+            m_label = label;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public bool CancelEdit
+        {
+            get
+            {
+                return m_cancelEdit;
+            }
+            set
+            {
+                m_cancelEdit = value;
+            }
+        }
+
+        public string Label
+        {
+            get
+            {
+                return m_label;
+            }
+        }
+
+        public ICrmTreeNode Node
+        {
+            get
+            {
+                return m_node;
+            }
+        }
+
+        #endregion Public Properties
     }
 
     public sealed class CrmTreeNodeTreeEventArgs : EventArgs
     {
+        #region Private Fields
+
         private TreeViewAction m_action;
         private ICrmTreeNode m_node;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CrmTreeNodeTreeEventArgs(ICrmTreeNode node, TreeViewAction action)
             : base()
@@ -1907,6 +2107,10 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             m_action = action;
             m_node = node;
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public TreeViewAction Action
         {
@@ -1923,135 +2127,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 return m_node;
             }
         }
+
+        #endregion Public Properties
     }
-
-    public sealed class CrmTreeNodeLabelEditEventArgs : EventArgs
-    {
-        private ICrmTreeNode m_node;
-        private string m_label;
-        private bool m_cancelEdit = false;
-
-        public CrmTreeNodeLabelEditEventArgs(ICrmTreeNode node, string label)
-            : base()
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-
-            m_node = node;
-            m_label = label;
-        }
-
-        public ICrmTreeNode Node
-        {
-            get
-            {
-                return m_node;
-            }
-        }
-
-        public string Label
-        {
-            get
-            {
-                return m_label;
-            }
-        }
-
-        public bool CancelEdit
-        {
-            get
-            {
-                return m_cancelEdit;
-            }
-            set
-            {
-                m_cancelEdit = value;
-            }
-        }
-    }
-
-    public interface ICrmTreeNode
-    {
-        Guid NodeId { get; }
-        CrmTreeNodeType NodeType { get; }
-        string NodeTypeLabel { get; }
-        ICrmTreeNode[] NodeChildren { get; }
-
-        /// <summary>
-        /// Text that will be displayed in the node
-        /// </summary>
-        string NodeText { get; }
-
-        CrmTreeNodeImageType NodeImageType { get; }
-        CrmTreeNodeImageType NodeSelectedImageType { get; }
-    }
-
-    public interface ICrmEditableTreeNode : ICrmTreeNode
-    {
-        /// <summary>
-        /// Text that will be displayed while the label is being edited
-        /// </summary>
-        string NodeEditText { get; set; }
-
-        /// <summary>
-        /// Simulates behavior of NodeEditText without updating the property's value
-        /// </summary>
-        /// <param name="newText">Value to be simulated</param>
-        /// <returns>Value that would have been returned from NodeEditText had it been updated</returns>
-        string GetNodeEditTextForLabel(string newText);
-    }
-
-    [Flags]
-    public enum CrmTreeNodeType
-    {
-        /// <summary>
-        /// A node of this type will never be listed.
-        /// </summary>
-        None = 0,
-
-        Connection = 1,
-        Organization = 2,
-        Assembly = 4,
-        Plugin = 8,
-        WorkflowActivity = 16,
-        Step = 32,
-        Image = 64,
-        Message = 128,
-        MessageEntity = 256,
-        ServiceEndpoint = 512
-    }
-
-    public enum CrmTreeNodeImageType
-    {
-        Assembly,
-        AssemblySelected,
-        Plugin,
-        PluginSelected,
-        PluginProfiler,
-        PluginProfilerSelected,
-        WorkflowActivity,
-        WorkflowActivitySelected,
-        StepEnabled,
-        StepEnabledSelected,
-        StepProfiled,
-        StepProfiledSelected,
-        StepDisabled,
-        StepDisabledSelected,
-        Image,
-        ImageSelected,
-        Connection,
-        ConnectionSelected,
-        Organization,
-        OrganizationSelected,
-        Message,
-        MessageSelected,
-        MessageEntity,
-        MessageEntitySelected,
-        ServiceEndpoint,
-        ServiceEndpointSelected
-    }
-
-    #endregion Public Classes & Interfaces
 }

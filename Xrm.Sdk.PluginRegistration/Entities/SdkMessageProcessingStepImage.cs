@@ -15,6 +15,16 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStepImage : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
+        #region Public Fields
+
+        public const string EntityLogicalName = "sdkmessageprocessingstepimage";
+
+        public const int EntityTypeCode = 4615;
+
+        #endregion Public Fields
+
+        #region Public Constructors
+
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -23,29 +33,17 @@
         {
         }
 
-        public const string EntityLogicalName = "sdkmessageprocessingstepimage";
+        #endregion Public Constructors
 
-        public const int EntityTypeCode = 4615;
+        #region Public Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if ((PropertyChanged != null))
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        #endregion Public Events
 
-        private void OnPropertyChanging(string propertyName)
-        {
-            if ((PropertyChanging != null))
-            {
-                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
-            }
-        }
+        #region Public Properties
 
         /// <summary>
         /// Comma-separated list of attributes that are to be passed into the SDK message processing step image.
@@ -158,6 +156,19 @@
                 OnPropertyChanging("EntityAlias");
                 SetAttributeValue("entityalias", value);
                 OnPropertyChanged("EntityAlias");
+            }
+        }
+
+        [AttributeLogicalName("sdkmessageprocessingstepimageid")]
+        public override Guid Id
+        {
+            get
+            {
+                return base.Id;
+            }
+            set
+            {
+                SdkMessageProcessingStepImageId = value;
             }
         }
 
@@ -367,19 +378,6 @@
             }
         }
 
-        [AttributeLogicalName("sdkmessageprocessingstepimageid")]
-        public override Guid Id
-        {
-            get
-            {
-                return base.Id;
-            }
-            set
-            {
-                SdkMessageProcessingStepImageId = value;
-            }
-        }
-
         /// <summary>
         /// Unique identifier of the SDK message processing step image.
         /// </summary>
@@ -415,5 +413,27 @@
                 return GetAttributeValue<long?>("versionnumber");
             }
         }
+
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if ((PropertyChanged != null))
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void OnPropertyChanging(string propertyName)
+        {
+            if ((PropertyChanging != null))
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion Private Methods
     }
 }

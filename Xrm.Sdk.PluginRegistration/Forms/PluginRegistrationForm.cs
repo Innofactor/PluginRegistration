@@ -31,13 +31,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class PluginRegistrationForm : Form
     {
-        private CrmOrganization m_org;
-        private string m_lastAssemblyFileName;
+        #region Private Fields
+
+        private bool m_assemblyLoaded = false;
         private CrmPluginAssembly m_currentAssembly;
+        private string m_lastAssemblyFileName;
+        private CrmOrganization m_org;
         private MainControl m_orgControl;
         private ProgressIndicator m_progRegistration;
         private List<CrmPlugin> m_registeredPluginList;
-        private bool m_assemblyLoaded = false;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly)
         {
@@ -126,7 +132,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             EnableRegistrationControls();
         }
 
-        #region Control Events
+        #endregion Public Constructors
+
+        #region Private Methods
 
         private void AssemblyPathControl_BrowseCompleted(object sender, EventArgs e)
         {
@@ -151,6 +159,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 m_lastAssemblyFileName = fileName;
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void btnLoadAssembly_Click(object sender, EventArgs e)
@@ -186,16 +199,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             //Enable the controls
             EnableRegistrationControls();
-        }
-
-        private void chkSelectAll_Click(object sender, EventArgs e)
-        {
-            trvPlugins.CheckAllNodes(chkSelectAll.Checked);
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -802,20 +805,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        private void radDisk_CheckedChanged(object sender, EventArgs e)
+        private void chkSelectAll_Click(object sender, EventArgs e)
         {
-            lblServerFileName.Enabled = radDisk.Checked;
-            txtServerFileName.Enabled = radDisk.Checked;
+            trvPlugins.CheckAllNodes(chkSelectAll.Checked);
         }
-
-        private void trvPlugins_CheckStateChanged(object sender, CrmTreeNodeEventArgs e)
-        {
-            chkSelectAll.Checked = trvPlugins.AllNodesChecked;
-        }
-
-        #endregion Control Events
-
-        #region Helper Methods
 
         private void EnableRegistrationControls()
         {
@@ -837,22 +830,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        private CrmAssemblyIsolationMode GetIsolationMode()
-        {
-            if (radIsolationNone.Checked)
-            {
-                return CrmAssemblyIsolationMode.None;
-            }
-            else if (radIsolationSandbox.Checked)
-            {
-                return CrmAssemblyIsolationMode.Sandbox;
-            }
-            else
-            {
-                throw new NotImplementedException("Unknown Isolation Mode");
-            }
-        }
-
         private CrmAssemblySourceType GetAssemblySourceType()
         {
             if (radDB.Checked)
@@ -870,6 +847,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             else
             {
                 throw new NotImplementedException("Unknown Source Type");
+            }
+        }
+
+        private CrmAssemblyIsolationMode GetIsolationMode()
+        {
+            if (radIsolationNone.Checked)
+            {
+                return CrmAssemblyIsolationMode.None;
+            }
+            else if (radIsolationSandbox.Checked)
+            {
+                return CrmAssemblyIsolationMode.Sandbox;
+            }
+            else
+            {
+                throw new NotImplementedException("Unknown Isolation Mode");
             }
         }
 
@@ -900,9 +893,37 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        #endregion Helper Methods
+        private void ProgressIndicatorAddText(string message)
+        {
+            if (txtProgress.TextLength == 0)
+            {
+                txtProgress.Text = message;
+            }
+            else
+            {
+                txtProgress.AppendText(string.Format("\r\n{0}", message));
+            }
 
-        #region ProgressIndicator Implementation
+            txtProgress.SelectionStart = txtProgress.TextLength;
+            txtProgress.SelectionLength = 0;
+        }
+
+        private void ProgressIndicatorComplete()
+        {
+            grpPath.Enabled = true;
+            grpPlugins.Enabled = true;
+            grpIsolationMode.Enabled = true;
+            grpRegLoc.Enabled = true;
+            EnableRegistrationControls();
+            btnCancel.Enabled = true;
+
+            barRegistration.Value = barRegistration.Minimum;
+        }
+
+        private void ProgressIndicatorIncrement(int value)
+        {
+            barRegistration.Value += value;
+        }
 
         private void ProgressIndicatorInit(int min, int pluginCount, int initialValue)
         {
@@ -948,43 +969,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             btnCancel.Enabled = false;
         }
 
-        private void ProgressIndicatorIncrement(int value)
-        {
-            barRegistration.Value += value;
-        }
-
-        private void ProgressIndicatorAddText(string message)
-        {
-            if (txtProgress.TextLength == 0)
-            {
-                txtProgress.Text = message;
-            }
-            else
-            {
-                txtProgress.AppendText(string.Format("\r\n{0}", message));
-            }
-
-            txtProgress.SelectionStart = txtProgress.TextLength;
-            txtProgress.SelectionLength = 0;
-        }
-
         private void ProgressIndicatorSetText(string message)
         {
             txtProgress.Text = message;
         }
 
-        private void ProgressIndicatorComplete()
+        private void radDisk_CheckedChanged(object sender, EventArgs e)
         {
-            grpPath.Enabled = true;
-            grpPlugins.Enabled = true;
-            grpIsolationMode.Enabled = true;
-            grpRegLoc.Enabled = true;
-            EnableRegistrationControls();
-            btnCancel.Enabled = true;
-
-            barRegistration.Value = barRegistration.Minimum;
+            lblServerFileName.Enabled = radDisk.Checked;
+            txtServerFileName.Enabled = radDisk.Checked;
         }
 
-        #endregion ProgressIndicator Implementation
+        private void trvPlugins_CheckStateChanged(object sender, CrmTreeNodeEventArgs e)
+        {
+            chkSelectAll.Checked = trvPlugins.AllNodesChecked;
+        }
+
+        #endregion Private Methods
     }
 }

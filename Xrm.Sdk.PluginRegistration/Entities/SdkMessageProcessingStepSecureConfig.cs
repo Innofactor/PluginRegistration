@@ -15,6 +15,16 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStepSecureConfig : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
+        #region Public Fields
+
+        public const string EntityLogicalName = "sdkmessageprocessingstepsecureconfig";
+
+        public const int EntityTypeCode = 4616;
+
+        #endregion Public Fields
+
+        #region Public Constructors
+
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -23,29 +33,17 @@
         {
         }
 
-        public const string EntityLogicalName = "sdkmessageprocessingstepsecureconfig";
+        #endregion Public Constructors
 
-        public const int EntityTypeCode = 4616;
+        #region Public Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if ((PropertyChanged != null))
-            {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
+        #endregion Public Events
 
-        private void OnPropertyChanging(string propertyName)
-        {
-            if ((PropertyChanging != null))
-            {
-                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
-            }
-        }
+        #region Public Properties
 
         /// <summary>
         /// Unique identifier of the user who created the SDK message processing step.
@@ -92,6 +90,19 @@
             get
             {
                 return GetAttributeValue<int?>("customizationlevel");
+            }
+        }
+
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
+        public override Guid Id
+        {
+            get
+            {
+                return base.Id;
+            }
+            set
+            {
+                SdkMessageProcessingStepSecureConfigId = value;
             }
         }
 
@@ -169,19 +180,6 @@
             }
         }
 
-        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        public override Guid Id
-        {
-            get
-            {
-                return base.Id;
-            }
-            set
-            {
-                SdkMessageProcessingStepSecureConfigId = value;
-            }
-        }
-
         /// <summary>
         /// Unique identifier of the SDK message processing step.
         /// </summary>
@@ -211,5 +209,27 @@
                 OnPropertyChanged("SecureConfig");
             }
         }
+
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if ((PropertyChanged != null))
+            {
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void OnPropertyChanging(string propertyName)
+        {
+            if ((PropertyChanging != null))
+            {
+                PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion Private Methods
     }
 }

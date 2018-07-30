@@ -9,18 +9,7 @@
     [TestFixture]
     internal class SdkMessageFixture
     {
-        [Test]
-        public void CheckLogicalName()
-        {
-            // Arrange
-            var lateBound = new Entity("sdkmessage");
-
-            // Act
-            var earlyBound = Magic.CastTo<SdkMessage>(lateBound);
-
-            // Assert
-            Assert.That(earlyBound.LogicalName == lateBound.LogicalName);
-        }
+        #region Public Methods
 
         [Test]
         public void CheckBoolAttribute()
@@ -49,5 +38,20 @@
             // Assert
             Assert.That(earlyBound.CreatedOn.Value.Day == ((DateTime?)lateBound.Attributes["createdon"]).Value.Day);
         }
+
+        [Test]
+        public void CheckLogicalName()
+        {
+            // Arrange
+            var lateBound = new Entity("sdkmessage");
+
+            // Act
+            var earlyBound = Magic.CastTo<SdkMessage>(lateBound);
+
+            // Assert
+            Assert.That(earlyBound.LogicalName == lateBound.LogicalName);
+        }
+
+        #endregion Public Methods
     }
 }

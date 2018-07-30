@@ -24,8 +24,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class MessagePropertyNameForm : Form
     {
-        private CrmMessage _message;
+        #region Private Fields
+
         private RadioButton[] _buttonList;
+        private CrmMessage _message;
+
+        #endregion Private Fields
+
+        #region Private Constructors
 
         private MessagePropertyNameForm(CrmMessage message)
         {
@@ -77,7 +83,34 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             radTemplateItem.Checked = true;
         }
 
-        #region Methods
+        #endregion Private Constructors
+
+        #region Public Properties
+
+        public ImageMessagePropertyName SelectedMessagePropertyName
+        {
+            get
+            {
+                if (0 == _buttonList.Length)
+                {
+                    return null;
+                }
+
+                for (int i = 0; i < _buttonList.Length; i++)
+                {
+                    if (_buttonList[i].Checked)
+                    {
+                        return (ImageMessagePropertyName)_buttonList[i].Tag;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public static string SelectMessagePropertyName(CrmMessage message)
         {
@@ -109,34 +142,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             return null;
         }
 
-        #endregion Methods
+        #endregion Public Methods
 
-        #region Properties
-
-        public ImageMessagePropertyName SelectedMessagePropertyName
-        {
-            get
-            {
-                if (0 == _buttonList.Length)
-                {
-                    return null;
-                }
-
-                for (int i = 0; i < _buttonList.Length; i++)
-                {
-                    if (_buttonList[i].Checked)
-                    {
-                        return (ImageMessagePropertyName)_buttonList[i].Tag;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        #endregion Properties
-
-        #region Event Handlers
+        #region Private Methods
 
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -164,6 +172,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        #endregion Event Handlers
+        #endregion Private Methods
     }
 }

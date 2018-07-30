@@ -26,10 +26,24 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class StepRegistrationForm : Form
     {
+        #region Private Fields
+
+        private CrmPluginStep m_currentStep;
+        private CrmMessage m_message = null;
+        private string m_messageEntityPrimaryRetrieved = null;
+        private CrmMessageEntity m_messageEntityRetrieved = null;
+        private string m_messageEntitySecondaryRetrieved = null;
+        private CrmMessage m_messageLoaded = null;
+        private string m_messageRetrieved = null;
         private CrmOrganization m_org;
         private MainControl m_orgControl;
-        private CrmPluginStep m_currentStep;
         private bool m_secureConfigurationIdIsInvalid = false;
+
+        private string m_stepName = string.Empty;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public StepRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPlugin plugin, CrmPluginStep step, CrmServiceEndpoint serviceEndpoint)
         {
@@ -56,7 +70,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 msgList.Add(msg.Name);
             }
             txtMessageName.AutoCompleteCustomSource = msgList;
-            
+
             //Check whether system plugins should be added to the list
             if (step != null && org[step.AssemblyId][step.PluginId].IsSystemCrmEntity && (!OrganizationHelper.AllowStepRegistrationForPlugin(plugin)))
             {
@@ -378,35 +392,86 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             CheckDeploymentSupported();
         }
 
-        private void UpdatePluginEventHandlerControls(bool isServiceEndpoint)
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public CrmMessage Message
         {
-            cmbServiceEndpoint.Location = cmbPlugins.Location;
-            cmbServiceEndpoint.Size = cmbPlugins.Size;
-
-            grpStage.Enabled = !isServiceEndpoint;
-
-            cmbPlugins.Enabled = !isServiceEndpoint;
-            cmbPlugins.Visible = !isServiceEndpoint;
-
-            cmbServiceEndpoint.Visible = isServiceEndpoint;
-            cmbServiceEndpoint.Enabled = isServiceEndpoint;
-
-            txtUnsecureConfiguration.Enabled = !isServiceEndpoint;
-            txtSecureConfig.Enabled = !isServiceEndpoint;
-
-            grpDeployment.Enabled = !isServiceEndpoint;
-            grpMode.Enabled = !isServiceEndpoint;
-
-            if (isServiceEndpoint)
+            get
             {
-                chkDeploymentOffline.Checked = false;
-                chkDeploymentServer.Checked = true;
-                radStagePostOperation.Checked = true;
-                radModeAsync.Checked = true;
+                if (txtMessageName.TextLength != 0)
+                {
+                    string message = txtMessageName.Text.Trim();
+                    if (!message.Equals(m_messageRetrieved, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        m_messageRetrieved = message;
+                        m_message = m_org.FindMessage(message);
+
+                        m_messageEntityPrimaryRetrieved = null;
+                        m_messageEntitySecondaryRetrieved = null;
+                        m_messageEntityRetrieved = null;
+                    }
+                }
+                else
+                {
+                    m_messageRetrieved = null;
+                    m_message = null;
+                    m_messageEntityPrimaryRetrieved = null;
+                    m_messageEntitySecondaryRetrieved = null;
+                    m_messageEntityRetrieved = null;
+                }
+
+                return m_message;
             }
         }
 
-        #region Events
+        public CrmMessageEntity MessageEntity
+        {
+            get
+            {
+                if (Message != null)
+                {
+                    string primaryEntity = txtPrimaryEntity.Text.Trim();
+                    if (string.IsNullOrEmpty(primaryEntity))
+                    {
+                        primaryEntity = "none";
+                    }
+
+                    string secondaryEntity = txtSecondaryEntity.Text.Trim();
+                    if (string.IsNullOrEmpty(secondaryEntity))
+                    {
+                        secondaryEntity = "none";
+                    }
+
+                    if (!string.Equals(primaryEntity, m_messageEntityPrimaryRetrieved, StringComparison.InvariantCultureIgnoreCase) ||
+                        !string.Equals(secondaryEntity, m_messageEntitySecondaryRetrieved, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        m_messageEntityPrimaryRetrieved = primaryEntity;
+                        m_messageEntitySecondaryRetrieved = secondaryEntity;
+                        m_messageEntityRetrieved = Message.FindMessageEntity(primaryEntity, secondaryEntity);
+                    }
+                }
+                else
+                {
+                    m_messageEntityPrimaryRetrieved = null;
+                    m_messageEntitySecondaryRetrieved = null;
+                    m_messageEntityRetrieved = null;
+                }
+
+                return m_messageEntityRetrieved;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
@@ -728,103 +793,51 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             Close();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void CheckAttributesSupported()
         {
-            DialogResult = DialogResult.Cancel;
-            Close();
-        }
-
-        private void txtMessageName_Validating(object sender, CancelEventArgs e)
-        {
-            if (txtMessageName.TextLength != 0 && Message == null)
+            //Check if we should disable the message
+            if (null != Message && !Message.SupportsFilteredAttributes)
             {
-                MessageBox.Show("Invalid Message Name specified. Please re-enter the message name",
-                    "Invalid Message Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                e.Cancel = true;
+                crmFilteringAttributes.Enabled = false;
+                crmFilteringAttributes.DisabledMessage = "Message does not support Filtered Attributes";
             }
-            else if (Message != null)
+            else
             {
-                LoadEntities();
+                crmFilteringAttributes.Enabled = true;
+                crmFilteringAttributes.DisabledMessage = null;
             }
         }
 
-        private void txtRank_KeyPress(object sender, KeyPressEventArgs e)
+        private void CheckDeploymentSupported()
         {
-            if (!char.IsNumber(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != '-')
+            if (MessageEntity == null)
             {
-                e.Handled = true;
+                chkDeploymentOffline.Enabled = true;
+                chkDeploymentServer.Enabled = true;
             }
-        }
-
-        private string m_stepName = string.Empty;
-
-        private void MessageData_TextChanged(object sender, EventArgs e)
-        {
-            if (m_stepName != null)
+            else
             {
-                m_stepName = GenerateDescription();
-                txtName.Text = m_stepName;
-            }
-        }
-
-        private void MessageEntityData_Leave(object sender, EventArgs e)
-        {
-            if (MessageEntity != null)
-            {
-                if (!string.Equals(crmFilteringAttributes.EntityName, MessageEntity))
+                switch (MessageEntity.Availability)
                 {
-                    crmFilteringAttributes.EntityName = MessageEntity.PrimaryEntity;
+                    case CrmPluginStepDeployment.OfflineOnly:
+                        chkDeploymentOffline.Enabled = true;
+                        chkDeploymentServer.Enabled = false;
+                        break;
+
+                    case CrmPluginStepDeployment.ServerOnly:
+                        chkDeploymentOffline.Enabled = false;
+                        chkDeploymentServer.Enabled = true;
+                        break;
+
+                    case CrmPluginStepDeployment.Both:
+                        chkDeploymentOffline.Enabled = true;
+                        chkDeploymentServer.Enabled = true;
+                        break;
+
+                    default:
+                        throw new NotImplementedException("CrmPluginStepDeployment = " + MessageEntity.Availability);
                 }
             }
-
-            CheckDeploymentSupported();
-        }
-
-        private void txtName_TextChanged(object sender, EventArgs e)
-        {
-            if (m_stepName != null &&
-                !m_stepName.Equals(txtName.Text, StringComparison.InvariantCultureIgnoreCase))
-            {
-                m_stepName = GenerateDescription();
-            }
-        }
-
-        private void txtMessageName_Leave(object sender, EventArgs e)
-        {
-            LoadEntities();
-            CheckAttributesSupported();
-        }
-
-        private void txtName_Leave(object sender, EventArgs e)
-        {
-            if (txtName.TextLength == 0)
-            {
-                m_stepName = string.Empty;
-                txtName.Text = m_stepName;
-            }
-        }
-
-        private void radInvocationChild_CheckedChanged(object sender, System.EventArgs e)
-        {
-            if (m_stepName != null)
-            {
-                m_stepName = GenerateDescription();
-                txtName.Text = m_stepName;
-            }
-        }
-
-        private void radInvocationParent_CheckedChanged(object sender, System.EventArgs e)
-        {
-            if (m_stepName != null)
-            {
-                m_stepName = GenerateDescription();
-                txtName.Text = m_stepName;
-            }
-        }
-
-        private void radMode_CheckedChanged(object sender, EventArgs e)
-        {
-            chkDeleteAsyncOperationIfSuccessful.Enabled = radModeAsync.Checked;
         }
 
         private void cmbPlugins_SelectedIndexChanged(object sender, EventArgs e)
@@ -832,167 +845,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             //Determine what boxes to enable
             var enableV4Controls = false;
             var enable2011Controls = true;
-         
+
             //Todo: After removing SdkVersion property, removing v4 based features.
             //Enable the correct controls _(CRM2011 and above)
             grpInvocation.Enabled = enableV4Controls;
             radStagePreOperation.Enabled = enable2011Controls;
             radStagePostOperation.Enabled = enable2011Controls;
             radStagePostOperationDeprecated.Enabled = enableV4Controls;
-        }
-
-        private void lnkInvalidSecureConfigurationId_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show(this, "The current value of the secure configuration will be overwritten when this step is saved. Continue?",
-                    "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
-            {
-                return;
-            }
-
-            m_secureConfigurationIdIsInvalid = false;
-
-            txtSecureConfig.Visible = true;
-            txtSecureConfig.Text = null;
-
-            picInvalidSecureConfigurationId.Visible = false;
-            lblInvalidSecureConfigurationId.Visible = false;
-            lnkInvalidSecureConfigurationId.Visible = false;
-        }
-
-        #endregion Events
-
-        #region Properties
-
-        private string m_messageRetrieved = null;
-        private CrmMessage m_message = null;
-
-        public CrmMessage Message
-        {
-            get
-            {
-                if (txtMessageName.TextLength != 0)
-                {
-                    string message = txtMessageName.Text.Trim();
-                    if (!message.Equals(m_messageRetrieved, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        m_messageRetrieved = message;
-                        m_message = m_org.FindMessage(message);
-
-                        m_messageEntityPrimaryRetrieved = null;
-                        m_messageEntitySecondaryRetrieved = null;
-                        m_messageEntityRetrieved = null;
-                    }
-                }
-                else
-                {
-                    m_messageRetrieved = null;
-                    m_message = null;
-                    m_messageEntityPrimaryRetrieved = null;
-                    m_messageEntitySecondaryRetrieved = null;
-                    m_messageEntityRetrieved = null;
-                }
-
-                return m_message;
-            }
-        }
-
-        private string m_messageEntityPrimaryRetrieved = null;
-        private string m_messageEntitySecondaryRetrieved = null;
-        private CrmMessageEntity m_messageEntityRetrieved = null;
-
-        public CrmMessageEntity MessageEntity
-        {
-            get
-            {
-                if (Message != null)
-                {
-                    string primaryEntity = txtPrimaryEntity.Text.Trim();
-                    if (string.IsNullOrEmpty(primaryEntity))
-                    {
-                        primaryEntity = "none";
-                    }
-
-                    string secondaryEntity = txtSecondaryEntity.Text.Trim();
-                    if (string.IsNullOrEmpty(secondaryEntity))
-                    {
-                        secondaryEntity = "none";
-                    }
-
-                    if (!string.Equals(primaryEntity, m_messageEntityPrimaryRetrieved, StringComparison.InvariantCultureIgnoreCase) ||
-                        !string.Equals(secondaryEntity, m_messageEntitySecondaryRetrieved, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        m_messageEntityPrimaryRetrieved = primaryEntity;
-                        m_messageEntitySecondaryRetrieved = secondaryEntity;
-                        m_messageEntityRetrieved = Message.FindMessageEntity(primaryEntity, secondaryEntity);
-                    }
-                }
-                else
-                {
-                    m_messageEntityPrimaryRetrieved = null;
-                    m_messageEntitySecondaryRetrieved = null;
-                    m_messageEntityRetrieved = null;
-                }
-
-                return m_messageEntityRetrieved;
-            }
-        }
-
-        #endregion Properties
-
-        #region Private Helper Methods
-
-        private CrmMessage m_messageLoaded = null;
-
-        private void LoadEntities()
-        {
-            if (m_messageLoaded == Message)
-            {
-                return;
-            }
-            else
-            {
-                m_messageLoaded = Message;
-            }
-
-            Control activeControl = ActiveControl;
-
-            if (Message == null)
-            {
-                txtPrimaryEntity.AutoCompleteCustomSource = new AutoCompleteStringCollection();
-                txtSecondaryEntity.AutoCompleteCustomSource = new AutoCompleteStringCollection();
-
-                if (activeControl != null)
-                {
-                    activeControl.Focus();
-                }
-                return;
-            }
-            else
-            {
-                AutoCompleteStringCollection primaryList = new AutoCompleteStringCollection();
-                AutoCompleteStringCollection secondaryList = new AutoCompleteStringCollection();
-                foreach (CrmMessageEntity entity in Message.FindMessageEntities(null, null))
-                {
-                    if (!string.IsNullOrEmpty(entity.PrimaryEntity))
-                    {
-                        primaryList.Add(entity.PrimaryEntity);
-                    }
-
-                    if (!string.IsNullOrEmpty(entity.SecondaryEntity))
-                    {
-                        secondaryList.Add(entity.SecondaryEntity);
-                    }
-                }
-
-                txtPrimaryEntity.AutoCompleteCustomSource = primaryList;
-                txtSecondaryEntity.AutoCompleteCustomSource = secondaryList;
-
-                if (activeControl != null)
-                {
-                    activeControl.Focus();
-                }
-            }
         }
 
         private string GenerateDescription()
@@ -1052,53 +911,195 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             return RegistrationHelper.GenerateStepDescription(typeName, messageName, primaryEntity, secondaryEntity);
         }
 
-        private void CheckAttributesSupported()
+        private void lnkInvalidSecureConfigurationId_Click(object sender, EventArgs e)
         {
-            //Check if we should disable the message
-            if (null != Message && !Message.SupportsFilteredAttributes)
+            if (MessageBox.Show(this, "The current value of the secure configuration will be overwritten when this step is saved. Continue?",
+                    "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
             {
-                crmFilteringAttributes.Enabled = false;
-                crmFilteringAttributes.DisabledMessage = "Message does not support Filtered Attributes";
+                return;
             }
-            else
-            {
-                crmFilteringAttributes.Enabled = true;
-                crmFilteringAttributes.DisabledMessage = null;
-            }
+
+            m_secureConfigurationIdIsInvalid = false;
+
+            txtSecureConfig.Visible = true;
+            txtSecureConfig.Text = null;
+
+            picInvalidSecureConfigurationId.Visible = false;
+            lblInvalidSecureConfigurationId.Visible = false;
+            lnkInvalidSecureConfigurationId.Visible = false;
         }
 
-        private void CheckDeploymentSupported()
+        private void LoadEntities()
         {
-            if (MessageEntity == null)
+            if (m_messageLoaded == Message)
             {
-                chkDeploymentOffline.Enabled = true;
-                chkDeploymentServer.Enabled = true;
+                return;
             }
             else
             {
-                switch (MessageEntity.Availability)
+                m_messageLoaded = Message;
+            }
+
+            Control activeControl = ActiveControl;
+
+            if (Message == null)
+            {
+                txtPrimaryEntity.AutoCompleteCustomSource = new AutoCompleteStringCollection();
+                txtSecondaryEntity.AutoCompleteCustomSource = new AutoCompleteStringCollection();
+
+                if (activeControl != null)
                 {
-                    case CrmPluginStepDeployment.OfflineOnly:
-                        chkDeploymentOffline.Enabled = true;
-                        chkDeploymentServer.Enabled = false;
-                        break;
+                    activeControl.Focus();
+                }
+                return;
+            }
+            else
+            {
+                AutoCompleteStringCollection primaryList = new AutoCompleteStringCollection();
+                AutoCompleteStringCollection secondaryList = new AutoCompleteStringCollection();
+                foreach (CrmMessageEntity entity in Message.FindMessageEntities(null, null))
+                {
+                    if (!string.IsNullOrEmpty(entity.PrimaryEntity))
+                    {
+                        primaryList.Add(entity.PrimaryEntity);
+                    }
 
-                    case CrmPluginStepDeployment.ServerOnly:
-                        chkDeploymentOffline.Enabled = false;
-                        chkDeploymentServer.Enabled = true;
-                        break;
+                    if (!string.IsNullOrEmpty(entity.SecondaryEntity))
+                    {
+                        secondaryList.Add(entity.SecondaryEntity);
+                    }
+                }
 
-                    case CrmPluginStepDeployment.Both:
-                        chkDeploymentOffline.Enabled = true;
-                        chkDeploymentServer.Enabled = true;
-                        break;
+                txtPrimaryEntity.AutoCompleteCustomSource = primaryList;
+                txtSecondaryEntity.AutoCompleteCustomSource = secondaryList;
 
-                    default:
-                        throw new NotImplementedException("CrmPluginStepDeployment = " + MessageEntity.Availability);
+                if (activeControl != null)
+                {
+                    activeControl.Focus();
                 }
             }
         }
 
-        #endregion Private Helper Methods
+        private void MessageData_TextChanged(object sender, EventArgs e)
+        {
+            if (m_stepName != null)
+            {
+                m_stepName = GenerateDescription();
+                txtName.Text = m_stepName;
+            }
+        }
+
+        private void MessageEntityData_Leave(object sender, EventArgs e)
+        {
+            if (MessageEntity != null)
+            {
+                if (!string.Equals(crmFilteringAttributes.EntityName, MessageEntity))
+                {
+                    crmFilteringAttributes.EntityName = MessageEntity.PrimaryEntity;
+                }
+            }
+
+            CheckDeploymentSupported();
+        }
+
+        private void radInvocationChild_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (m_stepName != null)
+            {
+                m_stepName = GenerateDescription();
+                txtName.Text = m_stepName;
+            }
+        }
+
+        private void radInvocationParent_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (m_stepName != null)
+            {
+                m_stepName = GenerateDescription();
+                txtName.Text = m_stepName;
+            }
+        }
+
+        private void radMode_CheckedChanged(object sender, EventArgs e)
+        {
+            chkDeleteAsyncOperationIfSuccessful.Enabled = radModeAsync.Checked;
+        }
+
+        private void txtMessageName_Leave(object sender, EventArgs e)
+        {
+            LoadEntities();
+            CheckAttributesSupported();
+        }
+
+        private void txtMessageName_Validating(object sender, CancelEventArgs e)
+        {
+            if (txtMessageName.TextLength != 0 && Message == null)
+            {
+                MessageBox.Show("Invalid Message Name specified. Please re-enter the message name",
+                    "Invalid Message Name", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true;
+            }
+            else if (Message != null)
+            {
+                LoadEntities();
+            }
+        }
+
+        private void txtName_Leave(object sender, EventArgs e)
+        {
+            if (txtName.TextLength == 0)
+            {
+                m_stepName = string.Empty;
+                txtName.Text = m_stepName;
+            }
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            if (m_stepName != null &&
+                !m_stepName.Equals(txtName.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
+                m_stepName = GenerateDescription();
+            }
+        }
+
+        private void txtRank_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != '-')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void UpdatePluginEventHandlerControls(bool isServiceEndpoint)
+        {
+            cmbServiceEndpoint.Location = cmbPlugins.Location;
+            cmbServiceEndpoint.Size = cmbPlugins.Size;
+
+            grpStage.Enabled = !isServiceEndpoint;
+
+            cmbPlugins.Enabled = !isServiceEndpoint;
+            cmbPlugins.Visible = !isServiceEndpoint;
+
+            cmbServiceEndpoint.Visible = isServiceEndpoint;
+            cmbServiceEndpoint.Enabled = isServiceEndpoint;
+
+            txtUnsecureConfiguration.Enabled = !isServiceEndpoint;
+            txtSecureConfig.Enabled = !isServiceEndpoint;
+
+            grpDeployment.Enabled = !isServiceEndpoint;
+            grpMode.Enabled = !isServiceEndpoint;
+
+            if (isServiceEndpoint)
+            {
+                chkDeploymentOffline.Checked = false;
+                chkDeploymentServer.Checked = true;
+                radStagePostOperation.Checked = true;
+                radModeAsync.Checked = true;
+            }
+        }
+
+        #endregion Private Methods
     }
 }

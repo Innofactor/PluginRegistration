@@ -15,6 +15,16 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class PluginType : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
+        #region Public Fields
+
+        public const string EntityLogicalName = "plugintype";
+
+        public const int EntityTypeCode = 4602;
+
+        #endregion Public Fields
+
+        #region Public Constructors
+
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -23,29 +33,17 @@
         {
         }
 
-        public const string EntityLogicalName = "plugintype";
+        #endregion Public Constructors
 
-        public const int EntityTypeCode = 4602;
+        #region Public Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if ((PropertyChanged != null))
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        #endregion Public Events
 
-        private void OnPropertyChanging(string propertyName)
-        {
-            if ((PropertyChanging != null))
-            {
-                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
-            }
-        }
+        #region Public Properties
 
         /// <summary>
         /// Full path name of the plug-in assembly.
@@ -164,6 +162,19 @@
                 OnPropertyChanging("FriendlyName");
                 SetAttributeValue("friendlyname", value);
                 OnPropertyChanged("FriendlyName");
+            }
+        }
+
+        [AttributeLogicalName("plugintypeid")]
+        public override Guid Id
+        {
+            get
+            {
+                return base.Id;
+            }
+            set
+            {
+                PluginTypeId = value;
             }
         }
 
@@ -337,19 +348,6 @@
             }
         }
 
-        [AttributeLogicalName("plugintypeid")]
-        public override Guid Id
-        {
-            get
-            {
-                return base.Id;
-            }
-            set
-            {
-                PluginTypeId = value;
-            }
-        }
-
         /// <summary>
         /// Unique identifier of the plug-in type.
         /// </summary>
@@ -445,5 +443,27 @@
                 OnPropertyChanged("WorkflowActivityGroupName");
             }
         }
+
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if ((PropertyChanged != null))
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void OnPropertyChanging(string propertyName)
+        {
+            if ((PropertyChanging != null))
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion Private Methods
     }
 }

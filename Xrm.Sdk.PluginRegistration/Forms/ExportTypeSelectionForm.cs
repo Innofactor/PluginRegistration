@@ -8,6 +8,8 @@
     /// </summary>
     public partial class ExportTypeSelectionForm : Form
     {
+        #region Public Constructors
+
         public ExportTypeSelectionForm()
         {
             InitializeComponent();
@@ -20,6 +22,10 @@
             this.Text = header;
         }
 
+        #endregion Public Constructors
+
+        #region Private Methods
+
         private void btnExportAll_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Yes;
@@ -31,5 +37,7 @@
             DialogResult = DialogResult.No;
             Close();
         }
+
+        #endregion Private Methods
     }
 }

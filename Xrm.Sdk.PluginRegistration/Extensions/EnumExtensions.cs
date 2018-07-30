@@ -5,6 +5,8 @@
 
     public static class EnumExtensions
     {
+        #region Public Methods
+
         /// <summary>
         /// Returns the description attribute on enum value, if that's not available, it returns the name
         /// </summary>
@@ -34,5 +36,7 @@
             }
             return null;
         }
+
+        #endregion Public Methods
     }
 }

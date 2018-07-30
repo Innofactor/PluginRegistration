@@ -29,13 +29,23 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class ErrorMessageForm : Form
     {
-        private string _message = string.Empty;
+        #region Private Fields
+
         private bool _loaded = false;
+        private string _message = string.Empty;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public ErrorMessageForm()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public string Message
         {
@@ -63,18 +73,66 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        private void ErrorMessage_Load(object sender, EventArgs e)
-        {
-            txtErrorMessage.Text = _message;
-            txtErrorMessage.SelectAll();
-            _loaded = true;
-        }
+        #endregion Public Properties
 
-        private void CloseErrorMessage(object sender, KeyEventArgs e)
+        #region Public Methods
+
+        /// <summary>
+        /// Converts an object (that is a data contract) to a string
+        /// </summary>
+        /// <param name="value">Value to be converted to a string</param>
+        /// <returns>Data contract in a serialized string format</returns>
+        public static string ConvertDataContractToString(object value)
         {
-            if (e.KeyCode == Keys.Escape)
+            if (null == value)
             {
-                Close();
+                throw new ArgumentNullException("value");
+            }
+
+            // Retrieve the type for the value
+            var valueType = value.GetType();
+
+            // Verify that this is a data contract
+            var contractAttributeList = (DataContractAttribute[])valueType.GetCustomAttributes(typeof(DataContractAttribute), true);
+            if (null == contractAttributeList || 0 == contractAttributeList.Length)
+            {
+                throw new ArgumentException("The argument does not have a DataContract attribute.", "value");
+            }
+
+            // Create the stream
+            using (var stream = new MemoryStream())
+            {
+                // Create the serializer for the object
+                var serializer = new DataContractSerializer(valueType);
+
+                // Write the object to the stream
+                serializer.WriteObject(stream, value);
+
+                // In order to format the XML document (since this is being output), it has to go
+                // through the XmlWriter. The MemoryStream can be reused to create a string
+                // Reset the stream's position
+                stream.Seek(0, SeekOrigin.Begin);
+
+                // Create an XML document from the stream
+                var doc = new XmlDocument();
+                doc.Load(stream);
+
+                // Create the writer settings
+                var settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.OmitXmlDeclaration = true;
+
+                // Write the data
+                using (var stringWriter = new StringWriter(CultureInfo.InvariantCulture))
+                {
+                    using (var writer = XmlWriter.Create(stringWriter, settings))
+                    {
+                        doc.Save(writer);
+                    }
+
+                    // Return the writer's contents
+                    return stringWriter.ToString();
+                }
             }
         }
 
@@ -153,63 +211,25 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             return builder.ToString();
         }
 
-        /// <summary>
-        /// Converts an object (that is a data contract) to a string
-        /// </summary>
-        /// <param name="value">Value to be converted to a string</param>
-        /// <returns>Data contract in a serialized string format</returns>
-        public static string ConvertDataContractToString(object value)
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void CloseErrorMessage(object sender, KeyEventArgs e)
         {
-            if (null == value)
+            if (e.KeyCode == Keys.Escape)
             {
-                throw new ArgumentNullException("value");
-            }
-
-            // Retrieve the type for the value
-            var valueType = value.GetType();
-
-            // Verify that this is a data contract
-            var contractAttributeList = (DataContractAttribute[])valueType.GetCustomAttributes(typeof(DataContractAttribute), true);
-            if (null == contractAttributeList || 0 == contractAttributeList.Length)
-            {
-                throw new ArgumentException("The argument does not have a DataContract attribute.", "value");
-            }
-
-            // Create the stream
-            using (var stream = new MemoryStream())
-            {
-                // Create the serializer for the object
-                var serializer = new DataContractSerializer(valueType);
-
-                // Write the object to the stream
-                serializer.WriteObject(stream, value);
-
-                // In order to format the XML document (since this is being output), it has to go
-                // through the XmlWriter. The MemoryStream can be reused to create a string
-                // Reset the stream's position
-                stream.Seek(0, SeekOrigin.Begin);
-
-                // Create an XML document from the stream
-                var doc = new XmlDocument();
-                doc.Load(stream);
-
-                // Create the writer settings
-                var settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.OmitXmlDeclaration = true;
-
-                // Write the data
-                using (var stringWriter = new StringWriter(CultureInfo.InvariantCulture))
-                {
-                    using (var writer = XmlWriter.Create(stringWriter, settings))
-                    {
-                        doc.Save(writer);
-                    }
-
-                    // Return the writer's contents
-                    return stringWriter.ToString();
-                }
+                Close();
             }
         }
+
+        private void ErrorMessage_Load(object sender, EventArgs e)
+        {
+            txtErrorMessage.Text = _message;
+            txtErrorMessage.SelectAll();
+            _loaded = true;
+        }
+
+        #endregion Private Methods
     }
 }

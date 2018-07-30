@@ -8,22 +8,125 @@
     [DefaultEvent("PathChanged")]
     public sealed partial class FileBrowserControl : UserControl
     {
+        #region Private Fields
+
         private bool _isPathChanged;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public FileBrowserControl()
         {
             InitializeComponent();
         }
 
-        #region Events
+        #endregion Public Constructors
+
+        #region Public Events
 
         public event EventHandler<EventArgs> BrowseCompleted;
 
         public event EventHandler<EventArgs> PathChanged;
 
-        #endregion Events
+        #endregion Public Events
 
-        #region Events Handlers
+        #region Public Properties
+
+        public string DefaultExtension
+        {
+            get
+            {
+                return Dialog.DefaultExt;
+            }
+
+            set
+            {
+                Dialog.DefaultExt = value;
+            }
+        }
+
+        public string DialogTitle
+        {
+            get
+            {
+                return Dialog.Title;
+            }
+
+            set
+            {
+                Dialog.Title = value;
+            }
+        }
+
+        [Browsable(false)]
+        public bool FileExists
+        {
+            get
+            {
+                return (HasFileName && File.Exists(FileName));
+            }
+        }
+
+        [Browsable(false)]
+        public string FileName
+        {
+            get
+            {
+                return PathBox.Text;
+            }
+
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    PathBox.Clear();
+                }
+                else
+                {
+                    PathBox.Text = value.Trim();
+                }
+            }
+        }
+
+        public string Filter
+        {
+            get
+            {
+                return Dialog.Filter;
+            }
+
+            set
+            {
+                Dialog.Filter = value;
+            }
+        }
+
+        [Browsable(false)]
+        public bool HasFileName
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(PathBox.Text);
+            }
+        }
+
+        public string InitialDirectory
+        {
+            get
+            {
+                return Dialog.InitialDirectory;
+            }
+
+            set
+            {
+                Dialog.InitialDirectory = value;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Private Methods
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
@@ -65,101 +168,6 @@
             _isPathChanged = true;
         }
 
-        #endregion Events Handlers
-
-        #region Properties
-
-        public string DialogTitle
-        {
-            get
-            {
-                return Dialog.Title;
-            }
-
-            set
-            {
-                Dialog.Title = value;
-            }
-        }
-
-        public string DefaultExtension
-        {
-            get
-            {
-                return Dialog.DefaultExt;
-            }
-
-            set
-            {
-                Dialog.DefaultExt = value;
-            }
-        }
-
-        public string InitialDirectory
-        {
-            get
-            {
-                return Dialog.InitialDirectory;
-            }
-
-            set
-            {
-                Dialog.InitialDirectory = value;
-            }
-        }
-
-        public string Filter
-        {
-            get
-            {
-                return Dialog.Filter;
-            }
-
-            set
-            {
-                Dialog.Filter = value;
-            }
-        }
-
-        [Browsable(false)]
-        public string FileName
-        {
-            get
-            {
-                return PathBox.Text;
-            }
-
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    PathBox.Clear();
-                }
-                else
-                {
-                    PathBox.Text = value.Trim();
-                }
-            }
-        }
-
-        [Browsable(false)]
-        public bool HasFileName
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(PathBox.Text);
-            }
-        }
-
-        [Browsable(false)]
-        public bool FileExists
-        {
-            get
-            {
-                return (HasFileName && File.Exists(FileName));
-            }
-        }
-
-        #endregion Properties
+        #endregion Private Methods
     }
 }

@@ -32,16 +32,18 @@ namespace Xrm.Sdk.PluginRegistration.Controls
     [Designer(typeof(DocumentDesigner), typeof(IRootDesigner))]
     public partial class CrmAttributeSelectionControl : UserControl
     {
+        #region Private Fields
+
         private bool m_allAttributes;
         private Collection<string> m_attributeList = new Collection<string>();
-        private CrmOrganization m_org;
         private string m_entityName;
-        private ProgressIndicator m_progressIndicator = null;
+        private CrmOrganization m_org;
         private MainControl m_orgControl = null;
+        private ProgressIndicator m_progressIndicator = null;
 
-        public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
+        #endregion Private Fields
 
-        public event EventHandler<EventArgs> AttributesChanged;
+        #region Public Constructors
 
         public CrmAttributeSelectionControl(MainControl orgControl)
         {
@@ -55,62 +57,24 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }));
         }
 
+        #endregion Public Constructors
+
+        #region Public Events
+
+        public event EventHandler<EventArgs> AttributesChanged;
+
+        public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
+
+        #endregion Public Events
+
+        #region Public Properties
+
         [Browsable(false)]
-        public CrmOrganization Organization
+        public bool AllAttributes
         {
             get
             {
-                return m_org;
-            }
-            set
-            {
-                m_org = value;
-                btnSelect.Enabled = (m_org != null && m_entityName != null);
-            }
-        }
-
-        [Browsable(true)]
-        public bool WordWrap
-        {
-            get
-            {
-                return txtAttributes.WordWrap;
-            }
-
-            set
-            {
-                txtAttributes.WordWrap = value;
-            }
-        }
-
-        [Browsable(true)]
-        public ScrollBars ScrollBars
-        {
-            get
-            {
-                return txtAttributes.ScrollBars;
-            }
-
-            set
-            {
-                txtAttributes.ScrollBars = value;
-            }
-        }
-
-        [Browsable(true)]
-        public string EntityName
-        {
-            get
-            {
-                return m_entityName;
-            }
-            set
-            {
-                if (!string.Equals(m_entityName, value, StringComparison.CurrentCulture))
-                {
-                    m_entityName = value;
-                    btnSelect.Enabled = (m_org != null && m_entityName != null);
-                }
+                return m_allAttributes;
             }
         }
 
@@ -147,24 +111,6 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
-        [Browsable(false)]
-        public bool AllAttributes
-        {
-            get
-            {
-                return m_allAttributes;
-            }
-        }
-
-        [Browsable(false)]
-        public bool HasAttributes
-        {
-            get
-            {
-                return (m_allAttributes || m_attributeList.Count != 0);
-            }
-        }
-
         /// <summary>
         /// Shows this message when the control is disabled
         /// </summary>
@@ -180,6 +126,141 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 txtDisabledMessage.Text = value;
                 DisplayDisabledMessage();
+            }
+        }
+
+        [Browsable(true)]
+        public string EntityName
+        {
+            get
+            {
+                return m_entityName;
+            }
+            set
+            {
+                if (!string.Equals(m_entityName, value, StringComparison.CurrentCulture))
+                {
+                    m_entityName = value;
+                    btnSelect.Enabled = (m_org != null && m_entityName != null);
+                }
+            }
+        }
+
+        [Browsable(false)]
+        public bool HasAttributes
+        {
+            get
+            {
+                return (m_allAttributes || m_attributeList.Count != 0);
+            }
+        }
+
+        [Browsable(false)]
+        public CrmOrganization Organization
+        {
+            get
+            {
+                return m_org;
+            }
+            set
+            {
+                m_org = value;
+                btnSelect.Enabled = (m_org != null && m_entityName != null);
+            }
+        }
+
+        [Browsable(true)]
+        public ScrollBars ScrollBars
+        {
+            get
+            {
+                return txtAttributes.ScrollBars;
+            }
+
+            set
+            {
+                txtAttributes.ScrollBars = value;
+            }
+        }
+
+        [Browsable(true)]
+        public bool WordWrap
+        {
+            get
+            {
+                return txtAttributes.WordWrap;
+            }
+
+            set
+            {
+                txtAttributes.WordWrap = value;
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Private Properties
+
+        private string AttributeString
+        {
+            get
+            {
+                if (m_attributeList.Count == 0)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return string.Join(",", AttributeCollectionToArray());
+                }
+            }
+            set
+            {
+                m_attributeList.Clear();
+                if (!string.IsNullOrEmpty(value))
+                {
+                    string[] attributeList = value.Split(',');
+                    foreach (string attribute in attributeList)
+                    {
+                        if (!string.IsNullOrEmpty(attribute))
+                        {
+                            m_attributeList.Add(attribute.Trim());
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion Private Properties
+
+        #region Public Methods
+
+        public void ClearAttributes()
+        {
+            UpdateParameters(null, false);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private string[] AttributeCollectionToArray()
+        {
+            return AttributeCollectionToArray(m_attributeList);
+        }
+
+        private string[] AttributeCollectionToArray(Collection<string> attributes)
+        {
+            if (attributes == null)
+            {
+                return new string[0];
+            }
+            else
+            {
+                string[] attributeList = new string[attributes.Count];
+                attributes.CopyTo(attributeList, 0);
+
+                return attributeList;
             }
         }
 
@@ -232,65 +313,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             DisplayDisabledMessage();
         }
 
-        #region Public Helper Methods
-
-        public void ClearAttributes()
+        private void DisplayDisabledMessage()
         {
-            UpdateParameters(null, false);
-        }
+            bool visibleDisabledMessage = !(Enabled || txtDisabledMessage.TextLength == 0);
 
-        #endregion Public Helper Methods
-
-        #region Private Helper Methods
-
-        private string AttributeString
-        {
-            get
-            {
-                if (m_attributeList.Count == 0)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return string.Join(",", AttributeCollectionToArray());
-                }
-            }
-            set
-            {
-                m_attributeList.Clear();
-                if (!string.IsNullOrEmpty(value))
-                {
-                    string[] attributeList = value.Split(',');
-                    foreach (string attribute in attributeList)
-                    {
-                        if (!string.IsNullOrEmpty(attribute))
-                        {
-                            m_attributeList.Add(attribute.Trim());
-                        }
-                    }
-                }
-            }
-        }
-
-        private string[] AttributeCollectionToArray()
-        {
-            return AttributeCollectionToArray(m_attributeList);
-        }
-
-        private string[] AttributeCollectionToArray(Collection<string> attributes)
-        {
-            if (attributes == null)
-            {
-                return new string[0];
-            }
-            else
-            {
-                string[] attributeList = new string[attributes.Count];
-                attributes.CopyTo(attributeList, 0);
-
-                return attributeList;
-            }
+            txtDisabledMessage.Visible = visibleDisabledMessage;
+            txtAttributes.Visible = !visibleDisabledMessage;
+            btnSelect.Visible = !visibleDisabledMessage;
         }
 
         private void UpdateParameters(Collection<string> attributes, bool allAttributes)
@@ -328,15 +357,6 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
         }
 
-        private void DisplayDisabledMessage()
-        {
-            bool visibleDisabledMessage = !(Enabled || txtDisabledMessage.TextLength == 0);
-
-            txtDisabledMessage.Visible = visibleDisabledMessage;
-            txtAttributes.Visible = !visibleDisabledMessage;
-            btnSelect.Visible = !visibleDisabledMessage;
-        }
-
-        #endregion Private Helper Methods
+        #endregion Private Methods
     }
 }

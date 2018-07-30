@@ -16,6 +16,16 @@
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
     public partial class SdkMessageProcessingStep : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
+        #region Public Fields
+
+        public const string EntityLogicalName = "sdkmessageprocessingstep";
+
+        public const int EntityTypeCode = 4608;
+
+        #endregion Public Fields
+
+        #region Public Constructors
+
         /// <summary>
         /// Default Constructor.
         /// </summary>
@@ -24,29 +34,17 @@
         {
         }
 
-        public const string EntityLogicalName = "sdkmessageprocessingstep";
+        #endregion Public Constructors
 
-        public const int EntityTypeCode = 4608;
+        #region Public Events
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event PropertyChangingEventHandler PropertyChanging;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if ((PropertyChanged != null))
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        #endregion Public Events
 
-        private void OnPropertyChanging(string propertyName)
-        {
-            if ((PropertyChanging != null))
-            {
-                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
-            }
-        }
+        #region Public Properties
 
         /// <summary>
         /// Indicates whether the asynchronous system job is automatically deleted on completion.
@@ -195,6 +193,19 @@
                 OnPropertyChanging("FilteringAttributes");
                 SetAttributeValue("filteringattributes", value);
                 OnPropertyChanged("FilteringAttributes");
+            }
+        }
+
+        [AttributeLogicalName("sdkmessageprocessingstepid")]
+        public override Guid Id
+        {
+            get
+            {
+                return base.Id;
+            }
+            set
+            {
+                SdkMessageProcessingStepId = value;
             }
         }
 
@@ -478,16 +489,21 @@
             }
         }
 
-        [AttributeLogicalName("sdkmessageprocessingstepid")]
-        public override Guid Id
+        /// <summary>
+        /// 1:N sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+        /// </summary>
+        [RelationshipSchemaName("sdkmessageprocessingstepid_sdkmessageprocessingstepimage")]
+        public IEnumerable<SdkMessageProcessingStepImage> sdkmessageprocessingstepid_sdkmessageprocessingstepimage
         {
             get
             {
-                return base.Id;
+                return GetRelatedEntities<SdkMessageProcessingStepImage>("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null);
             }
             set
             {
-                SdkMessageProcessingStepId = value;
+                OnPropertyChanging("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
+                SetRelatedEntities("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null, value);
+                OnPropertyChanged("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
             }
         }
 
@@ -518,6 +534,25 @@
                 OnPropertyChanging("SdkMessageProcessingStepSecureConfigId");
                 SetAttributeValue("sdkmessageprocessingstepsecureconfigid", value);
                 OnPropertyChanged("SdkMessageProcessingStepSecureConfigId");
+            }
+        }
+
+        /// <summary>
+        /// N:1 sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+        /// </summary>
+        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
+        [RelationshipSchemaName("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
+        public SdkMessageProcessingStepSecureConfig sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+        {
+            get
+            {
+                return GetRelatedEntity<SdkMessageProcessingStepSecureConfig>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null);
+            }
+            set
+            {
+                OnPropertyChanging("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+                SetRelatedEntity("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null, value);
+                OnPropertyChanged("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
             }
         }
 
@@ -619,41 +654,26 @@
             }
         }
 
-        /// <summary>
-        /// 1:N sdkmessageprocessingstepid_sdkmessageprocessingstepimage
-        /// </summary>
-        [RelationshipSchemaName("sdkmessageprocessingstepid_sdkmessageprocessingstepimage")]
-        public IEnumerable<SdkMessageProcessingStepImage> sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void OnPropertyChanged(string propertyName)
         {
-            get
+            if ((PropertyChanged != null))
             {
-                return GetRelatedEntities<SdkMessageProcessingStepImage>("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null);
-            }
-            set
-            {
-                OnPropertyChanging("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
-                SetRelatedEntities("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null, value);
-                OnPropertyChanged("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
-        /// <summary>
-        /// N:1 sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
-        /// </summary>
-        [AttributeLogicalName("sdkmessageprocessingstepsecureconfigid")]
-        [RelationshipSchemaName("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
-        public SdkMessageProcessingStepSecureConfig sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+        private void OnPropertyChanging(string propertyName)
         {
-            get
+            if ((PropertyChanging != null))
             {
-                return GetRelatedEntity<SdkMessageProcessingStepSecureConfig>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null);
-            }
-            set
-            {
-                OnPropertyChanging("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
-                SetRelatedEntity("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null, value);
-                OnPropertyChanged("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
         }
+
+        #endregion Private Methods
     }
 }

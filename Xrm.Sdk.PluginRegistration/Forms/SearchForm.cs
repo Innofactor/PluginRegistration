@@ -24,10 +24,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class SearchForm : Form
     {
+        #region Private Fields
+
+        private bool m_needReload = false;
         private CrmOrganization m_org;
         private MainControl m_orgControl;
         private ICrmTreeNode[] m_rootNodes;
-        private bool m_needReload = false;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public SearchForm(CrmOrganization org, MainControl orgControl,
             ICrmTreeNode[] rootNodes, ICrmTreeNode selectedNode)
@@ -59,20 +65,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             txtSearch.AutoCompleteCustomSource = trvPlugins.NodeAutoCompleteCollection;
         }
 
-        private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
-        {
-            btnSelect.Enabled = (e.Node != null);
-        }
+        #endregion Public Constructors
 
-        private void trvPlugins_Leave(object sender, EventArgs e)
-        {
-            AcceptButton = btnSearch;
-        }
-
-        private void trvPlugins_Enter(object sender, EventArgs e)
-        {
-            AcceptButton = btnSelect;
-        }
+        #region Private Methods
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -93,5 +88,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             m_orgControl.SelectNode(trvPlugins.SelectedNode.NodeId);
             Close();
         }
+
+        private void trvPlugins_Enter(object sender, EventArgs e)
+        {
+            AcceptButton = btnSelect;
+        }
+
+        private void trvPlugins_Leave(object sender, EventArgs e)
+        {
+            AcceptButton = btnSearch;
+        }
+
+        private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
+        {
+            btnSelect.Enabled = (e.Node != null);
+        }
+
+        #endregion Private Methods
     }
 }

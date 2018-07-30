@@ -24,10 +24,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using System.Windows.Forms;
     using Wrappers;
 
+    public delegate void UpdateImageAttributesDelegate(Collection<string> attributes, bool allAttributes);
+
     public partial class AttributeSelectionForm : Form
     {
+        #region Private Fields
+
         private CrmOrganization m_org;
         private UpdateImageAttributesDelegate m_updateAttributes;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public AttributeSelectionForm(UpdateImageAttributesDelegate updateAttributes, CrmOrganization org,
             CrmAttribute[] attributeList, Collection<string> currentValue, bool currentAllChecked)
@@ -115,19 +123,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
+        #endregion Public Constructors
+
+        #region Private Methods
+
         private void AttributeSelectionForm_Load(object sender, EventArgs e)
         {
             lsvAttributes.Sort();
-        }
-
-        private void chkSelectAll_Click(object sender, EventArgs e)
-        {
-            bool checkVal = chkSelectAll.Checked;
-
-            foreach (ListViewItem item in lsvAttributes.Items)
-            {
-                item.Checked = checkVal;
-            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -149,6 +151,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void chkSelectAll_Click(object sender, EventArgs e)
+        {
+            bool checkVal = chkSelectAll.Checked;
+
+            foreach (ListViewItem item in lsvAttributes.Items)
+            {
+                item.Checked = checkVal;
+            }
         }
 
         private void lsvAttributes_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -175,15 +187,41 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             lsvAttributes.Sort();
         }
 
+        #endregion Private Methods
+
+        #region Private Classes
+
         private class ListViewColumnSorter : IComparer
         {
+            #region Private Fields
+
             private int m_col;
             private SortOrder m_order;
+
+            #endregion Private Fields
+
+            #region Public Constructors
 
             public ListViewColumnSorter(int sortCol, SortOrder order)
             {
                 m_col = sortCol;
                 m_order = order;
+            }
+
+            #endregion Public Constructors
+
+            #region Public Properties
+
+            public SortOrder Order
+            {
+                get
+                {
+                    return m_order;
+                }
+                set
+                {
+                    m_order = value;
+                }
             }
 
             public int SortColumn
@@ -199,17 +237,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
 
-            public SortOrder Order
-            {
-                get
-                {
-                    return m_order;
-                }
-                set
-                {
-                    m_order = value;
-                }
-            }
+            #endregion Public Properties
+
+            #region Public Methods
 
             public int Compare(object item1, object item2)
             {
@@ -243,8 +273,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         throw new NotImplementedException("Unknown SortOrder = " + Order.ToString());
                 }
             }
-        }
-    }
 
-    public delegate void UpdateImageAttributesDelegate(Collection<string> attributes, bool allAttributes);
+            #endregion Public Methods
+        }
+
+        #endregion Private Classes
+    }
 }
