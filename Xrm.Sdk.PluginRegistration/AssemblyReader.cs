@@ -90,7 +90,7 @@ namespace Xrm.Sdk.PluginRegistration
                 CrmPluginIsolatable isolatable;
 
                 //Retrieve the two interface types
-                var xrmPlugin = t.GetInterface(typeof(IPlugin).FullName);
+                Type xrmPlugin = t.GetInterface(typeof(IPlugin).FullName);
                 var v4Plugin = t.GetInterface("Microsoft.Crm.Sdk.IPlugin");
 
                 var workflowGroupName = defaultGroupName;
@@ -133,14 +133,16 @@ namespace Xrm.Sdk.PluginRegistration
                 }
                 else
                 {
-                    var plugin = new CrmPlugin(null);
-                    plugin.TypeName = t.FullName;
-                    plugin.Name = pluginName;
-                    plugin.PluginType = type;
-                    plugin.PluginId = Guid.NewGuid();
-                    plugin.AssemblyId = pluginAssembly.AssemblyId;
-                    plugin.AssemblyName = pluginAssembly.Name;
-                    plugin.Isolatable = isolatable;
+                    var plugin = new CrmPlugin(null)
+                    {
+                        TypeName = t.FullName,
+                        Name = pluginName,
+                        PluginType = type,
+                        PluginId = Guid.NewGuid(),
+                        AssemblyId = pluginAssembly.AssemblyId,
+                        AssemblyName = pluginAssembly.Name,
+                        Isolatable = isolatable
+                    };
 
                     if (type == CrmPluginType.WorkflowActivity && !string.IsNullOrWhiteSpace(workflowGroupName))
                     {
@@ -170,9 +172,11 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("assembly");
             }
 
-            var pluginAssembly = new CrmPluginAssembly(null);
-            pluginAssembly.AssemblyId = Guid.NewGuid();
-            pluginAssembly.SourceType = CrmAssemblySourceType.Disk;
+            var pluginAssembly = new CrmPluginAssembly(null)
+            {
+                AssemblyId = Guid.NewGuid(),
+                SourceType = CrmAssemblySourceType.Disk
+            };
 
             var fileInfo = new FileInfo(path);
             pluginAssembly.ServerFileName = fileInfo.Name;
