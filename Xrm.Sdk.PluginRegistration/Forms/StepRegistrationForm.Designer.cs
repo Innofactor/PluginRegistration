@@ -33,7 +33,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpGeneral = new System.Windows.Forms.GroupBox();
             this.cmbServiceEndpoint = new System.Windows.Forms.ComboBox();
             this.cmbPlugins = new System.Windows.Forms.ComboBox();
-            this.crmFilteringAttributes = new Xrm.Sdk.PluginRegistration.Controls.CrmAttributeSelectionControl(m_orgControl);
             this.lblFilteringAttributes = new System.Windows.Forms.Label();
             this.lblEventHandler = new System.Windows.Forms.Label();
             this.txtRank = new System.Windows.Forms.TextBox();
@@ -93,7 +92,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.grpGeneral.Controls.Add(this.cmbServiceEndpoint);
             this.grpGeneral.Controls.Add(this.cmbPlugins);
-            this.grpGeneral.Controls.Add(this.crmFilteringAttributes);
             this.grpGeneral.Controls.Add(this.lblFilteringAttributes);
             this.grpGeneral.Controls.Add(this.lblEventHandler);
             this.grpGeneral.Controls.Add(this.txtRank);
@@ -141,22 +139,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.cmbPlugins.Sorted = true;
             this.cmbPlugins.TabIndex = 12;
             this.cmbPlugins.SelectedIndexChanged += new System.EventHandler(this.cmbPlugins_SelectedIndexChanged);
-            // 
-            // crmFilteringAttributes
-            // 
-            this.crmFilteringAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.crmFilteringAttributes.Attributes = null;
-            this.crmFilteringAttributes.DisabledMessage = "";
-            this.crmFilteringAttributes.EntityName = null;
-            this.crmFilteringAttributes.Location = new System.Drawing.Point(127, 91);
-            this.crmFilteringAttributes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.crmFilteringAttributes.Name = "crmFilteringAttributes";
-            this.crmFilteringAttributes.Organization = null;
-            this.crmFilteringAttributes.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.crmFilteringAttributes.Size = new System.Drawing.Size(316, 20);
-            this.crmFilteringAttributes.TabIndex = 9;
-            this.crmFilteringAttributes.WordWrap = false;
             // 
             // lblFilteringAttributes
             // 
@@ -478,6 +460,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpInvocation.TabIndex = 5;
             this.grpInvocation.TabStop = false;
             this.grpInvocation.Text = "Triggering Pipeline (CRM4 Only)";
+            this.grpInvocation.Visible = false;
             // 
             // radInvocationChild
             // 
@@ -549,13 +532,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.radStagePostOperationDeprecated.AutoSize = true;
             this.radStagePostOperationDeprecated.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radStagePostOperationDeprecated.Location = new System.Drawing.Point(6, 88);
+            this.radStagePostOperationDeprecated.Location = new System.Drawing.Point(18, 358);
             this.radStagePostOperationDeprecated.Name = "radStagePostOperationDeprecated";
             this.radStagePostOperationDeprecated.Size = new System.Drawing.Size(156, 17);
             this.radStagePostOperationDeprecated.TabIndex = 3;
             this.radStagePostOperationDeprecated.Text = "Post-operation (CRM4 Only)";
             this.tipMain.SetToolTip(this.radStagePostOperationDeprecated, "Executes after the triggering operation has completed.");
             this.radStagePostOperationDeprecated.UseVisualStyleBackColor = true;
+            this.radStagePostOperationDeprecated.Visible = false;
             // 
             // grpUnsecureConfig
             // 
@@ -611,11 +595,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.grpStage.Controls.Add(this.radStagePostOperation);
             this.grpStage.Controls.Add(this.radStagePreOperation);
-            this.grpStage.Controls.Add(this.radStagePostOperationDeprecated);
             this.grpStage.Controls.Add(this.radStagePreValidation);
             this.grpStage.Location = new System.Drawing.Point(12, 247);
             this.grpStage.Name = "grpStage";
-            this.grpStage.Size = new System.Drawing.Size(200, 111);
+            this.grpStage.Size = new System.Drawing.Size(200, 92);
             this.grpStage.TabIndex = 2;
             this.grpStage.TabStop = false;
             this.grpStage.Text = "Eventing Pipeline Stage of Execution";
@@ -663,6 +646,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.ClientSize = new System.Drawing.Size(907, 445);
             this.Controls.Add(this.grpDescription);
             this.Controls.Add(this.chkDeleteAsyncOperationIfSuccessful);
+            this.Controls.Add(this.radStagePostOperationDeprecated);
             this.Controls.Add(this.grpUnsecureConfig);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.grpDeployment);
@@ -698,6 +682,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpDescription.ResumeLayout(false);
             this.grpDescription.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

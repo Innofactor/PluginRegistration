@@ -58,7 +58,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             m_org = org;
             m_orgControl = orgControl;
             m_currentStep = step;
-
+            crmFilteringAttributes = new Controls.CrmAttributeSelectionControl(m_orgControl);
             InitializeComponent();
 
             crmFilteringAttributes.Organization = org;
