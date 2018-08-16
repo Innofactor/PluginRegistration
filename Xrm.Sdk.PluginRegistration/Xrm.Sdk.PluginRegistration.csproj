@@ -199,12 +199,12 @@
     <Compile Include="Forms\AttributeSelectionForm.Designer.cs">
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Wrappers\CrmAttribute.cs" />
     <Compile Include="Wrappers\CrmEntityDictionary.cs" />
     <Compile Include="Wrappers\CrmMessageEntity.cs" />
@@ -276,18 +276,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\assemblyselected.png" />
+    <None Include="Resources\assembly.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Images\close.png" />
     <Content Include="Images\Debug.gif" />
+    <Content Include="Images\delete.png" />
     <Content Include="Images\PluginProfile.gif" />
     <Content Include="Images\PluginProfilerSelected.gif" />
     <Content Include="Images\DisableProfiler.gif" />
     <Content Include="Images\EnableProfiler.gif" />
     <Content Include="Images\InstallProfiler.gif" />
     <Content Include="Images\PluginProfiler.gif" />
-    <Content Include="Images\Refresh.gif" />
+    <Content Include="Images\Refresh.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\FileBrowserControl.resx">
@@ -357,14 +360,13 @@
     <Content Include="Images\AssemblySelected.gif" />
     <Content Include="Images\Connection.gif" />
     <Content Include="Images\ConnectionSelected.gif" />
-    <Content Include="Images\Delete.gif" />
     <Content Include="Images\EditLabel.gif" />
     <Content Include="Images\Errors.gif" />
     <Content Include="Images\Export.gif" />
     <Content Include="Images\Import.gif" />
-    <Content Include="Images\Register.gif" />
+    <Content Include="Images\register.png" />
     <Content Include="Images\Save.png" />
-    <Content Include="Images\Search.gif" />
+    <Content Include="Images\Search.png" />
     <Content Include="Images\ServiceEndpoint.png" />
     <None Include="Images\ServiceEndpointSelected.gif" />
     <Content Include="Images\StepProfiled.gif" />
@@ -384,9 +386,9 @@
     <Content Include="Images\PluginSelected.gif" />
     <Content Include="Images\StepDisabled.gif" />
     <Content Include="Images\StepDisabledSelected.gif" />
-    <Content Include="Images\StepEnabled.gif" />
-    <Content Include="Images\StepEnabledSelected.gif" />
-    <Content Include="Images\View.gif" />
+    <Content Include="Images\StepEnabled.png" />
+    <Content Include="Images\StepEnabledSelected.png" />
+    <Content Include="Images\View.png" />
     <Content Include="Images\WorkflowActivity.gif" />
     <Content Include="Images\WorkflowActivitySelected.gif" />
     <None Include="packages.config">
