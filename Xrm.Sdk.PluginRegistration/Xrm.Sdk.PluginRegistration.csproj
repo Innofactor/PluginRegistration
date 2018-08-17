@@ -200,11 +200,6 @@
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ExportModel.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Wrappers\CrmAttribute.cs" />
     <Compile Include="Wrappers\CrmEntityDictionary.cs" />
     <Compile Include="Wrappers\CrmMessageEntity.cs" />
@@ -339,7 +334,6 @@
     <EmbeddedResource Include="Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchForm.resx">
       <SubType>Designer</SubType>
@@ -355,11 +349,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\AccessDenied.gif" />
-    <Content Include="Images\Assembly.gif" />
-    <Content Include="Images\AssemblySelected.gif" />
-    <Content Include="Images\Connection.gif" />
-    <Content Include="Images\ConnectionSelected.gif" />
     <Content Include="Images\EditLabel.gif" />
     <Content Include="Images\Errors.gif" />
     <Content Include="Images\Export.gif" />
@@ -373,24 +362,13 @@
     <Content Include="Images\StepProfiledSelected.gif" />
     <Content Include="Images\UninstallProfiler.gif" />
     <Content Include="Images\Update.gif" />
-    <Content Include="Images\Image.gif" />
-    <Content Include="Images\ImageSelected.gif" />
     <None Include="Images\ImportExport.gif" />
-    <Content Include="Images\Message.gif" />
     <Content Include="Images\MessageEntity.gif" />
     <Content Include="Images\MessageEntitySelected.gif" />
-    <Content Include="Images\MessageSelected.gif" />
     <Content Include="Images\Organization.gif" />
     <Content Include="Images\OrganizationSelected.gif" />
-    <Content Include="Images\Plugin.gif" />
-    <Content Include="Images\PluginSelected.gif" />
-    <Content Include="Images\StepDisabled.gif" />
-    <Content Include="Images\StepDisabledSelected.gif" />
     <Content Include="Images\StepEnabled.png" />
-    <Content Include="Images\StepEnabledSelected.png" />
     <Content Include="Images\View.png" />
-    <Content Include="Images\WorkflowActivity.gif" />
-    <Content Include="Images\WorkflowActivitySelected.gif" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
