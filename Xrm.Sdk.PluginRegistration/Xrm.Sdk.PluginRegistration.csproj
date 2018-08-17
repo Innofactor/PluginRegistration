@@ -200,6 +200,11 @@
       <DependentUpon>AttributeSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ExportModel.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Wrappers\CrmAttribute.cs" />
     <Compile Include="Wrappers\CrmEntityDictionary.cs" />
     <Compile Include="Wrappers\CrmMessageEntity.cs" />
@@ -334,6 +339,7 @@
     <EmbeddedResource Include="Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchForm.resx">
       <SubType>Designer</SubType>
