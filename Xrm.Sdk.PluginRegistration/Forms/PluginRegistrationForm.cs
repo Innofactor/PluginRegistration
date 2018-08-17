@@ -239,7 +239,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             var assemblyCanBeIsolated = true;
             var checkedPluginList = new Dictionary<string, CrmPlugin>();
 
-            foreach (ICrmTreeNode node in trvPlugins.CheckedNodes)
+            foreach (ICrmTreeNode node in trvPlugins?.CheckedNodes)
             {
                 if (node.NodeType == CrmTreeNodeType.Plugin || node.NodeType == CrmTreeNodeType.WorkflowActivity)
                 {
