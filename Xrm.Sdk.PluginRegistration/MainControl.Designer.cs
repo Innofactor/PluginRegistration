@@ -67,15 +67,15 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolSearch = new System.Windows.Forms.ToolStripButton();
             this.toolCommonSep3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolClose = new System.Windows.Forms.ToolStripButton();
             this.toolExport = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolClose = new System.Windows.Forms.ToolStripButton();
             this.imlEnableImages = new System.Windows.Forms.ImageList(this.components);
             this.splitterDisplay = new System.Windows.Forms.SplitContainer();
             this.grpPlugins = new System.Windows.Forms.GroupBox();
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -263,6 +263,7 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             // toolBar
             // 
+            this.toolBar.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolRegister,
             this.toolView,
@@ -321,10 +322,12 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             // toolServiceEndpointRegister
             // 
+            this.toolServiceEndpointRegister.Enabled = false;
             this.toolServiceEndpointRegister.Name = "toolServiceEndpointRegister";
             this.toolServiceEndpointRegister.ShortcutKeyDisplayString = "Ctrl+E";
             this.toolServiceEndpointRegister.Size = new System.Drawing.Size(274, 22);
             this.toolServiceEndpointRegister.Text = "Register New Service &Endpoint";
+            this.toolServiceEndpointRegister.Visible = false;
             // 
             // toolView
             // 
@@ -419,15 +422,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolCommonSep3.Name = "toolCommonSep3";
             this.toolCommonSep3.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolClose
-            // 
-            this.toolClose.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolClose.Name = "toolClose";
-            this.toolClose.Size = new System.Drawing.Size(40, 22);
-            this.toolClose.Text = "Clos&e";
-            this.toolClose.ToolTipText = "Close Tool (Ctrl+F4)";
-            this.toolClose.Click += new System.EventHandler(this.toolClose_Click);
-            // 
             // toolExport
             // 
             this.toolExport.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -436,6 +430,20 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolExport.Text = "E&xport";
             this.toolExport.ToolTipText = "Export to Excel";
             this.toolExport.Click += new System.EventHandler(this.toolExport_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolClose
+            // 
+            this.toolClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolClose.Name = "toolClose";
+            this.toolClose.Size = new System.Drawing.Size(40, 22);
+            this.toolClose.Text = "Clos&e";
+            this.toolClose.ToolTipText = "Close Tool (Ctrl+F4)";
+            this.toolClose.Click += new System.EventHandler(this.toolClose_Click);
             // 
             // imlEnableImages
             // 
@@ -492,9 +500,9 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins.ShowNodeToolTips = false;
             this.trvPlugins.Size = new System.Drawing.Size(547, 422);
             this.trvPlugins.TabIndex = 0;
-            this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
-            this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
             this.trvPlugins.DoubleClick += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_DoubleClick);
+            this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
+            this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
             // 
             // btnSave
             // 
@@ -517,11 +525,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Name = "propGridEntity";
             this.propGridEntity.Size = new System.Drawing.Size(274, 407);
             this.propGridEntity.TabIndex = 4;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // MainControl
             // 
