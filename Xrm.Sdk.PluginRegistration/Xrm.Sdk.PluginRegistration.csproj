@@ -282,7 +282,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Images\close.png" />
-    <Content Include="Images\Debug.gif" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\PluginProfile.gif" />
     <Content Include="Images\PluginProfilerSelected.gif" />
@@ -356,7 +355,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\EditLabel.gif" />
-    <Content Include="Images\Errors.gif" />
     <Content Include="Images\Export.gif" />
     <Content Include="Images\Import.gif" />
     <Content Include="Images\register.png" />
@@ -369,10 +367,6 @@
     <Content Include="Images\UninstallProfiler.gif" />
     <Content Include="Images\Update.gif" />
     <None Include="Images\ImportExport.gif" />
-    <Content Include="Images\MessageEntity.gif" />
-    <Content Include="Images\MessageEntitySelected.gif" />
-    <Content Include="Images\Organization.gif" />
-    <Content Include="Images\OrganizationSelected.gif" />
     <Content Include="Images\StepEnabled.png" />
     <Content Include="Images\View.png" />
     <None Include="packages.config">
