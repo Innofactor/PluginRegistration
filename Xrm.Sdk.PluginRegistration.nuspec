@@ -15,7 +15,7 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-      A fresh look along with bug fixes and improvements - #6 and #13
+      Fixed bug in Attribute selection dialog in Step configurations - #41
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
