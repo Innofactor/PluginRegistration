@@ -58,10 +58,32 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             m_org = org;
             m_orgControl = orgControl;
             m_currentStep = step;
-            crmFilteringAttributes = new Controls.CrmAttributeSelectionControl(m_orgControl);
-            InitializeComponent();
 
-            crmFilteringAttributes.Organization = org;
+            #region Initialization of crmFilteringAttributes
+            //Seems this was removed automatically by VS designer, so added here instead.
+            crmFilteringAttributes = new Controls.CrmAttributeSelectionControl(m_orgControl)
+            {
+                Organization = org
+            };
+            
+            // 
+            // crmFilteringAttributes
+            // 
+            this.crmFilteringAttributes.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
+            this.crmFilteringAttributes.Attributes = null;
+            this.crmFilteringAttributes.DisabledMessage = "";
+            //this.crmFilteringAttributes.EntityName = null;
+            this.crmFilteringAttributes.Location = new System.Drawing.Point(127, 91);
+            this.crmFilteringAttributes.Margin = new Padding(4, 5, 4, 5);
+            this.crmFilteringAttributes.Name = "crmFilteringAttributes";
+            //this.crmFilteringAttributes.Organization = null;
+            this.crmFilteringAttributes.ScrollBars = ScrollBars.None;
+            this.crmFilteringAttributes.Size = new System.Drawing.Size(316, 20);
+            this.crmFilteringAttributes.TabIndex = 9;
+            this.crmFilteringAttributes.WordWrap = false;
+            #endregion
+            InitializeComponent();
+            this.grpGeneral.Controls.Add(this.crmFilteringAttributes);
 
             //Initialize the auto-complete on the Message field
             var msgList = new AutoCompleteStringCollection();
@@ -124,7 +146,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             //Create a user that represents the current user
-            CrmUser callingUser = new CrmUser(org)
+            var callingUser = new CrmUser(org)
             {
                 UserId = Guid.Empty,
                 Name = "Calling User",
