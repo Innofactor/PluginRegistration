@@ -378,7 +378,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                         break;
 
                     default:
-                        throw new NotImplementedException("Type = " + entity.EntityType.ToString());
+                        throw new NotImplementedException($"Type = {entity.EntityType.ToString()}");
                 }
             }
 

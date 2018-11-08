@@ -102,7 +102,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         break;
 
                     default:
-                        throw new NotImplementedException("IsolationMode = " + assembly.IsolationMode.ToString());
+                        throw new NotImplementedException($"IsolationMode = { assembly.IsolationMode.ToString() }");
                 }
 
                 switch (assembly.SourceType)
@@ -120,12 +120,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         break;
 
                     default:
-                        throw new NotImplementedException("SourceType = " + assembly.SourceType.ToString());
+                        throw new NotImplementedException($"SourceType = {assembly.SourceType.ToString()}");
                 }
 
                 txtServerFileName.Text = assembly.ServerFileName;
 
-                Text = string.Format("Update Assembly: {0}", assembly.Name);
+                Text = $"Update Assembly: {assembly.Name}";
                 btnRegister.Text = "Update Selected Plugins";
             }
 
