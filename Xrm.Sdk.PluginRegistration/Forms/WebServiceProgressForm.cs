@@ -22,8 +22,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
     public partial class WebServiceProgressForm : Form
     {
-        private ProgressIndicator m_progIndicator;
+        #region Private Fields
+
         private IWin32Window m_owner;
+        private ProgressIndicator m_progIndicator;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public WebServiceProgressForm(IWin32Window owner)
         {
@@ -39,6 +45,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             m_owner = owner;
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public ProgressIndicator ProgressIndicator
         {
             get
@@ -47,7 +57,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        #region ProgressIndicator Implementation
+        #endregion Public Properties
+
+        #region Private Methods
+
+        private void ProgressIndicatorComplete()
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
 
         private void ProgressIndicatorInit(int min, int waitMilliseconds, int initialValue)
         {
@@ -65,14 +83,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             ShowDialog(m_owner);
         }
 
-        private void ProgressIndicatorComplete()
-        {
-            DialogResult = DialogResult.OK;
-            Close();
-        }
-
-        #endregion ProgressIndicator Implementation
-
         private void tmrWait_Tick(object sender, EventArgs e)
         {
             if (barRegistration.Value == barRegistration.Maximum)
@@ -87,5 +97,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             Application.DoEvents();
         }
+
+        #endregion Private Methods
     }
 }

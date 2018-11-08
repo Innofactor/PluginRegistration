@@ -626,7 +626,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 if (HasNode(nodeId))
                 {
-                    return ((ICrmTreeNode)m_nodeList[nodeId].CrmNode);
+                    return m_nodeList[nodeId].CrmNode;
                 }
                 else
                 {
@@ -1184,7 +1184,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 if (node != null && IncludeType(node.NodeType))
                 {
-                    ICrmTreeNode crmNode = (ICrmTreeNode)node;
+                    ICrmTreeNode crmNode = node;
                     bool firstChild = (parentNodeList.Count == 0);
 
                     TreeNode tNode = new TreeNode(node.NodeText);
@@ -1323,7 +1323,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             }
             else
             {
-                return (((CrmTreeNodeType)m_excludeTypes & type) != type);
+                return ((m_excludeTypes & type) != type);
             }
         }
 
@@ -1614,7 +1614,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
                 if (!canceled)
                 {
-                    ((ICrmEditableTreeNode)node).NodeEditText = e.Label;
+                    node.NodeEditText = e.Label;
                     e.Node.Text = node.NodeText;
                     e.CancelEdit = true;
                 }

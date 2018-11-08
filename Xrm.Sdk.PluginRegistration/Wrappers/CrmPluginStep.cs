@@ -1079,7 +1079,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             foreach (CrmPluginImage image in m_imageList.Values)
             {
                 //Clone the image
-                CrmPluginImage clonedImage = (CrmPluginImage)image.Clone(includeOrganization);
+                CrmPluginImage clonedImage = image.Clone(includeOrganization);
 
                 //Add the image to the new list
                 newImageList.Add(clonedImage.ImageId, clonedImage);

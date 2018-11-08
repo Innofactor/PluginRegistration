@@ -777,7 +777,7 @@ namespace Xrm.Sdk.PluginRegistration
 
             if (rootNode.HasChild(childNode.NodeText))
             {
-                childNode = (CrmTreeNode)rootNode[childNode.NodeText];
+                childNode = rootNode[childNode.NodeText];
             }
             else
             {

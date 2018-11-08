@@ -60,15 +60,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             m_currentStep = step;
 
             #region Initialization of crmFilteringAttributes
+
             //Seems this was removed automatically by VS designer, so added here instead.
             crmFilteringAttributes = new Controls.CrmAttributeSelectionControl(m_orgControl)
             {
                 Organization = org
             };
-            
-            // 
+
+            //
             // crmFilteringAttributes
-            // 
+            //
             this.crmFilteringAttributes.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
             this.crmFilteringAttributes.Attributes = null;
             this.crmFilteringAttributes.DisabledMessage = "";
@@ -81,7 +82,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.crmFilteringAttributes.Size = new System.Drawing.Size(316, 20);
             this.crmFilteringAttributes.TabIndex = 9;
             this.crmFilteringAttributes.WordWrap = false;
-            #endregion
+
+            #endregion Initialization of crmFilteringAttributes
+
             InitializeComponent();
             this.grpGeneral.Controls.Add(this.crmFilteringAttributes);
 

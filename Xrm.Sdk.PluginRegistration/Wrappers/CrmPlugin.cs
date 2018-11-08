@@ -651,7 +651,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             foreach (CrmPluginStep step in m_stepList.Values)
             {
                 //Clone the step
-                CrmPluginStep clonedStep = (CrmPluginStep)step.Clone(includeOrganization);
+                CrmPluginStep clonedStep = step.Clone(includeOrganization);
 
                 //Add the step to the new list
                 newStepList.Add(clonedStep.StepId, clonedStep);

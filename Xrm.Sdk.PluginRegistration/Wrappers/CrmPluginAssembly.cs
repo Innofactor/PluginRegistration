@@ -508,7 +508,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             foreach (CrmPlugin plugin in m_pluginList.Values)
             {
                 //Clone the plugin
-                var clonedPlugin = (CrmPlugin)plugin.Clone(includeOrganization);
+                var clonedPlugin = plugin.Clone(includeOrganization);
 
                 //Add the plugin to the new list
                 newPluginList.Add(clonedPlugin.PluginId, clonedPlugin);
