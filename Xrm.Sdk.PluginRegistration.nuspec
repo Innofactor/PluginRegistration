@@ -15,7 +15,8 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-      Fixed bug in Attribute selection dialog in Step configurations - #41
+      * New feature to export information of all or selected plugins as Csv or Excel file
+      * Bug fix - #38, #14: Fixed issue in deleting a plugin and updating assembly. 
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
