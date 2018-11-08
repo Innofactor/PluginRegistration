@@ -1470,8 +1470,7 @@ namespace Xrm.Sdk.PluginRegistration
                 messageItem = "enable";
             }
 
-            if (MessageBox.Show(string.Format("Are you sure you want to {0} this step?", messageItem),
-                string.Format("{0} Step", captionItem),
+            if (MessageBox.Show($"Are you sure you want to {messageItem} this step?", $"{captionItem} Step",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
             {
                 return;
@@ -1485,14 +1484,11 @@ namespace Xrm.Sdk.PluginRegistration
                 UpdateEnableButton(step.Enabled);
                 trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
 
-                MessageBox.Show(string.Format("Step {0}d successfully.", messageItem),
-                    string.Format("{0} Step", captionItem), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Step {messageItem}d successfully.", $"{captionItem} Step", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                ErrorMessageForm.ShowErrorMessageBox(this,
-                    string.Format("Unable to {0} this item at ths time. An error occurred.", messageItem),
-                    string.Format("{0} Step", captionItem), ex);
+                ErrorMessageForm.ShowErrorMessageBox(this, $"Unable to {messageItem} this item at ths time. An error occurred.", $"{captionItem} Step", ex);
             }
             finally
             {
@@ -1626,7 +1622,7 @@ namespace Xrm.Sdk.PluginRegistration
                 }
             }
 
-            StepRegistrationForm regForm = new StepRegistrationForm(Organization, this, plugin, null, serviceEndpoint);
+            var regForm = new StepRegistrationForm(Organization, this, plugin, null, serviceEndpoint);
             regForm.ShowDialog();
         }
 
@@ -1654,12 +1650,13 @@ namespace Xrm.Sdk.PluginRegistration
                     var builder = new StringBuilder();
                     foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(m_org, (ICrmEntity)trvPlugins.SelectedNode))
                     {
-                        builder.AppendLine(string.Format("{0} {1} Unregistered Successfully", stat.Value, stat.Key));
+                        builder.AppendLine($"{stat.Value} {stat.Key} Unregistered Successfully");
                     }
 
                     trvPlugins.RemoveNode(trvPlugins.SelectedNode.NodeId);
-
                     MessageBox.Show(builder.ToString(), "Unregister", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Refresh to sync tree and grid data to avoid error
+                    toolRefresh_Click(null, null);
                 }
                 catch (Exception ex)
                 {
@@ -1714,21 +1711,21 @@ namespace Xrm.Sdk.PluginRegistration
                             serviceEndpoint = m_org.ServiceEndpoints[step.ServiceBusConfigurationId];
                         }
 
-                        StepRegistrationForm regForm = new StepRegistrationForm(Organization, this, plugin, step, serviceEndpoint);
+                        var regForm = new StepRegistrationForm(Organization, this, plugin, step, serviceEndpoint);
                         regForm.ShowDialog();
                     }
                     break;
 
                 case CrmTreeNodeType.Image:
                     {
-                        ImageRegistrationForm regForm = new ImageRegistrationForm(m_org, this,
+                        var regForm = new ImageRegistrationForm(m_org, this,
                             trvPlugins.RootNodes, (CrmPluginImage)trvPlugins.SelectedNode, trvPlugins.SelectedNode.NodeId);
                         regForm.ShowDialog();
                     }
                     break;
 
                 default:
-                    throw new NotImplementedException("NodeType = " + trvPlugins.SelectedNode.NodeType.ToString());
+                    throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}");
             }
 
             ICrmTreeNode node = trvPlugins.SelectedNode;
@@ -1765,11 +1762,11 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 //If the selected step is the Plug-in Profiler plug-in, the PluginRegistrationForm should be displayed.
                 //This will allow the consumer the ability to change the isolation mode of the Plug-in Profiler.
-                CrmPlugin plugin = trvPlugins.SelectedNode as CrmPlugin;
+                var plugin = trvPlugins.SelectedNode as CrmPlugin;
                 if (null != plugin && plugin.IsProfilerPlugin)
                 {
                     //Display the Plug-in Registration form
-                    using (PluginRegistrationForm form = new PluginRegistrationForm(Organization, this,
+                    using (var form = new PluginRegistrationForm(Organization, this,
                         Organization.Assemblies[plugin.AssemblyId]))
                     {
                         form.ShowDialog(ParentForm);
@@ -1986,7 +1983,7 @@ namespace Xrm.Sdk.PluginRegistration
                 }
                 else
                 {
-                    m_nodeText = string.Format("{0} / {1}", msgEntity.PrimaryEntity, msgEntity.SecondaryEntity);
+                    m_nodeText = $"{msgEntity.PrimaryEntity} / {msgEntity.SecondaryEntity}";
                 }
                 m_type = CrmTreeNodeType.MessageEntity;
                 m_typeLabel = "Entity";
@@ -2305,7 +2302,7 @@ namespace Xrm.Sdk.PluginRegistration
                         break;
 
                     default:
-                        throw new NotImplementedException("Type = " + type.ToString());
+                        throw new NotImplementedException($"Type = {type.ToString()}");
                 }
 
                 return childList;
@@ -2329,10 +2326,10 @@ namespace Xrm.Sdk.PluginRegistration
                         break;
 
                     default:
-                        throw new NotImplementedException("NodeType = " + m_type.ToString());
+                        throw new NotImplementedException($"NodeType = {m_type.ToString()}");
                 }
 
-                m_nodeText = string.Format("({0}) {1}", prefix, m_nodeText);
+                m_nodeText = $"({prefix}) {m_nodeText}";
             }
 
             #endregion Private Methods
