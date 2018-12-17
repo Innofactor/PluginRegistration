@@ -475,7 +475,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.Initialize(totalSteps, "Unregistering Images");
                 }
-                foreach (var imageId in imageList)
+                foreach (Guid imageId in imageList)
                 {
                     org.OrganizationService.Delete(SdkMessageProcessingStepImage.EntityLogicalName, imageId);
                     if (prog != null)
@@ -488,7 +488,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Steps");
                 }
-                foreach (var stepId in stepList)
+                foreach (Guid stepId in stepList)
                 {
                     org.OrganizationService.Delete(SdkMessageProcessingStep.EntityLogicalName, stepId);
                     if (prog != null)
@@ -514,7 +514,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Plugins");
                 }
-                foreach (var pluginId in pluginList)
+                foreach (Guid pluginId in pluginList)
                 {
                     org.OrganizationService.Delete(PluginType.EntityLogicalName, pluginId);
                     if (prog != null)
@@ -527,7 +527,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Assemblies");
                 }
-                foreach (var assemblyId in assemblyList)
+                foreach (Guid assemblyId in assemblyList)
                 {
                     org.OrganizationService.Delete(PluginAssembly.EntityLogicalName, assemblyId);
                     if (prog != null)
@@ -540,7 +540,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering ServiceEndpoints");
                 }
-                foreach (var serviceEndpointId in serviceEndpointList)
+                foreach (Guid serviceEndpointId in serviceEndpointList)
                 {
                     org.OrganizationService.Delete(ServiceEndpoint.EntityLogicalName, serviceEndpointId);
                     if (prog != null)
