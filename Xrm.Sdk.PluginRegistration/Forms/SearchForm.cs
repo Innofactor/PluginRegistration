@@ -76,7 +76,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 trvPlugins.LoadNodes(m_rootNodes);
             }
 
-            trvPlugins.SearchAndRemove(txtSearch.Text);
+            trvPlugins.SearchAndRemove(txtSearch.Text.Trim());
             trvPlugins.Expand();
             trvPlugins.Focus();
 
