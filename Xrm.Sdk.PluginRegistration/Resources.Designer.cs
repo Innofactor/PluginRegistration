@@ -113,6 +113,26 @@ namespace Xrm.Sdk.PluginRegistration {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dynamics365_icon_120 {
+            get {
+                object obj = ResourceManager.GetObject("dynamics365_icon_120", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dynamics365_icon_32 {
+            get {
+                object obj = ResourceManager.GetObject("dynamics365_icon_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap EditLabel {
             get {
                 object obj = ResourceManager.GetObject("EditLabel", resourceCulture);
@@ -235,6 +255,16 @@ namespace Xrm.Sdk.PluginRegistration {
         internal static System.Drawing.Bitmap Search {
             get {
                 object obj = ResourceManager.GetObject("Search", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TabIcon {
+            get {
+                object obj = ResourceManager.GetObject("TabIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

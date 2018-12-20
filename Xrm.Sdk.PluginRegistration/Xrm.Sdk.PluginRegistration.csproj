@@ -63,8 +63,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.8.2.0\lib\net45\CsvHelper.dll</HintPath>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.12.1.0\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
@@ -106,6 +106,9 @@
     <Reference Include="Microsoft.Xrm.Tooling.Connector, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.7\lib\net452\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -125,6 +128,9 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -150,6 +156,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppDomainContext.cs" />
     <Compile Include="CrmTreeControlDefaults.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -278,6 +290,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\dynamics365-icon-16.png" />
+    <None Include="Resources\dynamics365-icon-32.png" />
+    <None Include="Resources\dynamics365-icon-24.png" />
+    <None Include="Resources\dynamics365-icon-120.png" />
     <None Include="Resources\assemblyselected.png" />
     <None Include="Resources\assembly.png" />
     <None Include="app.config">
@@ -294,6 +310,9 @@
     <Content Include="Images\Refresh.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\FileBrowserControl.resx">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
