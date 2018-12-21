@@ -761,15 +761,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 //Check if the plugin exists
                 try
                 {
-                    RegistrationHelper.Unregister(m_org, currectPlugin);
-                    m_progRegistration.Increment(3, string.Format("SUCCESS: Plugin {0} was unregistered.", currectPlugin.TypeName));
+                    RegistrationHelper.Unregister(m_org, m_progRegistration, currectPlugin);
+                    m_progRegistration.Increment(3, $"SUCCESS: Plugin {currectPlugin.TypeName} was unregistered.");
                     m_orgControl.RemovePlugin(currectPlugin.PluginId);
 
                     updatedPlugins++;
                 }
                 catch (Exception ex)
                 {
-                    m_progRegistration.Increment(3, string.Format("ERROR: Occurred while unregistering {0}.", currectPlugin.TypeName));
+                    m_progRegistration.Increment(3, $"ERROR: Occurred while unregistering {currectPlugin.TypeName}.");
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
@@ -872,7 +872,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             bool checkRecord = (checkExisting && m_currentAssembly != null && m_registeredPluginList != null);
 
             //Loop through and add the data to the form
-            trvPlugins.LoadNodes(new ICrmTreeNode[] { assembly });
+            trvPlugins.LoadNodes(new List<ICrmTreeNode> { assembly });
 
             foreach (var currentPlugin in assembly.Plugins.Values)
             {
