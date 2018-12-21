@@ -23,6 +23,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Xml.Serialization;
 
     public sealed class CrmPluginStep : ICrmEntity, ICrmTreeNode, ICloneable
@@ -556,20 +557,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [XmlIgnore]
         [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
                 if (m_imageList == null || m_imageList.Count == 0)
                 {
-                    return new CrmPluginImage[0];
+                    return new List<ICrmTreeNode> { };
                 }
                 else
                 {
-                    CrmPluginImage[] children = new CrmPluginImage[m_imageList.Count];
+                    var children = new CrmPluginImage[m_imageList.Count];
                     m_imageList.Values.CopyTo(children, 0);
 
-                    return children;
+                    return children.ToList<ICrmTreeNode>();
                 }
             }
         }

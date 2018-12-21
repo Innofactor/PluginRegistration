@@ -304,11 +304,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
-                return new ICrmTreeNode[0];
+                return new List<ICrmTreeNode> { };
             }
         }
 
@@ -930,7 +930,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             if (step == null)
             {
-                throw new ArgumentNullException("plugin");
+                throw new ArgumentNullException("step");
             }
             else if (step.Images.ContainsKey(imageId))
             {
