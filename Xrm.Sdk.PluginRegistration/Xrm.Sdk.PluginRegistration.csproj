@@ -290,6 +290,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\dynamics365_icon_32.ico" />
     <None Include="Resources\dynamics365-icon-16.png" />
     <None Include="Resources\dynamics365-icon-32.png" />
     <None Include="Resources\dynamics365-icon-24.png" />

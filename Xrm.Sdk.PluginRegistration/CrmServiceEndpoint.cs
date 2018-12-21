@@ -24,6 +24,7 @@ namespace Xrm.Sdk.PluginRegistration
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Xml.Serialization;
+    using System.Linq;
     using Wrappers;
 
     public enum CrmServiceEndpointConnectionMode
@@ -182,7 +183,7 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
@@ -195,7 +196,7 @@ namespace Xrm.Sdk.PluginRegistration
                         steps.Add(step);
                     }
                 }
-                return steps.ToArray();
+                return steps.ToList<ICrmTreeNode>();
             }
         }
 

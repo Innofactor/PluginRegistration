@@ -1,10 +1,7 @@
 ﻿namespace Xrm.Sdk.PluginRegistration
 {
-    using CsvHelper;
-    using OfficeOpenXml;
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
@@ -16,22 +13,11 @@
         public About()
         {
             InitializeComponent();
-            DummyUse();
+
             PopulateAssemblies();
+            lblVersion.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
-        private void DummyUse()
-        {
-            //var fileInfo = new FileInfo("test.txt");
-            //using (var csv = new CsvWriter(fileInfo)) ;
-            //{
-
-            //}
-            //using (var xlPackage = new ExcelPackage())
-            //{
-
-            //}
-        }
         #endregion Public Constructors
 
         #region Private Methods
@@ -42,8 +28,6 @@
                 assemblyName.Equals("XrmToolBox") ? "AAAAAAAAAAAA" :
                 assemblyName.Contains("XrmToolBox") ? "AAAAAAAAAAAB" :
                 assemblyName.Equals(Assembly.GetExecutingAssembly().GetName().Name) ? "AAAAAAAAAAAC" :
-                //assemblyName.Contains("Jonas") ? "AAAAAAAAAAAD" :
-                //assemblyName.Contains("Rappen") ? "AAAAAAAAAAAE" :
                 assemblyName.Contains("Innofactor") ? "AAAAAAAAAAAF" :
                 assemblyName.Contains("Cinteros") ? "AAAAAAAAAAAG" :
                 assemblyName;
@@ -58,7 +42,6 @@
 
         private List<AssemblyName> GetReferencedAssemblies()
         {
-            
             var names = Assembly.GetExecutingAssembly().GetReferencedAssemblies()
                     .Where(a => !a.Name.Equals("mscorlib") && !a.Name.StartsWith("System") && !a.Name.Contains("CSharp")).ToList();
             names.Add(Assembly.GetEntryAssembly().GetName());

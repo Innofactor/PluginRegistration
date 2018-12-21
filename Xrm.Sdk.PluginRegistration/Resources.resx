@@ -192,9 +192,6 @@
   <data name="Search" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Images\Search.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TabIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\dynamics365-icon-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="UninstallProfiler" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>images\uninstallprofiler.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -203,5 +200,8 @@
   </data>
   <data name="View" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Images\View.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TabIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\dynamics365-icon-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
