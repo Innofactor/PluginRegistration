@@ -639,9 +639,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         }
                         else
                         {
-                            m_progRegistration.AppendText(string.Format("INFORMATION: Plugin Type Name is already being used by PluginType {0}.", pluginTypeId));
+                            m_progRegistration.AppendText($"INFORMATION: Plugin Type Name is already being used by PluginType {pluginTypeId}.");
 
-                            switch (MessageBox.Show(string.Format("The specified name \"{0}\" is already registered. Skip the registration of this plugin?\n\nPlease note the plugins may not be the same.", currentPlugin.TypeName),
+                            switch (MessageBox.Show($"The specified name \"{currentPlugin.TypeName}\" is already registered. Skip the registration of this plugin?\n\nPlease note the plugins may not be the same.",
                                 "Plugin Already Exists", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
                             {
                                 case DialogResult.Yes:
@@ -675,8 +675,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
                 catch (Exception ex)
                 {
-                    m_progRegistration.Increment(string.Format("ERROR: Occurred while checking if {0} is already registered.",
-                        currentPlugin.TypeName));
+                    m_progRegistration.Increment($"ERROR: Occurred while checking if {currentPlugin.TypeName} is already registered.");
 
                     ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
@@ -700,15 +699,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         retrieveDateList.Add(currentPlugin);
 
-                        m_progRegistration.Increment(string.Format("SUCCESS: Plugin {0} was registered.",
-                            currentPlugin.TypeName));
+                        m_progRegistration.Increment($"SUCCESS: Plugin {currentPlugin.TypeName} was registered.");
 
                         registeredPlugins++;
                     }
                     catch (Exception ex)
                     {
-                        m_progRegistration.Increment(2, string.Format("ERROR: Occurred while registering {0}.",
-                            currentPlugin.TypeName));
+                        m_progRegistration.Increment(2, $"ERROR: Occurred while registering {currentPlugin.TypeName}.");
 
                         ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
@@ -739,8 +736,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
                     catch (Exception ex)
                     {
-                        m_progRegistration.Increment(string.Format("ERROR: Occurred while updating the Main form for {0}.",
-                            currentPlugin.TypeName));
+                        m_progRegistration.Increment($"ERROR: Occurred while updating the Main form for {currentPlugin.TypeName}.");
 
                         ErrorMessageForm.ShowErrorMessageBox(this, ERROR_MESSAGE, ERROR_CAPTION, ex);
 
