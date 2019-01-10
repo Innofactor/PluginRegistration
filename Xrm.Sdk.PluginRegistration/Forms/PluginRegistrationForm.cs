@@ -22,6 +22,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     using Helpers;
     using Microsoft.Xrm.Sdk;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -331,10 +332,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             // Ensure the checked items were all found in the assembly
-            var registerPluginList = new List<CrmPlugin>();
-            var pluginList = new List<CrmPlugin>();
-            var removedPluginList = new List<CrmPlugin>();
-            var missingPluginList = new List<CrmPlugin>();
+            var registerPluginList = new ConcurrentBag<CrmPlugin>();
+            var pluginList = new ConcurrentBag<CrmPlugin>(); 
+            var removedPluginList = new ConcurrentBag<CrmPlugin>();
+            var missingPluginList = new ConcurrentBag<CrmPlugin>();
 
             try
             {
