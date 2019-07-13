@@ -314,7 +314,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return RetrieveReferenceAttributeIds(org, SdkMessageProcessingStep.EntityLogicalName,
                 "sdkmessageprocessingstepsecureconfigid", "sdkmessageprocessingstepid", stepIds);
         }
-        
+
         /// <summary>
         /// Unregister entities and cascade the operation
         /// </summary>
@@ -794,7 +794,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             return deleteStats;
         }
-
 
         /// <summary>
         /// Assembly is Uploaded if it is database.

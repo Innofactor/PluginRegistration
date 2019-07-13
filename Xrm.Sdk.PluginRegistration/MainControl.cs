@@ -30,8 +30,6 @@ namespace Xrm.Sdk.PluginRegistration
     using System.Drawing;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
-    using System.Resources;
     using System.Text;
     using System.Windows.Forms;
     using Wrappers;
@@ -592,6 +590,19 @@ namespace Xrm.Sdk.PluginRegistration
             }
 
             trvPlugins.SelectedNode = trvPlugins[nodeId];
+        }
+
+        public void ShowAboutDialog()
+        {
+            try
+            {
+                var about = new About();
+                about.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         public void ShowSystemItemError(string text)
@@ -1658,7 +1669,6 @@ namespace Xrm.Sdk.PluginRegistration
                     }
 
                     MessageBox.Show(builder.ToString(), "Unregister", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
                 }
                 catch (Exception ex)
                 {
@@ -1809,6 +1819,7 @@ namespace Xrm.Sdk.PluginRegistration
                         }
                     }
                     break;
+
                 default:
                     return;
             }
@@ -1842,20 +1853,6 @@ namespace Xrm.Sdk.PluginRegistration
 
             mnuContextNodeEnable.Text = toolEnable.Text;
             mnuContextNodeEnable.Image = toolEnable.Image;
-        }
-
-        public void ShowAboutDialog()
-        {
-            try
-            {
-                var about = new About();
-                about.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-
-            }
         }
 
         #endregion Private Methods

@@ -23,8 +23,8 @@ namespace Xrm.Sdk.PluginRegistration
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Xml.Serialization;
     using System.Linq;
+    using System.Xml.Serialization;
     using Wrappers;
 
     public enum CrmServiceEndpointConnectionMode
