@@ -39,7 +39,7 @@ namespace Xrm.Sdk.PluginRegistration
     using XrmToolBox.Extensibility.Args;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver, IAboutPlugin
+    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver //, IAboutPlugin
     {
         #region Private Fields
 
@@ -597,6 +597,8 @@ namespace Xrm.Sdk.PluginRegistration
             try
             {
                 var about = new About();
+                //StartPosition = FormStartPosition.CenterParent
+                
                 about.ShowDialog();
             }
             catch (Exception ex)
