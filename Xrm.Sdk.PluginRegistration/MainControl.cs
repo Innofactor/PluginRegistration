@@ -109,12 +109,10 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 if (nodeImageList != null)
                 {
-                    foreach (Image img in nodeImageList.Values)
+                    var imgList = nodeImageList.Values.ToList();
+                    for (int i = 0; i < imgList.Count; i++)
                     {
-                        if (img != null)
-                        {
-                            img.Dispose();
-                        }
+                        imgList[i]?.Dispose();
                     }
                 }
 
@@ -171,11 +169,11 @@ namespace Xrm.Sdk.PluginRegistration
             }
             catch (Exception)
             {
-                foreach (Image img in imageList.Values)
+                var imgList = imageList.Values.ToList();
+                for (int i = 0; i < imgList.Count; i++)
                 {
-                    img.Dispose();
+                    imgList[i]?.Dispose();
                 }
-
                 throw;
             }
 
