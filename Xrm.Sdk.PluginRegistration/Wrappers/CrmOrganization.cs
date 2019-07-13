@@ -157,7 +157,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         #region Public Constructors
 
-        public CrmOrganization(ConnectionDetail detail, ProgressIndicator prog)
+        public CrmOrganization(ConnectionDetail detail, ProgressIndicator prog, IOrganizationService Service)
         {
             if (detail == null)
             {
@@ -170,7 +170,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             OrganizationFriendlyName = detail.OrganizationFriendlyName;
             OrganizationUniqueName = detail.Organization;
             ServerBuild = new Version(detail.OrganizationVersion);
-
+            OrganizationService = Service;
             ConnectionDetail = detail;
 
             OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), prog);
@@ -519,6 +519,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
                     return m_organizationService;
                 }
+            }
+            private set
+            {
+                m_organizationService = value;
             }
         }
 
@@ -1177,7 +1181,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             lock (this)
             {
-                m_organizationService = ConnectionDetail.GetCrmServiceClient().OrganizationServiceProxy;
+                //var crmServiceClient = ConnectionDetail.ServiceClient;//GetCrmServiceClient();
+                m_organizationService = ConnectionDetail.ServiceClient;//(crmServiceClient.OrganizationWebProxyClient != null)? (IOrganizationService)crmServiceClient.OrganizationWebProxyClient: crmServiceClient.OrganizationServiceProxy;
             }
         }
 

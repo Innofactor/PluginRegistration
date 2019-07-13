@@ -1216,7 +1216,7 @@ namespace Xrm.Sdk.PluginRegistration
                 Message = "Loading assemblies information...",
                 Work = (worker, argument) =>
                 {
-                    argument.Result = new CrmOrganization(ConnectionDetail, m_progressIndicator);
+                    argument.Result = new CrmOrganization(ConnectionDetail, m_progressIndicator, Service);
                 },
                 PostWorkCallBack = (argument) =>
                 {
