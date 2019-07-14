@@ -303,9 +303,8 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 }
                 else
                 {
-                    var children = new CrmPluginStep[m_stepList.Count];
-                    m_stepList.Values.CopyTo(children, 0);
-
+                    var children = new List<CrmPluginStep>(m_stepList.Count);
+                    children.AddRange(m_stepList.Values);
                     return children.ToList<ICrmTreeNode>();
                 }
             }

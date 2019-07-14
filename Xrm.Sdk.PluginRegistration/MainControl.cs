@@ -598,7 +598,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 var about = new About();
                 //StartPosition = FormStartPosition.CenterParent
-                
+
                 about.ShowDialog();
             }
             catch (Exception ex)
