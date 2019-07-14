@@ -1119,7 +1119,7 @@ namespace Xrm.Sdk.PluginRegistration
                         m_stepParentList = null;
                         m_viewNodeList = null;
 
-                        List<ICrmTreeNode> nodes = new List<ICrmTreeNode>();
+                        var nodes = new List<ICrmTreeNode>();
                         foreach (CrmPluginAssembly assembly in Organization.Assemblies)
                         {
                             // If the same assembly name used for any other custom plugin assembly then that need to be added
@@ -1185,8 +1185,8 @@ namespace Xrm.Sdk.PluginRegistration
                                 }
                             }
 
-                            var nodeList = new List<CrmTreeNode>(m_rootNodeList.Count);
-                            m_rootNodeList.Values.CopyTo(nodeList.ToArray(), 0);
+                            var nodeList = new List<CrmTreeNode>();
+                            nodeList.AddRange(m_rootNodeList.Values);
 
                             trvPlugins.LoadNodes(nodeList.ToList<ICrmTreeNode>());
                         }
@@ -2074,15 +2074,15 @@ namespace Xrm.Sdk.PluginRegistration
                     if (m_stepList != null)
                     {
                         var nodeList = new List<CrmPluginStep>(m_stepList.Count);
-                        m_stepList.Values.CopyTo(nodeList.ToArray(), 0);
-
+                        //m_stepList.Values.CopyTo(nodeList.ToArray(), 0);
+                        nodeList.AddRange(m_stepList.Values);
                         return nodeList.ToList<ICrmTreeNode>();
                     }
                     else if (m_childList != null)
                     {
                         var nodeList = new List<CrmTreeNode>(m_childList.Count);
-                        m_childList.Values.CopyTo(nodeList.ToArray(), 0);
-
+                        //m_childList.Values.CopyTo(nodeList.ToArray(), 0);
+                        nodeList.AddRange(m_childList.Values);
                         return nodeList.ToList<ICrmTreeNode>();
                     }
                     else
