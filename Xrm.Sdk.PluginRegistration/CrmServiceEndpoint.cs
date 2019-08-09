@@ -23,6 +23,7 @@ namespace Xrm.Sdk.PluginRegistration
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Xml.Serialization;
     using Wrappers;
 
@@ -182,7 +183,7 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
@@ -195,7 +196,7 @@ namespace Xrm.Sdk.PluginRegistration
                         steps.Add(step);
                     }
                 }
-                return steps.ToArray();
+                return steps.ToList<ICrmTreeNode>();
             }
         }
 

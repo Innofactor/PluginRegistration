@@ -15,12 +15,15 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-      * New feature to export information of all or selected plugins as Csv or Excel file
-      * Bug fix - #38, #14: Fixed issue in deleting a plugin and updating assembly. 
+      This is a major update with bug fix in the tree implementation that caused the treeviews to be out of sync between the main and the update dialogs.
+      -- Updates --
+      #50, #52: Support for Multi-Factor Authentication
+      -- Bug fixes --
+      #38, #14: Fixed issue in deleting a plugin and updating assembly.
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2018.7.28" />
+      <dependency id="XrmToolBox" version="1.2019.6.33" />
     </dependencies>
   </metadata>
   <files>

@@ -28,6 +28,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
     using System.IO;
     using System.Text;
     using Wrappers;
+    using Xrm.Sdk.PluginRegistration.Controls;
 
     public static class RegistrationHelper
     {
@@ -315,18 +316,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         }
 
         /// <summary>
-        /// Unregister entities
-        /// </summary>
-        /// <param name="org">Organization to be used</param>
-        /// <param name="cascadeOperation">Cascade the operation</param>
-        /// <param name="crmEntity">Entities to be unregistered. If these are not invalid entities, only one can be specified</param>
-        /// <returns>Statistics of what was unregistered</returns>
-        public static Dictionary<string, int> Unregister(CrmOrganization org, params ICrmEntity[] crmEntity)
-        {
-            return Unregister(org, null, crmEntity);
-        }
-
-        /// <summary>
         /// Unregister entities and cascade the operation
         /// </summary>
         /// <param name="org">Organization to be used</param>
@@ -475,7 +464,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.Initialize(totalSteps, "Unregistering Images");
                 }
-                foreach (var imageId in imageList)
+                foreach (Guid imageId in imageList)
                 {
                     org.OrganizationService.Delete(SdkMessageProcessingStepImage.EntityLogicalName, imageId);
                     if (prog != null)
@@ -488,7 +477,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Steps");
                 }
-                foreach (var stepId in stepList)
+                foreach (Guid stepId in stepList)
                 {
                     org.OrganizationService.Delete(SdkMessageProcessingStep.EntityLogicalName, stepId);
                     if (prog != null)
@@ -514,7 +503,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Plugins");
                 }
-                foreach (var pluginId in pluginList)
+                foreach (Guid pluginId in pluginList)
                 {
                     org.OrganizationService.Delete(PluginType.EntityLogicalName, pluginId);
                     if (prog != null)
@@ -527,7 +516,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering Assemblies");
                 }
-                foreach (var assemblyId in assemblyList)
+                foreach (Guid assemblyId in assemblyList)
                 {
                     org.OrganizationService.Delete(PluginAssembly.EntityLogicalName, assemblyId);
                     if (prog != null)
@@ -540,7 +529,253 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.SetText("Unregistering ServiceEndpoints");
                 }
-                foreach (var serviceEndpointId in serviceEndpointList)
+                foreach (Guid serviceEndpointId in serviceEndpointList)
+                {
+                    org.OrganizationService.Delete(ServiceEndpoint.EntityLogicalName, serviceEndpointId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+                }
+            }
+            finally
+            {
+                if (prog != null)
+                {
+                    prog.Complete(true);
+                }
+            }
+
+            return deleteStats;
+        }
+
+        /// <summary>
+        /// Unregister entities and cascade the operation. Synchronizes the delete between CRM and TreeNodes
+        /// </summary>
+        /// <param name="org">Organization to be used</param>
+        /// <param name="prog">ProgressIndicator to indicate success</param>
+        /// <param name="treeControl">treeControl to work with node synchronization.</param>
+        /// <returns>Statistics of what was unregistered</returns>
+        public static Dictionary<string, int> Unregister(CrmOrganization org, ProgressIndicator prog, CrmTreeControl treeControl)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            if (treeControl == null)
+            {
+                throw new ArgumentNullException(nameof(treeControl));
+            }
+            else if (treeControl.SelectedNode == null)
+            {
+                throw new InvalidDataException("treeControl.SelectedNode");
+            }
+
+            ICrmTreeNode selectedNode = treeControl.SelectedNode;
+            List<ICrmEntity> crmEntity = new List<ICrmEntity>
+            {
+                (ICrmEntity)treeControl.SelectedNode
+            };
+
+            var serviceEndpointList = new Collection<Guid>();
+            var assemblyList = new Collection<Guid>();
+            var pluginList = new Collection<Guid>();
+            var stepList = new Collection<Guid>();
+            var secureConfigList = new Collection<Guid>();
+            var imageList = new Collection<Guid>();
+
+            //Create the list of various objects that need to be unregistered
+            foreach (var entity in crmEntity)
+            {
+                switch (entity.EntityType)
+                {
+                    case ServiceEndpoint.EntityLogicalName:
+                        serviceEndpointList.Add(entity.EntityId);
+                        break;
+
+                    case PluginAssembly.EntityLogicalName:
+                        assemblyList.Add(entity.EntityId);
+                        break;
+
+                    case PluginType.EntityLogicalName:
+                        pluginList.Add(entity.EntityId);
+                        break;
+
+                    case SdkMessageProcessingStep.EntityLogicalName:
+                        stepList.Add(entity.EntityId);
+                        break;
+
+                    case SdkMessageProcessingStepImage.EntityLogicalName:
+                        imageList.Add(entity.EntityId);
+                        break;
+
+                    default:
+                        throw new NotImplementedException($"Type = {entity.EntityType.ToString()}");
+                }
+            }
+
+            //Retrieve the up-to-date list of steps for the service endpoints and add them to the unregister list
+            foreach (var stepId in RetrieveStepIdsForServiceEndpoint(org, serviceEndpointList))
+            {
+                if (!stepList.Contains(stepId))
+                {
+                    stepList.Add(stepId);
+                }
+            }
+            //Retrieve the up-to-date list of plugins for the assemblies and add them to the unregister list
+            foreach (var pluginId in RetrievePluginIdsForAssembly(org, assemblyList))
+            {
+                if (!pluginList.Contains(pluginId))
+                {
+                    pluginList.Add(pluginId);
+                }
+            }
+
+            //Retrieve the up-to-date list of steps for the plugins and add them to the unregister list
+            foreach (var stepId in RetrieveStepIdsForPlugins(org, pluginList))
+            {
+                if (!stepList.Contains(stepId))
+                {
+                    stepList.Add(stepId);
+                }
+            }
+
+            //Retrieve all of the profiler steps that need to be deleted
+            for (int i = stepList.Count - 1; i >= 0; i--)
+            {
+                CrmPluginStep step;
+                if (org.Steps.TryGetValue(stepList[i], out step))
+                {
+                    var profilerStepId = step.ProfilerStepId.GetValueOrDefault();
+                    if (Guid.Empty != profilerStepId && profilerStepId != step.StepId)
+                    {
+                        stepList.Add(profilerStepId);
+                    }
+                }
+            }
+
+            //Retrieve the up-to-date list of secure configs for the steps and add them to the unregister list
+            foreach (var secureConfigId in RetrieveSecureConfigIdsForStepId(org, stepList))
+            {
+                if (!secureConfigList.Contains(secureConfigId))
+                {
+                    secureConfigList.Add(secureConfigId);
+                }
+            }
+
+            //Retrieve the up-to-date list of images for the steps and add them to the unregister list
+            foreach (var imageId in RetrieveImageIdsForStepId(org, stepList))
+            {
+                if (!imageList.Contains(imageId))
+                {
+                    imageList.Add(imageId);
+                }
+            }
+
+            //Loop through each object and delete them
+            var deleteStats = new Dictionary<string, int>();
+            int totalSteps = secureConfigList.Count + 1;
+            if (serviceEndpointList.Count != 0)
+            {
+                deleteStats.Add(serviceEndpointList.Count == 1 ? "ServiceEndpoint" : "ServiceEndpoints", serviceEndpointList.Count);
+                totalSteps += serviceEndpointList.Count;
+            }
+            if (assemblyList.Count != 0)
+            {
+                deleteStats.Add(assemblyList.Count == 1 ? "Assembly" : "Assemblies", assemblyList.Count);
+                totalSteps += assemblyList.Count;
+            }
+            if (pluginList.Count != 0)
+            {
+                deleteStats.Add(pluginList.Count == 1 ? "Plugin" : "Plugins", pluginList.Count);
+                totalSteps += pluginList.Count;
+            }
+            if (stepList.Count != 0)
+            {
+                deleteStats.Add(stepList.Count == 1 ? "Step" : "Steps", stepList.Count);
+                totalSteps += stepList.Count;
+            }
+            if (imageList.Count != 0)
+            {
+                deleteStats.Add(imageList.Count == 1 ? "Image" : "Images", imageList.Count);
+                totalSteps += imageList.Count;
+            }
+
+            try
+            {
+                if (prog != null)
+                {
+                    prog.Initialize(totalSteps, "Unregistering Images");
+                }
+                foreach (Guid imageId in imageList)
+                {
+                    org.OrganizationService.Delete(SdkMessageProcessingStepImage.EntityLogicalName, imageId);
+                    treeControl.RemoveNode(selectedNode.NodeId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+                }
+
+                if (prog != null)
+                {
+                    prog.SetText("Unregistering Steps");
+                }
+                foreach (Guid stepId in stepList)
+                {
+                    org.OrganizationService.Delete(SdkMessageProcessingStep.EntityLogicalName, stepId);
+                    treeControl.RemoveNode(selectedNode.NodeId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+                }
+
+                if (prog != null)
+                {
+                    prog.SetText("Unregistering Secure Configuration");
+                }
+                foreach (Guid secureConfigId in secureConfigList)
+                {
+                    org.OrganizationService.Delete(SdkMessageProcessingStepSecureConfig.EntityLogicalName, secureConfigId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+                }
+
+                if (prog != null)
+                {
+                    prog.SetText("Unregistering Plugins");
+                }
+                foreach (Guid pluginId in pluginList)
+                {
+                    org.OrganizationService.Delete(PluginType.EntityLogicalName, pluginId);
+                    treeControl.RemoveNode(selectedNode.NodeId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+                }
+
+                if (prog != null)
+                {
+                    prog.SetText("Unregistering Assemblies");
+                }
+                foreach (Guid assemblyId in assemblyList)
+                {
+                    org.OrganizationService.Delete(PluginAssembly.EntityLogicalName, assemblyId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+                }
+
+                if (prog != null)
+                {
+                    prog.SetText("Unregistering Service Endpoints");
+                }
+                foreach (Guid serviceEndpointId in serviceEndpointList)
                 {
                     org.OrganizationService.Delete(ServiceEndpoint.EntityLogicalName, serviceEndpointId);
                     if (prog != null)

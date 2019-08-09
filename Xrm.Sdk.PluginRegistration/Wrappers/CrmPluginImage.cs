@@ -280,7 +280,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [XmlIgnore]
         [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
@@ -350,7 +350,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         break;
 
                     default:
-                        throw new NotImplementedException("ImageType = " + ImageType.ToString());
+                        throw new NotImplementedException($"ImageType = {ImageType.ToString()}");
                 }
 
                 //Retrieve the MessagePropertyName object

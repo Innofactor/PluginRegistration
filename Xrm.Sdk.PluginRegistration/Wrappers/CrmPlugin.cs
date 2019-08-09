@@ -23,6 +23,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Xml.Serialization;
 
     public enum CrmPluginIsolatable
@@ -292,20 +293,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [XmlIgnore]
         [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
                 if (m_stepList == null || m_stepList.Count == 0)
                 {
-                    return new CrmPluginStep[0];
+                    return new List<ICrmTreeNode> { };
                 }
                 else
                 {
-                    CrmPluginStep[] children = new CrmPluginStep[m_stepList.Count];
-                    m_stepList.Values.CopyTo(children, 0);
-
-                    return children;
+                    var children = new List<CrmPluginStep>(m_stepList.Count);
+                    children.AddRange(m_stepList.Values);
+                    return children.ToList<ICrmTreeNode>();
                 }
             }
         }
@@ -548,16 +548,18 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                Dictionary<string, object> valueList = new Dictionary<string, object>();
-                valueList.Add("Id", PluginId);
-                valueList.Add("Assembly", AssemblyName);
-                valueList.Add("ModifiedOn", ModifiedOn);
-                valueList.Add("FriendlyName", FriendlyName);
-                valueList.Add("Name", Name);
-                valueList.Add("TypeName", TypeName);
-                valueList.Add("WorkflowActivityGroupName", WorkflowActivityGroupName);
-                valueList.Add("Isolatable", Isolatable.ToString());
-                valueList.Add("Description", Description);
+                Dictionary<string, object> valueList = new Dictionary<string, object>
+                {
+                    { "Id", PluginId },
+                    { "Assembly", AssemblyName },
+                    { "ModifiedOn", ModifiedOn },
+                    { "FriendlyName", FriendlyName },
+                    { "Name", Name },
+                    { "TypeName", TypeName },
+                    { "WorkflowActivityGroupName", WorkflowActivityGroupName },
+                    { "Isolatable", Isolatable.ToString() },
+                    { "Description", Description }
+                };
                 return valueList;
             }
         }

@@ -63,23 +63,24 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.8.2.0\lib\net45\CsvHelper.dll</HintPath>
+    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.12.1.2\lib\net45\CsvHelper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="ILMerge">
       <HintPath>..\packages\ILMerge.2.14.1208\tools\ILMerge.exe</HintPath>
     </Reference>
-    <Reference Include="McTools.Xrm.Connection, Version=1.2018.7.19, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
-      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2018.7.19\lib\net462\McTools.Xrm.Connection.dll</HintPath>
+    <Reference Include="McTools.Xrm.Connection, Version=1.2019.6.25, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
+      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2019.6.25\lib\net462\McTools.Xrm.Connection.dll</HintPath>
     </Reference>
-    <Reference Include="McTools.Xrm.Connection.WinForms, Version=1.2018.7.19, Culture=neutral, PublicKeyToken=f1559f79cf894e27, processorArchitecture=MSIL">
-      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2018.7.19\lib\net462\McTools.Xrm.Connection.WinForms.dll</HintPath>
+    <Reference Include="McTools.Xrm.Connection.WinForms, Version=1.2019.6.25, Culture=neutral, PublicKeyToken=f1559f79cf894e27, processorArchitecture=MSIL">
+      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2019.6.25\lib\net462\McTools.Xrm.Connection.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.5\lib\net452\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.12\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.29.0.1078, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -89,22 +90,36 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.29.0\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Rest.ClientRuntime, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.7\lib\net452\Microsoft.Rest.ClientRuntime.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.16\lib\net462\Microsoft.Rest.ClientRuntime.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.XmlTransform, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Xdt.2.1.2\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.5\lib\net452\Microsoft.Xrm.Sdk.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.12\lib\net462\Microsoft.Xrm.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk.Deployment, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.Deployment.9.0.2.5\lib\net452\Microsoft.Xrm.Sdk.Deployment.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.Deployment.9.0.2.12\lib\net462\Microsoft.Xrm.Sdk.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.Workflow.9.0.2.5\lib\net452\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.Workflow.9.0.2.12\lib\net462\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Tooling.Connector, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.7\lib\net452\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.16\lib\net462\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Tooling.CrmConnectControl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.0.2.16\lib\net462\Microsoft.Xrm.Tooling.CrmConnectControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Tooling.Ui.Styles, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.0.2.16\lib\net462\Microsoft.Xrm.Tooling.Ui.Styles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Tooling.WebResourceUtility, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.0.2.16\lib\net462\Microsoft.Xrm.Tooling.WebResourceUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -125,6 +140,9 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -139,17 +157,23 @@
     <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <HintPath>..\packages\DockPanelSuite.ThemeVS2015.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
     </Reference>
-    <Reference Include="XrmToolBox, Version=1.2018.7.28, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XrmToolBoxPackage.1.2018.7.28\lib\net462\XrmToolBox.exe</HintPath>
+    <Reference Include="XrmToolBox, Version=1.2019.6.33, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XrmToolBoxPackage.1.2019.6.33\lib\net462\XrmToolBox.exe</HintPath>
     </Reference>
-    <Reference Include="XrmToolBox.Extensibility, Version=1.2018.7.28, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XrmToolBoxPackage.1.2018.7.28\lib\net462\XrmToolBox.Extensibility.dll</HintPath>
+    <Reference Include="XrmToolBox.Extensibility, Version=1.2019.6.33, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XrmToolBoxPackage.1.2019.6.33\lib\net462\XrmToolBox.Extensibility.dll</HintPath>
     </Reference>
-    <Reference Include="XrmToolBox.PluginsStore, Version=1.2018.7.28, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XrmToolBoxPackage.1.2018.7.28\lib\net462\XrmToolBox.PluginsStore.dll</HintPath>
+    <Reference Include="XrmToolBox.PluginsStore, Version=1.2019.6.33, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XrmToolBoxPackage.1.2019.6.33\lib\net462\XrmToolBox.PluginsStore.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppDomainContext.cs" />
     <Compile Include="CrmTreeControlDefaults.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -278,12 +302,162 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\coretools\CrmSvcUtil.exe.config" />
+    <None Include="bin\coretools\LicenseTerms.docx" />
+    <None Include="bin\coretools\SolutionPackager.exe.config" />
+    <None Include="bin\Debug - Copy\nunit_random_seed.tmp" />
+    <None Include="bin\Debug - Copy\Xrm.Sdk.PluginRegistration.dll.config" />
+    <None Include="bin\Debug\McTools.Xrm.Connection.dll.config" />
+    <None Include="bin\Debug\nunit_random_seed.tmp" />
+    <None Include="bin\Debug\Xrm.Sdk.PluginRegistration.dll.config" />
+    <None Include="bin\Debug\XrmToolBox.exe.config" />
+    <None Include="bin\McTools.Xrm.Connection.dll.config" />
+    <None Include="bin\Release\nunit_random_seed.tmp" />
+    <None Include="bin\Release\Xrm.Sdk.PluginRegistration.dll.config" />
+    <None Include="Resources\dynamics365_icon_32.ico" />
+    <None Include="Resources\dynamics365-icon-16.png" />
+    <None Include="Resources\dynamics365-icon-32.png" />
+    <None Include="Resources\dynamics365-icon-24.png" />
+    <None Include="Resources\dynamics365-icon-120.png" />
     <None Include="Resources\assemblyselected.png" />
     <None Include="Resources\assembly.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Images\close.png" />
+    <Content Include="bin\coretools\CrmSvcUtil.exe" />
+    <Content Include="bin\coretools\CrmSvcUtil.xml" />
+    <Content Include="bin\coretools\Microsoft.Crm.Sdk.Proxy.dll" />
+    <Content Include="bin\coretools\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+    <Content Include="bin\coretools\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
+    <Content Include="bin\coretools\Microsoft.Rest.ClientRuntime.dll" />
+    <Content Include="bin\coretools\Microsoft.Xrm.Sdk.Deployment.dll" />
+    <Content Include="bin\coretools\Microsoft.Xrm.Sdk.dll" />
+    <Content Include="bin\coretools\Microsoft.Xrm.Tooling.Connector.dll" />
+    <Content Include="bin\coretools\Microsoft.Xrm.Tooling.CrmConnectControl.dll" />
+    <Content Include="bin\coretools\Microsoft.Xrm.Tooling.Ui.Styles.dll" />
+    <Content Include="bin\coretools\Newtonsoft.Json.dll" />
+    <Content Include="bin\coretools\Other Redistributable.txt" />
+    <Content Include="bin\coretools\SolutionPackager.exe" />
+    <Content Include="bin\coretools\System.ValueTuple.dll" />
+    <Content Include="bin\Debug - Copy\Connections\ConnectionsList.Default.xml" />
+    <Content Include="bin\Debug - Copy\Connections\MscrmTools.ConnectionsList.xml" />
+    <Content Include="bin\Debug - Copy\CsvHelper.dll" />
+    <Content Include="bin\Debug - Copy\CsvHelper.xml" />
+    <Content Include="bin\Debug - Copy\EPPlus.dll" />
+    <Content Include="bin\Debug - Copy\EPPlus.xml" />
+    <Content Include="bin\Debug - Copy\ILMerge.exe" />
+    <Content Include="bin\Debug - Copy\McTools.Xrm.Connection.dll" />
+    <Content Include="bin\Debug - Copy\McTools.Xrm.Connection.WinForms.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Crm.Sdk.Proxy.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Crm.Sdk.Proxy.xml" />
+    <Content Include="bin\Debug - Copy\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.IdentityModel.Clients.ActiveDirectory.xml" />
+    <Content Include="bin\Debug - Copy\Microsoft.Web.XmlTransform.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Sdk.Deployment.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Sdk.Deployment.xml" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Sdk.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Sdk.Workflow.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Sdk.Workflow.xml" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Sdk.xml" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Tooling.Connector.dll" />
+    <Content Include="bin\Debug - Copy\Microsoft.Xrm.Tooling.Connector.xml" />
+    <Content Include="bin\Debug - Copy\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug - Copy\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug - Copy\NuGet.Core.dll" />
+    <Content Include="bin\Debug - Copy\Plugins\Xrm.Sdk.PluginRegistration.dll" />
+    <Content Include="bin\Debug - Copy\Settings\XrmToolBox.PluginsStore.xml" />
+    <Content Include="bin\Debug - Copy\Settings\XrmToolBox.Settings.xml" />
+    <Content Include="bin\Debug - Copy\Xrm.Sdk.PluginRegistration.dll" />
+    <Content Include="bin\Debug - Copy\Xrm.Sdk.PluginRegistration.Merged.dll" />
+    <Content Include="bin\Debug - Copy\Xrm.Sdk.PluginRegistration.Merged.pdb" />
+    <Content Include="bin\Debug - Copy\Xrm.Sdk.PluginRegistration.pdb" />
+    <Content Include="bin\Debug - Copy\XrmToolBox.exe" />
+    <Content Include="bin\Debug - Copy\XrmToolBox.Extensibility.dll" />
+    <Content Include="bin\Debug - Copy\XrmToolBox.PluginsStore.dll" />
+    <Content Include="bin\Debug\Connections\ConnectionsList.Default.xml" />
+    <Content Include="bin\Debug\Connections\MscrmTools.ConnectionsList.xml" />
+    <Content Include="bin\Debug\CsvHelper.dll" />
+    <Content Include="bin\Debug\CsvHelper.xml" />
+    <Content Include="bin\Debug\EPPlus.dll" />
+    <Content Include="bin\Debug\EPPlus.xml" />
+    <Content Include="bin\Debug\ILMerge.exe" />
+    <Content Include="bin\Debug\McTools.StopAdvertisement.dll" />
+    <Content Include="bin\Debug\McTools.Xrm.Connection.dll" />
+    <Content Include="bin\Debug\McTools.Xrm.Connection.pdb" />
+    <Content Include="bin\Debug\McTools.Xrm.Connection.WinForms.dll" />
+    <Content Include="bin\Debug\McTools.Xrm.Connection.WinForms.pdb" />
+    <Content Include="bin\Debug\Microsoft.Crm.Sdk.Proxy.dll" />
+    <Content Include="bin\Debug\Microsoft.Crm.Sdk.Proxy.xml" />
+    <Content Include="bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+    <Content Include="bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
+    <Content Include="bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.xml" />
+    <Content Include="bin\Debug\Microsoft.IdentityModel.dll" />
+    <Content Include="bin\Debug\Microsoft.Rest.ClientRuntime.dll" />
+    <Content Include="bin\Debug\Microsoft.Web.XmlTransform.dll" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Sdk.Deployment.dll" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Sdk.Deployment.xml" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Sdk.dll" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Sdk.Workflow.dll" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Sdk.Workflow.xml" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Sdk.xml" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Tooling.Connector.dll" />
+    <Content Include="bin\Debug\Microsoft.Xrm.Tooling.Connector.xml" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\NuGet.Core.dll" />
+    <Content Include="bin\Debug\Plugins\Xrm.Sdk.PluginRegistration.dll" />
+    <Content Include="bin\Debug\Settings\XrmToolBox.Announcements.xml" />
+    <Content Include="bin\Debug\Settings\XrmToolBox.Mru.xml" />
+    <Content Include="bin\Debug\Settings\XrmToolBox.PluginsStore.xml" />
+    <Content Include="bin\Debug\Settings\XrmToolBox.Settings.xml" />
+    <Content Include="bin\Debug\WeifenLuo.WinFormsUI.Docking.dll" />
+    <Content Include="bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll" />
+    <Content Include="bin\Debug\Xrm.Sdk.PluginRegistration.dll" />
+    <Content Include="bin\Debug\Xrm.Sdk.PluginRegistration.Merged.dll" />
+    <Content Include="bin\Debug\Xrm.Sdk.PluginRegistration.Merged.pdb" />
+    <Content Include="bin\Debug\Xrm.Sdk.PluginRegistration.pdb" />
+    <Content Include="bin\Debug\XrmToolBox.AutoUpdater.exe" />
+    <Content Include="bin\Debug\XrmToolBox.exe" />
+    <Content Include="bin\Debug\XrmToolBox.Extensibility.dll" />
+    <Content Include="bin\Debug\XrmToolBox.PluginsStore.dll" />
+    <Content Include="bin\McTools.Xrm.Connection.dll" />
+    <Content Include="bin\McTools.Xrm.Connection.pdb" />
+    <Content Include="bin\McTools.Xrm.Connection.WinForms.dll" />
+    <Content Include="bin\McTools.Xrm.Connection.WinForms.pdb" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\CsvHelper.dll" />
+    <Content Include="bin\Release\CsvHelper.xml" />
+    <Content Include="bin\Release\EPPlus.dll" />
+    <Content Include="bin\Release\EPPlus.xml" />
+    <Content Include="bin\Release\ILMerge.exe" />
+    <Content Include="bin\Release\McTools.Xrm.Connection.dll" />
+    <Content Include="bin\Release\McTools.Xrm.Connection.WinForms.dll" />
+    <Content Include="bin\Release\Microsoft.Crm.Sdk.Proxy.dll" />
+    <Content Include="bin\Release\Microsoft.Crm.Sdk.Proxy.xml" />
+    <Content Include="bin\Release\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+    <Content Include="bin\Release\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
+    <Content Include="bin\Release\Microsoft.IdentityModel.Clients.ActiveDirectory.xml" />
+    <Content Include="bin\Release\Microsoft.Web.XmlTransform.dll" />
+    <Content Include="bin\Release\Microsoft.Xrm.Sdk.Deployment.dll" />
+    <Content Include="bin\Release\Microsoft.Xrm.Sdk.Deployment.xml" />
+    <Content Include="bin\Release\Microsoft.Xrm.Sdk.dll" />
+    <Content Include="bin\Release\Microsoft.Xrm.Sdk.Workflow.dll" />
+    <Content Include="bin\Release\Microsoft.Xrm.Sdk.Workflow.xml" />
+    <Content Include="bin\Release\Microsoft.Xrm.Sdk.xml" />
+    <Content Include="bin\Release\Microsoft.Xrm.Tooling.Connector.dll" />
+    <Content Include="bin\Release\Microsoft.Xrm.Tooling.Connector.xml" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\NuGet.Core.dll" />
+    <Content Include="bin\Release\Plugins\Xrm.Sdk.PluginRegistration.dll" />
+    <Content Include="bin\Release\Xrm.Sdk.PluginRegistration.dll" />
+    <Content Include="bin\Release\Xrm.Sdk.PluginRegistration.Merged.dll" />
+    <Content Include="bin\Release\Xrm.Sdk.PluginRegistration.Merged.pdb" />
+    <Content Include="bin\Release\Xrm.Sdk.PluginRegistration.pdb" />
+    <Content Include="bin\Release\XrmToolBox.exe" />
+    <Content Include="bin\Release\XrmToolBox.Extensibility.dll" />
+    <Content Include="bin\Release\XrmToolBox.PluginsStore.dll" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\PluginProfile.gif" />
     <Content Include="Images\PluginProfilerSelected.gif" />
@@ -294,6 +468,9 @@
     <Content Include="Images\Refresh.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\FileBrowserControl.resx">
       <DependentUpon>FileBrowserControl.cs</DependentUpon>
     </EmbeddedResource>

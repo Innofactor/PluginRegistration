@@ -19,6 +19,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using Controls;
     using System;
+    using System.Collections.Generic;
     using System.Windows.Forms;
     using Wrappers;
 
@@ -29,14 +30,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private bool m_needReload = false;
         private CrmOrganization m_org;
         private MainControl m_orgControl;
-        private ICrmTreeNode[] m_rootNodes;
+        private List<ICrmTreeNode> m_rootNodes;
 
         #endregion Private Fields
 
         #region Public Constructors
 
         public SearchForm(CrmOrganization org, MainControl orgControl,
-            ICrmTreeNode[] rootNodes, ICrmTreeNode selectedNode)
+            List<ICrmTreeNode> rootNodes, ICrmTreeNode selectedNode)
         {
             if (rootNodes == null)
             {

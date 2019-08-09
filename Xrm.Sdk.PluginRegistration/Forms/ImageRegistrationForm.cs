@@ -38,7 +38,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         #region Public Constructors
 
         public ImageRegistrationForm(CrmOrganization org, MainControl orgControl,
-            ICrmTreeNode[] rootNodes, CrmPluginImage image, Guid selectNodeId)
+            List<ICrmTreeNode> rootNodes, CrmPluginImage image, Guid selectNodeId)
         {
             if (org == null)
             {

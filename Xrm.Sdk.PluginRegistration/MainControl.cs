@@ -39,7 +39,7 @@ namespace Xrm.Sdk.PluginRegistration
     using XrmToolBox.Extensibility.Args;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver
+    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver //, IAboutPlugin
     {
         #region Private Fields
 
@@ -98,17 +98,19 @@ namespace Xrm.Sdk.PluginRegistration
                 imlEnableImages.Images.Add("disableStep", nodeImageList[CrmTreeNodeImageType.StepDisabled]);
 
                 UpdateEnableButton(true);
+
+                var resources = new System.ComponentModel.ComponentResourceManager(typeof(MainControl));
+                //var resources = new ResourceManager("Images", this.GetType().Assembly);
+                this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("TabIcon")));
             }
             catch (Exception)
             {
                 if (nodeImageList != null)
                 {
-                    foreach (Image img in nodeImageList.Values)
+                    var imgList = nodeImageList.Values.ToList();
+                    for (int i = 0; i < imgList.Count; i++)
                     {
-                        if (img != null)
-                        {
-                            img.Dispose();
-                        }
+                        imgList[i]?.Dispose();
                     }
                 }
 
@@ -165,11 +167,11 @@ namespace Xrm.Sdk.PluginRegistration
             }
             catch (Exception)
             {
-                foreach (Image img in imageList.Values)
+                var imgList = imageList.Values.ToList();
+                for (int i = 0; i < imgList.Count; i++)
                 {
-                    img.Dispose();
+                    imgList[i]?.Dispose();
                 }
-
                 throw;
             }
 
@@ -373,7 +375,7 @@ namespace Xrm.Sdk.PluginRegistration
                     break;
 
                 default:
-                    throw new NotImplementedException("View = " + m_currentView.ToString());
+                    throw new NotImplementedException($"View = {m_currentView.ToString()}");
             }
 
             trvPlugins.AddNode(parentId, step);
@@ -590,6 +592,21 @@ namespace Xrm.Sdk.PluginRegistration
             trvPlugins.SelectedNode = trvPlugins[nodeId];
         }
 
+        public void ShowAboutDialog()
+        {
+            try
+            {
+                var about = new About();
+                //StartPosition = FormStartPosition.CenterParent
+
+                about.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         public void ShowSystemItemError(string text)
         {
             if (text == null)
@@ -754,7 +771,7 @@ namespace Xrm.Sdk.PluginRegistration
                     break;
 
                 default:
-                    throw new NotImplementedException("View = " + view.ToString());
+                    throw new NotImplementedException($"View = {view.ToString()}");
             }
 
             Guid rootNodeId = rootNode.NodeId;
@@ -1102,7 +1119,7 @@ namespace Xrm.Sdk.PluginRegistration
                         m_stepParentList = null;
                         m_viewNodeList = null;
 
-                        List<ICrmTreeNode> nodes = new List<ICrmTreeNode>();
+                        var nodes = new List<ICrmTreeNode>();
                         foreach (CrmPluginAssembly assembly in Organization.Assemblies)
                         {
                             // If the same assembly name used for any other custom plugin assembly then that need to be added
@@ -1120,7 +1137,7 @@ namespace Xrm.Sdk.PluginRegistration
                             nodes.Add(Organization.ProfilerPlugin);
                         }
 
-                        trvPlugins.LoadNodes(nodes.ToArray());
+                        trvPlugins.LoadNodes(nodes);
                         break;
 
                     case CrmViewType.Entity:
@@ -1168,15 +1185,15 @@ namespace Xrm.Sdk.PluginRegistration
                                 }
                             }
 
-                            var nodeList = new CrmTreeNode[m_rootNodeList.Count];
-                            m_rootNodeList.Values.CopyTo(nodeList, 0);
+                            var nodeList = new List<CrmTreeNode>();
+                            nodeList.AddRange(m_rootNodeList.Values);
 
-                            trvPlugins.LoadNodes(nodeList);
+                            trvPlugins.LoadNodes(nodeList.ToList<ICrmTreeNode>());
                         }
                         break;
 
                     default:
-                        throw new NotImplementedException(@"View = {view.ToString()}");
+                        throw new NotImplementedException($"View = {view.ToString()}");
                 }
 
                 m_currentView = view;
@@ -1210,7 +1227,7 @@ namespace Xrm.Sdk.PluginRegistration
                 Message = "Loading assemblies information...",
                 Work = (worker, argument) =>
                 {
-                    argument.Result = new CrmOrganization(ConnectionDetail, m_progressIndicator);
+                    argument.Result = new CrmOrganization(ConnectionDetail, m_progressIndicator, Service);
                 },
                 PostWorkCallBack = (argument) =>
                 {
@@ -1394,7 +1411,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                 default:
 
-                    throw new NotImplementedException("NodeType = " + node.NodeType.ToString());
+                    throw new NotImplementedException($"NodeType = {node.NodeType.ToString()}");
             }
 
             //Update the properties grid
@@ -1425,7 +1442,7 @@ namespace Xrm.Sdk.PluginRegistration
                 //Create the list of values
 
                 //Create the new DataSet
-                DataSet set = new DataSet("Grid");
+                var set = new DataSet("Grid");
                 set.Tables.Add(gridTable);
 
                 grvData.DataSource = set.DefaultViewManager;
@@ -1648,15 +1665,12 @@ namespace Xrm.Sdk.PluginRegistration
                 try
                 {
                     var builder = new StringBuilder();
-                    foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(m_org, (ICrmEntity)trvPlugins.SelectedNode))
+                    foreach (KeyValuePair<string, int> stat in RegistrationHelper.Unregister(m_org, m_progressIndicator, trvPlugins))
                     {
                         builder.AppendLine($"{stat.Value} {stat.Key} Unregistered Successfully");
                     }
 
-                    trvPlugins.RemoveNode(trvPlugins.SelectedNode.NodeId);
                     MessageBox.Show(builder.ToString(), "Unregister", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //Refresh to sync tree and grid data to avoid error
-                    toolRefresh_Click(null, null);
                 }
                 catch (Exception ex)
                 {
@@ -2053,27 +2067,27 @@ namespace Xrm.Sdk.PluginRegistration
                 }
             }
 
-            public ICrmTreeNode[] NodeChildren
+            public List<ICrmTreeNode> NodeChildren
             {
                 get
                 {
                     if (m_stepList != null)
                     {
-                        CrmPluginStep[] nodeList = new CrmPluginStep[m_stepList.Count];
-                        m_stepList.Values.CopyTo(nodeList, 0);
-
-                        return nodeList;
+                        var nodeList = new List<CrmPluginStep>(m_stepList.Count);
+                        //m_stepList.Values.CopyTo(nodeList.ToArray(), 0);
+                        nodeList.AddRange(m_stepList.Values);
+                        return nodeList.ToList<ICrmTreeNode>();
                     }
                     else if (m_childList != null)
                     {
-                        CrmTreeNode[] nodeList = new CrmTreeNode[m_childList.Count];
-                        m_childList.Values.CopyTo(nodeList, 0);
-
-                        return nodeList;
+                        var nodeList = new List<CrmTreeNode>(m_childList.Count);
+                        //m_childList.Values.CopyTo(nodeList.ToArray(), 0);
+                        nodeList.AddRange(m_childList.Values);
+                        return nodeList.ToList<ICrmTreeNode>();
                     }
                     else
                     {
-                        return new ICrmTreeNode[0];
+                        return new ICrmTreeNode[0].ToList<ICrmTreeNode>();
                     }
                 }
             }

@@ -23,6 +23,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Xml.Serialization;
 
     public enum CrmAssemblyIsolationMode
@@ -258,20 +259,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [XmlIgnore]
         [Browsable(false)]
-        public ICrmTreeNode[] NodeChildren
+        public List<ICrmTreeNode> NodeChildren
         {
             get
             {
                 if (m_pluginList == null || m_pluginList.Count == 0)
                 {
-                    return new CrmPlugin[0];
+                    //return new CrmPlugin[0].ToList<ICrmTreeNode>();
+                    return new List<ICrmTreeNode> { };
                 }
                 else
                 {
-                    CrmPlugin[] children = new CrmPlugin[m_pluginList.Count];
+                    var children = new CrmPlugin[m_pluginList.Count];
                     m_pluginList.Values.CopyTo(children, 0);
-
-                    return children;
+                    return children.ToList<ICrmTreeNode>();
                 }
             }
         }

@@ -26,6 +26,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
     using System.Drawing;
     using System.Windows.Forms;
     using System.Windows.Forms.Design;
+    using Xrm.Sdk.PluginRegistration.Wrappers;
 
     public enum CrmTreeNodeImageType
     {
@@ -104,7 +105,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
     {
         #region Public Properties
 
-        ICrmTreeNode[] NodeChildren { get; }
+        List<ICrmTreeNode> NodeChildren { get; }
         Guid NodeId { get; }
         CrmTreeNodeImageType NodeImageType { get; }
         CrmTreeNodeImageType NodeSelectedImageType { get; }
@@ -487,7 +488,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         }
 
         [Browsable(false)]
-        public ICrmTreeNode[] RootNodes
+        public List<ICrmTreeNode> RootNodes
         {
             get
             {
@@ -502,7 +503,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     rootNodes.Add(((CrmTreeNode)node.Tag).CrmNode);
                 }
 
-                return rootNodes.ToArray();
+                return rootNodes;
             }
         }
 
@@ -667,7 +668,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
             TreeNodeCollection nodeList = RetrieveParentNodeCollection(parentNodeId);
             bool hasChildren = (nodeList.Count != 0);
-            AddNodes(nodeList, new ICrmTreeNode[] { node }, checkNode);
+            AddNodes(nodeList, new List<ICrmTreeNode> { node }, checkNode);
             if (m_autoExpand && !hasChildren)
             {
                 if (parentNodeId == Guid.Empty)
@@ -949,12 +950,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         /// Reloads the entire tree
         /// </summary>
         /// <param name="rootNodes">Nodes to be loaded. If not specifed, the tree will be empty</param>
-        public void LoadNodes(ICrmTreeNode[] rootNodes)
+        public void LoadNodes(List<ICrmTreeNode> rootNodes)
         {
             m_nodeList.Clear();
             trvPlugins.Nodes.Clear();
 
-            if (rootNodes == null || rootNodes.Length == 0)
+            if (rootNodes == null || rootNodes.Count == 0)
             {
                 return;
             }
@@ -1043,11 +1044,50 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         {
             if (!HasNode(nodeId))
             {
-                throw new ArgumentException("Invalid Node ID given");
+                //throw new ArgumentException("Invalid Node ID given");
+                //NodeId doesn't exist. Most likely it is already removed. I don't see the use for throwing exception
+                return;
             }
 
             CrmTreeNode node = m_nodeList[nodeId];
 
+            var parentTreeNode = m_nodeList[nodeId].TreeNode.Parent;
+            if (parentTreeNode != null)
+            {
+                var parentTag = parentTreeNode.Tag;
+                if (parentTag != null)
+                {
+                    var crmnode = ((CrmTreeNode)parentTag).CrmNode;
+
+                    switch (crmnode.NodeType)
+                    {
+                        case CrmTreeNodeType.Assembly:
+                            if (crmnode.NodeChildren.Count > 0)
+                            {
+                                ((CrmPluginAssembly)crmnode).RemovePlugin(nodeId);
+                            }
+                            break;
+
+                        case CrmTreeNodeType.Plugin:
+                            if (crmnode.NodeChildren.Count > 0)
+                            {
+                                ((CrmPlugin)crmnode).RemoveStep(nodeId);
+                            }
+                            break;
+
+                        case CrmTreeNodeType.Step:
+                            if (crmnode.NodeChildren.Count > 0)
+                            {
+                                ((CrmPluginStep)crmnode).RemoveImage(nodeId);
+                            }
+                            break;
+
+                        default:
+                            //Ignoring other cases
+                            break;
+                    }
+                }
+            }
             //Remove all of the children
             RemoveNodes(node.TreeNode.Nodes);
 
@@ -1173,9 +1213,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
         #region Private Methods
 
-        private void AddNodes(TreeNodeCollection parentNodeList, ICrmTreeNode[] nodes, bool checkNodes)
+        private void AddNodes(TreeNodeCollection parentNodeList, List<ICrmTreeNode> nodes, bool checkNodes)
         {
-            if (nodes == null || nodes.Length == 0)
+            if (nodes == null || nodes.Count == 0)
             {
                 return;
             }
@@ -1187,9 +1227,11 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                     ICrmTreeNode crmNode = node;
                     bool firstChild = (parentNodeList.Count == 0);
 
-                    TreeNode tNode = new TreeNode(node.NodeText);
-                    tNode.ImageKey = crmNode.NodeImageType.ToString();
-                    tNode.SelectedImageKey = crmNode.NodeSelectedImageType.ToString();
+                    var tNode = new TreeNode(node.NodeText)
+                    {
+                        ImageKey = crmNode.NodeImageType.ToString(),
+                        SelectedImageKey = crmNode.NodeSelectedImageType.ToString()
+                    };
                     tNode.Tag = new CrmTreeNode(SingleCheckParent, tNode, node);
 
                     if (HasContextMenuStrip(crmNode.NodeType))
@@ -1232,8 +1274,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                         NodeAdded(this, new CrmTreeNodeEventArgs(crmNode));
                     }
 
-                    ICrmTreeNode[] childNodes = node.NodeChildren;
-                    if (childNodes != null && childNodes.Length != 0)
+                    var childNodes = node.NodeChildren;
+                    if (childNodes != null && childNodes.Count != 0)
                     {
                         AddNodes(tNode.Nodes, childNodes, checkNodes);
                     }
