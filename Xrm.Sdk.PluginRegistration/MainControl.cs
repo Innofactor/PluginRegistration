@@ -2350,5 +2350,28 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
+
+        private void mnuDisableAllSteps_Click(object sender, EventArgs e)
+        {
+            if (trvPlugins.SelectedNode.NodeType != CrmTreeNodeType.Assembly)
+            {
+                return;
+            }
+            var assembly = trvPlugins.SelectedNode as CrmPluginAssembly;
+            var count = 0;
+            foreach (var node in assembly.NodeChildren)
+            {
+                var step = (CrmPluginStep)node;
+                if (step.Enabled)
+                {
+                    count++;
+                    RegistrationHelper.UpdateStepStatus(m_org, step.StepId, false);
+                    UpdateEnableButton(step.Enabled);
+                    trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
+                }
+
+            }
+
+        }
     }
 }
