@@ -76,6 +76,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
+            this.mnuDisableAllSteps = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -100,9 +101,10 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeSep2,
             this.mnuContextNodeEnable,
             this.mnuContextNodeUpdate,
-            this.mnuContextNodeUnregister});
+            this.mnuContextNodeUnregister,
+            this.mnuDisableAllSteps});
             this.mnuContextNode.Name = "mnuContextNode";
-            this.mnuContextNode.Size = new System.Drawing.Size(198, 192);
+            this.mnuContextNode.Size = new System.Drawing.Size(198, 236);
             // 
             // mnuContextNodeAssemblyRegister
             // 
@@ -426,7 +428,7 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.toolExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolExport.Name = "toolExport";
-            this.toolExport.Size = new System.Drawing.Size(44, 22);
+            this.toolExport.Size = new System.Drawing.Size(45, 22);
             this.toolExport.Text = "E&xport";
             this.toolExport.ToolTipText = "Export to Excel";
             this.toolExport.Click += new System.EventHandler(this.toolExport_Click);
@@ -526,6 +528,13 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Size = new System.Drawing.Size(274, 407);
             this.propGridEntity.TabIndex = 4;
             // 
+            // mnuDisableAllSteps
+            // 
+            this.mnuDisableAllSteps.Name = "mnuDisableAllSteps";
+            this.mnuDisableAllSteps.Size = new System.Drawing.Size(197, 22);
+            this.mnuDisableAllSteps.Text = "Disable All";
+            this.mnuDisableAllSteps.Click += new System.EventHandler(this.mnuDisableAllSteps_Click);
+            // 
             // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -601,5 +610,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripButton toolClose;
         private System.Windows.Forms.ToolStripButton toolExport;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem mnuDisableAllSteps;
     }
 }
