@@ -40,6 +40,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeEnable = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeUnregister = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDisableAllSteps = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneral = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuContextGeneralAssemblyRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralStepRegister = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +77,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
-            this.mnuDisableAllSteps = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -104,7 +104,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeUnregister,
             this.mnuDisableAllSteps});
             this.mnuContextNode.Name = "mnuContextNode";
-            this.mnuContextNode.Size = new System.Drawing.Size(198, 236);
+            this.mnuContextNode.Size = new System.Drawing.Size(198, 214);
             // 
             // mnuContextNodeAssemblyRegister
             // 
@@ -172,6 +172,13 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeUnregister.Size = new System.Drawing.Size(197, 22);
             this.mnuContextNodeUnregister.Text = "U&nregister";
             this.mnuContextNodeUnregister.Click += new System.EventHandler(this.toolUnregister_Click);
+            // 
+            // mnuDisableAllSteps
+            // 
+            this.mnuDisableAllSteps.Name = "mnuDisableAllSteps";
+            this.mnuDisableAllSteps.Size = new System.Drawing.Size(197, 22);
+            this.mnuDisableAllSteps.Text = "Disable All Steps";
+            this.mnuDisableAllSteps.Click += new System.EventHandler(this.mnuDisableAllSteps_Click);
             // 
             // mnuContextGeneral
             // 
@@ -527,13 +534,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Name = "propGridEntity";
             this.propGridEntity.Size = new System.Drawing.Size(274, 407);
             this.propGridEntity.TabIndex = 4;
-            // 
-            // mnuDisableAllSteps
-            // 
-            this.mnuDisableAllSteps.Name = "mnuDisableAllSteps";
-            this.mnuDisableAllSteps.Size = new System.Drawing.Size(197, 22);
-            this.mnuDisableAllSteps.Text = "Disable All";
-            this.mnuDisableAllSteps.Click += new System.EventHandler(this.mnuDisableAllSteps_Click);
             // 
             // MainControl
             // 
