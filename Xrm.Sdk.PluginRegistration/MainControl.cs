@@ -1511,7 +1511,7 @@ namespace Xrm.Sdk.PluginRegistration
                 step.Enabled = !step.Enabled;
                 UpdateEnableButton(step.Enabled);
                 trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
-
+                trvPlugins.Refresh();
                 MessageBox.Show($"Step {messageItem}d successfully.", $"{captionItem} Step", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -2381,6 +2381,7 @@ namespace Xrm.Sdk.PluginRegistration
                                     RegistrationHelper.UpdateStepStatus(m_org, step.StepId, false);
                                     UpdateEnableButton(step.Enabled);
                                     trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
+                                    trvPlugins.Refresh();
                                 }
                             }
                         }
@@ -2397,6 +2398,7 @@ namespace Xrm.Sdk.PluginRegistration
                                 RegistrationHelper.UpdateStepStatus(m_org, step.StepId, false);
                                 UpdateEnableButton(step.Enabled);
                                 trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
+                                trvPlugins.Refresh();
                             }
                         }
                     }
