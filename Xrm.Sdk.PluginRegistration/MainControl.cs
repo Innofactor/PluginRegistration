@@ -1280,9 +1280,10 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void SelectItem(ICrmTreeNode node)
         {
-            //Reset the visibility and enabled properties because we don't what is enabled
+            //Reset the visibility and enabled properties because we don't know what is enabled
             toolUpdate.Visible = false;
             mnuContextNodeUpdate.Visible = false;
+            mnuDisableAllSteps.Visible = false;
 
             toolEnable.Visible = false;
             mnuContextNodeEnable.Visible = false;
@@ -1320,6 +1321,7 @@ namespace Xrm.Sdk.PluginRegistration
                 case CrmTreeNodeType.Assembly:
                     if (!isSystemNode)
                     {
+                        mnuDisableAllSteps.Visible = true;
                         CrmPluginAssembly assembly = (CrmPluginAssembly)node;
 
                         toolUpdate.Visible = true;
@@ -1330,9 +1332,18 @@ namespace Xrm.Sdk.PluginRegistration
                     }
                     break;
 
-                case CrmTreeNodeType.Plugin:
+                
                 case CrmTreeNodeType.WorkflowActivity:
                     {
+                        CrmPlugin plugin = (CrmPlugin)node;
+                        btnSave.Enabled = true;
+                        //Load the data table and display information
+                        gridTable = OrganizationHelper.CreateDataTable<CrmPluginStep>(CrmPluginStep.Columns, plugin.Steps);
+                    }
+                    break;
+                case CrmTreeNodeType.Plugin:
+                    {
+                        mnuDisableAllSteps.Visible = true;
                         CrmPlugin plugin = (CrmPlugin)node;
                         btnSave.Enabled = true;
                         //Load the data table and display information
@@ -1474,7 +1485,7 @@ namespace Xrm.Sdk.PluginRegistration
                 return;
             }
 
-            CrmPluginStep step = (CrmPluginStep)trvPlugins.SelectedNode;
+            var step = (CrmPluginStep)trvPlugins.SelectedNode;
             string captionItem, messageItem;
             if (step.Enabled)
             {
@@ -2353,24 +2364,45 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void mnuDisableAllSteps_Click(object sender, EventArgs e)
         {
-            if (trvPlugins.SelectedNode.NodeType != CrmTreeNodeType.Assembly)
-            {
-                return;
-            }
-            var assembly = trvPlugins.SelectedNode as CrmPluginAssembly;
+            var selectedNode = trvPlugins.SelectedNode;
             var count = 0;
-            foreach (var node in assembly.NodeChildren)
+            switch (selectedNode.NodeType)
             {
-                var step = (CrmPluginStep)node;
-                if (step.Enabled)
-                {
-                    count++;
-                    RegistrationHelper.UpdateStepStatus(m_org, step.StepId, false);
-                    UpdateEnableButton(step.Enabled);
-                    trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
-                }
-
+                case CrmTreeNodeType.Assembly:
+                    {
+                        foreach (var plugin in selectedNode.NodeChildren)
+                        {
+                            foreach (var stepNode in plugin.NodeChildren)
+                            {
+                                var step = (CrmPluginStep)stepNode;
+                                if (step.Enabled)
+                                {
+                                    count++;
+                                    RegistrationHelper.UpdateStepStatus(m_org, step.StepId, false);
+                                    UpdateEnableButton(step.Enabled);
+                                    trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case CrmTreeNodeType.Plugin:
+                    {
+                        foreach (var stepNode in selectedNode.NodeChildren)
+                        {
+                            var step = (CrmPluginStep)stepNode;
+                            if (step.Enabled)
+                            {
+                                count++;
+                                RegistrationHelper.UpdateStepStatus(m_org, step.StepId, false);
+                                UpdateEnableButton(step.Enabled);
+                                trvPlugins.RefreshNode(trvPlugins.SelectedNode.NodeId);
+                            }
+                        }
+                    }
+                    break;
             }
+            
 
         }
     }
