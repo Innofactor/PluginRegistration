@@ -610,7 +610,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        public void ShowSystemItemError(string text)
+        public void ShowSystemItemError(string text,bool showSystemMessage = true)
         {
             if (text == null)
             {
@@ -618,8 +618,15 @@ namespace Xrm.Sdk.PluginRegistration
             }
             else
             {
-                MessageBox.Show(string.Format("{0}\n{1}", SYSTEM_ERROR_MESSAGE, text),
-                    SYSTEM_ERROR_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (showSystemMessage)
+                {
+                    MessageBox.Show(string.Format("{0}\n{1}", SYSTEM_ERROR_MESSAGE, text),
+                       SYSTEM_ERROR_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show( text, SYSTEM_ERROR_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -2374,7 +2381,7 @@ namespace Xrm.Sdk.PluginRegistration
 
             if (String.IsNullOrEmpty(LastAssemblyFileName))
             {
-                ShowSystemItemError("Please register the assembly manually first");
+                ShowSystemItemError("Please register the assembly manually first",false);
                 return;
             }
 
@@ -2385,7 +2392,7 @@ namespace Xrm.Sdk.PluginRegistration
                      
                         if (LastRepeatedAssemblyName != ((CrmPluginAssembly)trvPlugins.SelectedNode).Name)
                         {
-                            ShowSystemItemError("Repeat can only be used on the last registered assembly");
+                            ShowSystemItemError("Repeat can only be used on the last registered assembly",false);
                             return;
                         }
 
@@ -2397,32 +2404,10 @@ namespace Xrm.Sdk.PluginRegistration
                     }
                     break;
 
-                case CrmTreeNodeType.Step:
-                    {
-                        var step = (CrmPluginStep)trvPlugins.SelectedNode;
-                        CrmPlugin plugin = m_org[step.AssemblyId][step.PluginId];
-
-                        CrmServiceEndpoint serviceEndpoint = null;
-                        if (step.ServiceBusConfigurationId != Guid.Empty)
-                        {
-                            serviceEndpoint = m_org.ServiceEndpoints[step.ServiceBusConfigurationId];
-                        }
-
-                        var regForm = new StepRegistrationForm(Organization, this, plugin, step, serviceEndpoint);
-                        regForm.ShowDialog();
-                    }
-                    break;
-
-                case CrmTreeNodeType.Image:
-                    {
-                        var regForm = new ImageRegistrationForm(m_org, this,
-                            trvPlugins.RootNodes, (CrmPluginImage)trvPlugins.SelectedNode, trvPlugins.SelectedNode.NodeId);
-                        regForm.ShowDialog();
-                    }
-                    break;
 
                 default:
-                    throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}");
+                    ShowSystemItemError("Repeat can only be used on assemblies",false);
+                    break;
             }
 
             ICrmTreeNode node = trvPlugins.SelectedNode;
