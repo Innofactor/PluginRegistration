@@ -161,10 +161,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
+        public void RepeatRegistration(object sender,string AssemblyFileName)
+        {
+            AssemblyPathControl.FileName = AssemblyFileName;
+            btnLoadAssembly_Click(sender, new EventArgs());
+            btnRegister_Click(sender, new EventArgs());
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+        public string AssemblyFileName { get; set; }
 
         private void btnLoadAssembly_Click(object sender, EventArgs e)
         {
@@ -179,6 +188,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             CrmPluginAssembly assembly;
             try
             {
+                AssemblyFileName = AssemblyPathControl.FileName;
                 assembly = RegistrationHelper.RetrievePluginsFromAssembly(AssemblyPathControl.FileName);
             }
             catch (Exception ex)

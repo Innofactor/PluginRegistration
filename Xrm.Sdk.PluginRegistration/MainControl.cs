@@ -1285,6 +1285,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             //Reset the visibility and enabled properties because we don't what is enabled
             toolUpdate.Visible = false;
+            toolRepeat.Visible = false;
             mnuContextNodeUpdate.Visible = false;
 
             toolEnable.Visible = false;
@@ -1330,6 +1331,9 @@ namespace Xrm.Sdk.PluginRegistration
                         btnSave.Enabled = true;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPlugin>(CrmPlugin.Columns, assembly.Plugins);
+
+                        toolRepeat.Visible = true;
+
                     }
                     break;
 
@@ -1700,6 +1704,8 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        public string LastAssemblyFileName { get; set; }
+
         private void toolUpdate_Click(object sender, EventArgs e)
         {
             if (IsNodeSystemItem(trvPlugins.SelectedNode))
@@ -1714,6 +1720,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
                         regForm.ShowDialog(ParentForm);
+                        LastAssemblyFileName = regForm.AssemblyFileName;
+                        LastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
                     }
                     break;
 
@@ -2353,5 +2361,76 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
+
+        public string LastRepeatedAssemblyName { get; set; }
+
+        private void toolRepeat_Click(object sender, EventArgs e)
+        {
+            if (IsNodeSystemItem(trvPlugins.SelectedNode))
+            {
+                ShowSystemItemError("The assembly cannot be updated.");
+                return;
+            }
+
+            if (String.IsNullOrEmpty(LastAssemblyFileName))
+            {
+                ShowSystemItemError("Please register the assembly manually first");
+                return;
+            }
+
+            switch (trvPlugins.SelectedNode.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+                     
+                        if (LastRepeatedAssemblyName != ((CrmPluginAssembly)trvPlugins.SelectedNode).Name)
+                        {
+                            ShowSystemItemError("Repeat can only be used on the last registered assembly");
+                            return;
+                        }
+
+                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        LastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
+
+
+                        regForm.RepeatRegistration(ParentForm,LastAssemblyFileName);
+                    }
+                    break;
+
+                case CrmTreeNodeType.Step:
+                    {
+                        var step = (CrmPluginStep)trvPlugins.SelectedNode;
+                        CrmPlugin plugin = m_org[step.AssemblyId][step.PluginId];
+
+                        CrmServiceEndpoint serviceEndpoint = null;
+                        if (step.ServiceBusConfigurationId != Guid.Empty)
+                        {
+                            serviceEndpoint = m_org.ServiceEndpoints[step.ServiceBusConfigurationId];
+                        }
+
+                        var regForm = new StepRegistrationForm(Organization, this, plugin, step, serviceEndpoint);
+                        regForm.ShowDialog();
+                    }
+                    break;
+
+                case CrmTreeNodeType.Image:
+                    {
+                        var regForm = new ImageRegistrationForm(m_org, this,
+                            trvPlugins.RootNodes, (CrmPluginImage)trvPlugins.SelectedNode, trvPlugins.SelectedNode.NodeId);
+                        regForm.ShowDialog();
+                    }
+                    break;
+
+                default:
+                    throw new NotImplementedException($"NodeType = {trvPlugins.SelectedNode.NodeType.ToString()}");
+            }
+
+            ICrmTreeNode node = trvPlugins.SelectedNode;
+            if (node != null)
+            {
+                trvPlugins_SelectionChanged(sender, new CrmTreeNodeTreeEventArgs(node, TreeViewAction.Unknown));
+            }
+
+        }
     }
 }

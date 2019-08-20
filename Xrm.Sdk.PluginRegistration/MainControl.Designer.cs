@@ -62,6 +62,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerSep = new System.Windows.Forms.ToolStripSeparator();
             this.toolUpdate = new System.Windows.Forms.ToolStripButton();
             this.toolEnable = new System.Windows.Forms.ToolStripButton();
+            this.toolRepeat = new System.Windows.Forms.ToolStripButton();
             this.toolUnregister = new System.Windows.Forms.ToolStripButton();
             this.toolCommonSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolRefresh = new System.Windows.Forms.ToolStripButton();
@@ -76,7 +77,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
-            this.toolRepeat = new System.Windows.Forms.ToolStripButton();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -390,6 +390,15 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolEnable.Visible = false;
             this.toolEnable.Click += new System.EventHandler(this.toolEnable_Click);
             // 
+            // toolRepeat
+            // 
+            this.toolRepeat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolRepeat.Name = "toolRepeat";
+            this.toolRepeat.Size = new System.Drawing.Size(47, 22);
+            this.toolRepeat.Text = "Re&peat";
+            this.toolRepeat.Visible = false;
+            this.toolRepeat.Click += new System.EventHandler(this.toolRepeat_Click);
+            // 
             // toolUnregister
             // 
             this.toolUnregister.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -527,13 +536,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Name = "propGridEntity";
             this.propGridEntity.Size = new System.Drawing.Size(274, 407);
             this.propGridEntity.TabIndex = 4;
-            // 
-            // toolRepeat
-            // 
-            this.toolRepeat.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolRepeat.Name = "toolRepeat";
-            this.toolRepeat.Size = new System.Drawing.Size(47, 22);
-            this.toolRepeat.Text = "Re&peat";
             // 
             // MainControl
             // 
