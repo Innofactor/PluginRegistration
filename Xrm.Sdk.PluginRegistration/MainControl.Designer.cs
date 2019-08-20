@@ -76,6 +76,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
+            this.toolRepeat = new System.Windows.Forms.ToolStripButton();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -270,6 +271,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerSep,
             this.toolUpdate,
             this.toolEnable,
+            this.toolRepeat,
             this.toolUnregister,
             this.toolCommonSep2,
             this.toolRefresh,
@@ -526,6 +528,13 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Size = new System.Drawing.Size(274, 407);
             this.propGridEntity.TabIndex = 4;
             // 
+            // toolRepeat
+            // 
+            this.toolRepeat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolRepeat.Name = "toolRepeat";
+            this.toolRepeat.Size = new System.Drawing.Size(47, 22);
+            this.toolRepeat.Text = "Re&peat";
+            // 
             // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -601,5 +610,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripButton toolClose;
         private System.Windows.Forms.ToolStripButton toolExport;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolRepeat;
     }
 }

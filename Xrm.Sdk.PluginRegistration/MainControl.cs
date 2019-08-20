@@ -138,7 +138,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "UninstallProfiler",
                     "Debug",
                     "Close",
-                    "Save");
+                    "Save",
+                    "Repeat");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -148,6 +149,8 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolUnregister.Image = imageList["Delete"];
                 mnuContextNodeUnregister.Image = toolUnregister.Image;
+
+                toolRepeat.Image = imageList["Repeat"];
 
                 toolSearch.Image = imageList["Search"];
                 mnuContextNodeSearch.Image = toolSearch.Image;
