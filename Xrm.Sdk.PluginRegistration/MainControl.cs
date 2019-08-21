@@ -56,6 +56,9 @@ namespace Xrm.Sdk.PluginRegistration
         private Dictionary<Guid, Guid> m_stepEntityMap = new Dictionary<Guid, Guid>();
         private Dictionary<Guid, Guid> m_stepParentList = null;
         private Dictionary<Guid, Guid> m_viewNodeList = null;
+        private string m_lastAssemblyFileName = null;
+        private string m_lastRepeatedAssemblyName = null;
+
 
         #endregion Private Fields
 
@@ -610,7 +613,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        public void ShowSystemItemError(string text,bool showSystemMessage = true)
+        public void ShowSystemItemError(string text, bool showSystemMessage = true)
         {
             if (text == null)
             {
@@ -1711,7 +1714,54 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        public string LastAssemblyFileName { get; set; }
+
+        private void toolRepeat_Click(object sender, EventArgs e)
+        {
+            if (IsNodeSystemItem(trvPlugins.SelectedNode))
+            {
+                ShowSystemItemError("The assembly cannot be updated.");
+                return;
+            }
+
+            if (String.IsNullOrEmpty(m_lastAssemblyFileName))
+            {
+                ShowSystemItemError("Please register the assembly manually first", false);
+                return;
+            }
+
+            switch (trvPlugins.SelectedNode.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+
+                        if (m_lastRepeatedAssemblyName != ((CrmPluginAssembly)trvPlugins.SelectedNode).Name)
+                        {
+                            ShowSystemItemError("Repeat can only be used on the last registered assembly", false);
+                            return;
+                        }
+
+                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        m_lastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
+
+
+                        regForm.RepeatRegistration(m_lastAssemblyFileName);
+                    }
+                    break;
+
+
+                default:
+                    ShowSystemItemError("Repeat can only be used on assemblies", false);
+                    break;
+            }
+
+            ICrmTreeNode node = trvPlugins.SelectedNode;
+            if (node != null)
+            {
+                trvPlugins_SelectionChanged(sender, new CrmTreeNodeTreeEventArgs(node, TreeViewAction.Unknown));
+            }
+
+        }
+
 
         private void toolUpdate_Click(object sender, EventArgs e)
         {
@@ -1727,8 +1777,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
                         regForm.ShowDialog(ParentForm);
-                        LastAssemblyFileName = regForm.AssemblyFileName;
-                        LastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
+                        m_lastAssemblyFileName = regForm.AssemblyFileName;
+                        m_lastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
                     }
                     break;
 
@@ -2369,53 +2419,6 @@ namespace Xrm.Sdk.PluginRegistration
 
         #endregion Private Classes
 
-        public string LastRepeatedAssemblyName { get; set; }
-
-        private void toolRepeat_Click(object sender, EventArgs e)
-        {
-            if (IsNodeSystemItem(trvPlugins.SelectedNode))
-            {
-                ShowSystemItemError("The assembly cannot be updated.");
-                return;
-            }
-
-            if (String.IsNullOrEmpty(LastAssemblyFileName))
-            {
-                ShowSystemItemError("Please register the assembly manually first",false);
-                return;
-            }
-
-            switch (trvPlugins.SelectedNode.NodeType)
-            {
-                case CrmTreeNodeType.Assembly:
-                    {
-                     
-                        if (LastRepeatedAssemblyName != ((CrmPluginAssembly)trvPlugins.SelectedNode).Name)
-                        {
-                            ShowSystemItemError("Repeat can only be used on the last registered assembly",false);
-                            return;
-                        }
-
-                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
-                        LastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
-
-
-                        regForm.RepeatRegistration(ParentForm,LastAssemblyFileName);
-                    }
-                    break;
-
-
-                default:
-                    ShowSystemItemError("Repeat can only be used on assemblies",false);
-                    break;
-            }
-
-            ICrmTreeNode node = trvPlugins.SelectedNode;
-            if (node != null)
-            {
-                trvPlugins_SelectionChanged(sender, new CrmTreeNodeTreeEventArgs(node, TreeViewAction.Unknown));
-            }
-
-        }
+        
     }
 }
