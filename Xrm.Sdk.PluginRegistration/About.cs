@@ -68,5 +68,20 @@
         }
 
         #endregion Private Methods
+
+        private void linkLabelAlexey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://twitter.com/shytikov");
+        }
+
+        private void linkLabelImran_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://twitter.com/imranakram365");
+        }
+
+        private void linkLabelJonas_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://twitter.com/rappen");
+        }
     }
 }

@@ -39,12 +39,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkLabelAlexey = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.linkLabelImran = new System.Windows.Forms.LinkLabel();
             this.label6 = new System.Windows.Forms.Label();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.linkLabelJonas = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -53,9 +53,9 @@
             // 
             this.groupBox1.Controls.Add(this.listAssemblies);
             this.groupBox1.Location = new System.Drawing.Point(174, 137);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(358, 222);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
@@ -70,8 +70,9 @@
             this.listAssemblies.FullRowSelect = true;
             this.listAssemblies.GridLines = true;
             this.listAssemblies.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listAssemblies.HideSelection = false;
             this.listAssemblies.Location = new System.Drawing.Point(2, 15);
-            this.listAssemblies.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listAssemblies.Margin = new System.Windows.Forms.Padding(2);
             this.listAssemblies.Name = "listAssemblies";
             this.listAssemblies.Scrollable = false;
             this.listAssemblies.ShowGroups = false;
@@ -94,7 +95,7 @@
             // 
             this.pictureBox1.Image = global::Xrm.Sdk.PluginRegistration.Resources.dynamics365_icon_120;
             this.pictureBox1.Location = new System.Drawing.Point(11, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(103, 114);
             this.pictureBox1.TabIndex = 18;
@@ -158,15 +159,16 @@
             this.label2.TabIndex = 24;
             this.label2.Text = "Microsoft";
             // 
-            // linkLabel1
+            // linkLabelAlexey
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(97, 208);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(57, 13);
-            this.linkLabel1.TabIndex = 25;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "@shytikov";
+            this.linkLabelAlexey.AutoSize = true;
+            this.linkLabelAlexey.Location = new System.Drawing.Point(97, 208);
+            this.linkLabelAlexey.Name = "linkLabelAlexey";
+            this.linkLabelAlexey.Size = new System.Drawing.Size(57, 13);
+            this.linkLabelAlexey.TabIndex = 25;
+            this.linkLabelAlexey.TabStop = true;
+            this.linkLabelAlexey.Text = "@shytikov";
+            this.linkLabelAlexey.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelAlexey_LinkClicked);
             // 
             // label3
             // 
@@ -186,15 +188,16 @@
             this.label4.TabIndex = 28;
             this.label4.Text = "Imran Akram";
             // 
-            // linkLabel2
+            // linkLabelImran
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(97, 227);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(72, 13);
-            this.linkLabel2.TabIndex = 27;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "@imranakram";
+            this.linkLabelImran.AutoSize = true;
+            this.linkLabelImran.Location = new System.Drawing.Point(97, 227);
+            this.linkLabelImran.Name = "linkLabelImran";
+            this.linkLabelImran.Size = new System.Drawing.Size(72, 13);
+            this.linkLabelImran.TabIndex = 27;
+            this.linkLabelImran.TabStop = true;
+            this.linkLabelImran.Text = "@imranakram";
+            this.linkLabelImran.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelImran_LinkClicked);
             // 
             // label6
             // 
@@ -205,15 +208,16 @@
             this.label6.TabIndex = 30;
             this.label6.Text = "Jonas Rapp";
             // 
-            // linkLabel3
+            // linkLabelJonas
             // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(96, 248);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(51, 13);
-            this.linkLabel3.TabIndex = 29;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "@rappen";
+            this.linkLabelJonas.AutoSize = true;
+            this.linkLabelJonas.Location = new System.Drawing.Point(97, 248);
+            this.linkLabelJonas.Name = "linkLabelJonas";
+            this.linkLabelJonas.Size = new System.Drawing.Size(51, 13);
+            this.linkLabelJonas.TabIndex = 29;
+            this.linkLabelJonas.TabStop = true;
+            this.linkLabelJonas.Text = "@rappen";
+            this.linkLabelJonas.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelJonas_LinkClicked);
             // 
             // About
             // 
@@ -221,11 +225,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(547, 405);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.linkLabel3);
+            this.Controls.Add(this.linkLabelJonas);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.linkLabel2);
+            this.Controls.Add(this.linkLabelImran);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.linkLabelAlexey);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblVersion);
@@ -257,11 +261,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel linkLabelAlexey;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel linkLabelImran;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.LinkLabel linkLabelJonas;
     }
 }
