@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCompany("Microsoft Corporation and contributors")]
+[assembly: AssemblyCompany("Microsoft, Alexey, Jonas, Imran and the Dynamics community")]
 [assembly: AssemblyTitle("Plugin Registration Tool")]
 [assembly: AssemblyDescription("Customized Plugin Registration Tool for XrmToolBox")]
 [assembly: AssemblyProduct("PluginRegistrationTool")]
@@ -24,5 +24,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.1.5.1")]
-[assembly: AssemblyFileVersion("3.1.5.1")]
+[assembly: AssemblyVersion("3.2020.1.2")]
+[assembly: AssemblyFileVersion("3.2020.1.2")]
