@@ -39,7 +39,7 @@ namespace Xrm.Sdk.PluginRegistration
     using XrmToolBox.Extensibility.Args;
     using XrmToolBox.Extensibility.Interfaces;
 
-    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver //, IAboutPlugin
+    public partial class MainControl : PluginControlBase, IStatusBarMessenger, IGitHubPlugin, IShortcutReceiver, IAboutPlugin
     {
         #region Private Fields
 
@@ -645,9 +645,8 @@ namespace Xrm.Sdk.PluginRegistration
         private static CsvWriter InitializeCsvWriter(string filePath)
         {
             var writer = new StreamWriter(filePath, false, Encoding.Default);
-            var csv = new CsvWriter(writer);
-            csv.Configuration.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
-
+            var csv = new CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture);
+            
             csv.WriteHeader(typeof(ExportModel));
             csv.NextRecord();
             return csv;
@@ -732,16 +731,21 @@ namespace Xrm.Sdk.PluginRegistration
 
         private CrmTreeNode CreateCrmTreeNodes(CrmViewType view, Guid messageId, Guid messageEntityId, bool addToTree)
         {
+            CrmTreeNode rootNode = null, childNode = null;
+
             if (Guid.Empty == messageId)
             {
                 throw new ArgumentException("Invalid Guid", "messageId");
             }
 
-            CrmTreeNode rootNode, childNode;
             switch (view)
             {
                 case CrmViewType.Message:
                     {
+                        if (!m_org.Messages.ContainsKey(messageId))
+                        {
+                            return null;
+                        }
                         rootNode = new CrmTreeNode(m_org.Messages[messageId]);
                         if (Guid.Empty == messageEntityId)
                         {
@@ -750,6 +754,10 @@ namespace Xrm.Sdk.PluginRegistration
                         }
                         else
                         {
+                            if (!m_org.MessageEntities.ContainsKey(messageEntityId))
+                            {
+                                return null;
+                            }
                             childNode = new CrmTreeNode(m_org.MessageEntities[messageEntityId]);
                         }
                     }
@@ -764,7 +772,15 @@ namespace Xrm.Sdk.PluginRegistration
                         }
                         else
                         {
+                            if (!m_org.MessageEntities.ContainsKey(messageEntityId))
+                            {
+                                return null;
+                            }
                             rootNode = new CrmTreeNode(m_org.MessageEntities[messageEntityId]);
+                        }
+                        if (!m_org.Messages.ContainsKey(messageId))
+                        {
+                            return null;
                         }
                         childNode = new CrmTreeNode(m_org.Messages[messageId]);
                     }
@@ -977,6 +993,10 @@ namespace Xrm.Sdk.PluginRegistration
                     foreach (CrmPluginStep step in plugin.Steps)
                     {
                         var stepInfo = GetInfoForStep(step);
+                        if (stepInfo == null)
+                        {
+                            continue;
+                        }
                         stepInfo.AssemblyName = plugin.AssemblyName;
                         stepInfo.TypeName = plugin.Name;
                         csvModel.Add(stepInfo);
@@ -1008,6 +1028,10 @@ namespace Xrm.Sdk.PluginRegistration
             }
             else
             {
+                if (!Organization.Messages.ContainsKey(step.MessageId))
+                {
+                    return null;
+                }
                 var messageName = Organization.Messages[step.MessageId].Name;
                 var message = m_org.FindMessage(messageName);
                 var primaryEntity = "none";
@@ -1179,7 +1203,10 @@ namespace Xrm.Sdk.PluginRegistration
                                 if (step.MessageId != Guid.Empty)
                                 {
                                     CrmTreeNode parentNode = CreateCrmTreeNodes(view, step.MessageId, step.MessageEntityId, false);
-
+                                    if (parentNode == null)
+                                    {
+                                        continue;
+                                    }
                                     parentNode.AddChild(step);
                                     m_stepParentList.Add(step.StepId, parentNode.NodeId);
                                 }

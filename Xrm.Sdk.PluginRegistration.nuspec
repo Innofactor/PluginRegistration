@@ -4,7 +4,7 @@
     <id>Xrm.Sdk.PluginRegistration</id>
     <version>1.0.0</version>
     <title>Plugin Registration for XrmToolBox</title>
-    <authors>Microsoft, Alexey, Jonas and Imran</authors>
+    <authors>Microsoft, Alexey, Jonas, Imran and the community</authors>
     <owners>Innofactor</owners>
     <projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -15,18 +15,19 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-      This is a major update with bug fix in the tree implementation that caused the treeviews to be out of sync between the main and the update dialogs.
-      -- Updates --
-      #50, #52: Support for Multi-Factor Authentication
-      -- Bug fixes --
-      #38, #14: Fixed issue in deleting a plugin and updating assembly.
+-- Updates --
+Updated dependencies
+-- Bug fixes --
+#60: Crashing while loading the view by entity/messages treeview
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2019.6.33" />
+      <dependency id="XrmToolBoxPackage" version="1.2019.11.35" />
+      <dependency id="CsvHelper" version="13.0.0"/>
+      <dependency id="EPPlus" version="4.5.3.2"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="Xrm.Sdk.PluginRegistration\bin\Release\Xrm.Sdk.PluginRegistration.dll" target="lib\net452\Plugins" />
+    <file src="Xrm.Sdk.PluginRegistration\bin\Release\Xrm.Sdk.PluginRegistration.dll" target="lib\net462\Plugins" />
   </files>
 </package>
