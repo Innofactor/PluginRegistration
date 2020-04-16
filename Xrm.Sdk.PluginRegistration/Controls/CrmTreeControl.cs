@@ -999,6 +999,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
                 rootNode.TreeNode.Text = rootNode.CrmNode.NodeText;
                 rootNode.TreeNode.ImageKey = rootNode.CrmNode.NodeImageType.ToString();
+                rootNode.TreeNode.SelectedImageKey = rootNode.CrmNode.NodeImageType.ToString() + "Selected";
 
                 if (reloadChildren)
                 {
