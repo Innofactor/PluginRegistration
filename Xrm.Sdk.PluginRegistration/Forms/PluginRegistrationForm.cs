@@ -623,6 +623,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             foreach (var currentPlugin in registerPluginList)
             {
+                if (currentPlugin == null) continue;
+
                 currentPlugin.AssemblyId = assembly.AssemblyId;
 
                 //Check if the plugin exists
