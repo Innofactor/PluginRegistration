@@ -240,6 +240,12 @@
     <Compile Include="Entities\SystemUser.cs" />
     <Compile Include="Entities\Transformation\Magic.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Forms\AssembliesFilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AssembliesFilterForm.Designer.cs">
+      <DependentUpon>AssembliesFilterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ExportTypeSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,6 +282,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Wrappers\CrmAttribute.cs" />
     <Compile Include="Wrappers\CrmEntityDictionary.cs" />
     <Compile Include="Wrappers\CrmMessageEntity.cs" />
@@ -491,6 +498,9 @@
     <EmbeddedResource Include="Controls\CrmAttributeSelectionControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CrmAttributeSelectionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AssembliesFilterForm.resx">
+      <DependentUpon>AssembliesFilterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AttributeSelectionForm.resx">
       <SubType>Designer</SubType>

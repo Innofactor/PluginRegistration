@@ -15,6 +15,8 @@
 //
 // =====================================================================
 
+using XrmToolBox.Extensibility;
+
 namespace Xrm.Sdk.PluginRegistration.Helpers
 {
     using Entities;
@@ -35,36 +37,249 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
     public static class OrganizationHelper
     {
+        #region Internal Fields
+
         internal const string V3CalloutProxyTypeName = "Microsoft.Crm.Extensibility.V3CalloutProxyPlugin";
+
+        #endregion Internal Fields
+
+        #region Private Fields
 
         private static Dictionary<string, ColumnSet> m_entityColumns = new Dictionary<string, ColumnSet>();
         private volatile static List<CrmMessage> m_messageList = new List<CrmMessage>();
 
-        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages)
+        #endregion Private Fields
+
+        #region Public Properties
+
+        public static string ExecutingDirectory
         {
-            RefreshConnection(org, messages, null);
+            get
+            {
+                return new System.IO.FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+            }
         }
 
-        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
+        #endregion Public Properties
+
+        #region Public Methods
+
+        /// <summary>
+        /// Indicates that the step can be exported
+        /// </summary>
+        /// <param name="step">Step to be checked</param>
+        /// <returns>True if step can be exported</returns>
+        public static bool AllowStepImportExport(CrmPluginStep step)
+        {
+            if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+
+            if (step.CustomizationLevel == 0)
+            {
+                switch (step.Organization.Plugins[step.PluginId].TypeName)
+                {
+                    case "Microsoft.Crm.ServiceBus.ServiceBusPlugin":
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Indicates that the plugin allows registration of steps
+        /// </summary>
+        /// <param name="plugin">Plugin to be checked</param>
+        /// <returns>True if steps can be registered on the plugin</returns>
+        public static bool AllowStepRegistrationForPlugin(CrmPlugin plugin)
+        {
+            if (plugin == null)
+            {
+                throw new ArgumentNullException("plugin");
+            }
+
+            if (plugin.CustomizationLevel == 0)
+            {
+                switch (plugin.TypeName)
+                {
+                    case "Microsoft.Crm.ServiceBus.ServiceBusPlugin":
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Creates a DataTable from the given Dictionary of CrmEntity objects
+        /// </summary>
+        public static DataTable CreateDataTable<Entity>(CrmEntityColumn[] columns, IEnumerable<Entity> enumerable)
+            where Entity : ICrmEntity
+        {
+            if (columns == null)
+            {
+                throw new ArgumentNullException("columns");
+            }
+            else if (enumerable == null)
+            {
+                throw new ArgumentNullException("enumerable");
+            }
+
+            //Create the data table
+            DataTable table = new DataTable(typeof(Entity).Name);
+
+            //Create the list of columns
+            foreach (CrmEntityColumn col in columns)
+            {
+                DataColumn tableCol = table.Columns.Add(col.Name, col.Type);
+                if (col.Label != null)
+                {
+                    tableCol.Caption = col.Label;
+                }
+            }
+
+            //Create the list of rows
+            foreach (Entity entity in enumerable)
+            {
+                DataRow row = table.NewRow();
+
+                foreach (KeyValuePair<string, object> value in entity.Values)
+                {
+                    row[value.Key] = value.Value;
+                }
+
+                table.Rows.Add(row);
+            }
+
+            return table;
+        }
+
+        /// <summary>
+        /// Given the current organization, determine who the current user is
+        /// </summary>
+        /// <param name="org">Organization to connect to</param>
+        /// <returns>Returns the object from the organization that is the current logged in user</returns>
+        public static CrmUser GetLoggedOnUser(CrmOrganization org)
+        {
+            WhoAmIResponse resp = (WhoAmIResponse)org.OrganizationService.Execute(new WhoAmIRequest());
+            return org.Users[resp.UserId];
+        }
+
+        /// <summary>
+        /// Returns the Id field for the entity using Reflection
+        /// </summary>
+        /// <param name="entityType">Type of the entity</param>
+        /// <returns>Name of the attribute</returns>
+        public static string GetPrimaryKeyField(Type entityType)
+        {
+            if (entityType == null)
+            {
+                throw new ArgumentNullException("entityType");
+            }
+
+            foreach (PropertyInfo prop in entityType.GetProperties())
+            {
+                if (prop.PropertyType == typeof(Guid?))
+                {
+                    return prop.Name;
+                }
+            }
+
+            throw new ArgumentException("Does not contain property of type Key", "entityType");
+        }
+
+        /// <summary>
+        /// Loads/Reloads assemblies from CRM
+        /// </summary>
+        /// <param name="assemblyId">Assembly Ids to reload (does not reload plugins). If not specified, reloads all assemblies</param>
+        public static void LoadAssemblies(CrmOrganization org)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
 
-            org.Connected = false;
+            var query = new QueryExpression
+            {
+                ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName),
+                Criteria = CreateAssemblyFilter(),
+                EntityName = PluginAssembly.EntityLogicalName
+            };
 
-            OpenConnection(org, messages, prog);
+            //Clear the assemblies list since we are reloading from scratch
+            org.ClearAssemblies();
+
+            foreach (var assembly in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<PluginAssembly>(x)))
+            {
+                org.AddAssembly(new CrmPluginAssembly(org, assembly));
+            }
         }
 
-        ///// <summary>
-        ///// Retrieve the Message entities for the organization. This will be the same for each deployment and organization.
-        ///// </summary>
-        ///// <param name="org">Organization to be used</param>
-        //public static List<CrmMessage> LoadMessages(CrmOrganization org)
-        //{
-        //    return LoadMessages(org, null);
-        //}
+        /// <summary>
+        /// Retrieves a list of attributes for a specified attribute in a DataTable
+        /// </summary>
+        /// <param name="entityName">Name of the entity</param>
+        /// <returns>DataTable containing the attributes</returns>
+        public static void LoadAttributeList(CrmOrganization org, string entityName)
+        {
+            LoadAttributeList(org, entityName, null);
+        }
+
+        /// <summary>
+        /// Retrieves a list of attributes for a specified attribute in a DataTable
+        /// </summary>
+        /// <param name="entityName">Name of the entity</param>
+        /// <param name="prog">ProgressIndicator that will show the progress as the object is loaded</param>
+        /// <returns>DataTable containing the attributes</returns>
+        public static void LoadAttributeList(CrmOrganization org, string entityName, ProgressIndicator prog)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (entityName == null)
+            {
+                throw new ArgumentNullException("entityName");
+            }
+
+            RetrieveEntityRequest request = new RetrieveEntityRequest
+            {
+                EntityFilters = EntityFilters.Attributes,
+                LogicalName = entityName,
+                RetrieveAsIfPublished = false
+            };
+
+            //Execute the request
+            RetrieveEntityResponse response = (RetrieveEntityResponse)org.OrganizationService.Execute(request);
+
+            EntityMetadata entityMd = response.EntityMetadata;
+
+            var attList = new List<CrmAttribute>();
+
+            foreach (AttributeMetadata att in entityMd.Attributes)
+            {
+                // Do not add the child attributes
+                // Do not add the attributes that are not valid for Read
+                if (att.IsValidForRead.Value && null == att.AttributeOf)
+                {
+                    attList.Add(new CrmAttribute(att, att.LogicalName == entityMd.PrimaryIdAttribute));
+                }
+            }
+
+            org.SaveEntityAttributes(entityName, attList.ToArray());
+        }
 
         public static CrmEntityDictionary<CrmMessage> LoadMessages(CrmOrganization org)
         {
@@ -89,6 +304,14 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
+        ///// <summary>
+        ///// Retrieve the Message entities for the organization. This will be the same for each deployment and organization.
+        ///// </summary>
+        ///// <param name="org">Organization to be used</param>
+        //public static List<CrmMessage> LoadMessages(CrmOrganization org)
+        //{
+        //    return LoadMessages(org, null);
+        //}
         /// <summary>
         /// Retrieve the Message entities for the organization. This will be the same for each deployment and organization.
         /// </summary>
@@ -150,6 +373,32 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             return msgList;
+        }
+
+        /// <summary>
+        /// Loads/Reloads Service Endpoitns from CRM
+        /// </summary>
+        public static void LoadServiceEndpoints(CrmOrganization org)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+
+            QueryExpression query = new QueryExpression
+            {
+                ColumnSet = GetColumnSet(ServiceEndpoint.EntityLogicalName),
+                Criteria = new FilterExpression(),
+                EntityName = ServiceEndpoint.EntityLogicalName
+            };
+
+            //Clear the Service Endpoints list since we are reloading from scratch
+            org.ClearServiceEndpoints();
+
+            foreach (var serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<ServiceEndpoint>(x)))
+            {
+                org.AddServiceEndpoint(new CrmServiceEndpoint(org, serviceEndPoint));
+            }
         }
 
         /// <summary>
@@ -266,155 +515,109 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        /// <summary>
-        /// Loads/Reloads assemblies from CRM
-        /// </summary>
-        /// <param name="assemblyId">Assembly Ids to reload (does not reload plugins). If not specified, reloads all assemblies</param>
-        public static void LoadAssemblies(CrmOrganization org)
+        public static void RefreshAssembly(CrmOrganization org, CrmPluginAssembly assembly)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
 
-            var query = new QueryExpression
+            if (assembly == null)
             {
-                ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName),
-                Criteria = CreateAssemblyFilter(),
-                EntityName = PluginAssembly.EntityLogicalName
-            };
-
-            //Clear the assemblies list since we are reloading from scratch
-            org.ClearAssemblies();
-
-            foreach (var assembly in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<PluginAssembly>(x)))
-            {
-                org.AddAssembly(new CrmPluginAssembly(org, assembly));
+                throw new ArgumentNullException("assembly");
             }
+
+            var assemblyRetrievedFromDatabase = Magic.CastTo<PluginAssembly>(org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assembly.AssemblyId, GetColumnSet(PluginAssembly.EntityLogicalName)));
+            assembly.RefreshFromPluginAssembly(assemblyRetrievedFromDatabase);
         }
 
-        /// <summary>
-        /// Loads/Reloads Service Endpoitns from CRM
-        /// </summary>
-        public static void LoadServiceEndpoints(CrmOrganization org)
+        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages)
+        {
+            RefreshConnection(org, messages, null);
+        }
+
+        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
 
-            QueryExpression query = new QueryExpression
-            {
-                ColumnSet = GetColumnSet(ServiceEndpoint.EntityLogicalName),
-                Criteria = new FilterExpression(),
-                EntityName = ServiceEndpoint.EntityLogicalName
-            };
+            org.Connected = false;
 
-            //Clear the Service Endpoints list since we are reloading from scratch
-            org.ClearServiceEndpoints();
-
-            foreach (var serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<ServiceEndpoint>(x)))
-            {
-                org.AddServiceEndpoint(new CrmServiceEndpoint(org, serviceEndPoint));
-            }
+            OpenConnection(org, messages, prog);
         }
 
-        /// <summary>
-        /// Retrieves a list of attributes for a specified attribute in a DataTable
-        /// </summary>
-        /// <param name="entityName">Name of the entity</param>
-        /// <returns>DataTable containing the attributes</returns>
-        public static void LoadAttributeList(CrmOrganization org, string entityName)
-        {
-            LoadAttributeList(org, entityName, null);
-        }
-
-        /// <summary>
-        /// Retrieves a list of attributes for a specified attribute in a DataTable
-        /// </summary>
-        /// <param name="entityName">Name of the entity</param>
-        /// <param name="prog">ProgressIndicator that will show the progress as the object is loaded</param>
-        /// <returns>DataTable containing the attributes</returns>
-        public static void LoadAttributeList(CrmOrganization org, string entityName, ProgressIndicator prog)
+        public static void RefreshImage(CrmOrganization org, CrmPluginImage image, CrmPluginStep step)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
-            else if (entityName == null)
+            else if (step == null)
             {
-                throw new ArgumentNullException("entityName");
+                throw new ArgumentNullException("step");
+            }
+            else if (image == null)
+            {
+                throw new ArgumentNullException("image");
             }
 
-            RetrieveEntityRequest request = new RetrieveEntityRequest
+            var imageRetrievedFromDatabase = Magic.CastTo<SdkMessageProcessingStepImage>(org.OrganizationService.Retrieve(SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName)));
+            if (step.IsProfiled && null != imageRetrievedFromDatabase.SdkMessageProcessingStepId)
             {
-                EntityFilters = EntityFilters.Attributes,
-                LogicalName = entityName,
-                RetrieveAsIfPublished = false
-            };
-
-            //Execute the request
-            RetrieveEntityResponse response = (RetrieveEntityResponse)org.OrganizationService.Execute(request);
-
-            EntityMetadata entityMd = response.EntityMetadata;
-
-            var attList = new List<CrmAttribute>();
-
-            foreach (AttributeMetadata att in entityMd.Attributes)
-            {
-                // Do not add the child attributes
-                // Do not add the attributes that are not valid for Read
-                if (att.IsValidForRead.Value && null == att.AttributeOf)
-                {
-                    attList.Add(new CrmAttribute(att, att.LogicalName == entityMd.PrimaryIdAttribute));
-                }
+                imageRetrievedFromDatabase.SdkMessageProcessingStepId.Id = step.StepId;
             }
 
-            org.SaveEntityAttributes(entityName, attList.ToArray());
+            image.RefreshFromSdkMessageProcessingStepImage(step.AssemblyId, step.PluginId, imageRetrievedFromDatabase);
         }
 
-        /// <summary>
-        /// Creates a DataTable from the given Dictionary of CrmEntity objects
-        /// </summary>
-        public static DataTable CreateDataTable<Entity>(CrmEntityColumn[] columns, IEnumerable<Entity> enumerable)
-            where Entity : ICrmEntity
+        public static void RefreshPlugin(CrmOrganization org, CrmPlugin plugin)
         {
-            if (columns == null)
+            if (org == null)
             {
-                throw new ArgumentNullException("columns");
-            }
-            else if (enumerable == null)
-            {
-                throw new ArgumentNullException("enumerable");
+                throw new ArgumentNullException("org");
             }
 
-            //Create the data table
-            DataTable table = new DataTable(typeof(Entity).Name);
-
-            //Create the list of columns
-            foreach (CrmEntityColumn col in columns)
+            if (plugin == null)
             {
-                DataColumn tableCol = table.Columns.Add(col.Name, col.Type);
-                if (col.Label != null)
-                {
-                    tableCol.Caption = col.Label;
-                }
+                throw new ArgumentNullException("plugin");
             }
 
-            //Create the list of rows
-            foreach (Entity entity in enumerable)
+            var pluginRetrievedFromDatabase = Magic.CastTo<PluginType>(org.OrganizationService.Retrieve(PluginType.EntityLogicalName, plugin.PluginId, GetColumnSet(PluginType.EntityLogicalName)));
+            plugin.RefreshFromPluginType(pluginRetrievedFromDatabase);
+        }
+
+        public static void RefreshServiceEndpoint(CrmOrganization org, CrmServiceEndpoint sep)
+        {
+            if (org == null)
             {
-                DataRow row = table.NewRow();
-
-                foreach (KeyValuePair<string, object> value in entity.Values)
-                {
-                    row[value.Key] = value.Value;
-                }
-
-                table.Rows.Add(row);
+                throw new ArgumentNullException("org");
             }
 
-            return table;
+            if (sep == null)
+            {
+                throw new ArgumentNullException("sep");
+            }
+
+            var sepRetrievedFromDatabase = Magic.CastTo<ServiceEndpoint>(org.OrganizationService.Retrieve(ServiceEndpoint.EntityLogicalName, sep.ServiceEndpointId, GetColumnSet(ServiceEndpoint.EntityLogicalName)));
+            sep.RefreshFromServiceEndpoint(sepRetrievedFromDatabase);
+        }
+
+        public static void RefreshStep(CrmOrganization org, CrmPluginStep step)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+
+            if (step == null)
+            {
+                throw new ArgumentNullException("step");
+            }
+
+            var stepRetrievedFromDatabase = Magic.CastTo<SdkMessageProcessingStep>(org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStep.EntityLogicalName, step.StepId, GetColumnSet(Entities.SdkMessageProcessingStep.EntityLogicalName)));
+            step.RefreshFromSdkMessageProcessingStep(step.AssemblyId, stepRetrievedFromDatabase, step.SecureConfiguration);
         }
 
         /// <summary>
@@ -523,275 +726,247 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        public static void RefreshAssembly(CrmOrganization org, CrmPluginAssembly assembly)
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static object[] ConvertToObjectArray<T>(IList<T> list)
         {
-            if (org == null)
+            if (null == list || 0 == list.Count)
             {
-                throw new ArgumentNullException("org");
+                return new object[0];
             }
 
-            if (assembly == null)
+            //Create the array
+            object[] newArray = new object[list.Count];
+            for (int i = 0; i < list.Count; i++)
             {
-                throw new ArgumentNullException("assembly");
+                newArray[i] = list[i];
             }
 
-            var assemblyRetrievedFromDatabase = Magic.CastTo<PluginAssembly>(org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assembly.AssemblyId, GetColumnSet(PluginAssembly.EntityLogicalName)));
-            assembly.RefreshFromPluginAssembly(assemblyRetrievedFromDatabase);
+            return newArray;
         }
 
-        public static void RefreshPlugin(CrmOrganization org, CrmPlugin plugin)
+        private static FilterExpression CreateAssemblyFilter()
         {
-            if (org == null)
+            var criteria = new FilterExpression();
+
+            //Exclude all compiled workflow assemblies that may remain after upgrade
+            criteria.AddCondition("name", ConditionOperator.NotLike, "CompiledWorkflow%");
+
+            if (SettingsManager.Instance.TryLoad(typeof(MainControl), out Settings settings))
             {
-                throw new ArgumentNullException("org");
-            }
-
-            if (plugin == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-
-            var pluginRetrievedFromDatabase = Magic.CastTo<PluginType>(org.OrganizationService.Retrieve(PluginType.EntityLogicalName, plugin.PluginId, GetColumnSet(PluginType.EntityLogicalName)));
-            plugin.RefreshFromPluginType(pluginRetrievedFromDatabase);
-        }
-
-        public static void RefreshStep(CrmOrganization org, CrmPluginStep step)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-
-            if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-
-            var stepRetrievedFromDatabase = Magic.CastTo<SdkMessageProcessingStep>(org.OrganizationService.Retrieve(Entities.SdkMessageProcessingStep.EntityLogicalName, step.StepId, GetColumnSet(Entities.SdkMessageProcessingStep.EntityLogicalName)));
-            step.RefreshFromSdkMessageProcessingStep(step.AssemblyId, stepRetrievedFromDatabase, step.SecureConfiguration);
-        }
-
-        public static void RefreshImage(CrmOrganization org, CrmPluginImage image, CrmPluginStep step)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-            else if (image == null)
-            {
-                throw new ArgumentNullException("image");
-            }
-
-            var imageRetrievedFromDatabase = Magic.CastTo<SdkMessageProcessingStepImage>(org.OrganizationService.Retrieve(SdkMessageProcessingStepImage.EntityLogicalName, image.ImageId, GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName)));
-            if (step.IsProfiled && null != imageRetrievedFromDatabase.SdkMessageProcessingStepId)
-            {
-                imageRetrievedFromDatabase.SdkMessageProcessingStepId.Id = step.StepId;
-            }
-
-            image.RefreshFromSdkMessageProcessingStepImage(step.AssemblyId, step.PluginId, imageRetrievedFromDatabase);
-        }
-
-        public static void RefreshServiceEndpoint(CrmOrganization org, CrmServiceEndpoint sep)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-
-            if (sep == null)
-            {
-                throw new ArgumentNullException("sep");
-            }
-
-            var sepRetrievedFromDatabase = Magic.CastTo<ServiceEndpoint>(org.OrganizationService.Retrieve(ServiceEndpoint.EntityLogicalName, sep.ServiceEndpointId, GetColumnSet(ServiceEndpoint.EntityLogicalName)));
-            sep.RefreshFromServiceEndpoint(sepRetrievedFromDatabase);
-        }
-
-        public static string ExecutingDirectory
-        {
-            get
-            {
-                return new System.IO.FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            }
-        }
-
-        /// <summary>
-        /// Indicates that the step can be exported
-        /// </summary>
-        /// <param name="step">Step to be checked</param>
-        /// <returns>True if step can be exported</returns>
-        public static bool AllowStepImportExport(CrmPluginStep step)
-        {
-            if (step == null)
-            {
-                throw new ArgumentNullException("step");
-            }
-
-            if (step.CustomizationLevel == 0)
-            {
-                switch (step.Organization.Plugins[step.PluginId].TypeName)
+                if (!string.IsNullOrEmpty(settings.ExcludedAssemblies))
                 {
-                    case "Microsoft.Crm.ServiceBus.ServiceBusPlugin":
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Indicates that the plugin allows registration of steps
-        /// </summary>
-        /// <param name="plugin">Plugin to be checked</param>
-        /// <returns>True if steps can be registered on the plugin</returns>
-        public static bool AllowStepRegistrationForPlugin(CrmPlugin plugin)
-        {
-            if (plugin == null)
-            {
-                throw new ArgumentNullException("plugin");
-            }
-
-            if (plugin.CustomizationLevel == 0)
-            {
-                switch (plugin.TypeName)
-                {
-                    case "Microsoft.Crm.ServiceBus.ServiceBusPlugin":
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        #region Private Helper Methods
-
-        private static CrmMessage UpdateMessageProperties(CrmMessage message)
-        {
-            switch (message.Name)
-            {
-                case "Assign":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Target, "Assigned Entity"));
-                    break;
-
-                case "Create":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Id, "Created Entity"));
-                    break;
-
-                case "Delete":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Target, "Deleted Entity"));
-                    break;
-
-                case "DeliverIncoming":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.EmailId, "Delivered E-mail Id"));
-                    break;
-
-                case "DeliverPromote":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.EmailId, "Delivered E-mail Id"));
-                    break;
-
-                case "ExecuteWorkflow":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Target, "Workflow Entity", null));
-                    break;
-
-                case "Merge":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Target,
-                        "Parent Entity", "Entity into which the data from the Child Entity is being merged."));
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.SubordinateId,
-                        "Child Entity", "Entity that is being merged into the Parent Entity."));
-                    break;
-
-                case "Route":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Target, "Routed Entity", null));
-                    break;
-
-                case "Send":
-                    //This is only applicable for Send message when the entity is e-mail. If the entity is template
-                    //or fax, then the parameter should be ParameterName.FaxId or ParameterName.TemplateId
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.EmailId, "Sent Entity Id"));
-                    break;
-
-                case "SetState":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.EntityMoniker, "Entity"));
-                    break;
-
-                case "SetStateDynamicEntity":
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.EntityMoniker, "Entity"));
-                    break;
-
-                case "Update":
-                    message.SupportsFilteredAttributes = true;
-                    message.ImageMessagePropertyNames.Add(
-                        new ImageMessagePropertyName(ParameterName.Target, "Updated Entity"));
-                    break;
-
-                default:
-                    //There are no valid message property names for images for any other messages
-                    break;
-            }
-
-            return message;
-        }
-
-        private static void LoadUsers(CrmOrganization org)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-
-            //Retrieve all of the users
-            var users = new OrganizationServiceContext(org.OrganizationService)
-                // Creating query for given entity, with no conditions
-                .CreateQuery(SystemUser.EntityLogicalName)
-                // Executing LINQ-to-SQL query, not optimal, but safe for early-bound
-                .ToArray()
-                .Select(x => Magic.CastTo<SystemUser>(x))
-                .Select(x =>
-                {
-                    return new CrmUser(org)
+                    var names = settings.ExcludedAssemblies.Split(',');
+                    foreach (var name in names)
                     {
-                        UserId = x.SystemUserId.GetValueOrDefault(),
-                        Name = x.FullName,
-                        DomainName = x.DomainName,
-                        InternalEmailAddress = x.InternalEMailAddress,
-                        Enabled = !x.IsDisabled.GetValueOrDefault()
-                    };
-                })
-                // Final sorting of results
-                .OrderBy(x => x.Name);
+                        criteria.AddCondition("name", ConditionOperator.DoesNotBeginWith, name.Trim());
+                    }
+                }
+            }
 
-            //Loop through the users that were returned from the server
-            org.Users.Clear();
-            foreach (var user in users)
+            //Exclude any system assemblies that shouldn't be included
+            var systemAssemblyFilter = criteria.AddFilter(LogicalOperator.Or);
+            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.Null);
+            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.NotEqual, 0);
+            systemAssemblyFilter.AddCondition("name", ConditionOperator.In, "Microsoft.Crm.ObjectModel", "Microsoft.Crm.ServiceBus");
+
+            return criteria;
+        }
+
+        private static FilterExpression CreateStepFilter()
+        {
+            var criteria = new FilterExpression();
+
+            //Exclude all steps that are not in the supported stages
+            criteria.AddCondition("stage", ConditionOperator.In, "10", "20", "40", "50");
+
+            return criteria;
+        }
+
+        /// <summary>
+        /// Retrieves the needed columns for the specified entity
+        /// </summary>
+        /// <param name="entityName">Entity for which to generate the columns</param>
+        private static ColumnSet GetColumnSet(string entityName)
+        {
+            if (!m_entityColumns.ContainsKey(entityName))
             {
-                //Create the CrmUser object
-                org.Users.Add(user.UserId, user);
+                ColumnSet cols = new ColumnSet();
+                switch (entityName)
+                {
+                    case ServiceEndpoint.EntityLogicalName:
+                        cols.AddColumns(
+                            "name",
+                            "createdon",
+                            "modifiedon",
+                            "serviceendpointid",
+                            "path",
+                            "contract",
+                            "userclaim",
+                            "solutionnamespace",
+                            "connectionmode",
+                            "description");
+                        break;
+
+                    case PluginAssembly.EntityLogicalName:
+                        cols.AddColumns(
+                            "name",
+                            "createdon",
+                            "modifiedon",
+                            "customizationlevel",
+                            "pluginassemblyid",
+                            "sourcetype",
+                            "version",
+                            "publickeytoken",
+                            "culture",
+                            "isolationmode",
+                            "description");
+                        break;
+
+                    case PluginType.EntityLogicalName:
+                        cols.AddColumns(
+                            "plugintypeid",
+                            "friendlyname",
+                            "createdon",
+                            "modifiedon",
+                            "customizationlevel",
+                            "assemblyname",
+                            "typename",
+                            "pluginassemblyid",
+                            "isworkflowactivity",
+                            "name",
+                            "description",
+                            "workflowactivitygroupname");
+                        break;
+
+                    case SdkMessage.EntityLogicalName:
+                        cols.AddColumns(
+                            "sdkmessageid",
+                            "createdon",
+                            "modifiedon",
+                            "name",
+                            "customizationlevel");
+                        break;
+
+                    case SdkMessageFilter.EntityLogicalName:
+                        cols.AddColumns(
+                            "sdkmessagefilterid",
+                            "createdon",
+                            "modifiedon",
+                            "sdkmessageid",
+                            "primaryobjecttypecode",
+                            "secondaryobjecttypecode",
+                            "customizationlevel",
+                            "availability");
+                        break;
+
+                    case SdkMessageProcessingStep.EntityLogicalName:
+                        cols.AddColumns(
+                            "name",
+                            "mode",
+                            "customizationlevel",
+                            "stage",
+                            "rank",
+                            "sdkmessageid",
+                            "sdkmessagefilterid",
+                            "plugintypeid",
+                            "supporteddeployment",
+                            "description",
+                            "asyncautodelete",
+                            "impersonatinguserid",
+                            "configuration",
+                            "sdkmessageprocessingstepsecureconfigid",
+                            "statecode",
+                            "invocationsource",
+                            "modifiedon",
+                            "createdon",
+                            "filteringattributes",
+                            "eventhandler");
+                        break;
+
+                    case SdkMessageProcessingStepImage.EntityLogicalName:
+                        cols.AddColumns(
+                            "name",
+                            "attributes",
+                            "customizationlevel",
+                            "entityalias",
+                            "createdon",
+                            "modifiedon",
+                            "imagetype",
+                            "sdkmessageprocessingstepid",
+                            "messagepropertyname",
+                            "relatedattributename");
+                        break;
+
+                    case SdkMessageProcessingStepSecureConfig.EntityLogicalName:
+                        cols.AddColumns(
+                            "sdkmessageprocessingstepsecureconfigid",
+                            "secureconfig");
+                        break;
+
+                    default:
+                        throw new NotImplementedException(entityName.ToString());
+                }
+
+                m_entityColumns.Add(entityName, cols);
+            }
+
+            return m_entityColumns[entityName];
+        }
+
+        /// <summary>
+        /// Loads the images
+        /// </summary>
+        /// <param name="org"></param>
+        /// <param name="imageId"></param>
+        /// <param name="stepList">List of steps that were registered</param>
+        /// <param name="stepIds"></param>
+        private static void LoadImages(CrmOrganization org, Dictionary<Guid, CrmPluginStep> stepList)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+
+            var query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName);
+            query.ColumnSet = GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName);
+
+            //Put this extra exclusion because any published Workflows will create
+            //Images (linked to the Step for Workflow Expansion). Since we are using InnerJoin,
+            //any images that reference invalid steps will be excluded. This is okay, because
+            //images without steps will have no effect in the system.
+            var parentLink = query.AddLink(SdkMessageProcessingStep.EntityLogicalName, "sdkmessageprocessingstepid", "sdkmessageprocessingstepid");
+            parentLink.LinkCriteria = CreateStepFilter();
+
+            //Execute the query
+            foreach (var image in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<SdkMessageProcessingStepImage>(x)))
+            {
+                CrmPluginStep step;
+                if (null != stepList && stepList.TryGetValue(image.SdkMessageProcessingStepId.Id, out step))
+                {
+                    //If this is a profiled step, the image should be parented by the original step
+                    if (null != step.ProfilerOriginalStepId)
+                    {
+                        if (!stepList.TryGetValue(step.ProfilerOriginalStepId.GetValueOrDefault(), out step))
+                        {
+                            continue;
+                        }
+
+                        image.SdkMessageProcessingStepId.Id = step.StepId;
+                    }
+
+                    CrmPluginImage existingImage;
+                    if (step.Images.TryGetValue(image.Id, out existingImage))
+                    {
+                        existingImage.RefreshFromSdkMessageProcessingStepImage(step.AssemblyId, step.StepId, image);
+                    }
+                    else
+                    {
+                        step.AddImage(new CrmPluginImage(org, step.AssemblyId, step.PluginId, image));
+                    }
+                }
             }
         }
 
@@ -1043,279 +1218,137 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        /// <summary>
-        /// Loads the images
-        /// </summary>
-        /// <param name="org"></param>
-        /// <param name="imageId"></param>
-        /// <param name="stepList">List of steps that were registered</param>
-        /// <param name="stepIds"></param>
-        private static void LoadImages(CrmOrganization org, Dictionary<Guid, CrmPluginStep> stepList)
+        private static void LoadUsers(CrmOrganization org)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
 
-            var query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName);
-            query.ColumnSet = GetColumnSet(SdkMessageProcessingStepImage.EntityLogicalName);
-
-            //Put this extra exclusion because any published Workflows will create
-            //Images (linked to the Step for Workflow Expansion). Since we are using InnerJoin,
-            //any images that reference invalid steps will be excluded. This is okay, because
-            //images without steps will have no effect in the system.
-            var parentLink = query.AddLink(SdkMessageProcessingStep.EntityLogicalName, "sdkmessageprocessingstepid", "sdkmessageprocessingstepid");
-            parentLink.LinkCriteria = CreateStepFilter();
-
-            //Execute the query
-            foreach (var image in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<SdkMessageProcessingStepImage>(x)))
-            {
-                CrmPluginStep step;
-                if (null != stepList && stepList.TryGetValue(image.SdkMessageProcessingStepId.Id, out step))
+            //Retrieve all of the users
+            var users = new OrganizationServiceContext(org.OrganizationService)
+                // Creating query for given entity, with no conditions
+                .CreateQuery(SystemUser.EntityLogicalName)
+                // Executing LINQ-to-SQL query, not optimal, but safe for early-bound
+                .ToArray()
+                .Select(x => Magic.CastTo<SystemUser>(x))
+                .Select(x =>
                 {
-                    //If this is a profiled step, the image should be parented by the original step
-                    if (null != step.ProfilerOriginalStepId)
+                    return new CrmUser(org)
                     {
-                        if (!stepList.TryGetValue(step.ProfilerOriginalStepId.GetValueOrDefault(), out step))
-                        {
-                            continue;
-                        }
+                        UserId = x.SystemUserId.GetValueOrDefault(),
+                        Name = x.FullName,
+                        DomainName = x.DomainName,
+                        InternalEmailAddress = x.InternalEMailAddress,
+                        Enabled = !x.IsDisabled.GetValueOrDefault()
+                    };
+                })
+                // Final sorting of results
+                .OrderBy(x => x.Name);
 
-                        image.SdkMessageProcessingStepId.Id = step.StepId;
-                    }
-
-                    CrmPluginImage existingImage;
-                    if (step.Images.TryGetValue(image.Id, out existingImage))
-                    {
-                        existingImage.RefreshFromSdkMessageProcessingStepImage(step.AssemblyId, step.StepId, image);
-                    }
-                    else
-                    {
-                        step.AddImage(new CrmPluginImage(org, step.AssemblyId, step.PluginId, image));
-                    }
-                }
-            }
-        }
-
-        private static FilterExpression CreateAssemblyFilter()
-        {
-            var criteria = new FilterExpression();
-
-            //Exclude all compiled workflow assemblies that may remain after upgrade
-            criteria.AddCondition("name", ConditionOperator.NotLike, "CompiledWorkflow%");
-
-            //Exclude any system assemblies that shouldn't be included
-            var systemAssemblyFilter = criteria.AddFilter(LogicalOperator.Or);
-            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.Null);
-            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.NotEqual, 0);
-            systemAssemblyFilter.AddCondition("name", ConditionOperator.In, "Microsoft.Crm.ObjectModel", "Microsoft.Crm.ServiceBus");
-
-            return criteria;
-        }
-
-        private static FilterExpression CreateStepFilter()
-        {
-            var criteria = new FilterExpression();
-
-            //Exclude all steps that are not in the supported stages
-            criteria.AddCondition("stage", ConditionOperator.In, "10", "20", "40", "50");
-
-            return criteria;
-        }
-
-        /// <summary>
-        /// Retrieves the needed columns for the specified entity
-        /// </summary>
-        /// <param name="entityName">Entity for which to generate the columns</param>
-        private static ColumnSet GetColumnSet(string entityName)
-        {
-            if (!m_entityColumns.ContainsKey(entityName))
+            //Loop through the users that were returned from the server
+            org.Users.Clear();
+            foreach (var user in users)
             {
-                ColumnSet cols = new ColumnSet();
-                switch (entityName)
-                {
-                    case ServiceEndpoint.EntityLogicalName:
-                        cols.AddColumns(
-                            "name",
-                            "createdon",
-                            "modifiedon",
-                            "serviceendpointid",
-                            "path",
-                            "contract",
-                            "userclaim",
-                            "solutionnamespace",
-                            "connectionmode",
-                            "description");
-                        break;
-
-                    case PluginAssembly.EntityLogicalName:
-                        cols.AddColumns(
-                            "name",
-                            "createdon",
-                            "modifiedon",
-                            "customizationlevel",
-                            "pluginassemblyid",
-                            "sourcetype",
-                            "version",
-                            "publickeytoken",
-                            "culture",
-                            "isolationmode",
-                            "description");
-                        break;
-
-                    case PluginType.EntityLogicalName:
-                        cols.AddColumns(
-                            "plugintypeid",
-                            "friendlyname",
-                            "createdon",
-                            "modifiedon",
-                            "customizationlevel",
-                            "assemblyname",
-                            "typename",
-                            "pluginassemblyid",
-                            "isworkflowactivity",
-                            "name",
-                            "description",
-                            "workflowactivitygroupname");
-                        break;
-
-                    case SdkMessage.EntityLogicalName:
-                        cols.AddColumns(
-                            "sdkmessageid",
-                            "createdon",
-                            "modifiedon",
-                            "name",
-                            "customizationlevel");
-                        break;
-
-                    case SdkMessageFilter.EntityLogicalName:
-                        cols.AddColumns(
-                            "sdkmessagefilterid",
-                            "createdon",
-                            "modifiedon",
-                            "sdkmessageid",
-                            "primaryobjecttypecode",
-                            "secondaryobjecttypecode",
-                            "customizationlevel",
-                            "availability");
-                        break;
-
-                    case SdkMessageProcessingStep.EntityLogicalName:
-                        cols.AddColumns(
-                            "name",
-                            "mode",
-                            "customizationlevel",
-                            "stage",
-                            "rank",
-                            "sdkmessageid",
-                            "sdkmessagefilterid",
-                            "plugintypeid",
-                            "supporteddeployment",
-                            "description",
-                            "asyncautodelete",
-                            "impersonatinguserid",
-                            "configuration",
-                            "sdkmessageprocessingstepsecureconfigid",
-                            "statecode",
-                            "invocationsource",
-                            "modifiedon",
-                            "createdon",
-                            "filteringattributes",
-                            "eventhandler");
-                        break;
-
-                    case SdkMessageProcessingStepImage.EntityLogicalName:
-                        cols.AddColumns(
-                            "name",
-                            "attributes",
-                            "customizationlevel",
-                            "entityalias",
-                            "createdon",
-                            "modifiedon",
-                            "imagetype",
-                            "sdkmessageprocessingstepid",
-                            "messagepropertyname",
-                            "relatedattributename");
-                        break;
-
-                    case SdkMessageProcessingStepSecureConfig.EntityLogicalName:
-                        cols.AddColumns(
-                            "sdkmessageprocessingstepsecureconfigid",
-                            "secureconfig");
-                        break;
-
-                    default:
-                        throw new NotImplementedException(entityName.ToString());
-                }
-
-                m_entityColumns.Add(entityName, cols);
+                //Create the CrmUser object
+                org.Users.Add(user.UserId, user);
             }
-
-            return m_entityColumns[entityName];
         }
 
-        /// <summary>
-        /// Returns the Id field for the entity using Reflection
-        /// </summary>
-        /// <param name="entityType">Type of the entity</param>
-        /// <returns>Name of the attribute</returns>
-        public static string GetPrimaryKeyField(Type entityType)
+        private static CrmMessage UpdateMessageProperties(CrmMessage message)
         {
-            if (entityType == null)
+            switch (message.Name)
             {
-                throw new ArgumentNullException("entityType");
+                case "Assign":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Target, "Assigned Entity"));
+                    break;
+
+                case "Create":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Id, "Created Entity"));
+                    break;
+
+                case "Delete":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Target, "Deleted Entity"));
+                    break;
+
+                case "DeliverIncoming":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.EmailId, "Delivered E-mail Id"));
+                    break;
+
+                case "DeliverPromote":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.EmailId, "Delivered E-mail Id"));
+                    break;
+
+                case "ExecuteWorkflow":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Target, "Workflow Entity", null));
+                    break;
+
+                case "Merge":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Target,
+                        "Parent Entity", "Entity into which the data from the Child Entity is being merged."));
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.SubordinateId,
+                        "Child Entity", "Entity that is being merged into the Parent Entity."));
+                    break;
+
+                case "Route":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Target, "Routed Entity", null));
+                    break;
+
+                case "Send":
+                    //This is only applicable for Send message when the entity is e-mail. If the entity is template
+                    //or fax, then the parameter should be ParameterName.FaxId or ParameterName.TemplateId
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.EmailId, "Sent Entity Id"));
+                    break;
+
+                case "SetState":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.EntityMoniker, "Entity"));
+                    break;
+
+                case "SetStateDynamicEntity":
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.EntityMoniker, "Entity"));
+                    break;
+
+                case "Update":
+                    message.SupportsFilteredAttributes = true;
+                    message.ImageMessagePropertyNames.Add(
+                        new ImageMessagePropertyName(ParameterName.Target, "Updated Entity"));
+                    break;
+
+                default:
+                    //There are no valid message property names for images for any other messages
+                    break;
             }
 
-            foreach (PropertyInfo prop in entityType.GetProperties())
-            {
-                if (prop.PropertyType == typeof(Guid?))
-                {
-                    return prop.Name;
-                }
-            }
-
-            throw new ArgumentException("Does not contain property of type Key", "entityType");
+            return message;
         }
 
-        private static object[] ConvertToObjectArray<T>(IList<T> list)
-        {
-            if (null == list || 0 == list.Count)
-            {
-                return new object[0];
-            }
-
-            //Create the array
-            object[] newArray = new object[list.Count];
-            for (int i = 0; i < list.Count; i++)
-            {
-                newArray[i] = list[i];
-            }
-
-            return newArray;
-        }
-
-        /// <summary>
-        /// Given the current organization, determine who the current user is
-        /// </summary>
-        /// <param name="org">Organization to connect to</param>
-        /// <returns>Returns the object from the organization that is the current logged in user</returns>
-        public static CrmUser GetLoggedOnUser(CrmOrganization org)
-        {
-            WhoAmIResponse resp = (WhoAmIResponse)org.OrganizationService.Execute(new WhoAmIRequest());
-            return org.Users[resp.UserId];
-        }
-
-        #endregion Private Helper Methods
+        #endregion Private Methods
 
         #region Private Classes
 
         private static class ParameterName
         {
+            #region Public Fields
+
             public const string EmailId = "EmailId";
             public const string EntityMoniker = "EntityMoniker";
             public const string Id = "Id";
             public const string SubordinateId = "SubordinateId";
             public const string Target = "Target";
+
+            #endregion Public Fields
         }
 
         #endregion Private Classes
