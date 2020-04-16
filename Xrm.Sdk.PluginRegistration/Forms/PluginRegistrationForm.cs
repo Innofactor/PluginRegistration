@@ -65,6 +65,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ProgressIndicatorIncrement, null);
             m_currentAssembly = assembly;
 
+            radIsolationSandbox.Checked = org.ConnectionDetail.UseOnline;
+
             trvPlugins.CrmTreeNodeSorter = orgControl.CrmTreeNodeSorter;
 
             //Check if this is a known assembly
