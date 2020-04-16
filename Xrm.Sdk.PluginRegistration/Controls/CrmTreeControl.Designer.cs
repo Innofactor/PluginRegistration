@@ -33,31 +33,31 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             // 
             // trvPlugins
             // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trvPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trvPlugins.Location = new System.Drawing.Point(0, 0);
+            this.trvPlugins.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.trvPlugins.Name = "trvPlugins";
-            this.trvPlugins.Size = new System.Drawing.Size(208, 110);
+            this.trvPlugins.Size = new System.Drawing.Size(416, 212);
             this.trvPlugins.TabIndex = 2;
-            this.trvPlugins.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.trvPlugins_AfterCheck);
+            this.trvPlugins.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.trvPlugins_BeforeLabelEdit);
             this.trvPlugins.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.trvPlugins_AfterLabelEdit);
-            this.trvPlugins.DoubleClick += new System.EventHandler(this.trvPlugins_DoubleClick);
+            this.trvPlugins.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.trvPlugins_AfterCheck);
             this.trvPlugins.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trvPlugins_AfterSelect);
-            this.trvPlugins.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trvPlugins_MouseDown);
+            this.trvPlugins.Click += new System.EventHandler(this.trvPlugins_Click);
+            this.trvPlugins.DoubleClick += new System.EventHandler(this.trvPlugins_DoubleClick);
+            this.trvPlugins.KeyDown += new System.Windows.Forms.KeyEventHandler(this.trvPlugins_KeyDown);
             this.trvPlugins.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.trvPlugins_KeyPress);
             this.trvPlugins.KeyUp += new System.Windows.Forms.KeyEventHandler(this.trvPlugins_KeyUp);
-            this.trvPlugins.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.trvPlugins_BeforeLabelEdit);
-            this.trvPlugins.KeyDown += new System.Windows.Forms.KeyEventHandler(this.trvPlugins_KeyDown);
-            this.trvPlugins.Click += new System.EventHandler(this.trvPlugins_Click);
+            this.trvPlugins.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trvPlugins_MouseDown);
             // 
             // CrmTreeControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.trvPlugins);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "CrmTreeControl";
-            this.Size = new System.Drawing.Size(208, 110);
+            this.Size = new System.Drawing.Size(416, 212);
             this.ResumeLayout(false);
 
         }
