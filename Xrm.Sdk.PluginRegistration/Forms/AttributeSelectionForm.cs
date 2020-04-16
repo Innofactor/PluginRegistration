@@ -99,6 +99,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                             item.SubItems.Add(attribute.Type.ToString());
                             item.Tag = attribute;
                         }
+
+                        if (attribute.TypeName == "MultiSelectPicklistType")
+                        {
+                            ListViewItem item = lsvAttributes.Items.Add(attribute.LogicalName.Trim().ToLowerInvariant(), attribute.FriendlyName, 0);
+                            item.SubItems.Add(attribute.LogicalName);
+                            item.SubItems.Add("MultiSelect Picklist");
+                            item.Tag = attribute;
+                        }
                         continue;
                 }
             }
