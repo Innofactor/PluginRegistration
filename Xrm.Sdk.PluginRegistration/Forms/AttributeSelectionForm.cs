@@ -34,6 +34,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     {
         #region Private Fields
 
+        private int checkCount = 0;
         private List<ListViewItem> m_attributesList;
         private bool m_currentAllChecked;
         private Collection<string> m_currentValue;
@@ -164,9 +165,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 foreach (ListViewItem item in lsvAttributes.Items)
                 {
                     item.Checked = true;
+                    checkCount++;
                 }
 
-                label1.Text = string.Format(label1.Tag.ToString(), "all");
+                lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), "all");
             }
             else if (m_currentValue != null && m_currentValue.Count != 0)
             {
@@ -178,13 +180,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
                 }
 
-                label1.Text = string.Format(label1.Tag.ToString(), m_currentValue.Count);
+                checkCount = m_currentValue.Count;
             }
 
-            lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
-            lsvAttributes_ItemChecked(lsvAttributes, new ItemCheckedEventArgs(lsvAttributes.Items.Cast<ListViewItem>().FirstOrDefault()));
+            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
 
             lsvAttributes.Sort();
+            lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -214,13 +216,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
 
+            checkCount = 0;
+
             foreach (ListViewItem item in lsvAttributes.Items)
             {
                 item.Checked = checkVal;
+                if (item.Checked)
+                {
+                    checkCount++;
+                }
             }
 
             lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
-            lsvAttributes_ItemChecked(lsvAttributes, new ItemCheckedEventArgs(lsvAttributes.Items.Cast<ListViewItem>().FirstOrDefault()));
+            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
         }
 
         private void DisplayAttributes()
@@ -234,7 +242,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     || i.Text.ToLower().IndexOf(txtFilter.Text.ToLower(), StringComparison.Ordinal) >= 0
                     || i.Name.ToLower().IndexOf(txtFilter.Text.ToLower(), StringComparison.Ordinal) >= 0);
 
+                lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
                 lsvAttributes.Items.AddRange(items.ToArray());
+                lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
             }));
         }
 
@@ -264,15 +274,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void lsvAttributes_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            int count = 0;
-
-            if (lsvAttributes?.Items == null) return;
-
-            foreach (ListViewItem item in lsvAttributes.Items)
+            if (e.Item.Checked)
             {
-                if (item.Checked) count++;
+                checkCount++;
             }
-            label1.Text = string.Format(label1.Tag.ToString(), count);
+            else
+            {
+                checkCount--;
+            }
+
+            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
         }
 
         private void txtFilter_TextChanged(object sender, EventArgs e)
