@@ -71,14 +71,14 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolExport = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolClose = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbFilterAssemblies = new System.Windows.Forms.ToolStripButton();
             this.imlEnableImages = new System.Windows.Forms.ImageList(this.components);
             this.splitterDisplay = new System.Windows.Forms.SplitContainer();
             this.grpPlugins = new System.Windows.Forms.GroupBox();
-            this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbFilterAssemblies = new System.Windows.Forms.ToolStripButton();
+            this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -93,7 +93,6 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             // mnuContextNode
             // 
-            this.mnuContextNode.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.mnuContextNode.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuContextNodeAssemblyRegister,
             this.mnuContextNodeStepRegister,
@@ -177,7 +176,6 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             // mnuContextGeneral
             // 
-            this.mnuContextGeneral.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.mnuContextGeneral.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuContextGeneralAssemblyRegister,
             this.mnuContextGeneralStepRegister,
@@ -236,9 +234,9 @@ namespace Xrm.Sdk.PluginRegistration
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpGrid.Controls.Add(this.grvData);
             this.grpGrid.Location = new System.Drawing.Point(0, 921);
-            this.grpGrid.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grpGrid.Margin = new System.Windows.Forms.Padding(6);
             this.grpGrid.Name = "grpGrid";
-            this.grpGrid.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grpGrid.Padding = new System.Windows.Forms.Padding(6);
             this.grpGrid.Size = new System.Drawing.Size(1690, 419);
             this.grpGrid.TabIndex = 1;
             this.grpGrid.TabStop = false;
@@ -258,7 +256,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.grvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grvData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.grvData.Location = new System.Drawing.Point(12, 23);
-            this.grvData.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grvData.Margin = new System.Windows.Forms.Padding(6);
             this.grvData.Name = "grvData";
             this.grvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grvData.ShowCellErrors = false;
@@ -456,6 +454,21 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolClose.ToolTipText = "Close Tool (Ctrl+F4)";
             this.toolClose.Click += new System.EventHandler(this.toolClose_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
+            // 
+            // tsbFilterAssemblies
+            // 
+            this.tsbFilterAssemblies.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbFilterAssemblies.Image = ((System.Drawing.Image)(resources.GetObject("tsbFilterAssemblies.Image")));
+            this.tsbFilterAssemblies.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFilterAssemblies.Name = "tsbFilterAssemblies";
+            this.tsbFilterAssemblies.Size = new System.Drawing.Size(194, 36);
+            this.tsbFilterAssemblies.Text = "Filter assemblies";
+            this.tsbFilterAssemblies.Click += new System.EventHandler(this.tsbFilterAssemblies_Click);
+            // 
             // imlEnableImages
             // 
             this.imlEnableImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -468,7 +481,7 @@ namespace Xrm.Sdk.PluginRegistration
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitterDisplay.Location = new System.Drawing.Point(0, 54);
-            this.splitterDisplay.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitterDisplay.Margin = new System.Windows.Forms.Padding(6);
             this.splitterDisplay.Name = "splitterDisplay";
             // 
             // splitterDisplay.Panel1
@@ -491,13 +504,37 @@ namespace Xrm.Sdk.PluginRegistration
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPlugins.Controls.Add(this.trvPlugins);
             this.grpPlugins.Location = new System.Drawing.Point(0, 0);
-            this.grpPlugins.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grpPlugins.Margin = new System.Windows.Forms.Padding(6);
             this.grpPlugins.Name = "grpPlugins";
-            this.grpPlugins.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.grpPlugins.Padding = new System.Windows.Forms.Padding(6);
             this.grpPlugins.Size = new System.Drawing.Size(1118, 850);
             this.grpPlugins.TabIndex = 1;
             this.grpPlugins.TabStop = false;
             this.grpPlugins.Text = "Registered Plugins && Custom Workflow Activities";
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(392, 794);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(6);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(150, 44);
+            this.btnSave.TabIndex = 5;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // propGridEntity
+            // 
+            this.propGridEntity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.propGridEntity.Location = new System.Drawing.Point(0, 0);
+            this.propGridEntity.Margin = new System.Windows.Forms.Padding(6);
+            this.propGridEntity.Name = "propGridEntity";
+            this.propGridEntity.Size = new System.Drawing.Size(544, 783);
+            this.propGridEntity.TabIndex = 4;
             // 
             // trvPlugins
             // 
@@ -519,45 +556,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
             this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
             // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(396, 794);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(150, 44);
-            this.btnSave.TabIndex = 5;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // propGridEntity
-            // 
-            this.propGridEntity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.propGridEntity.Location = new System.Drawing.Point(0, 0);
-            this.propGridEntity.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.propGridEntity.Name = "propGridEntity";
-            this.propGridEntity.Size = new System.Drawing.Size(548, 783);
-            this.propGridEntity.TabIndex = 4;
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
-            // 
-            // tsbFilterAssemblies
-            // 
-            this.tsbFilterAssemblies.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbFilterAssemblies.Image = ((System.Drawing.Image)(resources.GetObject("tsbFilterAssemblies.Image")));
-            this.tsbFilterAssemblies.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbFilterAssemblies.Name = "tsbFilterAssemblies";
-            this.tsbFilterAssemblies.Size = new System.Drawing.Size(194, 36);
-            this.tsbFilterAssemblies.Text = "Filter assemblies";
-            this.tsbFilterAssemblies.Click += new System.EventHandler(this.tsbFilterAssemblies_Click);
-            // 
             // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -566,7 +564,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.Controls.Add(this.splitterDisplay);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.grpGrid);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainControl";
             this.Size = new System.Drawing.Size(1702, 1340);
             this.mnuContextNode.ResumeLayout(false);
