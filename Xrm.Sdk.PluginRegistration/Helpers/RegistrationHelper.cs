@@ -715,6 +715,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
+
+                    org.Images.Remove(imageId);
                 }
 
                 if (prog != null)
@@ -729,15 +731,19 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
+
+                    org.Steps.Remove(stepId);
                 }
 
                 if (prog != null)
                 {
                     prog.SetText("Unregistering Secure Configuration");
                 }
+
                 foreach (Guid secureConfigId in secureConfigList)
                 {
-                    org.OrganizationService.Delete(SdkMessageProcessingStepSecureConfig.EntityLogicalName, secureConfigId);
+                    org.OrganizationService.Delete(SdkMessageProcessingStepSecureConfig.EntityLogicalName,
+                        secureConfigId);
                     if (prog != null)
                     {
                         prog.Increment();
@@ -756,6 +762,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
+
+                    org.Plugins.Remove(pluginId);
                 }
 
                 if (prog != null)
@@ -769,6 +777,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
+
+                    org.Assemblies.Remove(assemblyId);
                 }
 
                 if (prog != null)
@@ -782,6 +792,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
+
+                    org.ServiceEndpoints.Remove(serviceEndpointId);
                 }
             }
             finally
