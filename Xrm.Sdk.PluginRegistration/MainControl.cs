@@ -71,7 +71,9 @@ namespace Xrm.Sdk.PluginRegistration
                 m_settings = new Settings();
                 SettingsManager.Instance.Save(GetType(), m_settings);
             }
-            SetFilterStatusOnToolbar(!string.IsNullOrWhiteSpace(m_settings?.ExcludedAssemblies));
+
+            SetFilterStatusOnToolbar(!string.IsNullOrEmpty(m_settings?.ExcludedAssemblies));
+
             #region Load the Images & Icons from the Resource File
 
             Dictionary<CrmTreeNodeImageType, Image> nodeImageList = null;
@@ -167,7 +169,6 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolClose.Image = imageList["Close"];
                 toolExport.Image = imageList["Save"];
-                tsbFilterAssemblies.Image = imageList["Filter"];
 
                 imlEnableImages.Images.Add("installProfiler", imageList["InstallProfiler"]);
                 imlEnableImages.Images.Add("enableProfiler", imageList["EnableProfiler"]);
@@ -1487,6 +1488,22 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        private void SetFilterStatusOnToolbar(bool showAsActive)
+        {
+            if (showAsActive)
+            {
+                tsbFilterAssemblies.Text = "Filter Assemblies";
+                tsbFilterAssemblies.ToolTipText = m_settings.ExcludedAssemblies;
+                tsbFilterAssemblies.Image = Resources.FilterActive;
+            }
+            else
+            {
+                tsbFilterAssemblies.Text = "Filter Assemblies";
+                tsbFilterAssemblies.ToolTipText = "No filter(s) set";
+                tsbFilterAssemblies.Image = Resources.FilterInactive;
+            }
+        }
+
         private void toolAssemblyRegister_Click(object sender, EventArgs e)
         {
             var regForm = new PluginRegistrationForm(Organization, this, null);
@@ -1880,24 +1897,10 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 if (dialog.HasChanged)
                 {
-                    SetFilterStatusOnToolbar(dialog.HasChanged);
+                    SetFilterStatusOnToolbar(!string.IsNullOrEmpty(dialog.Filter));
                     toolRefresh_Click(this, new EventArgs());
                 }
             }
-        }
-
-        private void SetFilterStatusOnToolbar(bool showAsActive)
-        {
-            if (showAsActive)
-            {
-                tsbFilterAssemblies.Text = "Filter Assemblies (Active)";
-                tsbFilterAssemblies.ToolTipText = m_settings.ExcludedAssemblies;
-            }
-            else
-            {
-                tsbFilterAssemblies.Text = "Filter Assemblies";
-                tsbFilterAssemblies.ToolTipText = "No filter(s) set";
-            }                
         }
 
         private void UpdateEnableButton(bool currentlyEnabled)

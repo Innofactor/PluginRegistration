@@ -354,6 +354,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\FilterActive.png" />
+    <None Include="Resources\FilterInactive.png" />
     <None Include="bin\coretools\CrmSvcUtil.exe.config" />
     <None Include="bin\coretools\LicenseTerms.docx" />
     <None Include="bin\coretools\SolutionPackager.exe.config" />
