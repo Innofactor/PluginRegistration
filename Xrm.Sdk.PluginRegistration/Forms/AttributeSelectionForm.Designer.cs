@@ -51,31 +51,27 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpSelect.Location = new System.Drawing.Point(24, 350);
-            this.grpSelect.Margin = new System.Windows.Forms.Padding(6);
+            this.grpSelect.Location = new System.Drawing.Point(12, 182);
             this.grpSelect.Name = "grpSelect";
-            this.grpSelect.Padding = new System.Windows.Forms.Padding(6);
-            this.grpSelect.Size = new System.Drawing.Size(966, 366);
+            this.grpSelect.Size = new System.Drawing.Size(483, 190);
             this.grpSelect.TabIndex = 0;
             this.grpSelect.TabStop = false;
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(874, 9);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(6);
+            this.btnCancel.Location = new System.Drawing.Point(437, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(120, 44);
+            this.btnCancel.Size = new System.Drawing.Size(60, 23);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(742, 9);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(6);
+            this.btnOK.Location = new System.Drawing.Point(371, 5);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(120, 44);
+            this.btnOK.Size = new System.Drawing.Size(60, 23);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -85,11 +81,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.chkSelectAll.AutoSize = true;
             this.chkSelectAll.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkSelectAll.Location = new System.Drawing.Point(718, 0);
-            this.chkSelectAll.Margin = new System.Windows.Forms.Padding(6);
+            this.chkSelectAll.Location = new System.Drawing.Point(355, 0);
             this.chkSelectAll.Name = "chkSelectAll";
-            this.chkSelectAll.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.chkSelectAll.Size = new System.Drawing.Size(276, 34);
+            this.chkSelectAll.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.chkSelectAll.Size = new System.Drawing.Size(142, 18);
             this.chkSelectAll.TabIndex = 1;
             this.chkSelectAll.Text = "Select &All / Deselect All";
             this.chkSelectAll.UseVisualStyleBackColor = true;
@@ -102,13 +97,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.hdrName,
             this.hdrLogicalName,
             this.hdrType});
-            this.lsvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvAttributes.FullRowSelect = true;
             this.lsvAttributes.HideSelection = false;
-            this.lsvAttributes.Location = new System.Drawing.Point(10, 10);
-            this.lsvAttributes.Margin = new System.Windows.Forms.Padding(6);
+            this.lsvAttributes.Location = new System.Drawing.Point(5, 7);
             this.lsvAttributes.Name = "lsvAttributes";
-            this.lsvAttributes.Size = new System.Drawing.Size(974, 801);
+            this.lsvAttributes.Size = new System.Drawing.Size(489, 416);
             this.lsvAttributes.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lsvAttributes.TabIndex = 2;
             this.lsvAttributes.UseCompatibleStateImageBehavior = false;
@@ -133,10 +126,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtFilter
             // 
-            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtFilter.Location = new System.Drawing.Point(0, 0);
+            this.txtFilter.Location = new System.Drawing.Point(5, 0);
+            this.txtFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(718, 31);
+            this.txtFilter.Size = new System.Drawing.Size(345, 20);
             this.txtFilter.TabIndex = 5;
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
@@ -145,9 +138,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.pnlSearch.Controls.Add(this.txtFilter);
             this.pnlSearch.Controls.Add(this.chkSelectAll);
             this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlSearch.Location = new System.Drawing.Point(10, 10);
+            this.pnlSearch.Location = new System.Drawing.Point(5, 5);
+            this.pnlSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlSearch.Name = "pnlSearch";
-            this.pnlSearch.Size = new System.Drawing.Size(994, 34);
+            this.pnlSearch.Size = new System.Drawing.Size(497, 18);
             this.pnlSearch.TabIndex = 1;
             // 
             // pnlFooter
@@ -156,17 +150,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.pnlFooter.Controls.Add(this.btnOK);
             this.pnlFooter.Controls.Add(this.btnCancel);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlFooter.Location = new System.Drawing.Point(10, 865);
+            this.pnlFooter.Location = new System.Drawing.Point(5, 450);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlFooter.Name = "pnlFooter";
-            this.pnlFooter.Size = new System.Drawing.Size(994, 59);
+            this.pnlFooter.Size = new System.Drawing.Size(497, 31);
             this.pnlFooter.TabIndex = 2;
             // 
             // lblCheckCount
             // 
             this.lblCheckCount.Dock = System.Windows.Forms.DockStyle.Left;
             this.lblCheckCount.Location = new System.Drawing.Point(0, 0);
+            this.lblCheckCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCheckCount.Name = "lblCheckCount";
-            this.lblCheckCount.Size = new System.Drawing.Size(718, 59);
+            this.lblCheckCount.Size = new System.Drawing.Size(359, 31);
             this.lblCheckCount.TabIndex = 5;
             this.lblCheckCount.Tag = "Attributes selected: {0}";
             this.lblCheckCount.Text = "Attributes selected:";
@@ -176,29 +172,29 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.pnlMain.Controls.Add(this.lsvAttributes);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMain.Location = new System.Drawing.Point(10, 44);
+            this.pnlMain.Location = new System.Drawing.Point(5, 23);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlMain.Size = new System.Drawing.Size(994, 821);
+            this.pnlMain.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pnlMain.Size = new System.Drawing.Size(497, 427);
             this.pnlMain.TabIndex = 3;
             // 
             // AttributeSelectionForm
             // 
             this.AcceptButton = this.btnOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(1014, 934);
+            this.ClientSize = new System.Drawing.Size(507, 486);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlSearch);
             this.Controls.Add(this.grpSelect);
-            this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(594, 531);
+            this.MinimumSize = new System.Drawing.Size(305, 295);
             this.Name = "AttributeSelectionForm";
-            this.Padding = new System.Windows.Forms.Padding(10);
+            this.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Select Attributes";

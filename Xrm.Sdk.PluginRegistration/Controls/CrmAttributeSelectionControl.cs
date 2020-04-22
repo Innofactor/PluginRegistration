@@ -316,12 +316,12 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                 txtAttributes.Text = newText;
                 m_allAttributes = allAttributes;
 
-                m_attributeList.Clear();
                 if (attributes != null && attributes.Count != 0)
                 {
                     foreach (string attribute in attributes)
                     {
-                        m_attributeList.Add(attribute);
+                        if (!m_attributeList.Contains(attribute))
+                            m_attributeList.Add(attribute);
                     }
                 }
 

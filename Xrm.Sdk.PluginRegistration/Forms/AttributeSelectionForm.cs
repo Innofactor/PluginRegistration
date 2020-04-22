@@ -181,9 +181,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
 
                 checkCount = m_currentValue.Count;
+                lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
             }
-
-            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
 
             lsvAttributes.Sort();
             lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
@@ -192,18 +191,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             var attributeList = new Collection<string>();
-            if (lsvAttributes.CheckedIndices.Count == lsvAttributes.Items.Count)
+
+            if (lsvAttributes.CheckedIndices.Count == 0)
+            {
+                MessageBox.Show("You must specify at least one attribute. This is a required field", "Registration",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else if (lsvAttributes.CheckedIndices.Count == m_attributesList.Count)
             {
                 m_updateAttributes(null, true);
             }
             else
             {
-                foreach (ListViewItem attribute in lsvAttributes.CheckedItems)
-                {
-                    attributeList.Add(((CrmAttribute)attribute.Tag).LogicalName);
-                }
-
-                m_updateAttributes(attributeList, false);
+                m_updateAttributes(m_currentValue, false);
             }
 
             DialogResult = DialogResult.OK;
@@ -277,10 +278,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             if (e.Item.Checked)
             {
                 checkCount++;
+                if (!m_currentValue.Contains(e.Item.Name))
+                    m_currentValue.Add(e.Item.Name);
             }
             else
             {
                 checkCount--;
+                if (m_currentValue.Contains(e.Item.Name))
+                    m_currentValue.Remove(e.Item.Name);
             }
 
             lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
