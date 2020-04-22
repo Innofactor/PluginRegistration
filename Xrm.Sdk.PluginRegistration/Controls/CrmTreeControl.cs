@@ -1258,7 +1258,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                             tNode.Parent.ExpandAll();
                         }
                     }
-
+                    
+                    if (m_nodeList.ContainsKey(node.NodeId)) continue;
+                    
                     m_nodeList.Add(node.NodeId, (CrmTreeNode)tNode.Tag);
                     if (CheckBoxes)
                     {
