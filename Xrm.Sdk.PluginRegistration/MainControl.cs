@@ -145,7 +145,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "UninstallProfiler",
                     "Debug",
                     "Close",
-                    "Save");
+                    "Save",
+                    "Filter");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -166,6 +167,7 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolClose.Image = imageList["Close"];
                 toolExport.Image = imageList["Save"];
+                tsbFilterAssemblies.Image = imageList["Filter"];
 
                 imlEnableImages.Images.Add("installProfiler", imageList["InstallProfiler"]);
                 imlEnableImages.Images.Add("enableProfiler", imageList["EnableProfiler"]);

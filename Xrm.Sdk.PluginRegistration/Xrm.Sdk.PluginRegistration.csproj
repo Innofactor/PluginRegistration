@@ -480,6 +480,7 @@
     <Content Include="bin\Release\XrmToolBox.Extensibility.dll" />
     <Content Include="bin\Release\XrmToolBox.PluginsStore.dll" />
     <Content Include="Images\delete.png" />
+    <Content Include="Images\filter.png" />
     <Content Include="Images\PluginProfile.gif" />
     <Content Include="Images\PluginProfilerSelected.gif" />
     <Content Include="Images\DisableProfiler.gif" />
