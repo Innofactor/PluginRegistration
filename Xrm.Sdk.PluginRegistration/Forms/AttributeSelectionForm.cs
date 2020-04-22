@@ -15,6 +15,10 @@
 //
 // =====================================================================
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
     using Microsoft.Xrm.Sdk.Metadata;
@@ -30,15 +34,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     {
         #region Private Fields
 
+        private int checkCount = 0;
+        private List<ListViewItem> m_attributesList;
+        private bool m_currentAllChecked;
+        private Collection<string> m_currentValue;
         private CrmOrganization m_org;
         private UpdateImageAttributesDelegate m_updateAttributes;
+
+        private Thread searchThread;
 
         #endregion Private Fields
 
         #region Public Constructors
 
         public AttributeSelectionForm(UpdateImageAttributesDelegate updateAttributes, CrmOrganization org,
-            CrmAttribute[] attributeList, Collection<string> currentValue, bool currentAllChecked)
+                    CrmAttribute[] attributeList, Collection<string> currentValue, bool currentAllChecked)
         {
             if (org == null)
             {
@@ -57,9 +67,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             m_org = org;
             m_updateAttributes = updateAttributes;
+            m_currentAllChecked = currentAllChecked;
+            m_currentValue = currentValue;
 
             //Create a sorter for the listview. This will allow the list to be sorted by different columns
             lsvAttributes.ListViewItemSorter = new ListViewColumnSorter(0, lsvAttributes.Sorting);
+
+            m_attributesList = new List<ListViewItem>();
 
             foreach (CrmAttribute attribute in attributeList)
             {
@@ -81,10 +95,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     case AttributeTypeCode.Status:
                     case AttributeTypeCode.String:
                         {
-                            ListViewItem item = lsvAttributes.Items.Add(attribute.LogicalName.Trim().ToLowerInvariant(), attribute.FriendlyName, 0);
+                            ListViewItem item = new ListViewItem
+                            {
+                                Name = attribute.LogicalName.Trim().ToLowerInvariant(),
+                                Text = attribute.FriendlyName,
+                                ImageIndex = 0
+                            };
+
                             item.SubItems.Add(attribute.LogicalName);
                             item.SubItems.Add(attribute.Type.ToString());
                             item.Tag = attribute;
+
+                            m_attributesList.Add(item);
                         }
                         break;
 
@@ -94,31 +116,36 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                         if (attribute.IsPrimaryId)
                         {
-                            ListViewItem item = lsvAttributes.Items.Add(attribute.LogicalName.Trim().ToLowerInvariant(), attribute.FriendlyName, 0);
+                            ListViewItem item = new ListViewItem
+                            {
+                                Name = attribute.LogicalName.Trim().ToLowerInvariant(),
+                                Text = attribute.FriendlyName,
+                                ImageIndex = 0
+                            };
+
                             item.SubItems.Add(attribute.LogicalName);
                             item.SubItems.Add(attribute.Type.ToString());
                             item.Tag = attribute;
+
+                            m_attributesList.Add(item);
+                        }
+
+                        if (attribute.TypeName == "MultiSelectPicklistType")
+                        {
+                            ListViewItem item = new ListViewItem
+                            {
+                                Name = attribute.LogicalName.Trim().ToLowerInvariant(),
+                                Text = attribute.FriendlyName,
+                                ImageIndex = 0
+                            };
+
+                            item.SubItems.Add(attribute.LogicalName);
+                            item.SubItems.Add("MultiSelect Picklist");
+                            item.Tag = attribute;
+
+                            m_attributesList.Add(item);
                         }
                         continue;
-                }
-            }
-
-            if (currentAllChecked)
-            {
-                chkSelectAll.Checked = true;
-                foreach (ListViewItem item in lsvAttributes.Items)
-                {
-                    item.Checked = true;
-                }
-            }
-            else if (currentValue != null && currentValue.Count != 0)
-            {
-                foreach (string value in currentValue)
-                {
-                    if (!string.IsNullOrEmpty(value) && lsvAttributes.Items.ContainsKey(value.Trim().ToLowerInvariant()))
-                    {
-                        lsvAttributes.Items[value.ToLowerInvariant()].Checked = true;
-                    }
                 }
             }
         }
@@ -129,7 +156,37 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         private void AttributeSelectionForm_Load(object sender, EventArgs e)
         {
+            DisplayAttributes();
+            lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
+
+            if (m_currentAllChecked)
+            {
+                chkSelectAll.Checked = true;
+                foreach (ListViewItem item in lsvAttributes.Items)
+                {
+                    item.Checked = true;
+                    checkCount++;
+                }
+
+                lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), "all");
+            }
+            else if (m_currentValue != null && m_currentValue.Count != 0)
+            {
+                foreach (string value in m_currentValue)
+                {
+                    if (!string.IsNullOrEmpty(value) && lsvAttributes.Items.ContainsKey(value.Trim().ToLowerInvariant()))
+                    {
+                        lsvAttributes.Items[value.ToLowerInvariant()].Checked = true;
+                    }
+                }
+
+                checkCount = m_currentValue.Count;
+            }
+
+            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
+
             lsvAttributes.Sort();
+            lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -157,10 +214,38 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             bool checkVal = chkSelectAll.Checked;
 
+            lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
+
+            checkCount = 0;
+
             foreach (ListViewItem item in lsvAttributes.Items)
             {
                 item.Checked = checkVal;
+                if (item.Checked)
+                {
+                    checkCount++;
+                }
             }
+
+            lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
+            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
+        }
+
+        private void DisplayAttributes()
+        {
+            Invoke(new Action(() =>
+            {
+                lsvAttributes.Items.Clear();
+
+                var items = m_attributesList.Where(i =>
+                    txtFilter.Text.Length == 0
+                    || i.Text.ToLower().IndexOf(txtFilter.Text.ToLower(), StringComparison.Ordinal) >= 0
+                    || i.Name.ToLower().IndexOf(txtFilter.Text.ToLower(), StringComparison.Ordinal) >= 0);
+
+                lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
+                lsvAttributes.Items.AddRange(items.ToArray());
+                lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
+            }));
         }
 
         private void lsvAttributes_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -185,6 +270,27 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             lsvAttributes.Sort();
+        }
+
+        private void lsvAttributes_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (e.Item.Checked)
+            {
+                checkCount++;
+            }
+            else
+            {
+                checkCount--;
+            }
+
+            lblCheckCount.Text = string.Format(lblCheckCount.Tag.ToString(), checkCount);
+        }
+
+        private void txtFilter_TextChanged(object sender, EventArgs e)
+        {
+            searchThread?.Abort();
+            searchThread = new Thread(DisplayAttributes);
+            searchThread.Start();
         }
 
         #endregion Private Methods

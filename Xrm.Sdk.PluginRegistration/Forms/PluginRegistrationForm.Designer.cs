@@ -31,6 +31,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginRegistrationForm));
             this.grpPath = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.chkUpdateAssembly = new System.Windows.Forms.CheckBox();
             this.btnLoadAssembly = new System.Windows.Forms.Button();
             this.openAssemblyDialog = new System.Windows.Forms.OpenFileDialog();
@@ -55,35 +56,51 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.lblIsolated = new System.Windows.Forms.Label();
             this.radIsolationSandbox = new System.Windows.Forms.RadioButton();
             this.radIsolationNone = new System.Windows.Forms.RadioButton();
+            this.pnlFooter = new System.Windows.Forms.Panel();
             this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.AssemblyPathControl = new Xrm.Sdk.PluginRegistration.Controls.FileBrowserControl();
             this.grpPath.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.grpPlugins.SuspendLayout();
             this.grpRegLoc.SuspendLayout();
             this.grpProgress.SuspendLayout();
             this.grpIsolationMode.SuspendLayout();
+            this.pnlFooter.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpPath
             // 
-            this.grpPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPath.Controls.Add(this.panel1);
             this.grpPath.Controls.Add(this.AssemblyPathControl);
-            this.grpPath.Controls.Add(this.chkUpdateAssembly);
-            this.grpPath.Controls.Add(this.btnLoadAssembly);
-            this.grpPath.Location = new System.Drawing.Point(5, 5);
+            this.grpPath.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpPath.Location = new System.Drawing.Point(10, 10);
+            this.grpPath.Margin = new System.Windows.Forms.Padding(6);
             this.grpPath.Name = "grpPath";
-            this.grpPath.Size = new System.Drawing.Size(618, 75);
+            this.grpPath.Padding = new System.Windows.Forms.Padding(6);
+            this.grpPath.Size = new System.Drawing.Size(1236, 132);
             this.grpPath.TabIndex = 0;
             this.grpPath.TabStop = false;
             this.grpPath.Text = "Step #1: Select the Assembly to Load";
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.chkUpdateAssembly);
+            this.panel1.Controls.Add(this.btnLoadAssembly);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(6, 77);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(4);
+            this.panel1.Size = new System.Drawing.Size(1224, 49);
+            this.panel1.TabIndex = 5;
+            // 
             // chkUpdateAssembly
             // 
             this.chkUpdateAssembly.AutoSize = true;
-            this.chkUpdateAssembly.Location = new System.Drawing.Point(7, 49);
+            this.chkUpdateAssembly.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkUpdateAssembly.Location = new System.Drawing.Point(4, 4);
+            this.chkUpdateAssembly.Margin = new System.Windows.Forms.Padding(6);
             this.chkUpdateAssembly.Name = "chkUpdateAssembly";
-            this.chkUpdateAssembly.Size = new System.Drawing.Size(207, 17);
+            this.chkUpdateAssembly.Size = new System.Drawing.Size(1022, 41);
             this.chkUpdateAssembly.TabIndex = 3;
             this.chkUpdateAssembly.Text = "Update Assembly Properties && Content";
             this.chkUpdateAssembly.UseVisualStyleBackColor = true;
@@ -91,11 +108,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // btnLoadAssembly
             // 
-            this.btnLoadAssembly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoadAssembly.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnLoadAssembly.Enabled = false;
-            this.btnLoadAssembly.Location = new System.Drawing.Point(479, 45);
+            this.btnLoadAssembly.Location = new System.Drawing.Point(1026, 4);
+            this.btnLoadAssembly.Margin = new System.Windows.Forms.Padding(6);
             this.btnLoadAssembly.Name = "btnLoadAssembly";
-            this.btnLoadAssembly.Size = new System.Drawing.Size(97, 23);
+            this.btnLoadAssembly.Size = new System.Drawing.Size(194, 41);
             this.btnLoadAssembly.TabIndex = 2;
             this.btnLoadAssembly.Text = "Load Assembly";
             this.btnLoadAssembly.UseVisualStyleBackColor = true;
@@ -109,36 +127,37 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpPlugins
             // 
-            this.grpPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPlugins.Controls.Add(this.trvPlugins);
             this.grpPlugins.Controls.Add(this.chkSelectAll);
-            this.grpPlugins.Location = new System.Drawing.Point(5, 86);
+            this.grpPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpPlugins.Location = new System.Drawing.Point(10, 142);
+            this.grpPlugins.Margin = new System.Windows.Forms.Padding(6);
             this.grpPlugins.Name = "grpPlugins";
-            this.grpPlugins.Size = new System.Drawing.Size(618, 177);
+            this.grpPlugins.Padding = new System.Windows.Forms.Padding(6);
+            this.grpPlugins.Size = new System.Drawing.Size(1236, 386);
             this.grpPlugins.TabIndex = 1;
             this.grpPlugins.TabStop = false;
             this.grpPlugins.Text = "Step #2: Select the Plugins && Workflow Activities to Register";
             // 
             // chkSelectAll
             // 
-            this.chkSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSelectAll.AutoSize = true;
+            this.chkSelectAll.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkSelectAll.Checked = true;
             this.chkSelectAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSelectAll.Location = new System.Drawing.Point(474, 19);
+            this.chkSelectAll.Dock = System.Windows.Forms.DockStyle.Top;
+            this.chkSelectAll.Location = new System.Drawing.Point(6, 30);
+            this.chkSelectAll.Margin = new System.Windows.Forms.Padding(6);
             this.chkSelectAll.Name = "chkSelectAll";
-            this.chkSelectAll.Size = new System.Drawing.Size(137, 17);
+            this.chkSelectAll.Size = new System.Drawing.Size(1224, 29);
             this.chkSelectAll.TabIndex = 0;
             this.chkSelectAll.Text = "Select &All / Deselect All";
+            this.chkSelectAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkSelectAll.UseVisualStyleBackColor = true;
             this.chkSelectAll.Click += new System.EventHandler(this.chkSelectAll_Click);
             // 
             // grpRegLoc
             // 
-            this.grpRegLoc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpRegLoc.Controls.Add(this.lblServerFileName);
             this.grpRegLoc.Controls.Add(this.txtServerFileName);
             this.grpRegLoc.Controls.Add(this.lblGAC);
@@ -147,9 +166,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpRegLoc.Controls.Add(this.radDisk);
             this.grpRegLoc.Controls.Add(this.lblDatabase);
             this.grpRegLoc.Controls.Add(this.radDB);
-            this.grpRegLoc.Location = new System.Drawing.Point(5, 358);
+            this.grpRegLoc.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.grpRegLoc.Location = new System.Drawing.Point(10, 688);
+            this.grpRegLoc.Margin = new System.Windows.Forms.Padding(6);
             this.grpRegLoc.Name = "grpRegLoc";
-            this.grpRegLoc.Size = new System.Drawing.Size(618, 194);
+            this.grpRegLoc.Padding = new System.Windows.Forms.Padding(6);
+            this.grpRegLoc.Size = new System.Drawing.Size(1236, 373);
             this.grpRegLoc.TabIndex = 3;
             this.grpRegLoc.TabStop = false;
             this.grpRegLoc.Text = "Step #4: Specify the Location where the Assembly should be stored";
@@ -158,9 +180,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.lblServerFileName.AutoSize = true;
             this.lblServerFileName.Enabled = false;
-            this.lblServerFileName.Location = new System.Drawing.Point(4, 129);
+            this.lblServerFileName.Location = new System.Drawing.Point(8, 248);
+            this.lblServerFileName.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblServerFileName.Name = "lblServerFileName";
-            this.lblServerFileName.Size = new System.Drawing.Size(106, 13);
+            this.lblServerFileName.Size = new System.Drawing.Size(214, 25);
             this.lblServerFileName.TabIndex = 7;
             this.lblServerFileName.Text = "&File Name on Server:";
             // 
@@ -169,16 +192,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.txtServerFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtServerFileName.Enabled = false;
-            this.txtServerFileName.Location = new System.Drawing.Point(117, 126);
+            this.txtServerFileName.Location = new System.Drawing.Point(234, 242);
+            this.txtServerFileName.Margin = new System.Windows.Forms.Padding(6);
             this.txtServerFileName.Name = "txtServerFileName";
-            this.txtServerFileName.Size = new System.Drawing.Size(493, 20);
+            this.txtServerFileName.Size = new System.Drawing.Size(982, 31);
             this.txtServerFileName.TabIndex = 6;
             // 
             // lblGAC
             // 
-            this.lblGAC.Location = new System.Drawing.Point(4, 174);
+            this.lblGAC.Location = new System.Drawing.Point(8, 335);
+            this.lblGAC.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblGAC.Name = "lblGAC";
-            this.lblGAC.Size = new System.Drawing.Size(579, 18);
+            this.lblGAC.Size = new System.Drawing.Size(1158, 35);
             this.lblGAC.TabIndex = 5;
             this.lblGAC.Text = "File is placed in the GAC of each server where it will used.";
             // 
@@ -186,9 +211,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.radGAC.AutoSize = true;
             this.radGAC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radGAC.Location = new System.Drawing.Point(7, 154);
+            this.radGAC.Location = new System.Drawing.Point(14, 296);
+            this.radGAC.Margin = new System.Windows.Forms.Padding(6);
             this.radGAC.Name = "radGAC";
-            this.radGAC.Size = new System.Drawing.Size(50, 17);
+            this.radGAC.Size = new System.Drawing.Size(94, 30);
             this.radGAC.TabIndex = 4;
             this.radGAC.Text = "GAC";
             this.radGAC.UseVisualStyleBackColor = true;
@@ -197,9 +223,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.lblDisk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDisk.Location = new System.Drawing.Point(3, 94);
+            this.lblDisk.Location = new System.Drawing.Point(6, 181);
+            this.lblDisk.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblDisk.Name = "lblDisk";
-            this.lblDisk.Size = new System.Drawing.Size(602, 32);
+            this.lblDisk.Size = new System.Drawing.Size(1204, 62);
             this.lblDisk.TabIndex = 3;
             this.lblDisk.Text = resources.GetString("lblDisk.Text");
             // 
@@ -207,9 +234,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.radDisk.AutoSize = true;
             this.radDisk.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radDisk.Location = new System.Drawing.Point(6, 74);
+            this.radDisk.Location = new System.Drawing.Point(12, 142);
+            this.radDisk.Margin = new System.Windows.Forms.Padding(6);
             this.radDisk.Name = "radDisk";
-            this.radDisk.Size = new System.Drawing.Size(50, 17);
+            this.radDisk.Size = new System.Drawing.Size(90, 30);
             this.radDisk.TabIndex = 2;
             this.radDisk.Text = "Disk";
             this.radDisk.UseVisualStyleBackColor = true;
@@ -219,9 +247,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.lblDatabase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDatabase.Location = new System.Drawing.Point(3, 43);
+            this.lblDatabase.Location = new System.Drawing.Point(6, 83);
+            this.lblDatabase.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblDatabase.Name = "lblDatabase";
-            this.lblDatabase.Size = new System.Drawing.Size(607, 28);
+            this.lblDatabase.Size = new System.Drawing.Size(1214, 54);
             this.lblDatabase.TabIndex = 1;
             this.lblDatabase.Text = resources.GetString("lblDatabase.Text");
             // 
@@ -230,9 +259,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.radDB.AutoSize = true;
             this.radDB.Checked = true;
             this.radDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radDB.Location = new System.Drawing.Point(7, 23);
+            this.radDB.Location = new System.Drawing.Point(14, 44);
+            this.radDB.Margin = new System.Windows.Forms.Padding(6);
             this.radDB.Name = "radDB";
-            this.radDB.Size = new System.Drawing.Size(79, 17);
+            this.radDB.Size = new System.Drawing.Size(144, 30);
             this.radDB.TabIndex = 0;
             this.radDB.TabStop = true;
             this.radDB.Text = "Database";
@@ -242,9 +272,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.btnRegister.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRegister.Enabled = false;
-            this.btnRegister.Location = new System.Drawing.Point(401, 703);
+            this.btnRegister.Location = new System.Drawing.Point(770, 14);
+            this.btnRegister.Margin = new System.Windows.Forms.Padding(6);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(141, 23);
+            this.btnRegister.Size = new System.Drawing.Size(282, 44);
             this.btnRegister.TabIndex = 5;
             this.btnRegister.Text = "&Register Selected Plugins";
             this.btnRegister.UseVisualStyleBackColor = true;
@@ -254,9 +285,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(548, 703);
+            this.btnCancel.Location = new System.Drawing.Point(1064, 14);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(6);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(150, 44);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Close";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -264,13 +296,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpProgress
             // 
-            this.grpProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpProgress.Controls.Add(this.txtProgress);
             this.grpProgress.Controls.Add(this.barRegistration);
-            this.grpProgress.Location = new System.Drawing.Point(5, 558);
+            this.grpProgress.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.grpProgress.Location = new System.Drawing.Point(10, 1061);
+            this.grpProgress.Margin = new System.Windows.Forms.Padding(6);
             this.grpProgress.Name = "grpProgress";
-            this.grpProgress.Size = new System.Drawing.Size(618, 139);
+            this.grpProgress.Padding = new System.Windows.Forms.Padding(6);
+            this.grpProgress.Size = new System.Drawing.Size(1236, 267);
             this.grpProgress.TabIndex = 4;
             this.grpProgress.TabStop = false;
             this.grpProgress.Text = "Log";
@@ -280,12 +313,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.txtProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProgress.Location = new System.Drawing.Point(7, 19);
+            this.txtProgress.Location = new System.Drawing.Point(14, 37);
+            this.txtProgress.Margin = new System.Windows.Forms.Padding(6);
             this.txtProgress.Multiline = true;
             this.txtProgress.Name = "txtProgress";
             this.txtProgress.ReadOnly = true;
             this.txtProgress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtProgress.Size = new System.Drawing.Size(603, 89);
+            this.txtProgress.Size = new System.Drawing.Size(1202, 167);
             this.txtProgress.TabIndex = 7;
             // 
             // barRegistration
@@ -293,22 +327,24 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.barRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.barRegistration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.barRegistration.Location = new System.Drawing.Point(6, 114);
+            this.barRegistration.Location = new System.Drawing.Point(12, 219);
+            this.barRegistration.Margin = new System.Windows.Forms.Padding(6);
             this.barRegistration.Name = "barRegistration";
-            this.barRegistration.Size = new System.Drawing.Size(604, 19);
+            this.barRegistration.Size = new System.Drawing.Size(1208, 37);
             this.barRegistration.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.barRegistration.TabIndex = 6;
             // 
             // grpIsolationMode
             // 
-            this.grpIsolationMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpIsolationMode.Controls.Add(this.lblIsolated);
             this.grpIsolationMode.Controls.Add(this.radIsolationSandbox);
             this.grpIsolationMode.Controls.Add(this.radIsolationNone);
-            this.grpIsolationMode.Location = new System.Drawing.Point(5, 269);
+            this.grpIsolationMode.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.grpIsolationMode.Location = new System.Drawing.Point(10, 528);
+            this.grpIsolationMode.Margin = new System.Windows.Forms.Padding(6);
             this.grpIsolationMode.Name = "grpIsolationMode";
-            this.grpIsolationMode.Size = new System.Drawing.Size(618, 83);
+            this.grpIsolationMode.Padding = new System.Windows.Forms.Padding(6);
+            this.grpIsolationMode.Size = new System.Drawing.Size(1236, 160);
             this.grpIsolationMode.TabIndex = 2;
             this.grpIsolationMode.TabStop = false;
             this.grpIsolationMode.Text = "Step #3: Specify the Isolation Mode";
@@ -317,9 +353,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.lblIsolated.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIsolated.Location = new System.Drawing.Point(4, 39);
+            this.lblIsolated.Location = new System.Drawing.Point(8, 75);
+            this.lblIsolated.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblIsolated.Name = "lblIsolated";
-            this.lblIsolated.Size = new System.Drawing.Size(607, 16);
+            this.lblIsolated.Size = new System.Drawing.Size(1214, 31);
             this.lblIsolated.TabIndex = 1;
             this.lblIsolated.Text = "All code in this assembly will be run in a secure sandbox (reduced functionality)" +
     "";
@@ -328,9 +365,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             this.radIsolationSandbox.AutoSize = true;
             this.radIsolationSandbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radIsolationSandbox.Location = new System.Drawing.Point(8, 19);
+            this.radIsolationSandbox.Location = new System.Drawing.Point(16, 37);
+            this.radIsolationSandbox.Margin = new System.Windows.Forms.Padding(6);
             this.radIsolationSandbox.Name = "radIsolationSandbox";
-            this.radIsolationSandbox.Size = new System.Drawing.Size(74, 17);
+            this.radIsolationSandbox.Size = new System.Drawing.Size(136, 30);
             this.radIsolationSandbox.TabIndex = 0;
             this.radIsolationSandbox.Text = "Sandbox";
             this.radIsolationSandbox.UseVisualStyleBackColor = true;
@@ -340,28 +378,38 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.radIsolationNone.AutoSize = true;
             this.radIsolationNone.Checked = true;
             this.radIsolationNone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radIsolationNone.Location = new System.Drawing.Point(8, 58);
+            this.radIsolationNone.Location = new System.Drawing.Point(16, 112);
+            this.radIsolationNone.Margin = new System.Windows.Forms.Padding(6);
             this.radIsolationNone.Name = "radIsolationNone";
-            this.radIsolationNone.Size = new System.Drawing.Size(55, 17);
+            this.radIsolationNone.Size = new System.Drawing.Size(99, 30);
             this.radIsolationNone.TabIndex = 2;
             this.radIsolationNone.TabStop = true;
             this.radIsolationNone.Text = "None";
             this.radIsolationNone.UseVisualStyleBackColor = true;
             // 
+            // pnlFooter
+            // 
+            this.pnlFooter.Controls.Add(this.btnRegister);
+            this.pnlFooter.Controls.Add(this.btnCancel);
+            this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlFooter.Location = new System.Drawing.Point(10, 1328);
+            this.pnlFooter.Name = "pnlFooter";
+            this.pnlFooter.Size = new System.Drawing.Size(1236, 70);
+            this.pnlFooter.TabIndex = 7;
+            // 
             // trvPlugins
             // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.trvPlugins.AutoExpand = false;
             this.trvPlugins.CheckBoxes = true;
             this.trvPlugins.CrmTreeNodeSorter = null;
+            this.trvPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trvPlugins.LabelEdit = false;
-            this.trvPlugins.Location = new System.Drawing.Point(8, 42);
+            this.trvPlugins.Location = new System.Drawing.Point(6, 59);
+            this.trvPlugins.Margin = new System.Windows.Forms.Padding(12);
             this.trvPlugins.Name = "trvPlugins";
             this.trvPlugins.SelectedNode = null;
             this.trvPlugins.ShowNodeToolTips = false;
-            this.trvPlugins.Size = new System.Drawing.Size(604, 129);
+            this.trvPlugins.Size = new System.Drawing.Size(1224, 321);
             this.trvPlugins.TabIndex = 1;
             this.trvPlugins.CheckStateChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_CheckStateChanged);
             // 
@@ -370,12 +418,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.AssemblyPathControl.BackColor = System.Drawing.Color.Transparent;
             this.AssemblyPathControl.DefaultExtension = "*.dll";
             this.AssemblyPathControl.DialogTitle = "";
+            this.AssemblyPathControl.Dock = System.Windows.Forms.DockStyle.Top;
             this.AssemblyPathControl.FileName = "";
             this.AssemblyPathControl.Filter = "Assembly Files (*.dll)|*.dll|All Files (*.*)|*.*";
             this.AssemblyPathControl.InitialDirectory = "";
-            this.AssemblyPathControl.Location = new System.Drawing.Point(7, 19);
+            this.AssemblyPathControl.Location = new System.Drawing.Point(6, 30);
+            this.AssemblyPathControl.Margin = new System.Windows.Forms.Padding(12);
             this.AssemblyPathControl.Name = "AssemblyPathControl";
-            this.AssemblyPathControl.Size = new System.Drawing.Size(605, 20);
+            this.AssemblyPathControl.Padding = new System.Windows.Forms.Padding(4);
+            this.AssemblyPathControl.Size = new System.Drawing.Size(1224, 47);
             this.AssemblyPathControl.TabIndex = 4;
             this.AssemblyPathControl.BrowseCompleted += new System.EventHandler<System.EventArgs>(this.AssemblyPathControl_BrowseCompleted);
             this.AssemblyPathControl.PathChanged += new System.EventHandler<System.EventArgs>(this.AssemblyPathControl_PathChanged);
@@ -383,23 +434,25 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // PluginRegistrationForm
             // 
             this.AcceptButton = this.btnRegister;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(628, 732);
-            this.Controls.Add(this.grpIsolationMode);
-            this.Controls.Add(this.grpProgress);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnRegister);
-            this.Controls.Add(this.grpRegLoc);
+            this.ClientSize = new System.Drawing.Size(1256, 1408);
             this.Controls.Add(this.grpPlugins);
+            this.Controls.Add(this.grpIsolationMode);
+            this.Controls.Add(this.grpRegLoc);
+            this.Controls.Add(this.grpProgress);
+            this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.grpPath);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "PluginRegistrationForm";
+            this.Padding = new System.Windows.Forms.Padding(10);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Register New Plugin";
             this.grpPath.ResumeLayout(false);
-            this.grpPath.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.grpPlugins.ResumeLayout(false);
             this.grpPlugins.PerformLayout();
             this.grpRegLoc.ResumeLayout(false);
@@ -408,6 +461,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpProgress.PerformLayout();
             this.grpIsolationMode.ResumeLayout(false);
             this.grpIsolationMode.PerformLayout();
+            this.pnlFooter.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -441,5 +495,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private System.Windows.Forms.RadioButton radIsolationSandbox;
         private System.Windows.Forms.CheckBox chkUpdateAssembly;
         private Xrm.Sdk.PluginRegistration.Controls.FileBrowserControl AssemblyPathControl;
+        private System.Windows.Forms.Panel pnlFooter;
+        private System.Windows.Forms.Panel panel1;
     }
 }

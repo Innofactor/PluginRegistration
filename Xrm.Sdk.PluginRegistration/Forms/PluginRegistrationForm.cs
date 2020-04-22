@@ -65,6 +65,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ProgressIndicatorIncrement, null);
             m_currentAssembly = assembly;
 
+            radIsolationSandbox.Checked = org.ConnectionDetail.UseOnline;
+
             trvPlugins.CrmTreeNodeSorter = orgControl.CrmTreeNodeSorter;
 
             //Check if this is a known assembly
@@ -623,6 +625,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             foreach (var currentPlugin in registerPluginList)
             {
+                if (currentPlugin == null) continue;
+
                 currentPlugin.AssemblyId = assembly.AssemblyId;
 
                 //Check if the plugin exists

@@ -101,6 +101,12 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             return m_entityList.Values.GetEnumerator();
         }
 
+        public void Remove(Guid id)
+        {
+            if (m_entityList.ContainsKey(id))
+                m_entityList.Remove(id);
+        }
+
         public EntityType[] ToArray()
         {
             EntityType[] items = new EntityType[m_entityList.Count];

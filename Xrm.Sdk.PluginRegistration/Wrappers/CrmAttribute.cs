@@ -25,6 +25,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         #region Private Fields
 
         private AttributeTypeCode m_attributeType;
+        private string m_attributeTypeName;
         private string m_friendlyName;
         private bool m_isPrimaryId = false;
         private string m_schemaName;
@@ -75,6 +76,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             m_attributeType = md.AttributeType.Value;
+            m_attributeTypeName = md.AttributeTypeName.Value;
             m_validForCreate = md.IsValidForCreate.Value;
             m_validForRead = md.IsValidForUpdate.Value;
             m_validForUpdate = md.IsValidForUpdate.Value;
@@ -114,6 +116,14 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             get
             {
                 return m_attributeType;
+            }
+        }
+
+        public string TypeName
+        {
+            get
+            {
+                return m_attributeTypeName;
             }
         }
 

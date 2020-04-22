@@ -53,6 +53,7 @@ namespace Xrm.Sdk.PluginRegistration
         private CrmOrganization m_org;
         private ProgressIndicator m_progressIndicator = null;
         private Dictionary<string, CrmTreeNode> m_rootNodeList = null;
+        private Settings m_settings;
         private Dictionary<Guid, Guid> m_stepEntityMap = new Dictionary<Guid, Guid>();
         private Dictionary<Guid, Guid> m_stepParentList = null;
         private Dictionary<Guid, Guid> m_viewNodeList = null;
@@ -64,6 +65,12 @@ namespace Xrm.Sdk.PluginRegistration
         public MainControl()
         {
             InitializeComponent();
+
+            if (!SettingsManager.Instance.TryLoad(GetType(), out m_settings))
+            {
+                m_settings = new Settings();
+                SettingsManager.Instance.Save(GetType(), m_settings);
+            }
 
             #region Load the Images & Icons from the Resource File
 
@@ -646,7 +653,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             var writer = new StreamWriter(filePath, false, Encoding.Default);
             var csv = new CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture);
-            
+
             csv.WriteHeader(typeof(ExportModel));
             csv.NextRecord();
             return csv;
@@ -1862,6 +1869,18 @@ namespace Xrm.Sdk.PluginRegistration
         private void trvPlugins_SelectionChanged(object sender, CrmTreeNodeTreeEventArgs e)
         {
             SelectItem(e.Node);
+        }
+
+        private void tsbFilterAssemblies_Click(object sender, EventArgs e)
+        {
+            var dialog = new AssembliesFilterForm();
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                if (dialog.HasChanged)
+                {
+                    toolRefresh_Click(this, new EventArgs());
+                }
+            }
         }
 
         private void UpdateEnableButton(bool currentlyEnabled)
