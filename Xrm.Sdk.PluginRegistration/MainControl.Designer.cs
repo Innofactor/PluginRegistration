@@ -62,6 +62,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerSep = new System.Windows.Forms.ToolStripSeparator();
             this.toolUpdate = new System.Windows.Forms.ToolStripButton();
             this.toolEnable = new System.Windows.Forms.ToolStripButton();
+            this.toolRepeat = new System.Windows.Forms.ToolStripButton();
             this.toolUnregister = new System.Windows.Forms.ToolStripButton();
             this.toolCommonSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolRefresh = new System.Windows.Forms.ToolStripButton();
@@ -270,6 +271,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolProfilerSep,
             this.toolUpdate,
             this.toolEnable,
+            this.toolRepeat,
             this.toolUnregister,
             this.toolCommonSep2,
             this.toolRefresh,
@@ -387,6 +389,15 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolEnable.Text = "&Disable";
             this.toolEnable.Visible = false;
             this.toolEnable.Click += new System.EventHandler(this.toolEnable_Click);
+            // 
+            // toolRepeat
+            // 
+            this.toolRepeat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolRepeat.Name = "toolRepeat";
+            this.toolRepeat.Size = new System.Drawing.Size(47, 22);
+            this.toolRepeat.Text = "Re&peat";
+            this.toolRepeat.Visible = false;
+            this.toolRepeat.Click += new System.EventHandler(this.toolRepeat_Click);
             // 
             // toolUnregister
             // 
@@ -601,5 +612,6 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripButton toolClose;
         private System.Windows.Forms.ToolStripButton toolExport;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolRepeat;
     }
 }

@@ -56,6 +56,9 @@ namespace Xrm.Sdk.PluginRegistration
         private Dictionary<Guid, Guid> m_stepEntityMap = new Dictionary<Guid, Guid>();
         private Dictionary<Guid, Guid> m_stepParentList = null;
         private Dictionary<Guid, Guid> m_viewNodeList = null;
+        private string m_lastAssemblyFileName = null;
+        private string m_lastRepeatedAssemblyName = null;
+
 
         #endregion Private Fields
 
@@ -138,7 +141,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "UninstallProfiler",
                     "Debug",
                     "Close",
-                    "Save");
+                    "Save",
+                    "Repeat");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -148,6 +152,8 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolUnregister.Image = imageList["Delete"];
                 mnuContextNodeUnregister.Image = toolUnregister.Image;
+
+                toolRepeat.Image = imageList["Repeat"];
 
                 toolSearch.Image = imageList["Search"];
                 mnuContextNodeSearch.Image = toolSearch.Image;
@@ -607,7 +613,7 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
-        public void ShowSystemItemError(string text)
+        public void ShowSystemItemError(string text, bool showSystemMessage = true)
         {
             if (text == null)
             {
@@ -615,8 +621,15 @@ namespace Xrm.Sdk.PluginRegistration
             }
             else
             {
-                MessageBox.Show(string.Format("{0}\n{1}", SYSTEM_ERROR_MESSAGE, text),
-                    SYSTEM_ERROR_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (showSystemMessage)
+                {
+                    MessageBox.Show(string.Format("{0}\n{1}", SYSTEM_ERROR_MESSAGE, text),
+                       SYSTEM_ERROR_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show( text, SYSTEM_ERROR_CAPTION, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -1309,6 +1322,7 @@ namespace Xrm.Sdk.PluginRegistration
         {
             //Reset the visibility and enabled properties because we don't what is enabled
             toolUpdate.Visible = false;
+            toolRepeat.Visible = false;
             mnuContextNodeUpdate.Visible = false;
 
             toolEnable.Visible = false;
@@ -1354,6 +1368,9 @@ namespace Xrm.Sdk.PluginRegistration
                         btnSave.Enabled = true;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPlugin>(CrmPlugin.Columns, assembly.Plugins);
+
+                        toolRepeat.Visible = true;
+
                     }
                     break;
 
@@ -1724,6 +1741,55 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+
+        private void toolRepeat_Click(object sender, EventArgs e)
+        {
+            if (IsNodeSystemItem(trvPlugins.SelectedNode))
+            {
+                ShowSystemItemError("The assembly cannot be updated.");
+                return;
+            }
+
+            if (String.IsNullOrEmpty(m_lastAssemblyFileName))
+            {
+                ShowSystemItemError("Please register the assembly manually first", false);
+                return;
+            }
+
+            switch (trvPlugins.SelectedNode.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+
+                        if (m_lastRepeatedAssemblyName != ((CrmPluginAssembly)trvPlugins.SelectedNode).Name)
+                        {
+                            ShowSystemItemError("Repeat can only be used on the last registered assembly", false);
+                            return;
+                        }
+
+                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        m_lastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
+
+
+                        regForm.RepeatRegistration(m_lastAssemblyFileName);
+                    }
+                    break;
+
+
+                default:
+                    ShowSystemItemError("Repeat can only be used on assemblies", false);
+                    break;
+            }
+
+            ICrmTreeNode node = trvPlugins.SelectedNode;
+            if (node != null)
+            {
+                trvPlugins_SelectionChanged(sender, new CrmTreeNodeTreeEventArgs(node, TreeViewAction.Unknown));
+            }
+
+        }
+
+
         private void toolUpdate_Click(object sender, EventArgs e)
         {
             if (IsNodeSystemItem(trvPlugins.SelectedNode))
@@ -1738,6 +1804,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
                         regForm.ShowDialog(ParentForm);
+                        m_lastAssemblyFileName = regForm.AssemblyFileName;
+                        m_lastRepeatedAssemblyName = ((CrmPluginAssembly)trvPlugins.SelectedNode).Name;
                     }
                     break;
 
@@ -2377,5 +2445,7 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
+
+        
     }
 }

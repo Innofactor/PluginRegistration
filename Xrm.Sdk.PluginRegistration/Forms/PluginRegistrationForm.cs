@@ -42,6 +42,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private List<CrmPlugin> m_registeredPluginList;
 
         #endregion Private Fields
+        
+        #region Public Properties
+        public string AssemblyFileName { get; set; }
+        #endregion Public Properties
 
         #region Public Constructors
 
@@ -161,13 +165,30 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
+        public void RepeatRegistration(string assemblyFileName)
+        {
+            CheckAndLoadAssembly(assemblyFileName);
+            RegisterPlugin();
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+
         private void btnLoadAssembly_Click(object sender, EventArgs e)
         {
+            CheckAndLoadAssembly();
+        }
+
+        private void CheckAndLoadAssembly(string assemblyFileName = null)
+        {
+            if (!string.IsNullOrEmpty(assemblyFileName))
+            {
+                AssemblyPathControl.FileName = assemblyFileName;
+            }
+
             if (!AssemblyPathControl.FileExists)
             {
                 MessageBox.Show("Error: Unable to locate the specified file. Please ensure that it exists",
@@ -179,6 +200,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             CrmPluginAssembly assembly;
             try
             {
+                AssemblyFileName = AssemblyPathControl.FileName;
                 assembly = RegistrationHelper.RetrievePluginsFromAssembly(AssemblyPathControl.FileName);
             }
             catch (Exception ex)
@@ -202,6 +224,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
+        {
+            RegisterPlugin();
+        }
+
+        private void RegisterPlugin()
         {
             const string ERROR_CAPTION = "Registration Error";
             string ERROR_MESSAGE;
