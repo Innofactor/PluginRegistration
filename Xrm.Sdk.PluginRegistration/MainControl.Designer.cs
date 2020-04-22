@@ -75,9 +75,9 @@ namespace Xrm.Sdk.PluginRegistration
             this.imlEnableImages = new System.Windows.Forms.ImageList(this.components);
             this.splitterDisplay = new System.Windows.Forms.SplitContainer();
             this.grpPlugins = new System.Windows.Forms.GroupBox();
+            this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.btnSave = new System.Windows.Forms.Button();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
-            this.trvPlugins = new Xrm.Sdk.PluginRegistration.Controls.CrmTreeControl();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -458,8 +458,9 @@ namespace Xrm.Sdk.PluginRegistration
             // 
             this.tsbFilterAssemblies.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbFilterAssemblies.Name = "tsbFilterAssemblies";
-            this.tsbFilterAssemblies.Size = new System.Drawing.Size(97, 22);
-            this.tsbFilterAssemblies.Text = "Filter assemblies";
+            this.tsbFilterAssemblies.Size = new System.Drawing.Size(99, 22);
+            this.tsbFilterAssemblies.Text = "Filter Assemblies";
+            this.tsbFilterAssemblies.ToolTipText = "No filter(s) set";
             this.tsbFilterAssemblies.Click += new System.EventHandler(this.tsbFilterAssemblies_Click);
             // 
             // imlEnableImages
@@ -501,6 +502,26 @@ namespace Xrm.Sdk.PluginRegistration
             this.grpPlugins.TabStop = false;
             this.grpPlugins.Text = "Registered Plugins && Custom Workflow Activities";
             // 
+            // trvPlugins
+            // 
+            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trvPlugins.AutoExpand = false;
+            this.trvPlugins.ContextMenuStrip = this.mnuContextNode;
+            this.trvPlugins.CrmTreeNodeSorter = null;
+            this.trvPlugins.LabelEdit = true;
+            this.trvPlugins.Location = new System.Drawing.Point(6, 14);
+            this.trvPlugins.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.trvPlugins.Name = "trvPlugins";
+            this.trvPlugins.SelectedNode = null;
+            this.trvPlugins.ShowNodeToolTips = false;
+            this.trvPlugins.Size = new System.Drawing.Size(547, 422);
+            this.trvPlugins.TabIndex = 0;
+            this.trvPlugins.DoubleClick += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_DoubleClick);
+            this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
+            this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
+            // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -522,26 +543,6 @@ namespace Xrm.Sdk.PluginRegistration
             this.propGridEntity.Name = "propGridEntity";
             this.propGridEntity.Size = new System.Drawing.Size(270, 407);
             this.propGridEntity.TabIndex = 4;
-            // 
-            // trvPlugins
-            // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.trvPlugins.AutoExpand = false;
-            this.trvPlugins.ContextMenuStrip = this.mnuContextNode;
-            this.trvPlugins.CrmTreeNodeSorter = null;
-            this.trvPlugins.LabelEdit = true;
-            this.trvPlugins.Location = new System.Drawing.Point(6, 14);
-            this.trvPlugins.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.trvPlugins.Name = "trvPlugins";
-            this.trvPlugins.SelectedNode = null;
-            this.trvPlugins.ShowNodeToolTips = false;
-            this.trvPlugins.Size = new System.Drawing.Size(547, 422);
-            this.trvPlugins.TabIndex = 0;
-            this.trvPlugins.DoubleClick += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_DoubleClick);
-            this.trvPlugins.NodeRemoved += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeEventArgs>(this.trvPlugins_NodeRemoved);
-            this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
             // 
             // MainControl
             // 

@@ -71,7 +71,7 @@ namespace Xrm.Sdk.PluginRegistration
                 m_settings = new Settings();
                 SettingsManager.Instance.Save(GetType(), m_settings);
             }
-
+            SetFilterStatusOnToolbar(!string.IsNullOrWhiteSpace(m_settings?.ExcludedAssemblies));
             #region Load the Images & Icons from the Resource File
 
             Dictionary<CrmTreeNodeImageType, Image> nodeImageList = null;
@@ -1880,9 +1880,24 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 if (dialog.HasChanged)
                 {
+                    SetFilterStatusOnToolbar(dialog.HasChanged);
                     toolRefresh_Click(this, new EventArgs());
                 }
             }
+        }
+
+        private void SetFilterStatusOnToolbar(bool showAsActive)
+        {
+            if (showAsActive)
+            {
+                tsbFilterAssemblies.Text = "Filter Assemblies (Active)";
+                tsbFilterAssemblies.ToolTipText = m_settings.ExcludedAssemblies;
+            }
+            else
+            {
+                tsbFilterAssemblies.Text = "Filter Assemblies";
+                tsbFilterAssemblies.ToolTipText = "No filter(s) set";
+            }                
         }
 
         private void UpdateEnableButton(bool currentlyEnabled)
