@@ -16,13 +16,20 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
 -- Updates --
+Assembly list can now be filtered using the new Filter Assemblies button showing a green or red icon based on an active or inactive filter
 Updated dependencies
+#42: CRM Attribute list is now searchable
+#45: Sandbox selected
+#59: MultiSelectPickList available in attributes to filter
+
 -- Bug fixes --
-#60: Crashing while loading the view by entity/messages treeview
+#61: Disabled steps show the right icon 
+#63: Fixed Exception coming from 2020 release wave 1 environments
+#30: Fixed null reference exception while updating assemblies
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
-      <dependency id="XrmToolBoxPackage" version="1.2019.11.35" />
+      <dependency id="XrmToolBoxPackage" version="1.2020.2.37" />
       <dependency id="CsvHelper" version="13.0.0"/>
       <dependency id="EPPlus" version="4.5.3.2"/>
     </dependencies>
