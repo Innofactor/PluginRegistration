@@ -60,18 +60,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(437, 5);
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnCancel.Location = new System.Drawing.Point(437, 0);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(60, 23);
+            this.btnCancel.Size = new System.Drawing.Size(60, 31);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(371, 5);
+            this.btnOK.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnOK.Location = new System.Drawing.Point(377, 0);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(60, 23);
+            this.btnOK.Size = new System.Drawing.Size(60, 31);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -92,19 +94,17 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // lsvAttributes
             // 
-            this.lsvAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lsvAttributes.CheckBoxes = true;
             this.lsvAttributes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.hdrName,
             this.hdrLogicalName,
             this.hdrType});
+            this.lsvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvAttributes.FullRowSelect = true;
             this.lsvAttributes.HideSelection = false;
-            this.lsvAttributes.Location = new System.Drawing.Point(5, 7);
+            this.lsvAttributes.Location = new System.Drawing.Point(5, 5);
             this.lsvAttributes.Name = "lsvAttributes";
-            this.lsvAttributes.Size = new System.Drawing.Size(489, 416);
+            this.lsvAttributes.Size = new System.Drawing.Size(487, 417);
             this.lsvAttributes.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lsvAttributes.TabIndex = 2;
             this.lsvAttributes.UseCompatibleStateImageBehavior = false;
@@ -129,7 +129,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtFilter
             // 
-            this.txtFilter.Location = new System.Drawing.Point(5, 0);
+            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtFilter.Location = new System.Drawing.Point(0, 0);
             this.txtFilter.Margin = new System.Windows.Forms.Padding(2);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(345, 20);
@@ -165,7 +166,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.lblCheckCount.Location = new System.Drawing.Point(0, 0);
             this.lblCheckCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCheckCount.Name = "lblCheckCount";
-            this.lblCheckCount.Size = new System.Drawing.Size(359, 31);
+            this.lblCheckCount.Size = new System.Drawing.Size(372, 31);
             this.lblCheckCount.TabIndex = 5;
             this.lblCheckCount.Tag = "Attributes selected: {0}";
             this.lblCheckCount.Text = "Attributes selected:";
@@ -197,7 +198,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Controls.Add(this.grpSelect);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(305, 295);
+            this.MinimumSize = new System.Drawing.Size(523, 525);
             this.Name = "AttributeSelectionForm";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.ShowIcon = false;
