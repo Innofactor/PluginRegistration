@@ -6,6 +6,8 @@
     <title>Plugin Registration for XrmToolBox</title>
     <authors>Microsoft, Alexey, Jonas, Imran and the Dynamics community</authors>
     <owners>Innofactor</owners>
+    <iconUrl>https://user-images.githubusercontent.com/13014005/80118859-41d95f80-8589-11ea-9262-8d18cbccbe0c.png</iconUrl>
+    <icon>icon.png</icon>
     <projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
@@ -36,5 +38,6 @@ Updated dependencies
   </metadata>
   <files>
     <file src="Xrm.Sdk.PluginRegistration\bin\Release\Xrm.Sdk.PluginRegistration.dll" target="lib\net462\Plugins" />
+    <file src="icon.png" target="" />
   </files>
 </package>
