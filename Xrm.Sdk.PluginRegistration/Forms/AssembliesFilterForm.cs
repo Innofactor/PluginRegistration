@@ -8,7 +8,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
     {
         #region Private Fields
 
-        private string initialValue;
+        private readonly bool m_initialExcludeManagedAssemblies;
+        private readonly string m_initialFilterValue;
 
         #endregion Private Fields
 
@@ -21,7 +22,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             if (SettingsManager.Instance.TryLoad(GetType(), out Settings settings))
             {
                 txtAssemblies.Text = settings.ExcludedAssemblies;
-                initialValue = settings.ExcludedAssemblies;
+                m_initialFilterValue = settings.ExcludedAssemblies;
+                chkHideManagedAssemblies.Checked = settings.ExcludeManagedAssemblies;
+                m_initialExcludeManagedAssemblies = settings.ExcludeManagedAssemblies;
             }
         }
 
@@ -29,6 +32,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         #region Public Properties
 
+        public bool ExcludeManagedAssemblies { get; private set; }
         public string Filter { get; private set; }
         public bool HasChanged { get; private set; }
 
@@ -41,10 +45,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             if (SettingsManager.Instance.TryLoad(GetType(), out Settings settings))
             {
                 Filter = txtAssemblies.Text.Trim();
+                ExcludeManagedAssemblies = chkHideManagedAssemblies.Checked;
                 settings.ExcludedAssemblies = txtAssemblies.Text.Trim();
+                settings.ExcludeManagedAssemblies = chkHideManagedAssemblies.Checked;
                 SettingsManager.Instance.Save(GetType(), settings);
 
-                HasChanged = settings.ExcludedAssemblies != initialValue;
+                HasChanged = settings.ExcludedAssemblies != m_initialFilterValue || settings.ExcludeManagedAssemblies != m_initialExcludeManagedAssemblies;
             }
         }
 

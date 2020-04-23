@@ -72,7 +72,7 @@ namespace Xrm.Sdk.PluginRegistration
                 SettingsManager.Instance.Save(GetType(), m_settings);
             }
 
-            SetFilterStatusOnToolbar(!string.IsNullOrEmpty(m_settings?.ExcludedAssemblies));
+            SetFilterStatusOnToolbar(!string.IsNullOrEmpty(m_settings?.ExcludedAssemblies) || (m_settings?.ExcludeManagedAssemblies ?? false));
 
             #region Load the Images & Icons from the Resource File
 
@@ -1897,7 +1897,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 if (dialog.HasChanged)
                 {
-                    SetFilterStatusOnToolbar(!string.IsNullOrEmpty(dialog.Filter));
+                    SetFilterStatusOnToolbar(!string.IsNullOrEmpty(dialog.Filter) || dialog.ExcludeManagedAssemblies);
                     toolRefresh_Click(this, new EventArgs());
                 }
             }
