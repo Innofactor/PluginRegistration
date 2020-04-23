@@ -72,7 +72,8 @@
       <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="ILMerge">
-      <HintPath>..\packages\ILMerge.2.14.1208\tools\ILMerge.exe</HintPath>
+      <HintPath>..\packages\ILMerge.3.0.29\tools\ILMerge.exe</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="McTools.Xrm.Connection, Version=1.2020.4.31, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
       <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2020.4.31\lib\net462\McTools.Xrm.Connection.dll</HintPath>
@@ -611,6 +612,10 @@
 if not exist "Plugins" mkdir "Plugins"
 
 copy /Y $(TargetName).Merged.dll "Plugins\$(TargetName).dll"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>copy /Y ".\..\..\..\packages\ILMerge.3.0.29\tools\net452\ILMerge.exe" "ILMerge.exe"
+copy /Y ".\..\..\..\packages\ILMerge.3.0.29\tools\net452\System.Compiler.dll" "System.Compiler.dll"</PreBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
