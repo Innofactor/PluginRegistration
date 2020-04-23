@@ -92,6 +92,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // lsvAttributes
             // 
+            this.lsvAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lsvAttributes.CheckBoxes = true;
             this.lsvAttributes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.hdrName,
@@ -127,7 +130,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // txtFilter
             // 
             this.txtFilter.Location = new System.Drawing.Point(5, 0);
-            this.txtFilter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtFilter.Margin = new System.Windows.Forms.Padding(2);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(345, 20);
             this.txtFilter.TabIndex = 5;
@@ -135,11 +138,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // pnlSearch
             // 
-            this.pnlSearch.Controls.Add(this.txtFilter);
             this.pnlSearch.Controls.Add(this.chkSelectAll);
+            this.pnlSearch.Controls.Add(this.txtFilter);
             this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSearch.Location = new System.Drawing.Point(5, 5);
-            this.pnlSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlSearch.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSearch.Name = "pnlSearch";
             this.pnlSearch.Size = new System.Drawing.Size(497, 18);
             this.pnlSearch.TabIndex = 1;
@@ -151,7 +154,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.pnlFooter.Controls.Add(this.btnCancel);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlFooter.Location = new System.Drawing.Point(5, 450);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(2);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(497, 31);
             this.pnlFooter.TabIndex = 2;
@@ -170,12 +173,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // pnlMain
             // 
+            this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMain.Controls.Add(this.lsvAttributes);
-            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.Location = new System.Drawing.Point(5, 23);
-            this.pnlMain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(2);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pnlMain.Padding = new System.Windows.Forms.Padding(5);
             this.pnlMain.Size = new System.Drawing.Size(497, 427);
             this.pnlMain.TabIndex = 3;
             // 
@@ -194,7 +199,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(305, 295);
             this.Name = "AttributeSelectionForm";
-            this.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Select Attributes";
