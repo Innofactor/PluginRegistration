@@ -29,6 +29,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         #region Public Properties
 
+        public string Filter { get; private set; }
         public bool HasChanged { get; private set; }
 
         #endregion Public Properties
@@ -39,6 +40,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         {
             if (SettingsManager.Instance.TryLoad(GetType(), out Settings settings))
             {
+                Filter = txtAssemblies.Text.Trim();
                 settings.ExcludedAssemblies = txtAssemblies.Text.Trim();
                 SettingsManager.Instance.Save(GetType(), settings);
 
