@@ -764,6 +764,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                         criteria.AddCondition("name", ConditionOperator.DoesNotBeginWith, name.Trim());
                     }
                 }
+
+                if (settings.ExcludeManagedAssemblies)
+                {
+                    criteria.AddCondition("ismanaged", ConditionOperator.Equal, false);
+                }
             }
 
             //Exclude any system assemblies that shouldn't be included
