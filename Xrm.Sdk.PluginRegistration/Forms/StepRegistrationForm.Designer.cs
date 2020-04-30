@@ -664,6 +664,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Register New Step";
+            this.Load += new System.EventHandler(this.StepRegistrationForm_Load);
             this.grpGeneral.ResumeLayout(false);
             this.grpGeneral.PerformLayout();
             this.grpSecureConfiguration.ResumeLayout(false);

@@ -157,28 +157,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             };
             cmbUsers.Items.Add(callingUser);
 
-            //Add the users. We do not want to sort because the users list is sorted already and then the calling user
-            //will not be at the beginning of the list
-            cmbUsers.Sorted = false;
-            foreach (CrmUser user in org.Users.Values)
-            {
-                // Added this check to to prevent OutofMemoryExcetion - When an org is imported, the administrator
-                // does not have a name associated with it, Adding Null Names to ComboBox throws OutofMemoryExcetion
-                if (null != user && user.Enabled == true && user.Name != null)
-                {
-                    cmbUsers.Items.Add(user);
-                }
-                // Special case to add System user
-                if (user.Name == "SYSTEM" && user.Enabled == false)
-                {
-                    cmbUsers.Items.Add(user);
-                }
-            }
-
-            if (cmbUsers.Items.Count != 0)
-            {
-                cmbUsers.SelectedIndex = 0;
-            }
+            cmbUsers.SelectedIndex = 0;
 
             CrmServiceEndpoint selectServiceEndpoint = null;
             foreach (CrmServiceEndpoint currentServiceEndpoint in org.ServiceEndpoints.Values)
@@ -1049,6 +1028,30 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private void radMode_CheckedChanged(object sender, EventArgs e)
         {
             chkDeleteAsyncOperationIfSuccessful.Enabled = radModeAsync.Checked;
+        }
+
+        private void StepRegistrationForm_Load(object sender, EventArgs e)
+        {
+            Invoke(new Action(() =>
+            {
+                //Add the users. We do not want to sort because the users list is sorted already and then the calling user
+                //will not be at the beginning of the list
+                cmbUsers.Sorted = false;
+                foreach (CrmUser user in m_org.Users.Values)
+                {
+                    // Added this check to to prevent OutofMemoryExcetion - When an org is imported, the administrator
+                    // does not have a name associated with it, Adding Null Names to ComboBox throws OutofMemoryExcetion
+                    if (null != user && user.Enabled == true && user.Name != null)
+                    {
+                        cmbUsers.Items.Add(user);
+                    }
+                    // Special case to add System user
+                    if (user.Name == "SYSTEM" && user.Enabled == false)
+                    {
+                        cmbUsers.Items.Add(user);
+                    }
+                }
+            }));
         }
 
         private void txtMessageName_Leave(object sender, EventArgs e)
