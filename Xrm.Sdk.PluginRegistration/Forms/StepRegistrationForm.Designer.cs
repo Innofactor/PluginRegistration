@@ -659,6 +659,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(923, 484);
             this.Name = "StepRegistrationForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

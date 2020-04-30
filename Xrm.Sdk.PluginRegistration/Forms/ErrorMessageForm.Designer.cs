@@ -54,6 +54,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Controls.Add(this.txtErrorMessage);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(623, 340);
             this.Name = "ErrorMessageForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Error Message - Detail";
