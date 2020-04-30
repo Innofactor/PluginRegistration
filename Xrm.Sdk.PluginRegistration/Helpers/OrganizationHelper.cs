@@ -1234,22 +1234,28 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             var users = new OrganizationServiceContext(org.OrganizationService)
                 // Creating query for given entity, with no conditions
                 .CreateQuery(SystemUser.EntityLogicalName)
+                .OrderBy(user => user["fullname"])
+                .Select((user) => new
+                {
+                    UserId = user.GetAttributeValue<Guid?>("systemuserid"),
+                    Name = user.GetAttributeValue<string>("fullname"),
+                    DomainName = user.GetAttributeValue<string>("domainname"),
+                    InternalEmailAddress = user.GetAttributeValue<string>("internalemailaddress"),
+                    IsDisabled = user.GetAttributeValue<bool?>("isdisabled")
+                })
                 // Executing LINQ-to-SQL query, not optimal, but safe for early-bound
                 .ToArray()
-                .Select(x => Magic.CastTo<SystemUser>(x))
                 .Select(x =>
                 {
                     return new CrmUser(org)
                     {
-                        UserId = x.SystemUserId.GetValueOrDefault(),
-                        Name = x.FullName,
+                        UserId = x.UserId.GetValueOrDefault(),
+                        Name = x.Name,
                         DomainName = x.DomainName,
-                        InternalEmailAddress = x.InternalEMailAddress,
+                        InternalEmailAddress = x.InternalEmailAddress,
                         Enabled = !x.IsDisabled.GetValueOrDefault()
                     };
-                })
-                // Final sorting of results
-                .OrderBy(x => x.Name);
+                });
 
             //Loop through the users that were returned from the server
             org.Users.Clear();
