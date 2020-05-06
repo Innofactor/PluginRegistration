@@ -76,9 +76,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             m_attributeType = md.AttributeType.Value;
-            m_attributeTypeName = md.AttributeTypeName.Value;
+            m_attributeTypeName = md.AttributeTypeName != null ? md.AttributeTypeName.Value : null;
             m_validForCreate = md.IsValidForCreate.Value;
-            m_validForRead = md.IsValidForUpdate.Value;
+            m_validForRead = md.IsValidForRead.Value;
             m_validForUpdate = md.IsValidForUpdate.Value;
             m_isPrimaryId = isPrimaryId;
         }
