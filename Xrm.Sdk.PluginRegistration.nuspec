@@ -21,13 +21,17 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
 Assembly list can now be filtered using the new Filter Assemblies button showing a green or red icon based on an active or inactive filter
 Updated dependencies
 #42: CRM Attribute list is now searchable
-#45: Sandbox selected
 #59: MultiSelectPickList available in attributes to filter
+#74: Users are loaded asynchronously to optimize Step registration form load. Optimized loading of user data
+
 
 -- Bug fixes --
 #61: Disabled steps show the right icon 
 #63: Fixed Exception coming from 2020 release wave 1 environments
 #30: Fixed null reference exception while updating assemblies
+#72: CRM 2011 does not include AttributeTypeName on OrgService requests. Added null check so attribute calls still work on 2011. Thanks @greensweater
+#73: Update/Register assembly screen may hide parts of the dialog
+
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
