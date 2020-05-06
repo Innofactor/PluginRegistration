@@ -62,7 +62,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             #region Initialization of crmFilteringAttributes
 
             //Seems this was removed automatically by VS designer, so added here instead.
-            crmFilteringAttributes = new Controls.CrmAttributeSelectionControl(m_orgControl)
+            crmFilteringAttributes = new Controls.CrmAttributeSelectionControl()
             {
                 Organization = org
             };

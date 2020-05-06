@@ -37,17 +37,14 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         private Collection<string> m_attributeList = new Collection<string>();
         private string m_entityName;
         private CrmOrganization m_org;
-        private MainControl m_orgControl = null;
         private ProgressIndicator m_progressIndicator = null;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public CrmAttributeSelectionControl(MainControl orgControl)
+        public CrmAttributeSelectionControl()
         {
-            m_orgControl = orgControl;
-
             InitializeComponent();
 
             m_progressIndicator = new ProgressIndicator(new Action<StatusBarMessageEventArgs>((message) =>
