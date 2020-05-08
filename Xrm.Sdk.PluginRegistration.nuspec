@@ -31,7 +31,7 @@ Updated dependencies
 #30: Fixed null reference exception while updating assemblies
 #72: CRM 2011 does not include AttributeTypeName on OrgService requests. Added null check so attribute calls still work on 2011. Thanks @greensweater
 #73: Update/Register assembly screen may hide parts of the dialog
-
+#76: Fixed Run in User's Context shows incorrect value
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>

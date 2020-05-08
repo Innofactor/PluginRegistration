@@ -157,8 +157,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             };
             cmbUsers.Items.Add(callingUser);
 
-            cmbUsers.SelectedIndex = 0;
-
             CrmServiceEndpoint selectServiceEndpoint = null;
             foreach (CrmServiceEndpoint currentServiceEndpoint in org.ServiceEndpoints.Values)
             {
@@ -213,14 +211,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     cmbServiceEndpoint.SelectedItem = m_org.ServiceEndpoints[m_currentStep.ServiceBusConfigurationId];
                 }
 
-                if (m_currentStep.ImpersonatingUserId == Guid.Empty)
-                {
-                    cmbUsers.SelectedIndex = 0;
-                }
-                else
-                {
-                    cmbUsers.SelectedItem = m_org.Users[m_currentStep.ImpersonatingUserId];
-                }
                 txtRank.Text = m_currentStep.Rank.ToString();
                 switch (m_currentStep.Stage)
                 {
@@ -1049,6 +1039,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     if (user.Name == "SYSTEM" && user.Enabled == false)
                     {
                         cmbUsers.Items.Add(user);
+                    }
+                }
+                if (cmbUsers.Items.Count != 0)
+                {
+                    cmbUsers.SelectedIndex = 0;
+                }
+                if (m_currentStep != null)
+                {
+                    if (m_currentStep.ImpersonatingUserId == Guid.Empty)
+                    {
+                        cmbUsers.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        cmbUsers.SelectedItem = m_org.Users[m_currentStep.ImpersonatingUserId];
                     }
                 }
             }));
