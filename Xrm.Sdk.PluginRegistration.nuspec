@@ -29,9 +29,11 @@ Updated dependencies
 #61: Disabled steps show the right icon 
 #63: Fixed Exception coming from 2020 release wave 1 environments
 #30: Fixed null reference exception while updating assemblies
+#68: Fixed crashing error on selecting attributes for entity `none` . The filter attribute control is disabled now
 #72: CRM 2011 does not include AttributeTypeName on OrgService requests. Added null check so attribute calls still work on 2011. Thanks @greensweater
 #73: Update/Register assembly screen may hide parts of the dialog
 #76: Fixed Run in User's Context shows incorrect value
+
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>

@@ -381,7 +381,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 m_secureConfigurationIdIsInvalid = true;
             }
-
+           
             LoadEntities();
             CheckDeploymentSupported();
         }
@@ -790,15 +790,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private void CheckAttributesSupported()
         {
             //Check if we should disable the message
-            if (null != Message && !Message.SupportsFilteredAttributes)
-            {
-                crmFilteringAttributes.Enabled = false;
-                crmFilteringAttributes.DisabledMessage = "Message does not support Filtered Attributes";
-            }
-            else
+            if (null != Message && Message.SupportsFilteredAttributes && !string.Equals(MessageEntity?.PrimaryEntity?.ToLower(), "none"))
             {
                 crmFilteringAttributes.Enabled = true;
                 crmFilteringAttributes.DisabledMessage = null;
+            }
+            else
+            {
+                crmFilteringAttributes.Enabled = false;
+                crmFilteringAttributes.DisabledMessage = "Message does not support Filtered Attributes"; 
             }
         }
 
@@ -995,6 +995,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
 
             CheckDeploymentSupported();
+            CheckAttributesSupported();
         }
 
         private void radInvocationChild_CheckedChanged(object sender, System.EventArgs e)
