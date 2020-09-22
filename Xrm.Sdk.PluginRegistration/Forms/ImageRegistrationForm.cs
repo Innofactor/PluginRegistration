@@ -121,16 +121,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 btnRegister.Enabled = true;
             }
-            else if (trvPlugins.HasNode(selectNodeId))
-            {
-                step = trvPlugins[selectNodeId] as CrmPluginStep;
-                trvPlugins.SelectedNode = step;
-            }
             else
             {
-                crmParameters.Attributes = null;
+                crmParameters.ClearAttributes();
+                if (trvPlugins.HasNode(selectNodeId))
+                {
+                    step = trvPlugins[selectNodeId] as CrmPluginStep;
+                    trvPlugins.SelectedNode = step;
+                }
             }
             crmParameters.Enabled = step != null && !step.MessageEntityId.Equals(Guid.Empty) && !org.MessageEntities[step.MessageEntityId].PrimaryEntity.Equals("none");
+            if (!crmParameters.Enabled)
+            {   // Force all atttibutes if disabled
+                crmParameters.Attributes = null;
+            }
         }
 
         #endregion Public Constructors
@@ -210,6 +214,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 MessageBox.Show(sb.ToString(), "Invalid Step Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
+            if (crmParameters.AllAttributes)
+            {
+                if (MessageBox.Show("Registering images with ALL attributes is highly discouraged for performance reasons.\nPlease reconsider this pattern.\n\nYes, I want to specify explicit attributes.\nNo, I don't care about performance now.", "Registration", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             //Start populating the image that will be used
