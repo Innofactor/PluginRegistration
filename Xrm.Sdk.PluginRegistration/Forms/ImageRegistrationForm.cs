@@ -65,6 +65,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             trvPlugins.AutoExpand = m_orgControl.IsAutoExpanded;
             trvPlugins.LoadNodes(rootNodes);
 
+            CrmPluginStep step = null;
+
             if (image != null)
             {
                 if (trvPlugins.HasNode(image.StepId))
@@ -75,11 +77,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 txtEntityAlias.Text = image.EntityAlias;
                 txtName.Text = image.Name;
 
-                CrmPluginStep step = m_org[image.AssemblyId][image.PluginId][image.StepId];
+                step = m_org[image.AssemblyId][image.PluginId][image.StepId];
                 if (step.MessageEntityId == Guid.Empty)
                 {
                     crmParameters.EntityName = "none";
-                    crmParameters.Enabled = false;
                 }
                 else
                 {
@@ -118,17 +119,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 grpSteps.Visible = false;
                 Height -= difference;
 
-                crmParameters.Enabled = true;
                 btnRegister.Enabled = true;
             }
             else if (trvPlugins.HasNode(selectNodeId))
             {
-                trvPlugins.SelectedNode = trvPlugins[selectNodeId];
+                step = trvPlugins[selectNodeId] as CrmPluginStep;
+                trvPlugins.SelectedNode = step;
             }
             else
             {
                 crmParameters.Attributes = null;
             }
+            crmParameters.Enabled = step != null && !step.MessageEntityId.Equals(Guid.Empty) && !org.MessageEntities[step.MessageEntityId].PrimaryEntity.Equals("none");
         }
 
         #endregion Public Constructors
