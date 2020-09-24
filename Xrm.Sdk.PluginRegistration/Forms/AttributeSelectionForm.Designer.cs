@@ -235,6 +235,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Padding = new System.Windows.Forms.Padding(5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Attributes";
             this.Load += new System.EventHandler(this.AttributeSelectionForm_Load);
             this.pnlSearch.ResumeLayout(false);

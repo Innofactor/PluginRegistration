@@ -86,9 +86,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.panel1.Controls.Add(this.btnLoadAssembly);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 40);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Padding = new System.Windows.Forms.Padding(2);
             this.panel1.Size = new System.Drawing.Size(612, 26);
             this.panel1.TabIndex = 5;
             // 
@@ -126,7 +126,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.AssemblyPathControl.Filter = "Assembly Files (*.dll)|*.dll|All Files (*.*)|*.*";
             this.AssemblyPathControl.InitialDirectory = "";
             this.AssemblyPathControl.Location = new System.Drawing.Point(3, 16);
-            this.AssemblyPathControl.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.AssemblyPathControl.Margin = new System.Windows.Forms.Padding(6);
             this.AssemblyPathControl.Name = "AssemblyPathControl";
             this.AssemblyPathControl.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AssemblyPathControl.Size = new System.Drawing.Size(612, 24);
@@ -160,7 +160,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.trvPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trvPlugins.LabelEdit = false;
             this.trvPlugins.Location = new System.Drawing.Point(3, 33);
-            this.trvPlugins.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.trvPlugins.Margin = new System.Windows.Forms.Padding(6);
             this.trvPlugins.Name = "trvPlugins";
             this.trvPlugins.SelectedNode = null;
             this.trvPlugins.ShowNodeToolTips = false;
@@ -400,7 +400,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.pnlFooter.Controls.Add(this.btnCancel);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlFooter.Location = new System.Drawing.Point(5, 691);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(2);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(618, 36);
             this.pnlFooter.TabIndex = 7;
@@ -420,9 +420,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Controls.Add(this.grpPath);
             this.MinimumSize = new System.Drawing.Size(644, 771);
             this.Name = "PluginRegistrationForm";
-            this.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Register New Plugin";
             this.grpPath.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

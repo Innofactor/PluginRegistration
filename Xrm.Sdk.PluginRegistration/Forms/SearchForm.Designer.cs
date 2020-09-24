@@ -76,6 +76,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.trvPlugins.Location = new System.Drawing.Point(6, 32);
             this.trvPlugins.Name = "trvPlugins";
             this.trvPlugins.SelectedNode = null;
+            this.trvPlugins.ShowNodeToolTips = false;
             this.trvPlugins.Size = new System.Drawing.Size(511, 249);
             this.trvPlugins.TabIndex = 1;
             this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
@@ -109,6 +110,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Name = "SearchForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Search Tree";
             this.ResumeLayout(false);
             this.PerformLayout();
