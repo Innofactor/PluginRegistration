@@ -129,18 +129,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtFilter
             // 
-            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtFilter.Location = new System.Drawing.Point(0, 0);
             this.txtFilter.Margin = new System.Windows.Forms.Padding(2);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(345, 20);
+            this.txtFilter.Size = new System.Drawing.Size(355, 20);
             this.txtFilter.TabIndex = 5;
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
             // pnlSearch
             // 
-            this.pnlSearch.Controls.Add(this.chkSelectAll);
             this.pnlSearch.Controls.Add(this.txtFilter);
+            this.pnlSearch.Controls.Add(this.chkSelectAll);
             this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSearch.Location = new System.Drawing.Point(5, 5);
             this.pnlSearch.Margin = new System.Windows.Forms.Padding(2);
