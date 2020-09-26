@@ -312,7 +312,7 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 txtAttributes.Text = newText;
                 m_allAttributes = allAttributes;
-                m_attributeList = AllAttributes ? new Collection<string>() : new Collection<string>(attributes);
+                m_attributeList = (AllAttributes || attributes != null) ? new Collection<string>(attributes) : new Collection<string>();
                 AttributesChanged?.Invoke(this, new EventArgs());
             }
         }
