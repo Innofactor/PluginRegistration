@@ -663,6 +663,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Name = "StepRegistrationForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Register New Step";
             this.Load += new System.EventHandler(this.StepRegistrationForm_Load);
             this.grpGeneral.ResumeLayout(false);

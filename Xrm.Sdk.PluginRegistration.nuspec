@@ -4,7 +4,7 @@
     <id>Xrm.Sdk.PluginRegistration</id>
     <version>1.0.0</version>
     <title>Plugin Registration for XrmToolBox</title>
-    <authors>Microsoft, Alexey, Jonas, Imran and the Dynamics community</authors>
+    <authors>Microsoft, Alexey, Jonas, Imran and the Power Platform community</authors>
     <owners>Innofactor</owners>
     <iconUrl>https://user-images.githubusercontent.com/13014005/80118859-41d95f80-8589-11ea-9262-8d18cbccbe0c.png</iconUrl>
     <icon>icon.png</icon>
@@ -13,7 +13,7 @@
     <description>
       The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite.
 
-This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of XrmToolBox plugin and intended to work with the same set of the Dynamics CRM versions as supported by main application.
+This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of an XrmToolBox tool and intended to work with the same set of the Common Data Service / Dynamics 365 / CRM versions as supported by main application.
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>

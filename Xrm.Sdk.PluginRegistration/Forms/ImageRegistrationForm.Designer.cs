@@ -49,9 +49,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpSteps
             // 
-            this.grpSteps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpSteps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSteps.Controls.Add(this.trvPlugins);
             this.grpSteps.Location = new System.Drawing.Point(4, 4);
             this.grpSteps.Name = "grpSteps";
@@ -62,9 +62,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // trvPlugins
             // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trvPlugins.AutoExpand = false;
             this.trvPlugins.CrmTreeNodeSorter = null;
             this.trvPlugins.ExcludeTypes = Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeType.Image;
@@ -113,8 +113,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpEntityAlias
             // 
-            this.grpEntityAlias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpEntityAlias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpEntityAlias.Controls.Add(this.txtName);
             this.grpEntityAlias.Controls.Add(this.lblName);
             this.grpEntityAlias.Controls.Add(this.crmParameters);
@@ -129,8 +129,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtName
             // 
-            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtName.Location = new System.Drawing.Point(75, 12);
@@ -149,8 +149,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // crmParameters
             // 
-            this.crmParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.crmParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.crmParameters.Attributes = null;
             this.crmParameters.DisabledMessage = "";
             this.crmParameters.EntityName = null;
@@ -173,8 +173,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtEntityAlias
             // 
-            this.txtEntityAlias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEntityAlias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityAlias.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txtEntityAlias.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtEntityAlias.Location = new System.Drawing.Point(75, 38);
@@ -227,6 +227,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Name = "ImageRegistrationForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Register New Image";
             this.grpSteps.ResumeLayout(false);
             this.grpImageType.ResumeLayout(false);

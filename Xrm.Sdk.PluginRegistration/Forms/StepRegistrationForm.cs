@@ -381,7 +381,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 m_secureConfigurationIdIsInvalid = true;
             }
-           
+
             LoadEntities();
             CheckDeploymentSupported();
         }
@@ -568,6 +568,22 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 {
                     MessageBox.Show("Service Endpoint must be selected for Service Endpoint plug-ins.",
                         "Step Registration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            if (Message.SupportsFilteredAttributes)
+            {
+                if (crmFilteringAttributes.AllAttributes)
+                {
+                    if (MessageBox.Show("Registering steps filtering on updates of ALL attributes is highly discouraged for performance reasons.\nPlease reconsider this pattern.\n\nYes, I want to specify explicit attributes.\nNo, I don't care about performance now.", "Registration", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+                else if (!crmFilteringAttributes.HasAttributes)
+                {
+                    MessageBox.Show("Filtering Attributes must be specified for this Message / Entity.", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -794,11 +810,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 crmFilteringAttributes.Enabled = true;
                 crmFilteringAttributes.DisabledMessage = null;
+                if (m_currentStep == null)
+                {   // Default to no attributes, to encourage explicitly selecting them
+                    crmFilteringAttributes.ClearAttributes();
+                }
             }
             else
             {
                 crmFilteringAttributes.Enabled = false;
-                crmFilteringAttributes.DisabledMessage = "Message does not support Filtered Attributes"; 
+                crmFilteringAttributes.DisabledMessage = "Message/Entity does not support Filtered Attributes";
             }
         }
 

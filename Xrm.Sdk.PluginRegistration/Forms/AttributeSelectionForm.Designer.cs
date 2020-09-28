@@ -31,17 +31,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.grpSelect = new System.Windows.Forms.GroupBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.chkSelectAll = new System.Windows.Forms.CheckBox();
             this.lsvAttributes = new System.Windows.Forms.ListView();
             this.hdrName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hdrLogicalName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hdrType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txtFilter = new System.Windows.Forms.TextBox();
             this.pnlSearch = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.linkSelectNone = new System.Windows.Forms.LinkLabel();
+            this.lblSelect = new System.Windows.Forms.Label();
+            this.linkSelectAll = new System.Windows.Forms.LinkLabel();
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.lblCheckCount = new System.Windows.Forms.Label();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.pnlSearch.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.pnlFooter.SuspendLayout();
             this.pnlMain.SuspendLayout();
             this.SuspendLayout();
@@ -79,19 +83,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // chkSelectAll
-            // 
-            this.chkSelectAll.AutoSize = true;
-            this.chkSelectAll.Dock = System.Windows.Forms.DockStyle.Right;
-            this.chkSelectAll.Location = new System.Drawing.Point(355, 0);
-            this.chkSelectAll.Name = "chkSelectAll";
-            this.chkSelectAll.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.chkSelectAll.Size = new System.Drawing.Size(142, 18);
-            this.chkSelectAll.TabIndex = 1;
-            this.chkSelectAll.Text = "Select &All / Deselect All";
-            this.chkSelectAll.UseVisualStyleBackColor = true;
-            this.chkSelectAll.Click += new System.EventHandler(this.chkSelectAll_Click);
-            // 
             // lsvAttributes
             // 
             this.lsvAttributes.CheckBoxes = true;
@@ -104,7 +95,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.lsvAttributes.HideSelection = false;
             this.lsvAttributes.Location = new System.Drawing.Point(5, 5);
             this.lsvAttributes.Name = "lsvAttributes";
-            this.lsvAttributes.Size = new System.Drawing.Size(487, 417);
+            this.lsvAttributes.Size = new System.Drawing.Size(487, 409);
             this.lsvAttributes.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lsvAttributes.TabIndex = 2;
             this.lsvAttributes.UseCompatibleStateImageBehavior = false;
@@ -129,24 +120,67 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtFilter
             // 
-            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Left;
-            this.txtFilter.Location = new System.Drawing.Point(0, 0);
+            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFilter.Location = new System.Drawing.Point(5, 3);
             this.txtFilter.Margin = new System.Windows.Forms.Padding(2);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(345, 20);
+            this.txtFilter.Size = new System.Drawing.Size(355, 20);
             this.txtFilter.TabIndex = 5;
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
             // pnlSearch
             // 
-            this.pnlSearch.Controls.Add(this.chkSelectAll);
             this.pnlSearch.Controls.Add(this.txtFilter);
+            this.pnlSearch.Controls.Add(this.panel1);
             this.pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSearch.Location = new System.Drawing.Point(5, 5);
             this.pnlSearch.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSearch.Name = "pnlSearch";
-            this.pnlSearch.Size = new System.Drawing.Size(497, 18);
+            this.pnlSearch.Padding = new System.Windows.Forms.Padding(5, 3, 0, 0);
+            this.pnlSearch.Size = new System.Drawing.Size(497, 26);
             this.pnlSearch.TabIndex = 1;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.linkSelectNone);
+            this.panel1.Controls.Add(this.lblSelect);
+            this.panel1.Controls.Add(this.linkSelectAll);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel1.Location = new System.Drawing.Point(360, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(137, 23);
+            this.panel1.TabIndex = 6;
+            // 
+            // linkSelectNone
+            // 
+            this.linkSelectNone.AutoSize = true;
+            this.linkSelectNone.Location = new System.Drawing.Point(78, 3);
+            this.linkSelectNone.Name = "linkSelectNone";
+            this.linkSelectNone.Size = new System.Drawing.Size(38, 13);
+            this.linkSelectNone.TabIndex = 2;
+            this.linkSelectNone.TabStop = true;
+            this.linkSelectNone.Text = "NONE";
+            this.linkSelectNone.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSelectAllOrNone_LinkClicked);
+            // 
+            // lblSelect
+            // 
+            this.lblSelect.AutoSize = true;
+            this.lblSelect.Location = new System.Drawing.Point(7, 3);
+            this.lblSelect.Name = "lblSelect";
+            this.lblSelect.Size = new System.Drawing.Size(37, 13);
+            this.lblSelect.TabIndex = 1;
+            this.lblSelect.Text = "Select";
+            // 
+            // linkSelectAll
+            // 
+            this.linkSelectAll.AutoSize = true;
+            this.linkSelectAll.Location = new System.Drawing.Point(50, 3);
+            this.linkSelectAll.Name = "linkSelectAll";
+            this.linkSelectAll.Size = new System.Drawing.Size(26, 13);
+            this.linkSelectAll.TabIndex = 0;
+            this.linkSelectAll.TabStop = true;
+            this.linkSelectAll.Text = "ALL";
+            this.linkSelectAll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSelectAllOrNone_LinkClicked);
             // 
             // pnlFooter
             // 
@@ -174,15 +208,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // pnlMain
             // 
-            this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMain.Controls.Add(this.lsvAttributes);
-            this.pnlMain.Location = new System.Drawing.Point(5, 23);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(5, 31);
             this.pnlMain.Margin = new System.Windows.Forms.Padding(2);
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlMain.Size = new System.Drawing.Size(497, 427);
+            this.pnlMain.Size = new System.Drawing.Size(497, 419);
             this.pnlMain.TabIndex = 3;
             // 
             // AttributeSelectionForm
@@ -203,10 +235,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Padding = new System.Windows.Forms.Padding(5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Attributes";
             this.Load += new System.EventHandler(this.AttributeSelectionForm_Load);
             this.pnlSearch.ResumeLayout(false);
             this.pnlSearch.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.pnlFooter.ResumeLayout(false);
             this.pnlMain.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -220,7 +255,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private System.Windows.Forms.ColumnHeader hdrName;
         private System.Windows.Forms.ColumnHeader hdrLogicalName;
         private System.Windows.Forms.ColumnHeader hdrType;
-        private System.Windows.Forms.CheckBox chkSelectAll;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.TextBox txtFilter;
@@ -228,5 +262,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private System.Windows.Forms.Panel pnlFooter;
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Label lblCheckCount;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.LinkLabel linkSelectNone;
+        private System.Windows.Forms.Label lblSelect;
+        private System.Windows.Forms.LinkLabel linkSelectAll;
     }
 }

@@ -312,20 +312,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
             {
                 txtAttributes.Text = newText;
                 m_allAttributes = allAttributes;
-
-                if (attributes != null && attributes.Count != 0)
-                {
-                    foreach (string attribute in attributes)
-                    {
-                        if (!m_attributeList.Contains(attribute))
-                            m_attributeList.Add(attribute);
-                    }
-                }
-
-                if (AttributesChanged != null)
-                {
-                    AttributesChanged(this, new EventArgs());
-                }
+                m_attributeList = (AllAttributes || attributes == null) ? new Collection<string>() : new Collection<string>(attributes);
+                AttributesChanged?.Invoke(this, new EventArgs());
             }
         }
 
