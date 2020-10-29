@@ -75,6 +75,24 @@
         }
 
         /// <summary>
+        /// Connection mode to contact the service endpoint.
+        /// </summary>
+        [AttributeLogicalName("authtype")]
+        public OptionSetValue AuthType
+        {
+            get
+            {
+                return GetAttributeValue<OptionSetValue>("authtype");
+            }
+            set
+            {
+                OnPropertyChanging("AuthType");
+                SetAttributeValue("authtype", value);
+                OnPropertyChanged("AuthType");
+            }
+        }
+
+        /// <summary>
         /// Type of the endpoint contract.
         /// </summary>
         [AttributeLogicalName("contract")]
@@ -143,6 +161,42 @@
                 OnPropertyChanging("Description");
                 SetAttributeValue("description", value);
                 OnPropertyChanged("Description");
+            }
+        }
+
+        /// <summary>
+        /// Description of the service endpoint.
+        /// </summary>
+        [AttributeLogicalName("authvalue")]
+        public string AuthValue
+        {
+            get
+            {
+                return GetAttributeValue<string>("authvalue");
+            }
+            set
+            {
+                OnPropertyChanging("AuthValue");
+                SetAttributeValue("authvalue", value);
+                OnPropertyChanged("AuthValue");
+            }
+        }
+
+        /// <summary>
+        /// Url of webhook.
+        /// </summary>
+        [AttributeLogicalName("url")]
+        public string Url
+        {
+            get
+            {
+                return GetAttributeValue<string>("url");
+            }
+            set
+            {
+                OnPropertyChanging("Url");
+                SetAttributeValue("url", value);
+                OnPropertyChanged("Url");
             }
         }
 

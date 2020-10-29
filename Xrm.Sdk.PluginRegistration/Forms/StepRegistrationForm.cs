@@ -97,7 +97,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             txtMessageName.AutoCompleteCustomSource = msgList;
 
             //Check whether system plugins should be added to the list
-            if (step != null && org[step.AssemblyId][step.PluginId].IsSystemCrmEntity && (!OrganizationHelper.AllowStepRegistrationForPlugin(plugin)))
+            if (plugin != null && step != null && org[step.AssemblyId][step.PluginId].IsSystemCrmEntity && (!OrganizationHelper.AllowStepRegistrationForPlugin(plugin)))
             {
                 cmbPlugins.Enabled = false;
             }
@@ -179,13 +179,39 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
 
-            if (serviceEndpoint != null)
+            // Webhook case
+            CrmServiceEndpoint selectedWebhook = null;
+            if (plugin == null && serviceEndpoint != null)
             {
-                UpdatePluginEventHandlerControls(true);
+                foreach (var webhook in org.Webhooks.Values)
+                {
+                    if (serviceEndpoint.ServiceEndpointId == webhook.ServiceEndpointId)
+                    {
+                        selectedWebhook = webhook;
+                    }
+                    cmbWebhook.Items.Add(webhook);
+                }
+            }
+
+            if (selectedWebhook != null)
+            {
+                cmbWebhook.SelectedItem = selectedWebhook;
             }
             else
             {
-                UpdatePluginEventHandlerControls(false);
+                if (cmbWebhook.Items.Count != 0)
+                {
+                    cmbWebhook.SelectedIndex = 0;
+                }
+            }
+
+            if (serviceEndpoint != null)
+            {
+                UpdatePluginEventHandlerControls(true, plugin == null);
+            }
+            else
+            {
+                UpdatePluginEventHandlerControls(false,false);
             }
 
             if (m_currentStep != null)
@@ -204,9 +230,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     txtSecondaryEntity.Text = "none";
                 }
 
-                cmbPlugins.SelectedItem = m_org[m_currentStep.AssemblyId][m_currentStep.PluginId];
+                if (plugin != null)
+                {
+                    cmbPlugins.SelectedItem = m_org[m_currentStep.AssemblyId][m_currentStep.PluginId];
+                }
 
-                if (m_currentStep.ServiceBusConfigurationId != Guid.Empty)
+                if (plugin != null && serviceEndpoint != null)
                 {
                     cmbServiceEndpoint.SelectedItem = m_org.ServiceEndpoints[m_currentStep.ServiceBusConfigurationId];
                 }
@@ -528,7 +557,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 txtSecondaryEntity.Focus();
                 return;
             }
-            else if (cmbPlugins.SelectedIndex < 0)
+            else if (cmbPlugins.Items.Count > 0 && cmbPlugins.SelectedIndex < 0)
             {
                 MessageBox.Show("Plugin was not specified. This a required field.", "Step Registration",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -554,7 +583,12 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 return;
             }
 
-            CrmPlugin plugin = (CrmPlugin)cmbPlugins.SelectedItem;
+            CrmPlugin plugin = null;
+
+            if (cmbPlugins.Visible)
+            {
+                plugin = (CrmPlugin)cmbPlugins.SelectedItem;
+            }
 
             if (cmbServiceEndpoint.Visible)
             {
@@ -590,27 +624,25 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             step.MessageId = Message.MessageId;
             step.MessageEntityId = MessageEntity.MessageEntityId;
-            step.AssemblyId = plugin.AssemblyId;
+            step.AssemblyId = plugin?.AssemblyId ?? Guid.Empty;
             step.FilteringAttributes = crmFilteringAttributes.Attributes;
-            step.PluginId = plugin.PluginId;
+            step.PluginId = plugin?.PluginId ?? ((CrmServiceEndpoint)cmbWebhook.SelectedItem).EntityId;
             step.ImpersonatingUserId = ((CrmUser)cmbUsers.SelectedItem).UserId;
             step.Name = txtName.Text;
             step.UnsecureConfiguration = txtUnsecureConfiguration.Text;
             step.Description = txtDescription.Text;
+
+            if (m_currentStep?.EventHandler != null)
+            {
+                step.EventHandler = m_currentStep?.EventHandler;
+            }
 
             if (txtSecureConfig.Visible)
             {
                 step.SecureConfiguration = txtSecureConfig.Text;
             }
 
-            if (cmbServiceEndpoint.Visible)
-            {
-                step.ServiceBusConfigurationId = ((CrmServiceEndpoint)cmbServiceEndpoint.SelectedItem).ServiceEndpointId;
-            }
-            else
-            {
-                step.ServiceBusConfigurationId = Guid.Empty;
-            }
+            step.ServiceBusConfigurationId = cmbServiceEndpoint.Visible ? ((CrmServiceEndpoint)cmbServiceEndpoint.SelectedItem).ServiceEndpointId : Guid.Empty;
 
             step.Rank = int.Parse(txtRank.Text);
             step.Mode = (radModeAsync.Checked ? CrmPluginStepMode.Asynchronous : CrmPluginStepMode.Synchronous);
@@ -672,7 +704,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 step.DeleteAsyncOperationIfSuccessful = false;
             }
 
-            if (plugin.IsProfilerPlugin)
+            if (plugin != null && plugin.IsProfilerPlugin)
             {
                 //step.ProfilerStepId = step.StepId;
                 //step.UnsecureConfiguration = OrganizationHelper.UpdateWithStandaloneConfiguration(step).ToString();
@@ -728,7 +760,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     //}
 
                     rankChanged = (m_currentStep.Rank != step.Rank);
-
+                    
                     m_currentStep.SecureConfigurationRecordIdInvalid = m_secureConfigurationIdIsInvalid;
                     m_currentStep.Deployment = step.Deployment;
                     m_currentStep.Name = step.Name;
@@ -749,6 +781,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     m_currentStep.UnsecureConfiguration = step.UnsecureConfiguration;
                     m_currentStep.Description = step.Description;
                     m_currentStep.ProfilerStepId = step.ProfilerStepId;
+                    m_currentStep.EventHandler = step.EventHandler;
 
                     List<ICrmEntity> stepList = new List<ICrmEntity>(new ICrmEntity[] { step });
                     OrganizationHelper.UpdateDates(m_org, stepList);
@@ -786,7 +819,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     List<ICrmEntity> stepList = new List<ICrmEntity>(new ICrmEntity[] { step });
                     OrganizationHelper.UpdateDates(m_org, stepList);
 
-                    plugin.AddStep(step);
+                    plugin?.AddStep(step);
                     m_orgControl.AddStep(step);
                     OrganizationHelper.RefreshStep(m_org, step);
                 }
@@ -893,33 +926,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             string typeName;
             if (cmbServiceEndpoint.Visible)
             {
-                if (null == cmbServiceEndpoint.SelectedItem)
-                {
-                    typeName = null;
-                }
-                else
-                {
-                    typeName = ((CrmServiceEndpoint)cmbServiceEndpoint.SelectedItem).Name;
-                }
+                typeName = ((CrmServiceEndpoint) cmbServiceEndpoint.SelectedItem)?.Name;
+            }
+            else if(cmbPlugins.Visible)
+            {
+                CrmPlugin plugin = ((CrmPlugin)cmbPlugins.SelectedItem);
+                typeName = plugin.IsProfilerPlugin ? "Plug-in Profiler" : ((CrmPlugin)cmbPlugins.SelectedItem).TypeName;
+            }
+            else if(cmbWebhook.Visible)
+            {
+                typeName = ((CrmServiceEndpoint) cmbWebhook.SelectedItem)?.Name;
             }
             else
             {
-                if (null == cmbPlugins.SelectedItem)
-                {
-                    typeName = null;
-                }
-                else
-                {
-                    CrmPlugin plugin = ((CrmPlugin)cmbPlugins.SelectedItem);
-                    if (plugin.IsProfilerPlugin)
-                    {
-                        typeName = "Plug-in Profiler";
-                    }
-                    else
-                    {
-                        typeName = ((CrmPlugin)cmbPlugins.SelectedItem).TypeName;
-                    }
-                }
+                typeName = null;
             }
 
             return RegistrationHelper.GenerateStepDescription(typeName, messageName, primaryEntity, secondaryEntity);
@@ -1126,24 +1146,30 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
         }
 
-        private void UpdatePluginEventHandlerControls(bool isServiceEndpoint)
+        private void UpdatePluginEventHandlerControls(bool isServiceEndpoint, bool isWebhook)
         {
             cmbServiceEndpoint.Location = cmbPlugins.Location;
             cmbServiceEndpoint.Size = cmbPlugins.Size;
 
-            grpStage.Enabled = !isServiceEndpoint;
+            cmbWebhook.Location = cmbPlugins.Location;
+            cmbWebhook.Size = cmbPlugins.Size;
+
+            grpStage.Enabled = !isServiceEndpoint || isWebhook;
 
             cmbPlugins.Enabled = !isServiceEndpoint;
             cmbPlugins.Visible = !isServiceEndpoint;
 
-            cmbServiceEndpoint.Visible = isServiceEndpoint;
-            cmbServiceEndpoint.Enabled = isServiceEndpoint;
+            cmbServiceEndpoint.Visible = isServiceEndpoint && !isWebhook;
+            cmbServiceEndpoint.Enabled = isServiceEndpoint && !isWebhook;
+
+            cmbWebhook.Visible = isWebhook;
+            cmbWebhook.Enabled = isWebhook;
 
             txtUnsecureConfiguration.Enabled = !isServiceEndpoint;
             txtSecureConfig.Enabled = !isServiceEndpoint;
 
-            grpDeployment.Enabled = !isServiceEndpoint;
-            grpMode.Enabled = !isServiceEndpoint;
+            grpDeployment.Enabled = !isServiceEndpoint || isWebhook;
+            grpMode.Enabled = !isServiceEndpoint || isWebhook;
 
             if (isServiceEndpoint)
             {
