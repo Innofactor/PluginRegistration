@@ -886,6 +886,8 @@ namespace Xrm.Sdk.PluginRegistration
             }
             if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
             {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
                 using (var xlPackage = new ExcelPackage(fileInfo))
                 {
                     xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
@@ -935,6 +937,8 @@ namespace Xrm.Sdk.PluginRegistration
 
             if (string.Equals(fileInfo.Extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
             {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
                 using (var xlPackage = new ExcelPackage(fileInfo))
                 {
                     xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
