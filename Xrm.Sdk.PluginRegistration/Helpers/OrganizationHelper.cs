@@ -422,7 +422,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Clear the Service Endpoints list since we are reloading from scratch
             org.ClearWebhooks();
 
-            foreach (var serviceEndPoint in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<ServiceEndpoint>(x)))
+            var serviceEndpoints = org.OrganizationService.RetrieveMultipleAllPages(query).Entities
+                .Select(x => Magic.CastTo<ServiceEndpoint>(x));
+
+            foreach (var serviceEndPoint in serviceEndpoints)
             {
                 var crmWebhook = new CrmServiceEndpoint(org, serviceEndPoint);
                 org.AddWebhook(crmWebhook);
@@ -513,14 +516,30 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.Increment("Loading Service Endpoints");
                 }
-                LoadServiceEndpoints(org);
+
+                try
+                {
+                    LoadServiceEndpoints(org);
+                }
+                catch (Exception e)
+                {
+                    // Failed to load service endpoints
+                }
 
                 //Initialize list of webhooks
                 if (prog != null)
                 {
                     prog.Increment("Loading Webhooks");
                 }
-                LoadWebhooks(org, ref typeList);
+
+                try
+                {
+                    LoadWebhooks(org, ref typeList);
+                }
+                catch (Exception e)
+                {
+                    // Failed to load webhooks
+                }
 
                 //Initialize list of steps
                 if (prog != null)
