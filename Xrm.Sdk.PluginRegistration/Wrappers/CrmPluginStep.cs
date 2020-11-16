@@ -703,13 +703,13 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             sdkStep.Configuration = UnsecureConfiguration;
 
-            if (ServiceBusConfigurationId == Guid.Empty)
+            if (AssemblyId != Guid.Empty && PluginId != Guid.Empty)
             {
                 sdkStep.EventHandler = new EntityReference(PluginType.EntityLogicalName, PluginId);
             }
             else
             {
-                sdkStep.EventHandler = new EntityReference(ServiceEndpoint.EntityLogicalName, ServiceBusConfigurationId);
+                sdkStep.EventHandler = new EntityReference(ServiceEndpoint.EntityLogicalName,  ServiceBusConfigurationId == Guid.Empty ? PluginId : ServiceBusConfigurationId);
             }
 
             sdkStep.Name = Name;

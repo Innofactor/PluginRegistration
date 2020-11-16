@@ -34,7 +34,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         string EntityType { get; }
         bool IsSystemCrmEntity { get; }
         Dictionary<string, object> Values { get; }
-
         #endregion Public Properties
 
         #region Public Methods
@@ -147,7 +146,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
         private Version m_serverBuild = null;
         private Dictionary<Guid, CrmServiceEndpoint> m_serviceEndpointList = new Dictionary<Guid, CrmServiceEndpoint>();
+        private Dictionary<Guid, CrmServiceEndpoint> m_webhookList = new Dictionary<Guid, CrmServiceEndpoint>();
         private CrmEntityDictionary<CrmServiceEndpoint> m_serviceEndpointReadOnlyList = null;
+        private CrmEntityDictionary<CrmServiceEndpoint> m_webhookReadOnlyList = null;
+
         private Dictionary<Guid, CrmPluginStep> m_stepList = new Dictionary<Guid, CrmPluginStep>();
         private CrmEntityDictionary<CrmPluginStep> m_stepReadOnlyList = null;
         private string m_uniqueName = null;
@@ -476,6 +478,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
+        public CrmEntityDictionary<CrmServiceEndpoint> Webhooks
+        {
+            get
+            {
+                if (m_webhookReadOnlyList == null)
+                {
+                    m_webhookReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(m_webhookList);
+                }
+
+                return m_webhookReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
         public CrmEntityDictionary<CrmPluginStep> Steps
         {
             get
@@ -669,25 +685,51 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_serviceEndpointList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
         }
 
-        public void AddStep(CrmPlugin plugin, CrmPluginStep step)
+        public void AddWebhook(CrmServiceEndpoint serviceEndpoint)
+        {
+            if (serviceEndpoint == null)
+            {
+                throw new ArgumentNullException("serviceEndpoint");
+            }
+            if (m_webhookList.ContainsKey(serviceEndpoint.ServiceEndpointId))
+            {
+                throw new ArgumentException("ServiceEndpoint is already in the list");
+            }
+
+            m_webhookList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
+        }
+
+        public void AddStep(ICrmEntity plugin, CrmPluginStep step)
         {
             if (step == null)
             {
                 throw new ArgumentNullException("step");
             }
-            else if (plugin == null)
+
+            if (plugin == null)
             {
                 throw new ArgumentNullException("plugin");
             }
-            else if (!plugin.Steps.ContainsKey(step.StepId))
+
+            if (plugin is CrmPlugin crmPlugin)
             {
-                plugin.AddStep(step);
-                return;
+                if (!crmPlugin.Steps.ContainsKey(step.StepId))
+                {
+                    crmPlugin.AddStep(step);
+                    return;
+                }
             }
-            else
-            {
-                ValidateEntity(step);
-            }
+
+            //if (plugin is CrmServiceEndpoint crmServiceEndpoint)
+            //{
+            //    if (!crmServiceEndpoint.Steps.ContainsKey(step.StepId))
+            //    {
+            //        crmServiceEndpoint.AddStep(step);
+            //        return;
+            //    }
+            //}
+
+            ValidateEntity(step);
 
             m_stepList.Add(step.StepId, step);
         }
@@ -814,6 +856,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         public void ClearServiceEndpoints()
         {
             m_serviceEndpointList.Clear();
+        }
+
+        public void ClearWebhooks()
+        {
+            m_webhookList.Clear();
         }
 
         public void ClearSteps()
