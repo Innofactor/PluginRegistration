@@ -511,34 +511,24 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
                 LoadPlugins(org, out var typeList);
 
-                //Initialize list of service end points
-                if (prog != null)
-                {
-                    prog.Increment("Loading Service Endpoints");
-                }
+                var orgver = new Version(org.ConnectionDetail.OrganizationVersion);
 
-                try
+                if (orgver >= new Version(9, 0))
                 {
+                    //Initialize list of service end points
+                    if (prog != null)
+                    {
+                        prog.Increment("Loading Service Endpoints");
+                    }
+
                     LoadServiceEndpoints(org);
-                }
-                catch (Exception e)
-                {
-                    // Failed to load service endpoints
-                }
 
-                //Initialize list of webhooks
-                if (prog != null)
-                {
-                    prog.Increment("Loading Webhooks");
-                }
-
-                try
-                {
+                    //Initialize list of webhooks
+                    if (prog != null)
+                    {
+                        prog.Increment("Loading Webhooks");
+                    }
                     LoadWebhooks(org, ref typeList);
-                }
-                catch (Exception e)
-                {
-                    // Failed to load webhooks
                 }
 
                 //Initialize list of steps
