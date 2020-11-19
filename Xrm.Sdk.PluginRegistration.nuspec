@@ -19,6 +19,9 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     <releaseNotes>
       -- New Feature --
       #83: Webhooks feature, thanks to @DynamicsNinja
+      
+      -- Bug Fixes --
+      #85, #86: Fixed showing webhook button for CDS versions lower than v9.0
 
       -- Updates --
       Updated dependencies
