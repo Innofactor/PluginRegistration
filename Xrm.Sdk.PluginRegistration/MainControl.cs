@@ -408,6 +408,8 @@ namespace Xrm.Sdk.PluginRegistration
                 throw new ArgumentNullException("org.ConnectionDetail");
             }
 
+            toolWebHookRegister.Visible = new Version(org.ConnectionDetail.OrganizationVersion) >= new Version(9, 0);
+
             m_org = org;
             m_con = org.ConnectionDetail;
             m_currentView = CrmViewType.Assembly;
