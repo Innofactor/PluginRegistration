@@ -22,6 +22,7 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
       
       -- Bug Fixes --
       #85, #86: Fixed showing webhook button for CDS versions lower than v9.0
+      #87, #88: Brought back Save button for metadata update
 
       -- Updates --
       Updated dependencies
@@ -29,9 +30,9 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
-      <dependency id="XrmToolBoxPackage" version="1.2020.6.4" />
-      <dependency id="CsvHelper" version="16.0.0"/>
-      <dependency id="EPPlus" version="5.4.1"/>
+      <dependency id="XrmToolBoxPackage" version="1.2020.11.42" />
+      <dependency id="CsvHelper" version="18.0.0"/>
+      <dependency id="EPPlus" version="5.4.2"/>
     </dependencies>
   </metadata>
   <files>
