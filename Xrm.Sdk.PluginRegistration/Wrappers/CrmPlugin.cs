@@ -63,6 +63,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         private CrmPluginIsolatable m_isolatable = CrmPluginIsolatable.Unknown;
         private DateTime? m_modifiedOn = null;
         private string m_name = null;
+        private string m_AssemblyVersion = null;
         private CrmOrganization m_org;
         private Guid m_pluginAssemblyId = Guid.Empty;
         private Guid m_pluginId = Guid.Empty;
@@ -388,19 +389,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 string format;
                 if (CrmPluginIsolatable.Yes == Isolatable)
                 {
-                    format = "({0}) {2} - Isolatable";
+                    format = "({0}{3}) {2} - Isolatable";
                 }
                 else if (string.IsNullOrWhiteSpace(WorkflowActivityGroupName) ||
                     WorkflowActivityGroupName.StartsWith(AssemblyName + " (", StringComparison.Ordinal))
                 {
-                    format = "({0}) {2}";
+                    format = "({0}{3}) {2}";
                 }
                 else
                 {
-                    format = "({0}) {1}: {2}";
+                    format = "({0}{3}) {1}: {2}";
                 }
 
-                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name);
+                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name, AssemblyVersion);
             }
         }
 
@@ -441,6 +442,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     default:
                         throw new NotImplementedException("PluginType = " + PluginType.ToString());
                 }
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string AssemblyVersion
+        {
+            get
+            {
+                return m_AssemblyVersion;
+            }
+            set
+            {
+                m_AssemblyVersion = value;
             }
         }
 

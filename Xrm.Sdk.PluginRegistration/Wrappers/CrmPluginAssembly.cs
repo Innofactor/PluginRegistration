@@ -359,6 +359,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         {
                             plugin.Organization = m_org;
                         }
+                        if (MultipleVersions)
+                        {
+                            plugin.AssemblyVersion = Version;
+                        }
                         m_org.AddPlugin(this, plugin);
                     }
                 }
@@ -432,6 +436,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Version { get; set; }
 
+        [XmlIgnore]
+        [Browsable(false)]
+        public bool MultipleVersions { get; set; }
+
         #endregion Public Properties
 
         #region Public Indexers
@@ -454,6 +462,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             if (plugin == null)
             {
                 throw new ArgumentNullException("plugin");
+            }
+
+            if (MultipleVersions)
+            {
+                plugin.AssemblyVersion = Version;
             }
 
             m_pluginList.Add(plugin.PluginId, plugin);
