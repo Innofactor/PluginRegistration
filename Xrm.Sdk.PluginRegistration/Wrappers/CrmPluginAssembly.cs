@@ -313,7 +313,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         {
             get
             {
-                return string.Format("({0}) {1}", NodeTypeLabel, Name);
+                return string.Format("({0}{2}) {1}", NodeTypeLabel, Name, MultipleVersions ? " " + Version : null);
             }
         }
 
@@ -361,7 +361,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         }
                         if (MultipleVersions)
                         {
-                            plugin.AssemblyVersion = Version;
+                            plugin.AssemblyVersion = " " + Version;
                         }
                         m_org.AddPlugin(this, plugin);
                     }
@@ -466,7 +466,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
             if (MultipleVersions)
             {
-                plugin.AssemblyVersion = Version;
+                plugin.AssemblyVersion = " " + Version;
             }
 
             m_pluginList.Add(plugin.PluginId, plugin);
