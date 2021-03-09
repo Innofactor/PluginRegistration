@@ -389,19 +389,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                 string format;
                 if (CrmPluginIsolatable.Yes == Isolatable)
                 {
-                    format = "({0}{3}) {2} - Isolatable";
+                    format = "({0}) {2}{3} - Isolatable";
                 }
                 else if (string.IsNullOrWhiteSpace(WorkflowActivityGroupName) ||
                     WorkflowActivityGroupName.StartsWith(AssemblyName + " (", StringComparison.Ordinal))
                 {
-                    format = "({0}{3}) {2}";
+                    format = "({0}) {2}{3}";
                 }
                 else
                 {
-                    format = "({0}{3}) {1}: {2}";
+                    format = "({0}) {1}: {2}{3}";
                 }
 
-                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name, AssemblyVersion);
+                return string.Format(format, NodeTypeLabel, WorkflowActivityGroupName, string.IsNullOrWhiteSpace(Name) ? Description : Name, string.IsNullOrEmpty(AssemblyVersion)?"":$" [{AssemblyVersion}]");
             }
         }
 

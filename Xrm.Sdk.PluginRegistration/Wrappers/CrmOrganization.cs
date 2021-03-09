@@ -592,7 +592,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     c_Assembly.MultipleVersions = true;
                     foreach (var plugin in c_Assembly.Plugins.Values)
                     {
-                        plugin.AssemblyVersion = " "+c_Assembly.Version;
+                        plugin.AssemblyVersion = c_Assembly.Version;
                     }
                 }
             }
