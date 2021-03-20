@@ -129,10 +129,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 txtServerFileName.Text = assembly.ServerFileName;
 
-                AssemblyPathControl.FileName =
-                    mapping.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name)?.FilePath;
-                if (!string.IsNullOrEmpty(AssemblyPathControl.FileName))
+                var mappedFileName = mapping.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name)?.FilePath;
+                if (!string.IsNullOrEmpty(mappedFileName) && File.Exists(mappedFileName))
                 {
+                    AssemblyPathControl.FileName = mappedFileName;
                     AssemblyPathControl_PathChanged(AssemblyPathControl, new EventArgs());
                     btnLoadAssembly_Click(btnLoadAssembly, new EventArgs());
                 }
