@@ -517,6 +517,34 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        public void RefreshFullTreeView()
+        {
+            var instruction = new WorkAsyncInfo()
+            {
+                Message = "Refreshing assemblies information...",
+                Work = (worker, argument) =>
+                {
+                    try
+                    {
+                        OrganizationHelper.RefreshConnection(m_org, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
+                        Invoke(new Action(() =>
+                        {
+                            propGridEntity.SelectedObject = null;
+                            LoadNodes();
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to refresh the organization. Connection must close.", "Connection Error", ex);
+                        }));
+                    }
+                }
+            };
+            WorkAsync(instruction);
+        }
+
         public void RefreshImage(CrmPluginImage image)
         {
             if (image == null)
@@ -1526,8 +1554,10 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolAssemblyRegister_Click(object sender, EventArgs e)
         {
-            var regForm = new PluginRegistrationForm(Organization, this, null);
+            var regForm = new PluginRegistrationForm(Organization, this, null, m_settings.Mappings);
             regForm.ShowDialog(ParentForm);
+
+            SettingsManager.Instance.Save(GetType(), m_settings);
         }
 
         private void toolClose_Click(object sender, EventArgs e)
@@ -1625,34 +1655,6 @@ namespace Xrm.Sdk.PluginRegistration
             RefreshFullTreeView();
         }
 
-        public void RefreshFullTreeView()
-        {
-            var instruction = new WorkAsyncInfo()
-            {
-                Message = "Refreshing assemblies information...",
-                Work = (worker, argument) =>
-                {
-                    try
-                    {
-                        OrganizationHelper.RefreshConnection(m_org, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
-                        Invoke(new Action(() =>
-                        {
-                            propGridEntity.SelectedObject = null;
-                            LoadNodes();
-                        }));
-                    }
-                    catch (Exception ex)
-                    {
-                        Invoke(new Action(() =>
-                        {
-                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to refresh the organization. Connection must close.", "Connection Error", ex);
-                        }));
-                    }
-                }
-            };
-            WorkAsync(instruction);
-        }
-
         private void toolSearch_Click(object sender, EventArgs e)
         {
             var searchForm = new SearchForm(Organization, this, trvPlugins.RootNodes, trvPlugins.SelectedNode)
@@ -1718,7 +1720,7 @@ namespace Xrm.Sdk.PluginRegistration
                 }
                 if (Guid.Empty != serviceEndpointId)
                 {
-                    serviceEndpoint = pluginId != Guid.Empty ? m_org.ServiceEndpoints[serviceEndpointId]: m_org.Webhooks[serviceEndpointId];
+                    serviceEndpoint = pluginId != Guid.Empty ? m_org.ServiceEndpoints[serviceEndpointId] : m_org.Webhooks[serviceEndpointId];
                 }
             }
 
@@ -1792,8 +1794,9 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 case CrmTreeNodeType.Assembly:
                     {
-                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode, m_settings.Mappings);
                         regForm.ShowDialog(ParentForm);
+                        SettingsManager.Instance.Save(GetType(), m_settings);
                     }
                     break;
 
@@ -1809,6 +1812,7 @@ namespace Xrm.Sdk.PluginRegistration
                             case "serviceendpoint":
                                 serviceEndpoint = m_org.Webhooks[step.EventHandler.Id];
                                 break;
+
                             default:
                                 plugin = m_org[step.AssemblyId][step.PluginId];
 
@@ -1863,6 +1867,12 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        private void toolWebHookRegister_Click(object sender, EventArgs e)
+        {
+            var webhookRegForm = new WebHookRegistrationForm(m_org, this, null);
+            webhookRegForm.ShowDialog();
+        }
+
         private void trvPlugins_DoubleClick(object sender, CrmTreeNodeEventArgs e)
         {
             if (toolUpdate.Visible && toolUpdate.Enabled)
@@ -1882,9 +1892,10 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     //Display the Plug-in Registration form
                     using (var form = new PluginRegistrationForm(Organization, this,
-                        Organization.Assemblies[plugin.AssemblyId]))
+                        Organization.Assemblies[plugin.AssemblyId], m_settings.Mappings))
                     {
                         form.ShowDialog(ParentForm);
+                        SettingsManager.Instance.Save(GetType(), m_settings);
                     }
 
                     //Update the tree based on the selected node
@@ -2464,11 +2475,5 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
-
-        private void toolWebHookRegister_Click(object sender, EventArgs e)
-        {
-            var webhookRegForm = new WebHookRegistrationForm(m_org,this, null);
-            webhookRegForm.ShowDialog();
-        }
     }
 }

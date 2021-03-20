@@ -36,6 +36,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private bool m_assemblyLoaded = false;
         private CrmPluginAssembly m_currentAssembly;
         private string m_lastAssemblyFileName;
+        private List<PluginAssemblyFileMapping> m_mapping;
         private CrmOrganization m_org;
         private MainControl m_orgControl;
         private ProgressIndicator m_progRegistration;
@@ -45,7 +46,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         #region Public Constructors
 
-        public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly)
+        public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly, List<PluginAssemblyFileMapping> mapping)
         {
             if (org == null)
             {
@@ -64,6 +65,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ProgressIndicatorAddText, ProgressIndicatorSetText,
                 ProgressIndicatorIncrement, null);
             m_currentAssembly = assembly;
+            m_mapping = mapping;
 
             radIsolationSandbox.Checked = org.ConnectionDetail.UseOnline;
 
@@ -126,6 +128,14 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
 
                 txtServerFileName.Text = assembly.ServerFileName;
+
+                AssemblyPathControl.FileName =
+                    mapping.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name)?.FilePath;
+                if (!string.IsNullOrEmpty(AssemblyPathControl.FileName))
+                {
+                    AssemblyPathControl_PathChanged(AssemblyPathControl, new EventArgs());
+                    btnLoadAssembly_Click(btnLoadAssembly, new EventArgs());
+                }
 
                 Text = $"Update Assembly: {assembly.Name}";
                 btnRegister.Text = "Update Selected Plugins";
@@ -516,6 +526,21 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
 
                     assembly = m_currentAssembly;
+
+                    var mapping = m_mapping.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name);
+                    if (mapping == null)
+                    {
+                        mapping = new PluginAssemblyFileMapping
+                        {
+                            PluginAssemblyName = assembly.Name,
+                            FilePath = AssemblyPathControl.FileName
+                        };
+                        m_mapping.Add(mapping);
+                    }
+                    else
+                    {
+                        mapping.FilePath = AssemblyPathControl.FileName;
+                    }
 
                     createAssembly = false;
                     m_progRegistration.Increment();
