@@ -255,12 +255,20 @@
     <Compile Include="Forms\ExportTypeSelectionForm.Designer.cs">
       <DependentUpon>ExportTypeSelectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SolutionPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SolutionPicker.designer.cs">
+      <DependentUpon>SolutionPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\WebHookRegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\WebHookRegistrationForm.Designer.cs">
       <DependentUpon>WebHookRegistrationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ListViewItemComparer.cs" />
+    <Compile Include="Models\Solution.Static.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginAssemblyFileMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -364,6 +372,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Solutions.png" />
     <None Include="Resources\FilterActive.png" />
     <None Include="Resources\FilterInactive.png" />
     <None Include="packages.config" />
@@ -429,6 +438,9 @@
     <EmbeddedResource Include="Forms\MessagePropertyNameForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MessagePropertyNameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SolutionPicker.resx">
+      <DependentUpon>SolutionPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WebHookRegistrationForm.resx">
       <DependentUpon>WebHookRegistrationForm.cs</DependentUpon>

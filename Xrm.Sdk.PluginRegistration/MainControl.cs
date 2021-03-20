@@ -15,6 +15,8 @@
 //
 // =====================================================================
 
+using Microsoft.Crm.Sdk.Messages;
+
 namespace Xrm.Sdk.PluginRegistration
 {
     using Controls;
@@ -150,7 +152,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "Debug",
                     "Close",
                     "Save",
-                    "Filter");
+                    "Filter",
+                    "Solutions");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -160,6 +163,9 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolUnregister.Image = imageList["Delete"];
                 mnuContextNodeUnregister.Image = toolUnregister.Image;
+
+                toolAddToSolution.Image = imageList["Solutions"];
+                tsmiAddToSolution.Image = toolAddToSolution.Image;
 
                 toolSearch.Image = imageList["Search"];
                 mnuContextNodeSearch.Image = toolSearch.Image;
@@ -1357,6 +1363,8 @@ namespace Xrm.Sdk.PluginRegistration
             //Reset the visibility and enabled properties because we don't what is enabled
             toolUpdate.Visible = false;
             mnuContextNodeUpdate.Visible = false;
+            toolAddToSolution.Visible = false;
+            tsmiAddToSolution.Visible = false;
 
             toolEnable.Visible = false;
             mnuContextNodeEnable.Visible = false;
@@ -1398,6 +1406,8 @@ namespace Xrm.Sdk.PluginRegistration
 
                         toolUpdate.Visible = true;
                         mnuContextNodeUpdate.Visible = true;
+                        tsmiAddToSolution.Visible = true;
+                        toolAddToSolution.Visible = true;
                         btnSave.Enabled = true;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPlugin>(CrmPlugin.Columns, assembly.Plugins);
@@ -1418,6 +1428,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         CrmPluginStep step = (CrmPluginStep)node;
                         btnSave.Enabled = false;
+                        toolAddToSolution.Visible = true;
+                        tsmiAddToSolution.Visible = true;
                         UpdateEnableButton(step.Enabled);
 
                         if (true/*!OrganizationHelper.IsProfilerSupported*/ ||
@@ -1959,6 +1971,59 @@ namespace Xrm.Sdk.PluginRegistration
                     SetFilterStatusOnToolbar(!string.IsNullOrEmpty(dialog.Filter) || dialog.ExcludeManagedAssemblies);
                     toolRefresh_Click(this, new EventArgs());
                 }
+            }
+        }
+
+        private void tsmiAddToSolution_Click(object sender, EventArgs e)
+        {
+            bool isForAssembly = false;
+            Guid componentId = Guid.Empty;
+            int componentType = -1;
+
+            switch (trvPlugins.SelectedNode.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+                        var assembly = (CrmPluginAssembly)trvPlugins.SelectedNode;
+                        isForAssembly = true;
+                        componentId = assembly.AssemblyId;
+                        componentType = 91;
+                    }
+                    break;
+
+                case CrmTreeNodeType.Step:
+                    {
+                        var step = (CrmPluginStep)trvPlugins.SelectedNode;
+                        componentId = step.StepId;
+                        componentType = 92;
+                    }
+                    break;
+            }
+
+            var dialog = new SolutionPicker(Service);
+            if (dialog.ShowDialog(ParentForm) == DialogResult.OK)
+            {
+                WorkAsync(new WorkAsyncInfo
+                {
+                    Message = $"Adding {(isForAssembly ? "assembly" : "step")} to solution {dialog.SelectedSolution.GetAttributeValue<string>("friendlyname")}",
+                    Work = (bw, evt) =>
+                    {
+                        Service.Execute(new AddSolutionComponentRequest
+                        {
+                            AddRequiredComponents = false,
+                            ComponentId = componentId,
+                            ComponentType = componentType,
+                            SolutionUniqueName = dialog.SelectedSolution.GetAttributeValue<string>("uniquename")
+                        });
+                    },
+                    PostWorkCallBack = evt =>
+                    {
+                        if (evt.Error != null)
+                        {
+                            MessageBox.Show(ParentForm, $@"An error occured while adding component to solution: {evt.Error.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                });
             }
         }
 
