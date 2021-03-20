@@ -75,7 +75,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         Image = 64,
         Message = 128,
         MessageEntity = 256,
-        ServiceEndpoint = 512
+        ServiceEndpoint = 512,
+        WebHook = 1024
     }
 
     public interface ICrmEditableTreeNode : ICrmTreeNode

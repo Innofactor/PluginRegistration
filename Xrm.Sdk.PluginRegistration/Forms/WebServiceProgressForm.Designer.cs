@@ -36,8 +36,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // barRegistration
             // 
-            this.barRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.barRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.barRegistration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.barRegistration.Location = new System.Drawing.Point(5, 35);
             this.barRegistration.Name = "barRegistration";
@@ -64,6 +64,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.ControlBox = false;
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.barRegistration);
+            this.MinimumSize = new System.Drawing.Size(514, 99);
             this.Name = "WebServiceProgressForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

@@ -68,19 +68,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // trvPlugins
             // 
-            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trvPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trvPlugins.AutoExpand = false;
             this.trvPlugins.CrmTreeNodeSorter = null;
             this.trvPlugins.LabelEdit = false;
             this.trvPlugins.Location = new System.Drawing.Point(6, 32);
             this.trvPlugins.Name = "trvPlugins";
             this.trvPlugins.SelectedNode = null;
+            this.trvPlugins.ShowNodeToolTips = false;
             this.trvPlugins.Size = new System.Drawing.Size(511, 249);
             this.trvPlugins.TabIndex = 1;
             this.trvPlugins.SelectionChanged += new System.EventHandler<Xrm.Sdk.PluginRegistration.Controls.CrmTreeNodeTreeEventArgs>(this.trvPlugins_SelectionChanged);
-            this.trvPlugins.Leave += new System.EventHandler(this.trvPlugins_Leave);
             this.trvPlugins.Enter += new System.EventHandler(this.trvPlugins_Enter);
+            this.trvPlugins.Leave += new System.EventHandler(this.trvPlugins_Leave);
             // 
             // btnSearch
             // 
@@ -105,9 +106,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.trvPlugins);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.MinimumSize = new System.Drawing.Size(540, 354);
             this.Name = "SearchForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Search Tree";
             this.ResumeLayout(false);
             this.PerformLayout();

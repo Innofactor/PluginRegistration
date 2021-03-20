@@ -392,6 +392,8 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 EntityName = ServiceEndpoint.EntityLogicalName
             };
 
+            query.Criteria.AddCondition("contract", ConditionOperator.NotEqual, 8);
+
             //Clear the Service Endpoints list since we are reloading from scratch
             org.ClearServiceEndpoints();
 
@@ -400,6 +402,39 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 org.AddServiceEndpoint(new CrmServiceEndpoint(org, serviceEndPoint));
             }
         }
+
+        public static void LoadWebhooks(CrmOrganization org, ref Dictionary<Guid, ICrmEntity> typeList)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+
+            QueryExpression query = new QueryExpression
+            {
+                ColumnSet = GetColumnSet(ServiceEndpoint.EntityLogicalName),
+                Criteria = new FilterExpression(),
+                EntityName = ServiceEndpoint.EntityLogicalName
+            };
+
+            query.Criteria.AddCondition("contract", ConditionOperator.Equal, 8);
+
+            //Clear the Service Endpoints list since we are reloading from scratch
+            org.ClearWebhooks();
+
+            var serviceEndpoints = org.OrganizationService.RetrieveMultipleAllPages(query).Entities
+                .Select(x => Magic.CastTo<ServiceEndpoint>(x));
+
+            foreach (var serviceEndPoint in serviceEndpoints)
+            {
+                var crmWebhook = new CrmServiceEndpoint(org, serviceEndPoint);
+                org.AddWebhook(crmWebhook);
+
+                typeList.Add(crmWebhook.EntityId, crmWebhook);
+            }
+        }
+
+
 
         /// <summary>
         /// Initializes any items that need to be initialized when the connection gets opened
@@ -473,15 +508,28 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.Increment("Loading Plugins");
                 }
-                Dictionary<Guid, CrmPlugin> typeList;
-                LoadPlugins(org, out typeList);
 
-                //Initialize list of service end points
-                if (prog != null)
+                LoadPlugins(org, out var typeList);
+
+                var orgver = new Version(org.ConnectionDetail.OrganizationVersion);
+
+                if (orgver >= new Version(9, 0))
                 {
-                    prog.Increment("Loading Service Endpoints");
+                    //Initialize list of service end points
+                    if (prog != null)
+                    {
+                        prog.Increment("Loading Service Endpoints");
+                    }
+
+                    LoadServiceEndpoints(org);
+
+                    //Initialize list of webhooks
+                    if (prog != null)
+                    {
+                        prog.Increment("Loading Webhooks");
+                    }
+                    LoadWebhooks(org, ref typeList);
                 }
-                LoadServiceEndpoints(org);
 
                 //Initialize list of steps
                 if (prog != null)
@@ -812,7 +860,9 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                             "userclaim",
                             "solutionnamespace",
                             "connectionmode",
-                            "description");
+                            "description",
+                            "url",
+                            "authtype");
                         break;
 
                     case PluginAssembly.EntityLogicalName:
@@ -1021,7 +1071,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        private static void LoadPlugins(CrmOrganization org, out Dictionary<Guid, CrmPlugin> typeList)
+        private static void LoadPlugins(CrmOrganization org, out Dictionary<Guid, ICrmEntity> typeList)
         {
             if (org == null)
             {
@@ -1054,7 +1104,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             //Initialize the map
             bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
-            typeList = new Dictionary<Guid, CrmPlugin>();
+            typeList = new Dictionary<Guid, ICrmEntity>();
 
             foreach (var plugin in results.Entities.Select(x => Magic.CastTo<PluginType>(x)))
             {
@@ -1086,7 +1136,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        private static void LoadSteps(CrmOrganization org, Dictionary<Guid, CrmPlugin> typeList, out Dictionary<Guid, CrmPluginStep> crmStepList)
+        private static void LoadSteps(CrmOrganization org, Dictionary<Guid, ICrmEntity> typeList, out Dictionary<Guid, CrmPluginStep> crmStepList)
         {
             if (org == null)
             {
@@ -1154,56 +1204,63 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 var secureConfig = step.GetAttributeValue<AliasedValue>(SecureConfigurationAttributeName);
 
                 //Check if the secure configuration was retrieved
-                bool invalidSecureConfigurationId = false;
-                if (null != step.SdkMessageProcessingStepSecureConfigId && null == secureConfig &&
-                    !org.SecureConfigurationPermissionDenied)
-                {
-                    invalidSecureConfigurationId = true;
-                }
+                bool invalidSecureConfigurationId = null != step.SdkMessageProcessingStepSecureConfigId && null == secureConfig &&
+                                                    !org.SecureConfigurationPermissionDenied;
 
                 //Retrieve the secure configuration
-                string secureConfiguration = (null == secureConfig ? null : (string)secureConfig.Value);
+                string secureConfiguration = (string) secureConfig?.Value;
 
                 //Retrieve the plug-in
 #pragma warning disable 0612
-                Guid pluginId = (step.PluginTypeId != null) ? step.PluginTypeId.Id : Guid.Empty;
+                Guid pluginId = step.PluginTypeId?.Id ?? Guid.Empty;
 #pragma warning restore 0612
+                var webhookId = step.EventHandler?.Id ?? Guid.Empty;
 
-                CrmPlugin plugin;
-                if (null != typeList && typeList.TryGetValue(pluginId, out plugin))
+                switch (step.EventHandler.LogicalName)
                 {
-                    CrmPluginStep crmStep;
-                    if (plugin.Steps.TryGetValue(step.SdkMessageProcessingStepId.GetValueOrDefault(), out crmStep))
-                    {
-                        crmStep.RefreshFromSdkMessageProcessingStep(plugin.AssemblyId, step, secureConfiguration);
-                    }
-                    else
-                    {
-                        crmStep = new CrmPluginStep(org, plugin.AssemblyId, step, secureConfiguration);
-                        plugin.AddStep(crmStep);
-                    }
+                    case "serviceendpoint":
+                        if (typeList == null || !typeList.TryGetValue(webhookId, out var webhook)) continue;
 
-                    if (plugin.IsProfilerPlugin)
-                    {
-                        // ProfilerConfiguration configuration = RetrieveProfilerConfiguration(crmStep);
-                        //if (null != configuration)
-                        //{
-                        //    EntityReference profiledHandler = configuration.EventHandler;
-                        //    if (configuration.IsContextReplay.GetValueOrDefault())
-                        //    {
-                        //        crmStep.ProfilerStepId = crmStep.StepId;
-                        //    }
-                        //    else if (null != profiledHandler && !profiledStepList.ContainsKey(profiledHandler.Id))
-                        //    {
-                        //        profiledStepList[profiledHandler.Id] = crmStep;
-                        //        crmStep.ProfilerOriginalStepId = profiledHandler.Id;
-                        //    }
-                        //}
-                    }
+                        var crmWebhook = (CrmServiceEndpoint)webhook;
 
-                    crmStep.SecureConfigurationRecordIdInvalid = invalidSecureConfigurationId;
+                        if (crmWebhook.Steps.TryGetValue(step.SdkMessageProcessingStepId.GetValueOrDefault(), out var crmStep1))
+                        {
+                            crmStep1.RefreshFromSdkMessageProcessingStep(crmWebhook.ServiceEndpointId, step, secureConfiguration);
+                        }
+                        else
+                        {
+                            crmStep1 = new CrmPluginStep(org, crmWebhook.ServiceEndpointId, step, secureConfiguration);
+                            crmWebhook.AddStep(crmStep1);
+                        }
 
-                    crmStepList.Add(step.SdkMessageProcessingStepId.Value, plugin.Steps[step.SdkMessageProcessingStepId.Value]);
+                        crmStep1.SecureConfigurationRecordIdInvalid = invalidSecureConfigurationId;
+
+                        crmStepList.Add(step.SdkMessageProcessingStepId.Value, crmStep1);
+
+                        continue;
+                    default:
+                        if (typeList == null || !typeList.TryGetValue(pluginId, out var plugin)) continue;
+
+                        var crmPlugin = (CrmPlugin)plugin;
+                        if (crmPlugin.Steps.TryGetValue(step.SdkMessageProcessingStepId.GetValueOrDefault(), out var crmStep))
+                        {
+                            crmStep.RefreshFromSdkMessageProcessingStep(crmPlugin.AssemblyId, step, secureConfiguration);
+                        }
+                        else
+                        {
+                            crmStep = new CrmPluginStep(org, crmPlugin.AssemblyId, step, secureConfiguration);
+                            crmPlugin.AddStep(crmStep);
+                        }
+
+                        if (crmPlugin.IsProfilerPlugin)
+                        {
+
+                        }
+
+                        crmStep.SecureConfigurationRecordIdInvalid = invalidSecureConfigurationId;
+
+                        crmStepList.Add(step.SdkMessageProcessingStepId.Value, crmPlugin.Steps[step.SdkMessageProcessingStepId.Value]);
+                        continue;
                 }
             }
 
@@ -1234,22 +1291,28 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             var users = new OrganizationServiceContext(org.OrganizationService)
                 // Creating query for given entity, with no conditions
                 .CreateQuery(SystemUser.EntityLogicalName)
+                .OrderBy(user => user["fullname"])
+                .Select((user) => new
+                {
+                    UserId = user.GetAttributeValue<Guid?>("systemuserid"),
+                    Name = user.GetAttributeValue<string>("fullname"),
+                    DomainName = user.GetAttributeValue<string>("domainname"),
+                    InternalEmailAddress = user.GetAttributeValue<string>("internalemailaddress"),
+                    IsDisabled = user.GetAttributeValue<bool?>("isdisabled")
+                })
                 // Executing LINQ-to-SQL query, not optimal, but safe for early-bound
                 .ToArray()
-                .Select(x => Magic.CastTo<SystemUser>(x))
                 .Select(x =>
                 {
                     return new CrmUser(org)
                     {
-                        UserId = x.SystemUserId.GetValueOrDefault(),
-                        Name = x.FullName,
+                        UserId = x.UserId.GetValueOrDefault(),
+                        Name = x.Name,
                         DomainName = x.DomainName,
-                        InternalEmailAddress = x.InternalEMailAddress,
+                        InternalEmailAddress = x.InternalEmailAddress,
                         Enabled = !x.IsDisabled.GetValueOrDefault()
                     };
-                })
-                // Final sorting of results
-                .OrderBy(x => x.Name);
+                });
 
             //Loop through the users that were returned from the server
             org.Users.Clear();

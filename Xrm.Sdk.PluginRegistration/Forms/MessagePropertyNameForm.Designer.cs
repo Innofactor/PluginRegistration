@@ -40,9 +40,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpMessageProperties
             // 
-            this.grpMessageProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpMessageProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpMessageProperties.Controls.Add(this.radTemplateItem);
             this.grpMessageProperties.Location = new System.Drawing.Point(6, 6);
             this.grpMessageProperties.Name = "grpMessageProperties";
@@ -64,8 +64,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // grpDescription
             // 
-            this.grpDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpDescription.Controls.Add(this.txtDescription);
             this.grpDescription.Location = new System.Drawing.Point(6, 83);
             this.grpDescription.Name = "grpDescription";
@@ -76,9 +76,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             // 
             // txtDescription
             // 
-            this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescription.Location = new System.Drawing.Point(6, 19);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
@@ -121,6 +121,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             this.Controls.Add(this.grpDescription);
             this.Controls.Add(this.grpMessageProperties);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MinimumSize = new System.Drawing.Size(354, 245);
             this.Name = "MessagePropertyNameForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -74,6 +74,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(230, 138);
             this.Name = "ExportTypeSelectionForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

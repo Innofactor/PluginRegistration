@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xrm.Sdk.PluginRegistration", "Xrm.Sdk.PluginRegistration\Xrm.Sdk.PluginRegistration.csproj", "{2E450060-2AC3-40A5-B6E5-2FD642886E18}"
 EndProject
@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xrm.Sdk.PluginRegistration.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD812812-BC51-4604-B0EC-F97303380A61}"
 	ProjectSection(SolutionItems) = preProject
+		icon.png = icon.png
 		Xrm.Sdk.PluginRegistration.nuspec = Xrm.Sdk.PluginRegistration.nuspec
 	EndProjectSection
 EndProject
@@ -29,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90AC8771-A116-4E52-AC96-5ABD8A6D71F3}
 	EndGlobalSection
 EndGlobal

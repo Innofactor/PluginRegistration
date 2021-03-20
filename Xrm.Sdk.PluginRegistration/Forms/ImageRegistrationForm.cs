@@ -65,6 +65,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             trvPlugins.AutoExpand = m_orgControl.IsAutoExpanded;
             trvPlugins.LoadNodes(rootNodes);
 
+            CrmPluginStep step = null;
+
             if (image != null)
             {
                 if (trvPlugins.HasNode(image.StepId))
@@ -75,11 +77,10 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 txtEntityAlias.Text = image.EntityAlias;
                 txtName.Text = image.Name;
 
-                CrmPluginStep step = m_org[image.AssemblyId][image.PluginId][image.StepId];
+                step = m_org[image.AssemblyId][image.PluginId][image.StepId];
                 if (step.MessageEntityId == Guid.Empty)
                 {
                     crmParameters.EntityName = "none";
-                    crmParameters.Enabled = false;
                 }
                 else
                 {
@@ -118,15 +119,20 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 grpSteps.Visible = false;
                 Height -= difference;
 
-                crmParameters.Enabled = true;
                 btnRegister.Enabled = true;
-            }
-            else if (trvPlugins.HasNode(selectNodeId))
-            {
-                trvPlugins.SelectedNode = trvPlugins[selectNodeId];
             }
             else
             {
+                crmParameters.ClearAttributes();
+                if (trvPlugins.HasNode(selectNodeId))
+                {
+                    step = trvPlugins[selectNodeId] as CrmPluginStep;
+                    trvPlugins.SelectedNode = step;
+                }
+            }
+            crmParameters.Enabled = step != null && !step.MessageEntityId.Equals(Guid.Empty) && !org.MessageEntities[step.MessageEntityId].PrimaryEntity.Equals("none");
+            if (!crmParameters.Enabled)
+            {   // Force all atttibutes if disabled
                 crmParameters.Attributes = null;
             }
         }
@@ -208,6 +214,13 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 MessageBox.Show(sb.ToString(), "Invalid Step Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
+            if (crmParameters.AllAttributes)
+            {
+                if (MessageBox.Show("Registering images with ALL attributes is highly discouraged for performance reasons.\nPlease reconsider this pattern.\n\nYes, I want to specify explicit attributes.\nNo, I don't care about performance now.", "Registration", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             //Start populating the image that will be used
