@@ -15,6 +15,8 @@
 //
 // =====================================================================
 
+using Microsoft.Crm.Sdk.Messages;
+
 namespace Xrm.Sdk.PluginRegistration
 {
     using Controls;
@@ -150,7 +152,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "Debug",
                     "Close",
                     "Save",
-                    "Filter");
+                    "Filter",
+                    "Solutions");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -160,6 +163,9 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolUnregister.Image = imageList["Delete"];
                 mnuContextNodeUnregister.Image = toolUnregister.Image;
+
+                toolAddToSolution.Image = imageList["Solutions"];
+                tsmiAddToSolution.Image = toolAddToSolution.Image;
 
                 toolSearch.Image = imageList["Search"];
                 mnuContextNodeSearch.Image = toolSearch.Image;
@@ -515,6 +521,34 @@ namespace Xrm.Sdk.PluginRegistration
                 trvPlugins.RefreshNode(assembly.NodeId, reloadChildren);
                 SelectItem(trvPlugins.SelectedNode);
             }
+        }
+
+        public void RefreshFullTreeView()
+        {
+            var instruction = new WorkAsyncInfo()
+            {
+                Message = "Refreshing assemblies information...",
+                Work = (worker, argument) =>
+                {
+                    try
+                    {
+                        OrganizationHelper.RefreshConnection(m_org, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
+                        Invoke(new Action(() =>
+                        {
+                            propGridEntity.SelectedObject = null;
+                            LoadNodes();
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to refresh the organization. Connection must close.", "Connection Error", ex);
+                        }));
+                    }
+                }
+            };
+            WorkAsync(instruction);
         }
 
         public void RefreshImage(CrmPluginImage image)
@@ -1329,6 +1363,8 @@ namespace Xrm.Sdk.PluginRegistration
             //Reset the visibility and enabled properties because we don't what is enabled
             toolUpdate.Visible = false;
             mnuContextNodeUpdate.Visible = false;
+            toolAddToSolution.Visible = false;
+            tsmiAddToSolution.Visible = false;
 
             toolEnable.Visible = false;
             mnuContextNodeEnable.Visible = false;
@@ -1370,6 +1406,8 @@ namespace Xrm.Sdk.PluginRegistration
 
                         toolUpdate.Visible = true;
                         mnuContextNodeUpdate.Visible = true;
+                        tsmiAddToSolution.Visible = true;
+                        toolAddToSolution.Visible = true;
                         btnSave.Enabled = true;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPlugin>(CrmPlugin.Columns, assembly.Plugins);
@@ -1390,6 +1428,8 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         CrmPluginStep step = (CrmPluginStep)node;
                         btnSave.Enabled = false;
+                        toolAddToSolution.Visible = true;
+                        tsmiAddToSolution.Visible = true;
                         UpdateEnableButton(step.Enabled);
 
                         if (true/*!OrganizationHelper.IsProfilerSupported*/ ||
@@ -1526,8 +1566,10 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolAssemblyRegister_Click(object sender, EventArgs e)
         {
-            var regForm = new PluginRegistrationForm(Organization, this, null);
+            var regForm = new PluginRegistrationForm(Organization, this, null, m_settings.Mappings);
             regForm.ShowDialog(ParentForm);
+
+            SettingsManager.Instance.Save(GetType(), m_settings);
         }
 
         private void toolClose_Click(object sender, EventArgs e)
@@ -1625,34 +1667,6 @@ namespace Xrm.Sdk.PluginRegistration
             RefreshFullTreeView();
         }
 
-        public void RefreshFullTreeView()
-        {
-            var instruction = new WorkAsyncInfo()
-            {
-                Message = "Refreshing assemblies information...",
-                Work = (worker, argument) =>
-                {
-                    try
-                    {
-                        OrganizationHelper.RefreshConnection(m_org, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
-                        Invoke(new Action(() =>
-                        {
-                            propGridEntity.SelectedObject = null;
-                            LoadNodes();
-                        }));
-                    }
-                    catch (Exception ex)
-                    {
-                        Invoke(new Action(() =>
-                        {
-                            ErrorMessageForm.ShowErrorMessageBox(this, "Unable to refresh the organization. Connection must close.", "Connection Error", ex);
-                        }));
-                    }
-                }
-            };
-            WorkAsync(instruction);
-        }
-
         private void toolSearch_Click(object sender, EventArgs e)
         {
             var searchForm = new SearchForm(Organization, this, trvPlugins.RootNodes, trvPlugins.SelectedNode)
@@ -1718,7 +1732,7 @@ namespace Xrm.Sdk.PluginRegistration
                 }
                 if (Guid.Empty != serviceEndpointId)
                 {
-                    serviceEndpoint = pluginId != Guid.Empty ? m_org.ServiceEndpoints[serviceEndpointId]: m_org.Webhooks[serviceEndpointId];
+                    serviceEndpoint = pluginId != Guid.Empty ? m_org.ServiceEndpoints[serviceEndpointId] : m_org.Webhooks[serviceEndpointId];
                 }
             }
 
@@ -1792,8 +1806,9 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 case CrmTreeNodeType.Assembly:
                     {
-                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode);
+                        var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode, m_settings.Mappings);
                         regForm.ShowDialog(ParentForm);
+                        SettingsManager.Instance.Save(GetType(), m_settings);
                     }
                     break;
 
@@ -1809,6 +1824,7 @@ namespace Xrm.Sdk.PluginRegistration
                             case "serviceendpoint":
                                 serviceEndpoint = m_org.Webhooks[step.EventHandler.Id];
                                 break;
+
                             default:
                                 plugin = m_org[step.AssemblyId][step.PluginId];
 
@@ -1863,6 +1879,12 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        private void toolWebHookRegister_Click(object sender, EventArgs e)
+        {
+            var webhookRegForm = new WebHookRegistrationForm(m_org, this, null);
+            webhookRegForm.ShowDialog();
+        }
+
         private void trvPlugins_DoubleClick(object sender, CrmTreeNodeEventArgs e)
         {
             if (toolUpdate.Visible && toolUpdate.Enabled)
@@ -1882,9 +1904,10 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     //Display the Plug-in Registration form
                     using (var form = new PluginRegistrationForm(Organization, this,
-                        Organization.Assemblies[plugin.AssemblyId]))
+                        Organization.Assemblies[plugin.AssemblyId], m_settings.Mappings))
                     {
                         form.ShowDialog(ParentForm);
+                        SettingsManager.Instance.Save(GetType(), m_settings);
                     }
 
                     //Update the tree based on the selected node
@@ -1948,6 +1971,59 @@ namespace Xrm.Sdk.PluginRegistration
                     SetFilterStatusOnToolbar(!string.IsNullOrEmpty(dialog.Filter) || dialog.ExcludeManagedAssemblies);
                     toolRefresh_Click(this, new EventArgs());
                 }
+            }
+        }
+
+        private void tsmiAddToSolution_Click(object sender, EventArgs e)
+        {
+            bool isForAssembly = false;
+            Guid componentId = Guid.Empty;
+            int componentType = -1;
+
+            switch (trvPlugins.SelectedNode.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+                        var assembly = (CrmPluginAssembly)trvPlugins.SelectedNode;
+                        isForAssembly = true;
+                        componentId = assembly.AssemblyId;
+                        componentType = 91;
+                    }
+                    break;
+
+                case CrmTreeNodeType.Step:
+                    {
+                        var step = (CrmPluginStep)trvPlugins.SelectedNode;
+                        componentId = step.StepId;
+                        componentType = 92;
+                    }
+                    break;
+            }
+
+            var dialog = new SolutionPicker(Service);
+            if (dialog.ShowDialog(ParentForm) == DialogResult.OK)
+            {
+                WorkAsync(new WorkAsyncInfo
+                {
+                    Message = $"Adding {(isForAssembly ? "assembly" : "step")} to solution {dialog.SelectedSolution.GetAttributeValue<string>("friendlyname")}",
+                    Work = (bw, evt) =>
+                    {
+                        Service.Execute(new AddSolutionComponentRequest
+                        {
+                            AddRequiredComponents = false,
+                            ComponentId = componentId,
+                            ComponentType = componentType,
+                            SolutionUniqueName = dialog.SelectedSolution.GetAttributeValue<string>("uniquename")
+                        });
+                    },
+                    PostWorkCallBack = evt =>
+                    {
+                        if (evt.Error != null)
+                        {
+                            MessageBox.Show(ParentForm, $@"An error occured while adding component to solution: {evt.Error.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                });
             }
         }
 
@@ -2464,11 +2540,5 @@ namespace Xrm.Sdk.PluginRegistration
         }
 
         #endregion Private Classes
-
-        private void toolWebHookRegister_Click(object sender, EventArgs e)
-        {
-            var webhookRegForm = new WebHookRegistrationForm(m_org,this, null);
-            webhookRegForm.ShowDialog();
-        }
     }
 }
