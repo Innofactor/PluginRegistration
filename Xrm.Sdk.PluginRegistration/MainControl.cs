@@ -927,7 +927,7 @@ namespace Xrm.Sdk.PluginRegistration
                 using (var xlPackage = new ExcelPackage(fileInfo))
                 {
                     xlPackage.Workbook.Worksheets.Add($"{Organization.OrganizationFriendlyName}");
-                    var worksheet = xlPackage.Workbook.Worksheets[1];
+                    var worksheet = xlPackage.Workbook.Worksheets[0];
 
                     worksheet.Cells.LoadFromCollection(model, true, OfficeOpenXml.Table.TableStyles.Light8);
                     xlPackage.Save();
