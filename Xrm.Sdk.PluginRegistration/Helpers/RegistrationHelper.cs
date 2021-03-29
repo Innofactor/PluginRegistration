@@ -29,6 +29,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
     using System.Text;
     using Wrappers;
     using Xrm.Sdk.PluginRegistration.Controls;
+    using System.Linq;
 
     public static class RegistrationHelper
     {
@@ -793,8 +794,18 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
-
+                    var assembly = org.Assemblies[assemblyId];
                     org.Assemblies.Remove(assemblyId);
+                    var assemblies = org.Assemblies.Values.Where(a => a.Name == assembly.Name);
+                    if (assemblies.Count() == 1)
+                    {
+                        assembly = assemblies.First();
+                        assembly.MultipleVersions = false;
+                        foreach (var plugin in assembly.Plugins.Values)
+                        {
+                            plugin.AssemblyVersion = null;
+                        }
+                    }
                 }
 
                 if (prog != null)

@@ -25,6 +25,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using System.Collections.Generic;
     using System.Xml;
     using System.Xml.Serialization;
+    using System.Linq;
 
     public interface ICrmEntity
     {
@@ -582,6 +583,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
 
             m_assemblyList.Add(assembly.AssemblyId, assembly);
+            var assemblies = m_assemblyList.Values.Where(a => a.Name == assembly.Name);
+            if (assemblies.Any(a => a.AssemblyId != assembly.AssemblyId)) //multiple versions
+            {
+                foreach (var c_Assembly in assemblies)
+                {
+                    if (c_Assembly.MultipleVersions) continue;
+                    c_Assembly.MultipleVersions = true;
+                    foreach (var plugin in c_Assembly.Plugins.Values)
+                    {
+                        plugin.AssemblyVersion = c_Assembly.Version;
+                    }
+                }
+            }
         }
 
         public void AddImage(CrmPluginStep step, CrmPluginImage image)

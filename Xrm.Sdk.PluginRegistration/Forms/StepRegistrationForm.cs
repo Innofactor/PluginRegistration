@@ -789,7 +789,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     if (m_currentStep.PluginId != step.PluginId)
                     {
                         m_orgControl.RemoveStep(step.NodeId);
-                        m_org.Assemblies[m_currentStep.AssemblyId][m_currentStep.PluginId].RemoveStep(step.StepId);
+                        //  m_org.Assemblies[m_currentStep.AssemblyId][m_currentStep.PluginId].RemoveStep(step.StepId); // the previous instruction does this too.
 
                         m_currentStep.AssemblyId = step.AssemblyId;
                         m_currentStep.PluginId = step.PluginId;
