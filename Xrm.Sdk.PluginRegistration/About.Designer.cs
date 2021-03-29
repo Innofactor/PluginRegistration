@@ -45,6 +45,7 @@
             this.linkLabelImran = new System.Windows.Forms.LinkLabel();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabelJonas = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -219,11 +220,21 @@
             this.linkLabelJonas.Text = "@rappen";
             this.linkLabelJonas.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelJonas_LinkClicked);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 272);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(149, 13);
+            this.label7.TabIndex = 31;
+            this.label7.Text = "The Dynamics 365 community";
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(547, 405);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.linkLabelJonas);
             this.Controls.Add(this.label4);
@@ -267,5 +278,6 @@
         private System.Windows.Forms.LinkLabel linkLabelImran;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabelJonas;
+        private System.Windows.Forms.Label label7;
     }
 }
