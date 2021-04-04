@@ -185,6 +185,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 throw new ArgumentNullException("image");
             }
+            
+            if(org.Webhooks.TryGetValue(image.AssemblyId, out CrmServiceEndpoint pluginAssembly))
+            {
+                return RegisterImage(org, image, pluginAssembly.Steps[image.StepId]);    
+            }
             return RegisterImage(org, image, org[image.AssemblyId][image.PluginId][image.StepId]);
         }
 
