@@ -17,12 +17,9 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
--- New Feature/Improvements --
-#93: Improved handling of multiple version @BetimBeja
-#95: Save and reuse filepath for assembly + capability to add assembly and step as solution component @MscrmTools
-
--- Updates --
-Updated dependencies
+      -- Bug Fixes --
+      #97 Fixed updating assembly description @BetimBeja
+      #98 Fixed missing key when registering Image with WebHook @BetimBeja
 
     </releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
