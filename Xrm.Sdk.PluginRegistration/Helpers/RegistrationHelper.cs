@@ -882,7 +882,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             // Work around as updating only description is failing with publickeytoken not null
-            var pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)) as PluginAssembly;
+            var pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)).ToEntity<PluginAssembly>();
             //PluginAssembly pt1 = new PluginAssembly();
             pt1.Description = description;
             org.OrganizationService.Update(pt1);
