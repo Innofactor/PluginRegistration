@@ -17,11 +17,10 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-      -- Bug Fixes --
-      #97 Fixed updating assembly description @BetimBeja
-      #98 Fixed missing key when registering Image with WebHook @BetimBeja
+		-- Bug Fixes --
+		#99 Fixed search dialog anchor for better visibility of results @valdik5379455
 
-    </releaseNotes>
+	</releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
       <dependency id="XrmToolBoxPackage" version="1.2021.2.45" />
