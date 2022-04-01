@@ -112,7 +112,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         {
                             addattribute = true;
                         }
-                        continue;
+                        break;
                 }
                 if (addattribute)
                 {
@@ -156,15 +156,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             Close();
         }
 
-        private void linkSelectAllOrNone_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            var checkVal = sender == linkSelectAll;
-            lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
-            lsvAttributes.Items.Cast<ListViewItem>().ToList().ForEach(i => i.Checked = checkVal);
-            lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
-            RefreshCurrentAndCounts();
-        }
-
         private void DisplayAttributes()
         {
             Invoke(new Action(() =>
@@ -180,6 +171,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 lsvAttributes.Items.AddRange(items.ToArray());
                 lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
             }));
+        }
+
+        private void linkSelectAllOrNone_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var checkVal = sender == linkSelectAll;
+            lsvAttributes.ItemChecked -= lsvAttributes_ItemChecked;
+            lsvAttributes.Items.Cast<ListViewItem>().ToList().ForEach(i => i.Checked = checkVal);
+            lsvAttributes.ItemChecked += lsvAttributes_ItemChecked;
+            RefreshCurrentAndCounts();
         }
 
         private void lsvAttributes_ColumnClick(object sender, ColumnClickEventArgs e)
