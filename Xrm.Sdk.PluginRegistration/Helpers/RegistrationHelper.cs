@@ -29,6 +29,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
     using System.Text;
     using Wrappers;
     using Xrm.Sdk.PluginRegistration.Controls;
+    using System.Linq;
 
     public static class RegistrationHelper
     {
@@ -183,6 +184,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             else if (image == null)
             {
                 throw new ArgumentNullException("image");
+            }
+            
+            if(org.Webhooks.TryGetValue(image.AssemblyId, out CrmServiceEndpoint pluginAssembly))
+            {
+                return RegisterImage(org, image, pluginAssembly.Steps[image.StepId]);    
             }
             return RegisterImage(org, image, org[image.AssemblyId][image.PluginId][image.StepId]);
         }
@@ -793,8 +799,18 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     {
                         prog.Increment();
                     }
-
+                    var assembly = org.Assemblies[assemblyId];
                     org.Assemblies.Remove(assemblyId);
+                    var assemblies = org.Assemblies.Values.Where(a => a.Name == assembly.Name);
+                    if (assemblies.Count() == 1)
+                    {
+                        assembly = assemblies.First();
+                        assembly.MultipleVersions = false;
+                        foreach (var plugin in assembly.Plugins.Values)
+                        {
+                            plugin.AssemblyVersion = null;
+                        }
+                    }
                 }
 
                 if (prog != null)
@@ -871,7 +887,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             // Work around as updating only description is failing with publickeytoken not null
-            var pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)) as PluginAssembly;
+            var pt1 = org.OrganizationService.Retrieve(PluginAssembly.EntityLogicalName, assemblyId, new ColumnSet(true)).ToEntity<PluginAssembly>();
             //PluginAssembly pt1 = new PluginAssembly();
             pt1.Description = description;
             org.OrganizationService.Update(pt1);

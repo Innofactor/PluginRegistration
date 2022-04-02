@@ -45,6 +45,7 @@
             this.linkLabelImran = new System.Windows.Forms.LinkLabel();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabelJonas = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -52,7 +53,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.listAssemblies);
-            this.groupBox1.Location = new System.Drawing.Point(174, 137);
+            this.groupBox1.Location = new System.Drawing.Point(192, 135);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
@@ -66,7 +67,6 @@
             this.listAssemblies.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.listAssemblies.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listAssemblies.FullRowSelect = true;
             this.listAssemblies.GridLines = true;
             this.listAssemblies.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -117,7 +117,7 @@
             this.lblDescription.Location = new System.Drawing.Point(121, 57);
             this.lblDescription.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(375, 37);
+            this.lblDescription.Size = new System.Drawing.Size(427, 37);
             this.lblDescription.TabIndex = 20;
             this.lblDescription.Text = "This is special flavor of classical Plugin Registration Tool provided by Microsof" +
     "t as CRM SDK code sample.";
@@ -193,10 +193,10 @@
             this.linkLabelImran.AutoSize = true;
             this.linkLabelImran.Location = new System.Drawing.Point(97, 227);
             this.linkLabelImran.Name = "linkLabelImran";
-            this.linkLabelImran.Size = new System.Drawing.Size(72, 13);
+            this.linkLabelImran.Size = new System.Drawing.Size(90, 13);
             this.linkLabelImran.TabIndex = 27;
             this.linkLabelImran.TabStop = true;
-            this.linkLabelImran.Text = "@imranakram";
+            this.linkLabelImran.Text = "@imranakram365";
             this.linkLabelImran.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelImran_LinkClicked);
             // 
             // label6
@@ -219,11 +219,21 @@
             this.linkLabelJonas.Text = "@rappen";
             this.linkLabelJonas.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelJonas_LinkClicked);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 272);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(149, 13);
+            this.label7.TabIndex = 31;
+            this.label7.Text = "The Dynamics 365 community";
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 405);
+            this.ClientSize = new System.Drawing.Size(564, 405);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.linkLabelJonas);
             this.Controls.Add(this.label4);
@@ -267,5 +277,6 @@
         private System.Windows.Forms.LinkLabel linkLabelImran;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabelJonas;
+        private System.Windows.Forms.Label label7;
     }
 }

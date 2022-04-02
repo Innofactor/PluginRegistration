@@ -17,22 +17,15 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-      -- New Feature --
-      #83: Webhooks feature, thanks to @DynamicsNinja
-      
-      -- Bug Fixes --
-      #85, #86: Fixed showing webhook button for CDS versions lower than v9.0
-      #87, #88: Brought back Save button for metadata update
+		-- Bug Fixes --
+		#99 Fixed search dialog anchor for better visibility of results @valdik5379455
 
-      -- Updates --
-      Updated dependencies
-
-    </releaseNotes>
+	</releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
-      <dependency id="XrmToolBoxPackage" version="1.2020.11.42" />
-      <dependency id="CsvHelper" version="18.0.0"/>
-      <dependency id="EPPlus" version="5.4.2"/>
+      <dependency id="XrmToolBoxPackage" version="1.2021.2.45" />
+      <dependency id="CsvHelper" version="26.1.0"/>
+      <dependency id="EPPlus" version="5.6.1"/>
     </dependencies>
   </metadata>
   <files>
