@@ -352,7 +352,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                     default:
                         throw new NotImplementedException($"ImageType = {ImageType.ToString()}");
                 }
-
+                bool missingInfoFlag = false;
                 //Retrieve the MessagePropertyName object
                 if (m_propertyTitle == null)
                 {
@@ -373,23 +373,33 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         }
                         else
                         {
-                            CrmMessageEntity messageEntity = Organization.MessageEntities[step.MessageEntityId];
-                            messageId = messageEntity.MessageId;
-                            primaryEntity = messageEntity.PrimaryEntity;
+                            if (Organization.MessageEntities.TryGetValue(step.MessageEntityId, out CrmMessageEntity messageEntity))
+                            {
+                                messageId = messageEntity.MessageId;
+                                primaryEntity = messageEntity.PrimaryEntity;
+                            }
+                            else
+                            {
+                                primaryEntity = null;
+                                messageId = Guid.Empty;
+                                missingInfoFlag = true;
+                            }
                         }
 
                         m_propertyTitle = string.Empty;
-
-                        //Determine the title of the property
-                        List<ImageMessagePropertyName> validProperties = m_org.Messages[messageId].ImageMessagePropertyNames;
-                        if (0 != validProperties.Count && !string.IsNullOrEmpty(m_propertyName))
+                        if (!missingInfoFlag)
                         {
-                            foreach (ImageMessagePropertyName property in validProperties)
+                            //Determine the title of the property
+                            List<ImageMessagePropertyName> validProperties = m_org.Messages[messageId].ImageMessagePropertyNames;
+                            if (0 != validProperties.Count && !string.IsNullOrEmpty(m_propertyName))
                             {
-                                if (string.Equals(property.Name, m_propertyName, StringComparison.OrdinalIgnoreCase))
+                                foreach (ImageMessagePropertyName property in validProperties)
                                 {
-                                    m_propertyTitle = property.Label;
-                                    break;
+                                    if (string.Equals(property.Name, m_propertyName, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        m_propertyTitle = property.Label;
+                                        break;
+                                    }
                                 }
                             }
                         }
