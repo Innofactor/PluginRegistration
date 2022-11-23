@@ -36,7 +36,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private bool m_assemblyLoaded = false;
         private CrmPluginAssembly m_currentAssembly;
         private string m_lastAssemblyFileName;
-        private List<PluginAssemblyFileMapping> m_mapping;
+        private PluginAssemblyFileMapping m_mapping;
+        private List<PluginAssemblyFileMapping> m_mappings;
         private CrmOrganization m_org;
         private MainControl m_orgControl;
         private ProgressIndicator m_progRegistration;
@@ -46,7 +47,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         #region Public Constructors
 
-        public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly, List<PluginAssemblyFileMapping> mapping)
+        public PluginRegistrationForm(CrmOrganization org, MainControl orgControl, CrmPluginAssembly assembly, List<PluginAssemblyFileMapping> mappings)
         {
             if (org == null)
             {
@@ -65,7 +66,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 ProgressIndicatorAddText, ProgressIndicatorSetText,
                 ProgressIndicatorIncrement, null);
             m_currentAssembly = assembly;
-            m_mapping = mapping;
+            m_mappings = mappings;
 
             radIsolationSandbox.Checked = org.ConnectionDetail.UseOnline;
 
@@ -129,10 +130,26 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                 txtServerFileName.Text = assembly.ServerFileName;
 
-                var mappedFileName = mapping.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name)?.FilePath;
-                if (!string.IsNullOrEmpty(mappedFileName) && File.Exists(mappedFileName))
+                m_mapping = mappings.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name && m.ConnectionId == org.ConnectionDetail.ConnectionId.Value);
+                if (m_mapping == null)
                 {
-                    AssemblyPathControl.FileName = mappedFileName;
+                    m_mapping = mappings.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name);
+                    if (m_mapping != null)
+                    {
+                        mappings.Remove(m_mapping);
+                        m_mapping = new PluginAssemblyFileMapping
+                        {
+                            ConnectionId = org.ConnectionDetail.ConnectionId.Value,
+                            PluginAssemblyName = m_mapping.PluginAssemblyName,
+                            FilePath = m_mapping.FilePath
+                        };
+                        m_mappings.Add(m_mapping);
+                    }
+                }
+
+                if (m_mapping != null && !string.IsNullOrEmpty(m_mapping.FilePath) && File.Exists(m_mapping.FilePath))
+                {
+                    AssemblyPathControl.FileName = m_mapping.FilePath;
                     AssemblyPathControl_PathChanged(AssemblyPathControl, new EventArgs());
                     btnLoadAssembly_Click(btnLoadAssembly, new EventArgs());
                 }
@@ -527,19 +544,19 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
                     assembly = m_currentAssembly;
 
-                    var mapping = m_mapping.FirstOrDefault(m => m.PluginAssemblyName == assembly.Name);
-                    if (mapping == null)
+                    if (m_mapping == null)
                     {
-                        mapping = new PluginAssemblyFileMapping
+                        m_mapping = new PluginAssemblyFileMapping
                         {
                             PluginAssemblyName = assembly.Name,
-                            FilePath = AssemblyPathControl.FileName
+                            FilePath = AssemblyPathControl.FileName,
+                            ConnectionId = m_org.ConnectionDetail.ConnectionId.Value
                         };
-                        m_mapping.Add(mapping);
+                        m_mappings.Add(m_mapping);
                     }
                     else
                     {
-                        mapping.FilePath = AssemblyPathControl.FileName;
+                        m_mapping.FilePath = AssemblyPathControl.FileName;
                     }
 
                     createAssembly = false;
