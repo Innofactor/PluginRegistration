@@ -85,9 +85,11 @@ namespace Xrm.Sdk.PluginRegistration
                     CrmTreeNodeImageType.Assembly, CrmTreeNodeImageType.Image,
                     CrmTreeNodeImageType.Message, CrmTreeNodeImageType.MessageEntity,
                     CrmTreeNodeImageType.StepDisabled, CrmTreeNodeImageType.StepEnabled,
-                    CrmTreeNodeImageType.ServiceEndpoint);
+                    CrmTreeNodeImageType.ServiceEndpoint, CrmTreeNodeImageType.Package);
 
                 toolServiceEndpointRegister.Image = nodeImageList[CrmTreeNodeImageType.ServiceEndpoint];
+
+                toolPackageRegister.Image = nodeImageList[CrmTreeNodeImageType.Package];
 
                 toolAssemblyRegister.Image = nodeImageList[CrmTreeNodeImageType.Assembly];
                 mnuContextNodeAssemblyRegister.Image = toolAssemblyRegister.Image;
@@ -104,6 +106,7 @@ namespace Xrm.Sdk.PluginRegistration
                 toolViewAssembly.Image = toolAssemblyRegister.Image;
                 toolViewEntity.Image = nodeImageList[CrmTreeNodeImageType.MessageEntity];
                 toolViewMessage.Image = nodeImageList[CrmTreeNodeImageType.Message];
+                toolViewPackage.Image = nodeImageList[CrmTreeNodeImageType.Package];
 
                 toolWebHookRegister.Image = nodeImageList[CrmTreeNodeImageType.ServiceEndpoint];
 
@@ -199,6 +202,7 @@ namespace Xrm.Sdk.PluginRegistration
             toolViewAssembly.Tag = CrmViewType.Assembly;
             toolViewEntity.Tag = CrmViewType.Entity;
             toolViewMessage.Tag = CrmViewType.Message;
+            toolViewPackage.Tag = CrmViewType.Package;
 
             if (m_entitySorter == null)
             {
@@ -252,7 +256,8 @@ namespace Xrm.Sdk.PluginRegistration
         {
             Assembly,
             Message,
-            Entity
+            Entity,
+            Package
         }
 
         #endregion Private Enums
@@ -326,6 +331,19 @@ namespace Xrm.Sdk.PluginRegistration
             }
         }
 
+        public void AddPackage(CrmPluginPackage package)
+        {
+            if (package == null)
+            {
+                throw new ArgumentNullException("package");
+            }
+
+            if (m_currentView == CrmViewType.Package)
+            {
+                trvPlugins.AddNode(Guid.Empty, package);
+            }
+        }
+
         public void AddPlugin(CrmPlugin reg)
         {
             if (reg == null)
@@ -375,6 +393,11 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         parentId = step.ServiceBusConfigurationId;
                     }
+
+                    break;
+
+                case CrmViewType.Package:
+                    parentId = step.PluginId;
 
                     break;
 
@@ -560,6 +583,20 @@ namespace Xrm.Sdk.PluginRegistration
 
             trvPlugins.RefreshNode(image.NodeId, true);
             SelectItem(trvPlugins.SelectedNode);
+        }
+
+        public void RefreshPackage(CrmPluginPackage package, bool reloadChildren)
+        {
+            if (package == null)
+            {
+                throw new ArgumentNullException("package");
+            }
+
+            if (m_currentView == CrmViewType.Package)
+            {
+                trvPlugins.RefreshNode(package.NodeId, reloadChildren);
+                SelectItem(trvPlugins.SelectedNode);
+            }
         }
 
         public void RefreshPlugin(CrmPlugin plugin)
@@ -1190,6 +1227,20 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 switch (view)
                 {
+                    case CrmViewType.Package:
+                        m_rootNodeList = null;
+                        m_stepParentList = null;
+                        m_viewNodeList = null;
+
+                        var pNodes = new List<ICrmTreeNode>();
+                        foreach (CrmPluginPackage package in Organization.Packages)
+                        {
+                            pNodes.Add(package);
+                        }
+
+                        trvPlugins.LoadNodes(pNodes);
+                        break;
+
                     case CrmViewType.Assembly:
                         m_rootNodeList = null;
                         m_stepParentList = null;
@@ -1312,6 +1363,11 @@ namespace Xrm.Sdk.PluginRegistration
                 PostWorkCallBack = (argument) =>
                 {
                     Init((CrmOrganization)argument.Result);
+
+                    var isValidForPackage = e.ConnectionDetail.OrganizationMajorVersion == 9 && e.ConnectionDetail.OrganizationMinorVersion >= 2 || e.ConnectionDetail.OrganizationMajorVersion > 9;
+
+                    toolPackageRegister.Visible = isValidForPackage;
+                    toolViewPackage.Visible = isValidForPackage;
                 }
             };
 
@@ -1411,6 +1467,21 @@ namespace Xrm.Sdk.PluginRegistration
                         btnSave.Enabled = true;
                         //Load the data table and display information
                         gridTable = OrganizationHelper.CreateDataTable<CrmPlugin>(CrmPlugin.Columns, assembly.Plugins);
+                    }
+                    break;
+
+                case CrmTreeNodeType.Package:
+                    if (!isSystemNode)
+                    {
+                        CrmPluginPackage package = (CrmPluginPackage)node;
+
+                        toolUpdate.Visible = true;
+                        mnuContextNodeUpdate.Visible = true;
+                        tsmiAddToSolution.Visible = true;
+                        toolAddToSolution.Visible = true;
+                        btnSave.Enabled = true;
+                        //Load the data table and display information
+                        gridTable = OrganizationHelper.CreateDataTable<CrmPluginAssembly>(CrmPluginAssembly.Columns, package.Assemblies);
                     }
                     break;
 
@@ -1662,6 +1733,13 @@ namespace Xrm.Sdk.PluginRegistration
             regForm.ShowDialog();
         }
 
+        private void toolPackageRegister_Click(object sender, EventArgs e)
+        {
+            var regForm = new PackageRegistrationForm(Organization, this, m_settings.Mappings);
+            SettingsManager.Instance.Save(GetType(), m_settings);
+            regForm.ShowDialog(this);
+        }
+
         private void toolRefresh_Click(object sender, EventArgs e)
         {
             RefreshFullTreeView();
@@ -1807,6 +1885,14 @@ namespace Xrm.Sdk.PluginRegistration
                 case CrmTreeNodeType.Assembly:
                     {
                         var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode, m_settings.Mappings);
+                        regForm.ShowDialog(ParentForm);
+                        SettingsManager.Instance.Save(GetType(), m_settings);
+                    }
+                    break;
+
+                case CrmTreeNodeType.Package:
+                    {
+                        var regForm = new PackageRegistrationForm(Organization, this, (CrmPluginPackage)trvPlugins.SelectedNode, m_settings.Mappings);
                         regForm.ShowDialog(ParentForm);
                         SettingsManager.Instance.Save(GetType(), m_settings);
                     }
@@ -1963,7 +2049,7 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void tsbFilterAssemblies_Click(object sender, EventArgs e)
         {
-            var dialog = new AssembliesFilterForm();
+            var dialog = new AssembliesFilterForm(m_settings);
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 if (dialog.HasChanged)
@@ -1991,6 +2077,14 @@ namespace Xrm.Sdk.PluginRegistration
                     }
                     break;
 
+                case CrmTreeNodeType.Package:
+                    {
+                        var package = (CrmPluginPackage)trvPlugins.SelectedNode;
+                        componentId = package.PackageId;
+                        componentType = 10090;
+                    }
+                    break;
+
                 case CrmTreeNodeType.Step:
                     {
                         var step = (CrmPluginStep)trvPlugins.SelectedNode;
@@ -2005,7 +2099,7 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 WorkAsync(new WorkAsyncInfo
                 {
-                    Message = $"Adding {(isForAssembly ? "assembly" : "step")} to solution {dialog.SelectedSolution.GetAttributeValue<string>("friendlyname")}",
+                    Message = $"Adding {trvPlugins.SelectedNode.NodeType} to solution {dialog.SelectedSolution.GetAttributeValue<string>("friendlyname")}",
                     Work = (bw, evt) =>
                     {
                         Service.Execute(new AddSolutionComponentRequest

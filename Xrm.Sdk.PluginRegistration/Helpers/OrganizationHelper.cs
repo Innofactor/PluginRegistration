@@ -46,7 +46,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         #region Private Fields
 
         private static Dictionary<string, ColumnSet> m_entityColumns = new Dictionary<string, ColumnSet>();
-        private volatile static List<CrmMessage> m_messageList = new List<CrmMessage>();
+        private static volatile List<CrmMessage> m_messageList = new List<CrmMessage>();
 
         #endregion Private Fields
 
@@ -204,26 +204,63 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// Loads/Reloads assemblies from CRM
         /// </summary>
         /// <param name="assemblyId">Assembly Ids to reload (does not reload plugins). If not specified, reloads all assemblies</param>
-        public static void LoadAssemblies(CrmOrganization org)
+        public static void LoadAssemblies(CrmOrganization org, Guid? packageId = null)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
 
+            var cols = GetColumnSet(PluginAssembly.EntityLogicalName);
+            var filters = CreateAssemblyFilter();
+
+            if (org.ConnectionDetail.OrganizationMajorVersion < 9
+                || org.ConnectionDetail.OrganizationMajorVersion == 9
+                && org.ConnectionDetail.OrganizationMinorVersion < 2)
+            {
+                cols.Columns.Remove("packageid");
+            }
+            else
+            {
+                if (packageId.HasValue)
+                {
+                    filters.AddCondition("packageid", ConditionOperator.Equal, packageId.Value);
+                }
+            }
+
             var query = new QueryExpression
             {
-                ColumnSet = GetColumnSet(PluginAssembly.EntityLogicalName),
-                Criteria = CreateAssemblyFilter(),
+                ColumnSet = cols,
+                Criteria = filters,
                 EntityName = PluginAssembly.EntityLogicalName
             };
 
-            //Clear the assemblies list since we are reloading from scratch
-            org.ClearAssemblies();
+            if (!packageId.HasValue)
+            {
+                //Clear the assemblies list since we are reloading from scratch
+                org.ClearAssemblies();
+            }
 
             foreach (var assembly in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<PluginAssembly>(x)))
             {
-                org.AddAssembly(new CrmPluginAssembly(org, assembly));
+                if (assembly.PackageId != null)
+                {
+                    var package = org.Packages[assembly.PackageId.Id];
+                    if (package.Assemblies.ContainsKey(assembly.PluginAssemblyId.Value))
+                    {
+                        package.Assemblies[assembly.PluginAssemblyId.Value].RefreshFromPluginAssembly(assembly);
+                    }
+                    else
+                    {
+                        package.AddPluginAssembly(new CrmPluginAssembly(org, assembly));
+                    }
+
+                    org.AddAssembly(package, new CrmPluginAssembly(org, assembly));
+                }
+                else
+                {
+                    org.AddAssembly(new CrmPluginAssembly(org, assembly));
+                }
             }
         }
 
@@ -375,6 +412,76 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return msgList;
         }
 
+        public static void LoadPlugins(CrmOrganization org, out Dictionary<Guid, ICrmEntity> typeList, Guid? packageId = null)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+
+            //Create the query
+            var query = new QueryExpression(PluginType.EntityLogicalName)
+            {
+                ColumnSet = GetColumnSet(PluginType.EntityLogicalName),
+                Criteria = new FilterExpression()
+            };
+            query.Criteria.AddCondition("typename", ConditionOperator.NotLike, "Compiled.Workflow%");
+
+            //Add a filter to only include the desired system plugins
+            var systemAssemblyFilter = query.Criteria.AddFilter(LogicalOperator.Or);
+            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.Null);
+            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.NotEqual, 0);
+            systemAssemblyFilter.AddCondition("typename", ConditionOperator.In,
+                "Microsoft.Crm.Extensibility.InternalOperationPlugin",
+                V3CalloutProxyTypeName,
+                "Microsoft.Crm.ServiceBus.ServiceBusPlugin");
+
+            //Link to the assembly to ensure that only valid plug-ins are retrieved
+            var assemblyLink = query.AddLink(PluginAssembly.EntityLogicalName, "pluginassemblyid", "pluginassemblyid");
+            assemblyLink.LinkCriteria = CreateAssemblyFilter();
+
+            if (packageId.HasValue)
+            {
+                assemblyLink.LinkCriteria.AddCondition("packageid", ConditionOperator.Equal, packageId.Value);
+            }
+
+            //Retrieve the results
+            var results = org.OrganizationService.RetrieveMultipleAllPages(query);
+
+            //Initialize the map
+            bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
+            typeList = new Dictionary<Guid, ICrmEntity>();
+
+            foreach (var plugin in results.Entities.Select(x => Magic.CastTo<PluginType>(x)))
+            {
+                var assembly = org.Assemblies[plugin.PluginAssemblyId.Id];
+                if (assembly.Plugins.ContainsKey(plugin.PluginTypeId.Value))
+                {
+                    assembly[plugin.PluginTypeId.Value].RefreshFromPluginType(plugin);
+                }
+                else
+                {
+                    assembly.AddPlugin(new CrmPlugin(org, plugin));
+                }
+
+                var crmPlugin = assembly[plugin.PluginTypeId.Value];
+                if (!profilerPluginLocated)
+                {
+                    bool isProfilerPlugin = false;// IsProfilerPlugin(crmPlugin);
+                    crmPlugin.IsProfilerPlugin = isProfilerPlugin;
+                    profilerPluginLocated = isProfilerPlugin;
+
+                    if (isProfilerPlugin)
+                    {
+                        org.ProfilerPlugin = crmPlugin;
+                        assembly.IsProfilerAssembly = true;
+                    }
+                }
+
+                typeList.Add(plugin.PluginTypeId.Value, crmPlugin);
+            }
+        }
+
         /// <summary>
         /// Loads/Reloads Service Endpoitns from CRM
         /// </summary>
@@ -433,8 +540,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 typeList.Add(crmWebhook.EntityId, crmWebhook);
             }
         }
-
-
 
         /// <summary>
         /// Initializes any items that need to be initialized when the connection gets opened
@@ -495,6 +600,13 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     prog.Increment("Loading Messages");
                 }
                 LoadMessageEntities(org, messages);
+
+                //Initialize list of packages
+                if (prog != null)
+                {
+                    prog.Increment("Loading Packages");
+                }
+                LoadPackages(org);
 
                 //Initialize list of assemblies
                 if (prog != null)
@@ -828,6 +940,30 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return criteria;
         }
 
+        private static FilterExpression CreatePackageFilter()
+        {
+            var criteria = new FilterExpression();
+
+            //if (SettingsManager.Instance.TryLoad(typeof(MainControl), out Settings settings))
+            //{
+            //    if (!string.IsNullOrEmpty(settings.ExcludedAssemblies))
+            //    {
+            //        var names = settings.ExcludedAssemblies.Split(',');
+            //        foreach (var name in names)
+            //        {
+            //            criteria.AddCondition("name", ConditionOperator.DoesNotBeginWith, name.Trim());
+            //        }
+            //    }
+
+            //    if (settings.ExcludeManagedAssemblies)
+            //    {
+            //        criteria.AddCondition("ismanaged", ConditionOperator.Equal, false);
+            //    }
+            //}
+
+            return criteria;
+        }
+
         private static FilterExpression CreateStepFilter()
         {
             var criteria = new FilterExpression();
@@ -865,8 +1001,19 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                             "authtype");
                         break;
 
+                    case PluginPackage.EntityLogicalName:
+                        cols.AddColumns(
+                            "name",
+                            "createdon",
+                            "modifiedon",
+                            "solutionid",
+                            "pluginpackageid",
+                            "version");
+                        break;
+
                     case PluginAssembly.EntityLogicalName:
                         cols.AddColumns(
+                            "packageid",
                             "name",
                             "createdon",
                             "modifiedon",
@@ -1071,68 +1218,26 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        private static void LoadPlugins(CrmOrganization org, out Dictionary<Guid, ICrmEntity> typeList)
+        private static void LoadPackages(CrmOrganization org)
         {
             if (org == null)
             {
                 throw new ArgumentNullException("org");
             }
 
-            //Create the query
-            var query = new QueryExpression(PluginType.EntityLogicalName)
+            var query = new QueryExpression
             {
-                ColumnSet = GetColumnSet(PluginType.EntityLogicalName),
-                Criteria = new FilterExpression()
+                ColumnSet = GetColumnSet(PluginPackage.EntityLogicalName),
+                Criteria = CreatePackageFilter(),
+                EntityName = PluginPackage.EntityLogicalName
             };
-            query.Criteria.AddCondition("typename", ConditionOperator.NotLike, "Compiled.Workflow%");
 
-            //Add a filter to only include the desired system plugins
-            var systemAssemblyFilter = query.Criteria.AddFilter(LogicalOperator.Or);
-            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.Null);
-            systemAssemblyFilter.AddCondition("customizationlevel", ConditionOperator.NotEqual, 0);
-            systemAssemblyFilter.AddCondition("typename", ConditionOperator.In,
-                "Microsoft.Crm.Extensibility.InternalOperationPlugin",
-                V3CalloutProxyTypeName,
-                "Microsoft.Crm.ServiceBus.ServiceBusPlugin");
+            //Clear the assemblies list since we are reloading from scratch
+            org.ClearPackages();
 
-            //Link to the assembly to ensure that only valid plug-ins are retrieved
-            var assemblyLink = query.AddLink(PluginAssembly.EntityLogicalName, "pluginassemblyid", "pluginassemblyid");
-            assemblyLink.LinkCriteria = CreateAssemblyFilter();
-
-            //Retrieve the results
-            var results = org.OrganizationService.RetrieveMultipleAllPages(query);
-
-            //Initialize the map
-            bool profilerPluginLocated = false;//!OrganizationHelper.IsProfilerSupported;
-            typeList = new Dictionary<Guid, ICrmEntity>();
-
-            foreach (var plugin in results.Entities.Select(x => Magic.CastTo<PluginType>(x)))
+            foreach (var package in org.OrganizationService.RetrieveMultipleAllPages(query).Entities.Select(x => Magic.CastTo<PluginPackage>(x)))
             {
-                var assembly = org.Assemblies[plugin.PluginAssemblyId.Id];
-                if (assembly.Plugins.ContainsKey(plugin.PluginTypeId.Value))
-                {
-                    assembly[plugin.PluginTypeId.Value].RefreshFromPluginType(plugin);
-                }
-                else
-                {
-                    assembly.AddPlugin(new CrmPlugin(org, plugin));
-                }
-
-                var crmPlugin = assembly[plugin.PluginTypeId.Value];
-                if (!profilerPluginLocated)
-                {
-                    bool isProfilerPlugin = false;// IsProfilerPlugin(crmPlugin);
-                    crmPlugin.IsProfilerPlugin = isProfilerPlugin;
-                    profilerPluginLocated = isProfilerPlugin;
-
-                    if (isProfilerPlugin)
-                    {
-                        org.ProfilerPlugin = crmPlugin;
-                        assembly.IsProfilerAssembly = true;
-                    }
-                }
-
-                typeList.Add(plugin.PluginTypeId.Value, crmPlugin);
+                org.AddPackage(new CrmPluginPackage(org, package));
             }
         }
 
@@ -1208,7 +1313,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                                                     !org.SecureConfigurationPermissionDenied;
 
                 //Retrieve the secure configuration
-                string secureConfiguration = (string) secureConfig?.Value;
+                string secureConfiguration = (string)secureConfig?.Value;
 
                 //Retrieve the plug-in
 #pragma warning disable 0612
@@ -1254,7 +1359,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
                         if (crmPlugin.IsProfilerPlugin)
                         {
-
                         }
 
                         crmStep.SecureConfigurationRecordIdInvalid = invalidSecureConfigurationId;

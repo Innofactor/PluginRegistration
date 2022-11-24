@@ -63,6 +63,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         private int m_customizationLevel;
         private string m_Name = null;
         private CrmOrganization m_org = null;
+        private Guid m_packageId = Guid.Empty;
         private Dictionary<Guid, CrmPlugin> m_pluginList = new Dictionary<Guid, CrmPlugin>();
         private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
 
@@ -123,6 +124,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
                         new CrmEntityColumn("IsolationMode", "Isolation Mode", typeof(string)),
                         new CrmEntityColumn("Enabled", "Enabled", typeof(bool)),
                         new CrmEntityColumn("Id", "AssemblyId", typeof(Guid)),
+                        new CrmEntityColumn("PackageId", "PackageId", typeof(Guid)),
                         };
                 }
 
@@ -230,6 +232,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         /// </summary>
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public DateTime? ModifiedOn { get; private set; }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public bool MultipleVersions { get; set; }
 
         [Category("Information"), Browsable(true), Description("Name of the Assembly"), ReadOnly(true)]
         public string Name
@@ -373,6 +379,24 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             }
         }
 
+        [Category("Information"), Browsable(true), ReadOnly(true)]
+        public Guid PackageId
+        {
+            get
+            {
+                return m_packageId;
+            }
+            set
+            {
+                if (value == m_packageId)
+                {
+                    return;
+                }
+
+                m_packageId = value;
+            }
+        }
+
         [Browsable(false)]
         public CrmEntityDictionary<CrmPlugin> Plugins
         {
@@ -435,10 +459,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [Category("Information"), Browsable(true), ReadOnly(true)]
         public string Version { get; set; }
-
-        [XmlIgnore]
-        [Browsable(false)]
-        public bool MultipleVersions { get; set; }
 
         #endregion Public Properties
 
@@ -605,6 +625,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             if (assembly.PluginAssemblyId != null)
             {
                 AssemblyId = assembly.PluginAssemblyId.Value;
+            }
+
+            if (assembly.PackageId != null)
+            {
+                PackageId = assembly.PackageId?.Id ?? Guid.Empty;
             }
 
             if (assembly.CreatedOn != null && (assembly.CreatedOn.HasValue))

@@ -23,9 +23,9 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
     using Microsoft.Xrm.Sdk;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
-    using System.Linq;
 
     public interface ICrmEntity
     {
@@ -35,6 +35,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         string EntityType { get; }
         bool IsSystemCrmEntity { get; }
         Dictionary<string, object> Values { get; }
+
         #endregion Public Properties
 
         #region Public Methods
@@ -143,18 +144,19 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         private Guid m_organizationId = Guid.Empty;
         private volatile IOrganizationService m_organizationService = null;
         private string m_organizationServiceUrl = null;
+        private Dictionary<Guid, CrmPluginPackage> m_packageList = new Dictionary<Guid, CrmPluginPackage>();
+        private CrmEntityDictionary<CrmPluginPackage> m_packageReadOnlyList = null;
         private Dictionary<Guid, CrmPlugin> m_pluginList = new Dictionary<Guid, CrmPlugin>();
         private CrmEntityDictionary<CrmPlugin> m_pluginReadOnlyList = null;
         private Version m_serverBuild = null;
         private Dictionary<Guid, CrmServiceEndpoint> m_serviceEndpointList = new Dictionary<Guid, CrmServiceEndpoint>();
-        private Dictionary<Guid, CrmServiceEndpoint> m_webhookList = new Dictionary<Guid, CrmServiceEndpoint>();
         private CrmEntityDictionary<CrmServiceEndpoint> m_serviceEndpointReadOnlyList = null;
-        private CrmEntityDictionary<CrmServiceEndpoint> m_webhookReadOnlyList = null;
-
         private Dictionary<Guid, CrmPluginStep> m_stepList = new Dictionary<Guid, CrmPluginStep>();
         private CrmEntityDictionary<CrmPluginStep> m_stepReadOnlyList = null;
         private string m_uniqueName = null;
         private Dictionary<Guid, CrmUser> m_userList = new Dictionary<Guid, CrmUser>();
+        private Dictionary<Guid, CrmServiceEndpoint> m_webhookList = new Dictionary<Guid, CrmServiceEndpoint>();
+        private CrmEntityDictionary<CrmServiceEndpoint> m_webhookReadOnlyList = null;
 
         #endregion Private Fields
 
@@ -424,6 +426,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
+        public CrmEntityDictionary<CrmPluginPackage> Packages
+        {
+            get
+            {
+                if (m_packageReadOnlyList == null)
+                {
+                    m_packageReadOnlyList = new CrmEntityDictionary<CrmPluginPackage>(m_packageList);
+                }
+
+                return m_packageReadOnlyList;
+            }
+        }
+
+        [XmlIgnore]
         public CrmEntityDictionary<CrmPlugin> Plugins
         {
             get
@@ -479,20 +495,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         }
 
         [XmlIgnore]
-        public CrmEntityDictionary<CrmServiceEndpoint> Webhooks
-        {
-            get
-            {
-                if (m_webhookReadOnlyList == null)
-                {
-                    m_webhookReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(m_webhookList);
-                }
-
-                return m_webhookReadOnlyList;
-            }
-        }
-
-        [XmlIgnore]
         public CrmEntityDictionary<CrmPluginStep> Steps
         {
             get
@@ -517,6 +519,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         [XmlIgnore]
         public string WebApplicationUrl { get; set; }
+
+        [XmlIgnore]
+        public CrmEntityDictionary<CrmServiceEndpoint> Webhooks
+        {
+            get
+            {
+                if (m_webhookReadOnlyList == null)
+                {
+                    m_webhookReadOnlyList = new CrmEntityDictionary<CrmServiceEndpoint>(m_webhookList);
+                }
+
+                return m_webhookReadOnlyList;
+            }
+        }
 
         #endregion Public Properties
 
@@ -567,32 +583,60 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         #region Public Methods
 
+        public void AddAssembly(CrmPluginPackage package, CrmPluginAssembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+            else if (!m_assemblyList.ContainsKey(assembly.AssemblyId))
+            {
+                ValidateEntity(assembly);
+
+                if (!package.Assemblies.ContainsKey(assembly.AssemblyId))
+                {
+                    package.AddPluginAssembly(assembly);
+                }
+
+                m_assemblyList.Add(assembly.AssemblyId, assembly);
+                var assemblies = m_assemblyList.Values.Where(a => a.Name == assembly.Name);
+                if (assemblies.Any(a => a.AssemblyId != assembly.AssemblyId)) //multiple versions
+                {
+                    foreach (var c_Assembly in assemblies)
+                    {
+                        if (c_Assembly.MultipleVersions) continue;
+                        c_Assembly.MultipleVersions = true;
+                        foreach (var plugin in c_Assembly.Plugins.Values)
+                        {
+                            plugin.AssemblyVersion = c_Assembly.Version;
+                        }
+                    }
+                }
+            }
+        }
+
         public void AddAssembly(CrmPluginAssembly assembly)
         {
             if (assembly == null)
             {
                 throw new ArgumentNullException("assembly");
             }
-            else if (m_assemblyList.ContainsKey(assembly.AssemblyId))
-            {
-                throw new ArgumentException("Assembly is already in the list");
-            }
-            else
+            else if (!m_assemblyList.ContainsKey(assembly.AssemblyId))
             {
                 ValidateEntity(assembly);
-            }
 
-            m_assemblyList.Add(assembly.AssemblyId, assembly);
-            var assemblies = m_assemblyList.Values.Where(a => a.Name == assembly.Name);
-            if (assemblies.Any(a => a.AssemblyId != assembly.AssemblyId)) //multiple versions
-            {
-                foreach (var c_Assembly in assemblies)
+                m_assemblyList.Add(assembly.AssemblyId, assembly);
+                var assemblies = m_assemblyList.Values.Where(a => a.Name == assembly.Name);
+                if (assemblies.Any(a => a.AssemblyId != assembly.AssemblyId)) //multiple versions
                 {
-                    if (c_Assembly.MultipleVersions) continue;
-                    c_Assembly.MultipleVersions = true;
-                    foreach (var plugin in c_Assembly.Plugins.Values)
+                    foreach (var c_Assembly in assemblies)
                     {
-                        plugin.AssemblyVersion = c_Assembly.Version;
+                        if (c_Assembly.MultipleVersions) continue;
+                        c_Assembly.MultipleVersions = true;
+                        foreach (var plugin in c_Assembly.Plugins.Values)
+                        {
+                            plugin.AssemblyVersion = c_Assembly.Version;
+                        }
                     }
                 }
             }
@@ -662,6 +706,24 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_messageEntityList.Add(entity.EntityId, entity);
         }
 
+        public void AddPackage(CrmPluginPackage package)
+        {
+            if (package == null)
+            {
+                throw new ArgumentNullException("package");
+            }
+            else if (m_packageList.ContainsKey(package.PackageId))
+            {
+                throw new ArgumentException("Package is already in the list");
+            }
+            else
+            {
+                ValidateEntity(package);
+            }
+
+            m_packageList.Add(package.PackageId, package);
+        }
+
         public void AddPlugin(CrmPluginAssembly assembly, CrmPlugin plugin)
         {
             if (plugin == null)
@@ -699,20 +761,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_serviceEndpointList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
         }
 
-        public void AddWebhook(CrmServiceEndpoint serviceEndpoint)
-        {
-            if (serviceEndpoint == null)
-            {
-                throw new ArgumentNullException("serviceEndpoint");
-            }
-            if (m_webhookList.ContainsKey(serviceEndpoint.ServiceEndpointId))
-            {
-                throw new ArgumentException("ServiceEndpoint is already in the list");
-            }
-
-            m_webhookList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
-        }
-
         public void AddStep(ICrmEntity plugin, CrmPluginStep step)
         {
             if (step == null)
@@ -746,6 +794,20 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             ValidateEntity(step);
 
             m_stepList.Add(step.StepId, step);
+        }
+
+        public void AddWebhook(CrmServiceEndpoint serviceEndpoint)
+        {
+            if (serviceEndpoint == null)
+            {
+                throw new ArgumentNullException("serviceEndpoint");
+            }
+            if (m_webhookList.ContainsKey(serviceEndpoint.ServiceEndpointId))
+            {
+                throw new ArgumentException("ServiceEndpoint is already in the list");
+            }
+
+            m_webhookList.Add(serviceEndpoint.ServiceEndpointId, serviceEndpoint);
         }
 
         /// <summary>
@@ -833,6 +895,15 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_messageList.Clear();
         }
 
+        public void ClearPackages()
+        {
+            m_imageList.Clear();
+            m_stepList.Clear();
+            m_pluginList.Clear();
+            m_assemblyList.Clear();
+            m_packageList.Clear();
+        }
+
         public void ClearPlugins()
         {
             ClearPlugins(Guid.Empty);
@@ -872,11 +943,6 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             m_serviceEndpointList.Clear();
         }
 
-        public void ClearWebhooks()
-        {
-            m_webhookList.Clear();
-        }
-
         public void ClearSteps()
         {
             ClearSteps(Guid.Empty);
@@ -908,6 +974,11 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             {
                 RemoveStep(step.PluginId, step.StepId);
             }
+        }
+
+        public void ClearWebhooks()
+        {
+            m_webhookList.Clear();
         }
 
         /// <summary>
@@ -1064,6 +1135,30 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             else
             {
                 throw new ArgumentException("MessageEntity is not in list", "messageEntityId");
+            }
+        }
+
+        public void RemovePackage(Guid packageId)
+        {
+            if (m_assemblyList.ContainsKey(packageId))
+            {
+                CrmPluginPackage package = m_packageList[packageId];
+
+                //Copy the list of plugins. Can't use the enumerator because we are changing the underlying data
+                Guid[] assemblyIdList = new Guid[package.Assemblies.Count];
+                package.Assemblies.Keys.CopyTo(assemblyIdList, 0);
+
+                //Loop through the plugin id's
+                foreach (Guid assemblyId in assemblyIdList)
+                {
+                    RemoveAssembly(assemblyId);
+                }
+
+                m_assemblyList.Remove(packageId);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Package Id", "packageId");
             }
         }
 
@@ -1264,6 +1359,26 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             else if (assembly.AssemblyId == Guid.Empty)
             {
                 throw new ArgumentException("AssemblyId must be set to valid Guid");
+            }
+        }
+
+        private void ValidateEntity(CrmPluginPackage package)
+        {
+            if (package == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (m_packageList.ContainsKey(package.PackageId))
+            {
+                throw new ArgumentException("Package is already in the list");
+            }
+            else if (package.Organization != this)
+            {
+                throw new ArgumentException("Organization must match");
+            }
+            else if (package.PackageId == Guid.Empty)
+            {
+                throw new ArgumentException("PackageId must be set to valid Guid");
             }
         }
 

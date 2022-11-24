@@ -26,10 +26,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using Wrappers;
     using Xrm.Sdk.PluginRegistration.Controls;
-    using System.Linq;
 
     public static class RegistrationHelper
     {
@@ -185,10 +185,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 throw new ArgumentNullException("image");
             }
-            
-            if(org.Webhooks.TryGetValue(image.AssemblyId, out CrmServiceEndpoint pluginAssembly))
+
+            if (org.Webhooks.TryGetValue(image.AssemblyId, out CrmServiceEndpoint pluginAssembly))
             {
-                return RegisterImage(org, image, pluginAssembly.Steps[image.StepId]);    
+                return RegisterImage(org, image, pluginAssembly.Steps[image.StepId]);
             }
             return RegisterImage(org, image, org[image.AssemblyId][image.PluginId][image.StepId]);
         }
@@ -253,22 +253,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return org.OrganizationService.Create(sep);
         }
 
-        public static Guid RegisterWebHook(CrmOrganization org, CrmServiceEndpoint webhook)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (webhook == null)
-            {
-                throw new ArgumentNullException("webhook");
-            }
-
-            ServiceEndpoint wh = webhook.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
-
-            return org.OrganizationService.Create(wh);
-        }
-
         public static Guid RegisterStep(CrmOrganization org, CrmPluginStep step)
         {
             if (org == null)
@@ -303,6 +287,22 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             return org.OrganizationService.Create(sdkStep);
+        }
+
+        public static Guid RegisterWebHook(CrmOrganization org, CrmServiceEndpoint webhook)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (webhook == null)
+            {
+                throw new ArgumentNullException("webhook");
+            }
+
+            ServiceEndpoint wh = webhook.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName] as ServiceEndpoint;
+
+            return org.OrganizationService.Create(wh);
         }
 
         /// <summary>
@@ -600,6 +600,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             };
 
             var serviceEndpointList = new Collection<Guid>();
+            var packageList = new Collection<Guid>();
             var assemblyList = new Collection<Guid>();
             var pluginList = new Collection<Guid>();
             var stepList = new Collection<Guid>();
@@ -611,6 +612,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             {
                 switch (entity.EntityType)
                 {
+                    case PluginPackage.EntityLogicalName:
+                        packageList.Add(entity.EntityId);
+                        break;
+
                     case ServiceEndpoint.EntityLogicalName:
                         serviceEndpointList.Add(entity.EntityId);
                         break;
@@ -697,6 +702,11 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //Loop through each object and delete them
             var deleteStats = new Dictionary<string, int>();
             int totalSteps = secureConfigList.Count + 1;
+            if (packageList.Count != 0)
+            {
+                deleteStats.Add(packageList.Count == 1 ? "Package" : "Packages", packageList.Count);
+                totalSteps += packageList.Count;
+            }
             if (serviceEndpointList.Count != 0)
             {
                 deleteStats.Add(serviceEndpointList.Count == 1 ? "ServiceEndpoint" : "ServiceEndpoints", serviceEndpointList.Count);
@@ -827,6 +837,22 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
                     org.ServiceEndpoints.Remove(serviceEndpointId);
                 }
+
+                if (prog != null)
+                {
+                    prog.SetText("Unregistering Packages");
+                }
+                foreach (Guid packageId in packageList)
+                {
+                    org.OrganizationService.Delete(PluginPackage.EntityLogicalName, packageId);
+                    treeControl.RemoveNode(selectedNode.NodeId);
+                    if (prog != null)
+                    {
+                        prog.Increment();
+                    }
+
+                    org.Packages.Remove(packageId);
+                }
             }
             finally
             {
@@ -841,7 +867,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
         /// <summary>
         /// Assembly is Uploaded if it is database.
-        /// We dont do Smart updates
+        /// We dont do Smart updatesqui
         /// </summary>
         /// <param name="org"></param>
         /// <param name="pathToAssembly"></param>
@@ -891,24 +917,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             //PluginAssembly pt1 = new PluginAssembly();
             pt1.Description = description;
             org.OrganizationService.Update(pt1);
-        }
-
-        public static void UpdatewebHook(CrmOrganization org, CrmServiceEndpoint webhook)
-        {
-            if (org == null)
-            {
-                throw new ArgumentNullException("org");
-            }
-            else if (webhook.ServiceEndpointId == Guid.Empty)
-            {
-                throw new ArgumentNullException("webhookId");
-            }
-
-            var wh = (ServiceEndpoint)webhook.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName];
-
-            // Work around as updating only description is failing with publickeytoken not null
-            org.OrganizationService.Update(wh);
-            OrganizationHelper.RefreshServiceEndpoint(org, webhook);
         }
 
         public static void UpdateImage(CrmOrganization org, CrmPluginImage image)
@@ -1269,6 +1277,24 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             org.OrganizationService.Execute(request);
 
             return;
+        }
+
+        public static void UpdatewebHook(CrmOrganization org, CrmServiceEndpoint webhook)
+        {
+            if (org == null)
+            {
+                throw new ArgumentNullException("org");
+            }
+            else if (webhook.ServiceEndpointId == Guid.Empty)
+            {
+                throw new ArgumentNullException("webhookId");
+            }
+
+            var wh = (ServiceEndpoint)webhook.GenerateCrmEntities()[ServiceEndpoint.EntityLogicalName];
+
+            // Work around as updating only description is failing with publickeytoken not null
+            org.OrganizationService.Update(wh);
+            OrganizationHelper.RefreshServiceEndpoint(org, webhook);
         }
 
         #endregion Public Methods
