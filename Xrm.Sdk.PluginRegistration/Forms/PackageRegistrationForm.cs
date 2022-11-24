@@ -23,6 +23,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
         private readonly IOrganizationService _service;
         private PluginAssemblyFileMapping _mapping;
         private List<PluginAssemblyFileMapping> _mappings;
+        private Settings _settings;
         private string content = null;
         private MainControl mainControl;
         private CrmPluginPackage package;
@@ -31,17 +32,18 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
         #region Public Constructors
 
-        public PackageRegistrationForm(CrmOrganization org, MainControl mainControl, List<PluginAssemblyFileMapping> mappings)
+        public PackageRegistrationForm(CrmOrganization org, MainControl mainControl, Settings settings)
         {
             InitializeComponent();
             this.mainControl = mainControl;
             _service = org.OrganizationService;
             _org = org;
-            _mappings = mappings;
+            _settings = settings;
+            _mappings = settings.Mappings;
             LoadSolutions();
         }
 
-        public PackageRegistrationForm(CrmOrganization organization, MainControl mainControl, CrmPluginPackage package, List<PluginAssemblyFileMapping> mappings)
+        public PackageRegistrationForm(CrmOrganization organization, MainControl mainControl, CrmPluginPackage package, Settings settings)
         {
             InitializeComponent();
             _org = organization;
@@ -49,7 +51,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             this.mainControl = mainControl;
             this.package = package;
-            _mappings = mappings;
+            _settings = settings;
+            _mappings = settings.Mappings;
 
             Text = "Update Package";
             btnImport.Text = "Update";
@@ -60,11 +63,11 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             if (_mapping == null)
             {
-                _mapping = mappings.FirstOrDefault(m => m.PluginAssemblyName == $"{package.Name}");
+                _mapping = _mappings.FirstOrDefault(m => m.PluginAssemblyName == $"{package.Name}");
 
                 if (_mapping != null)
                 {
-                    mappings.Remove(_mapping);
+                    _mappings.Remove(_mapping);
                     _mapping = new PluginAssemblyFileMapping
                     {
                         ConnectionId = _org.ConnectionDetail.ConnectionId.Value,
@@ -233,9 +236,9 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
 
                 ((BackgroundWorker)bw).ReportProgress(0, "Reloading assemblies...");
-                OrganizationHelper.LoadAssemblies(_org, pluginPackage.Id);
+                OrganizationHelper.LoadAssemblies(_org, _settings, pluginPackage.Id);
                 ((BackgroundWorker)bw).ReportProgress(0, "Reloading plugins...");
-                OrganizationHelper.LoadPlugins(_org, out _, pluginPackage.Id);
+                OrganizationHelper.LoadPlugins(_org, _settings, out _, pluginPackage.Id);
             };
             worker.RunWorkerCompleted += (bw, evt) =>
             {

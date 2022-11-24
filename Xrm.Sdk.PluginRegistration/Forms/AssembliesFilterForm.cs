@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using XrmToolBox.Extensibility;
 
 namespace Xrm.Sdk.PluginRegistration.Forms
 {
@@ -46,7 +45,6 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             ExcludeManagedAssemblies = chkHideManagedAssemblies.Checked;
             settings.ExcludedAssemblies = txtAssemblies.Text.Trim();
             settings.ExcludeManagedAssemblies = chkHideManagedAssemblies.Checked;
-            SettingsManager.Instance.Save(GetType(), settings);
 
             HasChanged = settings.ExcludedAssemblies != m_initialFilterValue || settings.ExcludeManagedAssemblies != m_initialExcludeManagedAssemblies;
         }

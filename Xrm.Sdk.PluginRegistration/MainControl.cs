@@ -68,12 +68,6 @@ namespace Xrm.Sdk.PluginRegistration
         {
             InitializeComponent();
 
-            if (!SettingsManager.Instance.TryLoad(GetType(), out m_settings))
-            {
-                m_settings = new Settings();
-                SettingsManager.Instance.Save(GetType(), m_settings);
-            }
-
             SetFilterStatusOnToolbar(!string.IsNullOrEmpty(m_settings?.ExcludedAssemblies) || (m_settings?.ExcludeManagedAssemblies ?? false));
 
             #region Load the Images & Icons from the Resource File
@@ -555,7 +549,7 @@ namespace Xrm.Sdk.PluginRegistration
                 {
                     try
                     {
-                        OrganizationHelper.RefreshConnection(m_org, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
+                        OrganizationHelper.RefreshConnection(m_org, m_settings, OrganizationHelper.LoadMessages(m_org), m_progressIndicator);
                         Invoke(new Action(() =>
                         {
                             propGridEntity.SelectedObject = null;
@@ -1353,12 +1347,25 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void OrganizationControl_ConnectionUpdated(object sender, ConnectionUpdatedEventArgs e)
         {
+            if (!SettingsManager.Instance.TryLoad(GetType(), out m_settings, e.ConnectionDetail.ConnectionId.Value.ToString()))
+            {
+                if (SettingsManager.Instance.TryLoad(GetType(), out m_settings))
+                {
+                    SettingsManager.Instance.Save(GetType(), m_settings, e.ConnectionDetail.ConnectionId.Value.ToString());
+                }
+                else
+                {
+                    m_settings = new Settings();
+                    SettingsManager.Instance.Save(GetType(), m_settings, e.ConnectionDetail.ConnectionId.Value.ToString());
+                }
+            }
+
             var instruction = new WorkAsyncInfo()
             {
                 Message = "Loading assemblies information...",
                 Work = (worker, argument) =>
                 {
-                    argument.Result = new CrmOrganization(ConnectionDetail, m_progressIndicator, Service);
+                    argument.Result = new CrmOrganization(ConnectionDetail, m_settings, m_progressIndicator, Service);
                 },
                 PostWorkCallBack = (argument) =>
                 {
@@ -1640,7 +1647,7 @@ namespace Xrm.Sdk.PluginRegistration
             var regForm = new PluginRegistrationForm(Organization, this, null, m_settings.Mappings);
             regForm.ShowDialog(ParentForm);
 
-            SettingsManager.Instance.Save(GetType(), m_settings);
+            SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
         }
 
         private void toolClose_Click(object sender, EventArgs e)
@@ -1735,8 +1742,8 @@ namespace Xrm.Sdk.PluginRegistration
 
         private void toolPackageRegister_Click(object sender, EventArgs e)
         {
-            var regForm = new PackageRegistrationForm(Organization, this, m_settings.Mappings);
-            SettingsManager.Instance.Save(GetType(), m_settings);
+            var regForm = new PackageRegistrationForm(Organization, this, m_settings);
+            SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
             regForm.ShowDialog(this);
         }
 
@@ -1886,15 +1893,15 @@ namespace Xrm.Sdk.PluginRegistration
                     {
                         var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode, m_settings.Mappings);
                         regForm.ShowDialog(ParentForm);
-                        SettingsManager.Instance.Save(GetType(), m_settings);
+                        SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
                     }
                     break;
 
                 case CrmTreeNodeType.Package:
                     {
-                        var regForm = new PackageRegistrationForm(Organization, this, (CrmPluginPackage)trvPlugins.SelectedNode, m_settings.Mappings);
+                        var regForm = new PackageRegistrationForm(Organization, this, (CrmPluginPackage)trvPlugins.SelectedNode, m_settings);
                         regForm.ShowDialog(ParentForm);
-                        SettingsManager.Instance.Save(GetType(), m_settings);
+                        SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
                     }
                     break;
 
@@ -1993,7 +2000,7 @@ namespace Xrm.Sdk.PluginRegistration
                         Organization.Assemblies[plugin.AssemblyId], m_settings.Mappings))
                     {
                         form.ShowDialog(ParentForm);
-                        SettingsManager.Instance.Save(GetType(), m_settings);
+                        SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
                     }
 
                     //Update the tree based on the selected node
@@ -2057,6 +2064,8 @@ namespace Xrm.Sdk.PluginRegistration
                     SetFilterStatusOnToolbar(!string.IsNullOrEmpty(dialog.Filter) || dialog.ExcludeManagedAssemblies);
                     toolRefresh_Click(this, new EventArgs());
                 }
+
+                SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
             }
         }
 

@@ -15,8 +15,6 @@
 //
 // =====================================================================
 
-using XrmToolBox.Extensibility;
-
 namespace Xrm.Sdk.PluginRegistration.Helpers
 {
     using Entities;
@@ -204,7 +202,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// Loads/Reloads assemblies from CRM
         /// </summary>
         /// <param name="assemblyId">Assembly Ids to reload (does not reload plugins). If not specified, reloads all assemblies</param>
-        public static void LoadAssemblies(CrmOrganization org, Guid? packageId = null)
+        public static void LoadAssemblies(CrmOrganization org, Settings settings, Guid? packageId = null)
         {
             if (org == null)
             {
@@ -212,7 +210,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
 
             var cols = GetColumnSet(PluginAssembly.EntityLogicalName);
-            var filters = CreateAssemblyFilter();
+            var filters = CreateAssemblyFilter(settings);
 
             if (org.ConnectionDetail.OrganizationMajorVersion < 9
                 || org.ConnectionDetail.OrganizationMajorVersion == 9
@@ -412,7 +410,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return msgList;
         }
 
-        public static void LoadPlugins(CrmOrganization org, out Dictionary<Guid, ICrmEntity> typeList, Guid? packageId = null)
+        public static void LoadPlugins(CrmOrganization org, Settings settings, out Dictionary<Guid, ICrmEntity> typeList, Guid? packageId = null)
         {
             if (org == null)
             {
@@ -438,7 +436,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             //Link to the assembly to ensure that only valid plug-ins are retrieved
             var assemblyLink = query.AddLink(PluginAssembly.EntityLogicalName, "pluginassemblyid", "pluginassemblyid");
-            assemblyLink.LinkCriteria = CreateAssemblyFilter();
+            assemblyLink.LinkCriteria = CreateAssemblyFilter(settings);
 
             if (packageId.HasValue)
             {
@@ -546,9 +544,9 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// </summary>
         /// <param name="org">Organization that should be opened</param>
         /// <param name="messages">List of messages</param>
-        public static void OpenConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages)
+        public static void OpenConnection(CrmOrganization org, Settings settings, CrmEntityDictionary<CrmMessage> messages)
         {
-            OpenConnection(org, messages, null);
+            OpenConnection(org, settings, messages, null);
         }
 
         /// <summary>
@@ -557,7 +555,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
         /// <param name="org">Organization that should be opened</param>
         /// <param name="messages">List of messages</param>
         /// <param name="prog">ProgressIndicator that will show the progress as the object is loaded</param>
-        public static void OpenConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
+        public static void OpenConnection(CrmOrganization org, Settings settings, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
         {
             if (org == null)
             {
@@ -613,7 +611,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 {
                     prog.Increment("Loading Assemblies");
                 }
-                LoadAssemblies(org);
+                LoadAssemblies(org, settings);
 
                 //Initialize list of plugins
                 if (prog != null)
@@ -621,7 +619,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     prog.Increment("Loading Plugins");
                 }
 
-                LoadPlugins(org, out var typeList);
+                LoadPlugins(org, settings, out var typeList);
 
                 var orgver = new Version(org.ConnectionDetail.OrganizationVersion);
 
@@ -691,12 +689,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             assembly.RefreshFromPluginAssembly(assemblyRetrievedFromDatabase);
         }
 
-        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages)
+        public static void RefreshConnection(CrmOrganization org, Settings settings, CrmEntityDictionary<CrmMessage> messages)
         {
-            RefreshConnection(org, messages, null);
+            RefreshConnection(org, settings, messages, null);
         }
 
-        public static void RefreshConnection(CrmOrganization org, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
+        public static void RefreshConnection(CrmOrganization org, Settings settings, CrmEntityDictionary<CrmMessage> messages, ProgressIndicator prog)
         {
             if (org == null)
             {
@@ -705,7 +703,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
             org.Connected = false;
 
-            OpenConnection(org, messages, prog);
+            OpenConnection(org, settings, messages, prog);
         }
 
         public static void RefreshImage(CrmOrganization org, CrmPluginImage image, CrmPluginStep step)
@@ -907,28 +905,25 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             return newArray;
         }
 
-        private static FilterExpression CreateAssemblyFilter()
+        private static FilterExpression CreateAssemblyFilter(Settings settings)
         {
             var criteria = new FilterExpression();
 
             //Exclude all compiled workflow assemblies that may remain after upgrade
             criteria.AddCondition("name", ConditionOperator.NotLike, "CompiledWorkflow%");
 
-            if (SettingsManager.Instance.TryLoad(typeof(MainControl), out Settings settings))
+            if (!string.IsNullOrEmpty(settings.ExcludedAssemblies))
             {
-                if (!string.IsNullOrEmpty(settings.ExcludedAssemblies))
+                var names = settings.ExcludedAssemblies.Split(',');
+                foreach (var name in names)
                 {
-                    var names = settings.ExcludedAssemblies.Split(',');
-                    foreach (var name in names)
-                    {
-                        criteria.AddCondition("name", ConditionOperator.DoesNotBeginWith, name.Trim());
-                    }
+                    criteria.AddCondition("name", ConditionOperator.DoesNotBeginWith, name.Trim());
                 }
+            }
 
-                if (settings.ExcludeManagedAssemblies)
-                {
-                    criteria.AddCondition("ismanaged", ConditionOperator.Equal, false);
-                }
+            if (settings.ExcludeManagedAssemblies)
+            {
+                criteria.AddCondition("ismanaged", ConditionOperator.Equal, false);
             }
 
             //Exclude any system assemblies that shouldn't be included
@@ -942,26 +937,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
         private static FilterExpression CreatePackageFilter()
         {
-            var criteria = new FilterExpression();
-
-            //if (SettingsManager.Instance.TryLoad(typeof(MainControl), out Settings settings))
-            //{
-            //    if (!string.IsNullOrEmpty(settings.ExcludedAssemblies))
-            //    {
-            //        var names = settings.ExcludedAssemblies.Split(',');
-            //        foreach (var name in names)
-            //        {
-            //            criteria.AddCondition("name", ConditionOperator.DoesNotBeginWith, name.Trim());
-            //        }
-            //    }
-
-            //    if (settings.ExcludeManagedAssemblies)
-            //    {
-            //        criteria.AddCondition("ismanaged", ConditionOperator.Equal, false);
-            //    }
-            //}
-
-            return criteria;
+            return new FilterExpression();
         }
 
         private static FilterExpression CreateStepFilter()

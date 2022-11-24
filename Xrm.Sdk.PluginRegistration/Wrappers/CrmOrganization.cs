@@ -162,7 +162,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
 
         #region Public Constructors
 
-        public CrmOrganization(ConnectionDetail detail, ProgressIndicator prog, IOrganizationService Service)
+        public CrmOrganization(ConnectionDetail detail, Settings settings, ProgressIndicator prog, IOrganizationService Service)
         {
             if (detail == null)
             {
@@ -178,7 +178,7 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
             OrganizationService = Service;
             ConnectionDetail = detail;
 
-            OrganizationHelper.OpenConnection(this, OrganizationHelper.LoadMessages(this), prog);
+            OrganizationHelper.OpenConnection(this, settings, OrganizationHelper.LoadMessages(this), prog);
         }
 
         #endregion Public Constructors
