@@ -599,12 +599,17 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 }
                 LoadMessageEntities(org, messages);
 
-                //Initialize list of packages
-                if (prog != null)
+                if (org.ConnectionDetail.OrganizationMajorVersion == 9 &&
+                    org.ConnectionDetail.OrganizationMinorVersion >= 2
+                    || org.ConnectionDetail.OrganizationMajorVersion > 9)
                 {
-                    prog.Increment("Loading Packages");
+                    //Initialize list of packages
+                    if (prog != null)
+                    {
+                        prog.Increment("Loading Packages");
+                    }
+                    LoadPackages(org);
                 }
-                LoadPackages(org);
 
                 //Initialize list of assemblies
                 if (prog != null)
