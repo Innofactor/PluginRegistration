@@ -55,7 +55,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         MessageEntity,
         MessageEntitySelected,
         ServiceEndpoint,
-        ServiceEndpointSelected
+        ServiceEndpointSelected,
+        Package,
+        PackageSelected,
     }
 
     [Flags]
@@ -76,7 +78,8 @@ namespace Xrm.Sdk.PluginRegistration.Controls
         Message = 128,
         MessageEntity = 256,
         ServiceEndpoint = 512,
-        WebHook = 1024
+        WebHook = 1024,
+        Package = 2048
     }
 
     public interface ICrmEditableTreeNode : ICrmTreeNode
@@ -1063,6 +1066,13 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
                     switch (crmnode.NodeType)
                     {
+                        case CrmTreeNodeType.Package:
+                            if (crmnode.NodeChildren.Count > 0)
+                            {
+                                ((CrmPluginPackage)crmnode).RemoveAssembly(nodeId);
+                            }
+                            break;
+
                         case CrmTreeNodeType.Assembly:
                             if (crmnode.NodeChildren.Count > 0)
                             {
@@ -1259,9 +1269,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
                             tNode.Parent.ExpandAll();
                         }
                     }
-                    
+
                     if (m_nodeList.ContainsKey(node.NodeId)) continue;
-                    
+
                     m_nodeList.Add(node.NodeId, (CrmTreeNode)tNode.Tag);
                     if (CheckBoxes)
                     {

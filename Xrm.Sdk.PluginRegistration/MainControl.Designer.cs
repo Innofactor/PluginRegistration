@@ -58,6 +58,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolServiceEndpointRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.toolWebHookRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.toolView = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolViewPackage = new System.Windows.Forms.ToolStripMenuItem();
             this.toolViewAssembly = new System.Windows.Forms.ToolStripMenuItem();
             this.toolViewEntity = new System.Windows.Forms.ToolStripMenuItem();
             this.toolViewMessage = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,6 +83,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
             this.btnSave = new System.Windows.Forms.Button();
+            this.toolPackageRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -312,6 +314,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolRegister
             // 
             this.toolRegister.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolPackageRegister,
             this.toolAssemblyRegister,
             this.toolStepRegister,
             this.toolImageRegister,
@@ -366,6 +369,7 @@ namespace Xrm.Sdk.PluginRegistration
             // toolView
             // 
             this.toolView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolViewPackage,
             this.toolViewAssembly,
             this.toolViewEntity,
             this.toolViewMessage});
@@ -373,6 +377,14 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolView.Name = "toolView";
             this.toolView.Size = new System.Drawing.Size(67, 29);
             this.toolView.Text = "View";
+            // 
+            // toolViewPackage
+            // 
+            this.toolViewPackage.Name = "toolViewPackage";
+            this.toolViewPackage.Size = new System.Drawing.Size(390, 34);
+            this.toolViewPackage.Text = "Display by Package";
+            this.toolViewPackage.Visible = false;
+            this.toolViewPackage.Click += new System.EventHandler(this.toolView_Click);
             // 
             // toolViewAssembly
             // 
@@ -602,6 +614,14 @@ namespace Xrm.Sdk.PluginRegistration
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // toolPackageRegister
+            // 
+            this.toolPackageRegister.Name = "toolPackageRegister";
+            this.toolPackageRegister.Size = new System.Drawing.Size(414, 34);
+            this.toolPackageRegister.Text = "Register New Package";
+            this.toolPackageRegister.Visible = false;
+            this.toolPackageRegister.Click += new System.EventHandler(this.toolPackageRegister_Click);
+            // 
             // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -685,5 +705,7 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem tsmiAddToSolution;
         private System.Windows.Forms.ToolStripButton toolAddToSolution;
+        private System.Windows.Forms.ToolStripMenuItem toolViewPackage;
+        private System.Windows.Forms.ToolStripMenuItem toolPackageRegister;
     }
 }

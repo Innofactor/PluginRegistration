@@ -12,15 +12,15 @@
     /// Assembly that contains one or more plug-in types.
     /// </summary>
     [DataContract()]
-    [EntityLogicalName("pluginassembly")]
+    [EntityLogicalName("pluginpackage")]
     [GeneratedCode("CrmSvcUtil", "5.0.9689.1985")]
-    public partial class PluginAssembly : Entity, INotifyPropertyChanging, INotifyPropertyChanged
+    public partial class PluginPackage : Entity, INotifyPropertyChanging, INotifyPropertyChanged
     {
         #region Public Fields
 
-        public const string EntityLogicalName = "pluginassembly";
+        public const string EntityLogicalName = "pluginpackage";
 
-        public const int EntityTypeCode = 4605;
+        public const int EntityTypeCode = 10090;
 
         #endregion Public Fields
 
@@ -29,7 +29,7 @@
         /// <summary>
         /// Default Constructor.
         /// </summary>
-        public PluginAssembly() :
+        public PluginPackage() :
             base(EntityLogicalName)
         {
         }
@@ -112,55 +112,7 @@
             }
         }
 
-        /// <summary>
-        /// Culture code for the plug-in assembly.
-        /// </summary>
-        [AttributeLogicalName("culture")]
-        public string Culture
-        {
-            get
-            {
-                return GetAttributeValue<string>("culture");
-            }
-            set
-            {
-                OnPropertyChanging("Culture");
-                SetAttributeValue("culture", value);
-                OnPropertyChanged("Culture");
-            }
-        }
-
-        /// <summary>
-        /// Customization Level.
-        /// </summary>
-        [AttributeLogicalName("customizationlevel")]
-        public int? CustomizationLevel
-        {
-            get
-            {
-                return GetAttributeValue<int?>("customizationlevel");
-            }
-        }
-
-        /// <summary>
-        /// Description of the plug-in assembly.
-        /// </summary>
-        [AttributeLogicalName("description")]
-        public string Description
-        {
-            get
-            {
-                return GetAttributeValue<string>("description");
-            }
-            set
-            {
-                OnPropertyChanging("Description");
-                SetAttributeValue("description", value);
-                OnPropertyChanged("Description");
-            }
-        }
-
-        [AttributeLogicalName("pluginassemblyid")]
+        [AttributeLogicalName("pluginpackageid")]
         public override Guid Id
         {
             get
@@ -169,25 +121,7 @@
             }
             set
             {
-                PluginAssemblyId = value;
-            }
-        }
-
-        /// <summary>
-        /// Information that specifies whether this component should be hidden.
-        /// </summary>
-        [AttributeLogicalName("ishidden")]
-        public BooleanManagedProperty IsHidden
-        {
-            get
-            {
-                return GetAttributeValue<BooleanManagedProperty>("ishidden");
-            }
-            set
-            {
-                OnPropertyChanging("IsHidden");
-                SetAttributeValue("ishidden", value);
-                OnPropertyChanged("IsHidden");
+                PluginPackageId = value;
             }
         }
 
@@ -200,48 +134,6 @@
             get
             {
                 return GetAttributeValue<bool?>("ismanaged");
-            }
-        }
-
-        /// <summary>
-        /// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
-        /// </summary>
-        [AttributeLogicalName("isolationmode")]
-        public OptionSetValue IsolationMode
-        {
-            get
-            {
-                return GetAttributeValue<OptionSetValue>("isolationmode");
-            }
-            set
-            {
-                OnPropertyChanging("IsolationMode");
-                SetAttributeValue("isolationmode", value);
-                OnPropertyChanged("IsolationMode");
-            }
-        }
-
-        /// <summary>
-        /// Major of the assembly version.
-        /// </summary>
-        [AttributeLogicalName("major")]
-        public int? Major
-        {
-            get
-            {
-                return GetAttributeValue<int?>("major");
-            }
-        }
-
-        /// <summary>
-        /// Minor of the assembly version.
-        /// </summary>
-        [AttributeLogicalName("minor")]
-        public int? Minor
-        {
-            get
-            {
-                return GetAttributeValue<int?>("minor");
             }
         }
 
@@ -324,55 +216,37 @@
         }
 
         /// <summary>
-        /// File name of the plug-in assembly. Used when the source type is set to 1.
+        /// 1:N pluginpackage_pluginassembly
         /// </summary>
-        [AttributeLogicalName("path")]
-        public string Path
+        [RelationshipSchemaName("pluginpackage_pluginassembly")]
+        public IEnumerable<PluginType> pluginpackage_pluginassembly
         {
             get
             {
-                return GetAttributeValue<string>("path");
+                return GetRelatedEntities<PluginType>("pluginpackage_pluginassembly", null);
             }
             set
             {
-                OnPropertyChanging("Path");
-                SetAttributeValue("path", value);
-                OnPropertyChanged("Path");
-            }
-        }
-
-        /// <summary>
-        /// 1:N pluginassembly_plugintype
-        /// </summary>
-        [RelationshipSchemaName("pluginassembly_plugintype")]
-        public IEnumerable<PluginType> pluginassembly_plugintype
-        {
-            get
-            {
-                return GetRelatedEntities<PluginType>("pluginassembly_plugintype", null);
-            }
-            set
-            {
-                OnPropertyChanging("pluginassembly_plugintype");
-                SetRelatedEntities("pluginassembly_plugintype", null, value);
-                OnPropertyChanged("pluginassembly_plugintype");
+                OnPropertyChanging("pluginpackage_pluginassembly");
+                SetRelatedEntities("pluginpackage_pluginassembly", null, value);
+                OnPropertyChanged("pluginpackage_pluginassembly");
             }
         }
 
         /// <summary>
         /// Unique identifier of the plug-in assembly.
         /// </summary>
-        [AttributeLogicalName("pluginassemblyid")]
-        public Guid? PluginAssemblyId
+        [AttributeLogicalName("pluginpackageid")]
+        public Guid? PluginPackageId
         {
             get
             {
-                return GetAttributeValue<Guid?>("pluginassemblyid");
+                return GetAttributeValue<Guid?>("pluginpackageid");
             }
             set
             {
-                OnPropertyChanging("PluginAssemblyId");
-                SetAttributeValue("pluginassemblyid", value);
+                OnPropertyChanging("PluginPackageId");
+                SetAttributeValue("pluginpackageid", value);
                 if (value.HasValue)
                 {
                     base.Id = value.Value;
@@ -381,56 +255,7 @@
                 {
                     base.Id = System.Guid.Empty;
                 }
-                OnPropertyChanged("PluginAssemblyId");
-            }
-        }
-
-        /// <summary>
-        /// Unique identifier of the plug-in assembly.
-        /// </summary>
-        [AttributeLogicalName("packageid")]
-        public EntityReference PackageId
-        {
-            get
-            {
-                return GetAttributeValue<EntityReference>("packageid");
-            }
-            set
-            {
-                OnPropertyChanging("PackageId");
-                SetAttributeValue("packageid", value);
-                OnPropertyChanged("PackageId");
-            }
-        }
-
-
-        /// <summary>
-        /// Unique identifier of the plug-in assembly.
-        /// </summary>
-        [AttributeLogicalName("pluginassemblyidunique")]
-        public Guid? PluginAssemblyIdUnique
-        {
-            get
-            {
-                return GetAttributeValue<Guid?>("pluginassemblyidunique");
-            }
-        }
-
-        /// <summary>
-        /// Public key token of the assembly. This value can be obtained from the assembly by using reflection.
-        /// </summary>
-        [AttributeLogicalName("publickeytoken")]
-        public string PublicKeyToken
-        {
-            get
-            {
-                return GetAttributeValue<string>("publickeytoken");
-            }
-            set
-            {
-                OnPropertyChanging("PublicKeyToken");
-                SetAttributeValue("publickeytoken", value);
-                OnPropertyChanged("PublicKeyToken");
+                OnPropertyChanged("PluginPackageId");
             }
         }
 
@@ -444,41 +269,11 @@
             {
                 return GetAttributeValue<Guid?>("solutionid");
             }
-        }
-
-        /// <summary>
-        /// Hash of the source of the assembly.
-        /// </summary>
-        [AttributeLogicalName("sourcehash")]
-        public string SourceHash
-        {
-            get
-            {
-                return GetAttributeValue<string>("sourcehash");
-            }
             set
             {
-                OnPropertyChanging("SourceHash");
-                SetAttributeValue("sourcehash", value);
-                OnPropertyChanged("SourceHash");
-            }
-        }
-
-        /// <summary>
-        /// Location of the assembly, for example 0=database, 1=on-disk.
-        /// </summary>
-        [AttributeLogicalName("sourcetype")]
-        public OptionSetValue SourceType
-        {
-            get
-            {
-                return GetAttributeValue<OptionSetValue>("sourcetype");
-            }
-            set
-            {
-                OnPropertyChanging("SourceType");
-                SetAttributeValue("sourcetype", value);
-                OnPropertyChanged("SourceType");
+                OnPropertyChanging("SolutionId");
+                SetAttributeValue("solutionid", value);
+                OnPropertyChanged("SolutionId");
             }
         }
 
