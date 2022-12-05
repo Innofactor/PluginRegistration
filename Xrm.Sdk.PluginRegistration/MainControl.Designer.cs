@@ -383,6 +383,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolViewPackage.Name = "toolViewPackage";
             this.toolViewPackage.Size = new System.Drawing.Size(390, 34);
             this.toolViewPackage.Text = "Display by Package";
+            this.toolViewPackage.Visible = false;
             this.toolViewPackage.Click += new System.EventHandler(this.toolView_Click);
             // 
             // toolViewAssembly
@@ -618,6 +619,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolPackageRegister.Name = "toolPackageRegister";
             this.toolPackageRegister.Size = new System.Drawing.Size(414, 34);
             this.toolPackageRegister.Text = "Register New Package";
+            this.toolPackageRegister.Visible = false;
             this.toolPackageRegister.Click += new System.EventHandler(this.toolPackageRegister_Click);
             // 
             // MainControl
