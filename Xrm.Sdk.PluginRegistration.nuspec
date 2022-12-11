@@ -18,16 +18,15 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
 		-- Bug Fixes --
-		#94 Added Support for MultiSelectPickList @MscrmTools
-		#102 Fixed MultiSelectOptionSet filter getting deleted @MscrmTools
-		#104 Fixed exception in loading assemblies 
+		#108 Added support for Plugin Packages @MscrmTools
+		
 
 	</releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
     <dependencies>
-      <dependency id="XrmToolBoxPackage" version="1.2022.2.54" />
-      <dependency id="CsvHelper" version="27.2.1"/>
-      <dependency id="EPPlus" version="5.8.8"/>
+      <dependency id="XrmToolBoxPackage" version="1.2022.10.58" />
+      <dependency id="CsvHelper" version="30.0.1"/>
+      <dependency id="EPPlus" version="6.1.1"/>
     </dependencies>
   </metadata>
   <files>

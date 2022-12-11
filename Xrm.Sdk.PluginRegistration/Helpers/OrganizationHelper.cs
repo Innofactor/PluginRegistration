@@ -599,9 +599,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                 }
                 LoadMessageEntities(org, messages);
 
-                if (org.ConnectionDetail.OrganizationMajorVersion == 9 &&
-                    org.ConnectionDetail.OrganizationMinorVersion >= 2
-                    || org.ConnectionDetail.OrganizationMajorVersion > 9)
+                if (org.ConnectionDetail.UseOnline)
                 {
                     //Initialize list of packages
                     if (prog != null)
