@@ -72,6 +72,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
 
             trvPlugins.CrmTreeNodeSorter = orgControl.CrmTreeNodeSorter;
 
+            if (org.ConnectionDetail.UseOnline)
+            {
+                radIsolationNone.Enabled = false;
+                radDisk.Enabled = false;
+                radDB.Enabled = false;
+            }
+            else
+            {
+                radIsolationNone.Enabled = true;
+            }
             //Check if this is a known assembly
             if (null == assembly)
             {
@@ -107,7 +117,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                         break;
 
                     default:
-                        throw new NotImplementedException($"IsolationMode = { assembly.IsolationMode.ToString() }");
+                        throw new NotImplementedException($"IsolationMode = {assembly.IsolationMode.ToString()}");
                 }
 
                 switch (assembly.SourceType)
