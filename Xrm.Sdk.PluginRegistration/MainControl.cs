@@ -1134,6 +1134,11 @@ namespace Xrm.Sdk.PluginRegistration
                     primaryEntity = msgEntity.PrimaryEntity;
                     secondaryEntity = msgEntity.SecondaryEntity;
                 }
+                var userContext = "Calling User";
+                if(step.ImpersonatingUserId != Guid.Empty && Organization.Users.TryGetValue(step.ImpersonatingUserId, out CrmUser user))
+                {
+                    userContext = $"{user.Name}({user.UserId})";
+                }
                 
                 var record = new ExportModel
                 {
@@ -1147,7 +1152,8 @@ namespace Xrm.Sdk.PluginRegistration
                     SecondaryEntity = secondaryEntity,
                     Description = step.Description,
                     PluginType = step.NodeType.GetDescription(),
-                    IsEnabled = step.Enabled.ToString()
+                    IsEnabled = step.Enabled.ToString(),
+                    UserContext = userContext
                 };
 
                 return record;
