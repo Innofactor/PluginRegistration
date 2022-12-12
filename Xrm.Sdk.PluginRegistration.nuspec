@@ -17,9 +17,10 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
     </description>
     <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
     <releaseNotes>
-		-- Bug Fixes --
-		#108 Added support for Plugin Packages @MscrmTools
-		
+-- Bug Fixes --
+#108: Added support for Plugin Packages @MscrmTools
+#49: Added image information to export
+#57 Added User Context to export, user name and userid will be mentioned for a specific user.
 
 	</releaseNotes>
     <tags>XrmToolBox Plugins PluginRegistration</tags>
