@@ -1083,6 +1083,13 @@ namespace Xrm.Sdk.PluginRegistration
                         stepInfo.AssemblyName = plugin.AssemblyName;
                         stepInfo.TypeName = plugin.Name;
                         csvModel.Add(stepInfo);
+                        foreach (var image in step.Images)
+                        {
+                            var imageInfo = GetInfoForImages(image);
+                            imageInfo.TypeName= plugin.Name;
+                            
+                            csvModel.Add(imageInfo);
+                        }
                     }
                     break;
 
@@ -1127,7 +1134,7 @@ namespace Xrm.Sdk.PluginRegistration
                     primaryEntity = msgEntity.PrimaryEntity;
                     secondaryEntity = msgEntity.SecondaryEntity;
                 }
-
+                
                 var record = new ExportModel
                 {
                     Stage = step.Stage.GetDescription(),
@@ -1145,6 +1152,19 @@ namespace Xrm.Sdk.PluginRegistration
 
                 return record;
             }
+        }
+        private ExportModel GetInfoForImages(CrmPluginImage image)
+        {
+            var record = new ExportModel
+            {
+                PluginType = "Image",
+                ImageName = image.Name,
+                ImageType = image.ImageType.GetDescription(),
+                ImageAttributes = !String.IsNullOrWhiteSpace(image.Attributes)? image.Attributes: "All Attributes",
+                EntityAlias = image.EntityAlias
+            };
+
+            return record;
         }
 
         private void grvData_DoubleClick(object sender, EventArgs e)

@@ -59,7 +59,20 @@
 
         [Name("Plugin/Workflow Name")]
         public string TypeName { get; set; }
-
+        /// <summary>
+        /// PreImage, PostImage, Both
+        /// </summary>
+        [Name("Image Type")]
+        public string ImageType { get; set; }
+        [Name("Image Name")]
+        public string ImageName { get; set; }
+        [Name("Image Attributes")]
+        public string ImageAttributes { get; set; }
+        /// <summary>
+        /// This is for entity alias on Image.
+        /// </summary>
+        [Name("Image Entity Alias")]
+        public string EntityAlias { get; set; }
         #endregion Public Properties
     }
 }
