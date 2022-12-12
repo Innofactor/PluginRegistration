@@ -59,6 +59,9 @@
 
         [Name("Plugin/Workflow Name")]
         public string TypeName { get; set; }
+
+        [Name("User Context")]
+        public string UserContext { get; set; }
         /// <summary>
         /// PreImage, PostImage, Both
         /// </summary>
@@ -73,6 +76,7 @@
         /// </summary>
         [Name("Image Entity Alias")]
         public string EntityAlias { get; set; }
+        
         #endregion Public Properties
     }
 }
