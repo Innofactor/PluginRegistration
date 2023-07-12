@@ -393,7 +393,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             var msgList = new List<CrmMessage>();
             for (int i = 0; i < results.Entities.Count; i++)
             {
-                msgList.Add(UpdateMessageProperties(new CrmMessage(null, Magic.CastTo<SdkMessage>(results[i]))));
+                msgList.Add(UpdateMessageProperties(new CrmMessage(null, Magic.CastTo<SdkMessage>(results[i])), org));
 
                 //Increment the Progress Indicator
                 if (null != prog)
@@ -1408,7 +1408,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
         }
 
-        private static CrmMessage UpdateMessageProperties(CrmMessage message)
+        private static CrmMessage UpdateMessageProperties(CrmMessage message, CrmOrganization org)
         {
             switch (message.Name)
             {
@@ -1418,6 +1418,12 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     break;
 
                 case "Create":
+
+                    if (org.ConnectionDetail.OrganizationMajorVersion > 9 || (org.ConnectionDetail.OrganizationMajorVersion == 9 && org.ConnectionDetail.OrganizationMinorVersion >= 2))
+                    {
+                        message.SupportsFilteredAttributes = true;
+                    }
+
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Id, "Created Entity"));
                     break;
