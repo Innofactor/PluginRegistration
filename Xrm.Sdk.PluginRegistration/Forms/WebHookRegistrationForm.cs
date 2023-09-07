@@ -188,13 +188,15 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             var webhookSiteResponse = JsonConvert.DeserializeObject<WebhookSiteResponse>(responseJson);
             var webhookId = webhookSiteResponse?.uuid;
 
+            var webhookMonitorUrl = $"{baseUrl}/#!/{webhookId}";
+            Clipboard.SetText(webhookMonitorUrl);
+
             txtEndpointUrl.Text = $"{baseUrl}/{webhookId}";
             cmbAuth.SelectedIndex = 1;
             txtValue.Text = "123";
-            txtName.Text = string.IsNullOrEmpty(txtName.Text) ? "Test Webhook Site" : txtName.Text;
-
-            var webhookMonitorUrl = $"{baseUrl}/#!/{webhookId}";
-            Clipboard.SetText(webhookMonitorUrl);
+            txtName.Text = string.IsNullOrEmpty(txtName.Text) 
+                ? $"Webhook.site: {webhookMonitorUrl}"
+                : txtName.Text;
 
             var dialogResponse = MessageBox.Show(
                 $"Would you like to open the Webhook.site monitor in your browser?\n\nPlease note that the URL for the Webhook monitor has been copied to your clipboard.",
