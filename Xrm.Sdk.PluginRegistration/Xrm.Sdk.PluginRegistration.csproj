@@ -511,6 +511,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WebHookRegistrationForm.resx">
       <DependentUpon>WebHookRegistrationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainControl.resx">
       <SubType>Designer</SubType>

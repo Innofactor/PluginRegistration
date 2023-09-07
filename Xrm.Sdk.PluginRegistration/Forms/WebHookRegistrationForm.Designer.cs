@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtEndpointUrl = new System.Windows.Forms.TextBox();
@@ -42,6 +43,7 @@
             this.Keys = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Values = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnGenerateWebhookSite = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKeyValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -172,6 +174,7 @@
             this.btnGenerateWebhookSite.Size = new System.Drawing.Size(627, 35);
             this.btnGenerateWebhookSite.TabIndex = 11;
             this.btnGenerateWebhookSite.Text = "Generate Test Url";
+            this.toolTip1.SetToolTip(this.btnGenerateWebhookSite, "Generate a new webhook URL on Webhook.site service");
             this.btnGenerateWebhookSite.UseVisualStyleBackColor = true;
             this.btnGenerateWebhookSite.Click += new System.EventHandler(this.btnGenerateWebhookSite_Click);
             // 
@@ -220,5 +223,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Keys;
         private System.Windows.Forms.DataGridViewTextBoxColumn Values;
         private System.Windows.Forms.Button btnGenerateWebhookSite;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
