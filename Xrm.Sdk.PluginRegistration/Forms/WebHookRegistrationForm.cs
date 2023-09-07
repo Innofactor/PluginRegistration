@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using Xrm.Sdk.PluginRegistration.Helpers;
+using Xrm.Sdk.PluginRegistration.Models;
 using Xrm.Sdk.PluginRegistration.Wrappers;
 using XrmToolBox.Extensibility;
 
@@ -68,8 +72,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             {
                 errorMsgs.Add("Endpoint Name is required");
             }
-            
-            if(txtEndpointUrl.Text == string.Empty)
+
+            if (txtEndpointUrl.Text == string.Empty)
             {
                 errorMsgs.Add("Endpoint URL is required");
             }
@@ -95,7 +99,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             else
             {
-                MessageBox.Show(string.Join(Environment.NewLine,errorMsgs),
+                MessageBox.Show(string.Join(Environment.NewLine, errorMsgs),
                     "Invalid configuration",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -125,7 +129,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             var isNew = webhook.ServiceEndpointId == Guid.Empty;
 
             m_orgControl.WorkAsync(new WorkAsyncInfo($"{(isNew ? "Creating" : "Updating")} webhook...",
-                (eventargs) => {
+                (eventargs) =>
+                {
                     if (isNew)
                     {
                         RegistrationHelper.RegisterWebHook(m_org, webhook);
@@ -136,7 +141,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     }
                 })
             {
-                PostWorkCallBack = (completedargs) => {
+                PostWorkCallBack = (completedargs) =>
+                {
                     if (completedargs.Error == null)
                     {
                         m_orgControl.RefreshFullTreeView();
@@ -163,12 +169,44 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 var key = row.Cells[0].Value?.ToString();
                 var value = row.Cells[1].Value?.ToString();
 
-                if(key == null && value == null){continue;}
+                if (key == null && value == null) { continue; }
 
                 settingStrings += $"<setting name='{key}' value='{value}' />";
             }
 
             return settingStrings != string.Empty ? $@"<settings>{settingStrings}</settings>" : string.Empty;
+        }
+
+        private void btnGenerateWebhookSite_Click(object sender, EventArgs e)
+        {
+            var baseUrl = "https://webhook.site";
+
+            var client = new HttpClient();
+            var response = client.PostAsync($@"{baseUrl}/token", null).Result;
+            var responseJson = response.Content.ReadAsStringAsync().Result;
+
+            var webhookSiteResponse = JsonConvert.DeserializeObject<WebhookSiteResponse>(responseJson);
+            var webhookId = webhookSiteResponse?.uuid;
+
+            txtEndpointUrl.Text = $"{baseUrl}/{webhookId}";
+            cmbAuth.SelectedIndex = 1;
+            txtValue.Text = "123";
+            txtName.Text = string.IsNullOrEmpty(txtName.Text) ? "Test Webhook Site" : txtName.Text;
+
+            var webhookMonitorUrl = $"{baseUrl}/#!/{webhookId}";
+            Clipboard.SetText(webhookMonitorUrl);
+
+            var dialogResponse = MessageBox.Show(
+                $"Would you like to open the Webhook.site monitor in your browser?\n\nPlease note that the URL for the Webhook monitor has been copied to your clipboard.",
+                "Question",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1
+            );
+
+            if (dialogResponse == DialogResult.No) { return; }
+
+            Process.Start(webhookMonitorUrl);
         }
     }
 }
