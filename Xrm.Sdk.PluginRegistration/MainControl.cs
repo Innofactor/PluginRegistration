@@ -24,6 +24,8 @@ namespace Xrm.Sdk.PluginRegistration
     using Forms;
     using Helpers;
     using McTools.Xrm.Connection;
+    using Microsoft.Xrm.Sdk;
+    using Microsoft.Xrm.Sdk.Query;
     using OfficeOpenXml;
     using System;
     using System.Collections.Generic;
@@ -150,7 +152,8 @@ namespace Xrm.Sdk.PluginRegistration
                     "Close",
                     "Save",
                     "Filter",
-                    "Solutions");
+                    "Solutions",
+                    "layers");
 
                 toolRegister.Image = imageList["Register"];
                 toolView.Image = imageList["View"];
@@ -163,6 +166,8 @@ namespace Xrm.Sdk.PluginRegistration
 
                 toolAddToSolution.Image = imageList["Solutions"];
                 tsmiAddToSolution.Image = toolAddToSolution.Image;
+
+                tsmiCheckActiveLayer.Image = imageList["layers"];
 
                 toolSearch.Image = imageList["Search"];
                 mnuContextNodeSearch.Image = toolSearch.Image;
@@ -1428,6 +1433,8 @@ namespace Xrm.Sdk.PluginRegistration
             mnuContextNodeUpdate.Visible = false;
             toolAddToSolution.Visible = false;
             tsmiAddToSolution.Visible = false;
+            tsmiCheckActiveLayer.Visible = false;
+            toolStripSeparator3.Visible = false;
 
             toolEnable.Visible = false;
             mnuContextNodeEnable.Visible = false;
@@ -1470,6 +1477,8 @@ namespace Xrm.Sdk.PluginRegistration
                         toolUpdate.Visible = true;
                         mnuContextNodeUpdate.Visible = true;
                         tsmiAddToSolution.Visible = true;
+                        tsmiCheckActiveLayer.Visible = true;
+                        toolStripSeparator3.Visible = true;
                         toolAddToSolution.Visible = true;
                         btnSave.Enabled = true;
                         //Load the data table and display information
@@ -1485,6 +1494,8 @@ namespace Xrm.Sdk.PluginRegistration
                         toolUpdate.Visible = true;
                         mnuContextNodeUpdate.Visible = true;
                         tsmiAddToSolution.Visible = true;
+                        tsmiCheckActiveLayer.Visible = true;
+                        toolStripSeparator3.Visible = true;
                         toolAddToSolution.Visible = true;
                         btnSave.Enabled = true;
                         //Load the data table and display information
@@ -1508,6 +1519,7 @@ namespace Xrm.Sdk.PluginRegistration
                         btnSave.Enabled = false;
                         toolAddToSolution.Visible = true;
                         tsmiAddToSolution.Visible = true;
+                        tsmiCheckActiveLayer.Visible = true;
                         UpdateEnableButton(step.Enabled);
 
                         if (true/*!OrganizationHelper.IsProfilerSupported*/ ||
@@ -2128,6 +2140,117 @@ namespace Xrm.Sdk.PluginRegistration
                     }
                 });
             }
+        }
+
+        private void tsmiCheckActiveLayer_Click(object sender, EventArgs e)
+        {
+            //TTO
+            bool isForAssembly = false;
+            Guid componentId = Guid.Empty;
+            string componentType = "";
+
+            switch (trvPlugins.SelectedNode.NodeType)
+            {
+                case CrmTreeNodeType.Assembly:
+                    {
+                        var assembly = (CrmPluginAssembly)trvPlugins.SelectedNode;
+                        isForAssembly = true;
+                        componentId = assembly.AssemblyId;
+                        componentType = "PluginAssembly";
+                    }
+                    break;
+
+                case CrmTreeNodeType.Package:
+                    {
+                        var package = (CrmPluginPackage)trvPlugins.SelectedNode;
+                        componentId = package.PackageId;
+                        componentType = "PluginPackage";
+                    }
+                    break;
+
+                case CrmTreeNodeType.Step:
+                    {
+                        var step = (CrmPluginStep)trvPlugins.SelectedNode;
+                        componentId = step.StepId;
+                        componentType = "SdkMessageProcessingStep";
+                    }
+                    break;
+            }
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = $"Searching an active layer for {trvPlugins.SelectedNode.NodeType}...",
+                Work = (bw, evt) =>
+                {
+                    var query = new QueryExpression("msdyn_componentlayer")
+                    {
+                        NoLock = true,
+                        ColumnSet = new ColumnSet(true),
+                        Criteria = new FilterExpression
+                        {
+                            Conditions =
+                            {
+                                    new ConditionExpression("msdyn_solutioncomponentname",ConditionOperator.Equal,componentType),
+                                    new ConditionExpression("msdyn_componentid",ConditionOperator.Equal, componentId),
+                                    new ConditionExpression("msdyn_solutionname",ConditionOperator.Equal, "Active"),
+                            }
+                        }
+                    };
+
+                    var result = Service.RetrieveMultiple(query);
+
+                    evt.Result = result;
+                },
+                PostWorkCallBack = evt =>
+                {
+                    if (evt.Error != null)
+                    {
+                        MessageBox.Show(ParentForm, $@"An error occured while searching for an active layer: {evt.Error.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    var result = (EntityCollection)evt.Result;
+
+                    if (result.Entities.Count == 0)
+                    {
+                        MessageBox.Show(this, "No active layer has been found for this component.\n\nYou are all good!", "No Active layer found!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    var dr = MessageBox.Show(this, "An active layer has been found!\n\nWould you like to remove it?", "Active layer found!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dr == DialogResult.Yes)
+                    {
+                        WorkAsync(new WorkAsyncInfo
+                        {
+                            Message = $"Removing active layer for {trvPlugins.SelectedNode.NodeType}...",
+                            Work = (bw2, evt2) =>
+                            {
+                                var request = new OrganizationRequest("RemoveActiveCustomizations");
+                                request.Parameters["SolutionComponentName"] = result.Entities.First().GetAttributeValue<string>("msdyn_solutioncomponentname");
+                                request.Parameters["ComponentId"] = result.Entities.First().GetAttributeValue<Guid>("msdyn_componentid");
+
+                                Service.Execute(request);
+                            },
+                            PostWorkCallBack = evt2 =>
+                            {
+                                if (evt.Error != null)
+                                {
+                                    MessageBox.Show(ParentForm, $@"An error occured while removing the active layer: {evt.Error.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                                else
+                                {
+                                    var dr2 = MessageBox.Show(this, "You should refresh display to see the changes\n\nWould you like to refresh display now?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                                    if (dr2 == DialogResult.Yes)
+                                    {
+                                        toolRefresh_Click(toolRefresh, new EventArgs());
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         }
 
         private void UpdateEnableButton(bool currentlyEnabled)
