@@ -102,7 +102,7 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             }
             else if (!hasPrimaryEntity)
             {
-                descriptionBuilder.Append(" any Entity");
+                descriptionBuilder.Append("any Entity");
             }
 
             return descriptionBuilder.ToString();
