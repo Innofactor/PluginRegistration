@@ -435,6 +435,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\layers.png" />
     <None Include="Resources\Package.png" />
     <None Include="Resources\Solutions.png" />
     <None Include="Resources\FilterActive.png" />

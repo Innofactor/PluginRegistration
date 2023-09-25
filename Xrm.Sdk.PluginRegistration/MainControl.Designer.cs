@@ -41,6 +41,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextNodeUnregister = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddToSolution = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCheckActiveLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneral = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuContextGeneralAssemblyRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextGeneralStepRegister = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +53,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.grvData = new System.Windows.Forms.DataGridView();
             this.toolBar = new System.Windows.Forms.ToolStrip();
             this.toolRegister = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolPackageRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.toolAssemblyRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStepRegister = new System.Windows.Forms.ToolStripMenuItem();
             this.toolImageRegister = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +85,7 @@ namespace Xrm.Sdk.PluginRegistration
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.propGridEntity = new System.Windows.Forms.PropertyGrid();
             this.btnSave = new System.Windows.Forms.Button();
-            this.toolPackageRegister = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuContextNode.SuspendLayout();
             this.mnuContextGeneral.SuspendLayout();
             this.grpGrid.SuspendLayout();
@@ -111,9 +113,11 @@ namespace Xrm.Sdk.PluginRegistration
             this.mnuContextNodeEnable,
             this.mnuContextNodeUpdate,
             this.mnuContextNodeUnregister,
-            this.tsmiAddToSolution});
+            this.toolStripSeparator3,
+            this.tsmiAddToSolution,
+            this.tsmiCheckActiveLayer});
             this.mnuContextNode.Name = "mnuContextNode";
-            this.mnuContextNode.Size = new System.Drawing.Size(270, 304);
+            this.mnuContextNode.Size = new System.Drawing.Size(270, 375);
             // 
             // mnuContextNodeAssemblyRegister
             // 
@@ -188,6 +192,13 @@ namespace Xrm.Sdk.PluginRegistration
             this.tsmiAddToSolution.Size = new System.Drawing.Size(269, 32);
             this.tsmiAddToSolution.Text = "Add to solution";
             this.tsmiAddToSolution.Click += new System.EventHandler(this.tsmiAddToSolution_Click);
+            // 
+            // tsmiCheckActiveLayer
+            // 
+            this.tsmiCheckActiveLayer.Name = "tsmiCheckActiveLayer";
+            this.tsmiCheckActiveLayer.Size = new System.Drawing.Size(269, 32);
+            this.tsmiCheckActiveLayer.Text = "Check active layer";
+            this.tsmiCheckActiveLayer.Click += new System.EventHandler(this.tsmiCheckActiveLayer_Click);
             // 
             // mnuContextGeneral
             // 
@@ -324,6 +335,14 @@ namespace Xrm.Sdk.PluginRegistration
             this.toolRegister.Name = "toolRegister";
             this.toolRegister.Size = new System.Drawing.Size(93, 29);
             this.toolRegister.Text = "&Register";
+            // 
+            // toolPackageRegister
+            // 
+            this.toolPackageRegister.Name = "toolPackageRegister";
+            this.toolPackageRegister.Size = new System.Drawing.Size(414, 34);
+            this.toolPackageRegister.Text = "Register New Package";
+            this.toolPackageRegister.Visible = false;
+            this.toolPackageRegister.Click += new System.EventHandler(this.toolPackageRegister_Click);
             // 
             // toolAssemblyRegister
             // 
@@ -614,13 +633,10 @@ namespace Xrm.Sdk.PluginRegistration
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // toolPackageRegister
+            // toolStripSeparator3
             // 
-            this.toolPackageRegister.Name = "toolPackageRegister";
-            this.toolPackageRegister.Size = new System.Drawing.Size(414, 34);
-            this.toolPackageRegister.Text = "Register New Package";
-            this.toolPackageRegister.Visible = false;
-            this.toolPackageRegister.Click += new System.EventHandler(this.toolPackageRegister_Click);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(266, 6);
             // 
             // MainControl
             // 
@@ -707,5 +723,7 @@ namespace Xrm.Sdk.PluginRegistration
         private System.Windows.Forms.ToolStripButton toolAddToSolution;
         private System.Windows.Forms.ToolStripMenuItem toolViewPackage;
         private System.Windows.Forms.ToolStripMenuItem toolPackageRegister;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCheckActiveLayer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
