@@ -211,7 +211,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             }
             else
             {
-                UpdatePluginEventHandlerControls(false,false);
+                UpdatePluginEventHandlerControls(false, false);
             }
 
             if (m_currentStep != null)
@@ -760,7 +760,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                     //}
 
                     rankChanged = (m_currentStep.Rank != step.Rank);
-                    
+
                     m_currentStep.SecureConfigurationRecordIdInvalid = m_secureConfigurationIdIsInvalid;
                     m_currentStep.Deployment = step.Deployment;
                     m_currentStep.Name = step.Name;
@@ -845,7 +845,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 crmFilteringAttributes.DisabledMessage = null;
                 if (m_currentStep == null)
                 {   // Default to no attributes, to encourage explicitly selecting them
-                    crmFilteringAttributes.ClearAttributes();
+                    crmFilteringAttributes.ClearAttributes(Message.Name == "Create");
                 }
             }
             else
@@ -926,16 +926,16 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             string typeName;
             if (cmbServiceEndpoint.Visible)
             {
-                typeName = ((CrmServiceEndpoint) cmbServiceEndpoint.SelectedItem)?.Name;
+                typeName = ((CrmServiceEndpoint)cmbServiceEndpoint.SelectedItem)?.Name;
             }
-            else if(cmbPlugins.Visible)
+            else if (cmbPlugins.Visible)
             {
                 CrmPlugin plugin = ((CrmPlugin)cmbPlugins.SelectedItem);
                 typeName = plugin.IsProfilerPlugin ? "Plug-in Profiler" : ((CrmPlugin)cmbPlugins.SelectedItem).TypeName;
             }
-            else if(cmbWebhook.Visible)
+            else if (cmbWebhook.Visible)
             {
-                typeName = ((CrmServiceEndpoint) cmbWebhook.SelectedItem)?.Name;
+                typeName = ((CrmServiceEndpoint)cmbWebhook.SelectedItem)?.Name;
             }
             else
             {
