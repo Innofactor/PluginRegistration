@@ -606,7 +606,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
 
-            if (Message.SupportsFilteredAttributes)
+            if (Message.SupportsFilteredAttributes && Message.Name != "Create")
             {
                 if (crmFilteringAttributes.AllAttributes)
                 {
