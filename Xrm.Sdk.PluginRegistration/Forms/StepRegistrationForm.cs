@@ -606,7 +606,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 }
             }
 
-            if (Message.SupportsFilteredAttributes && Message.Name != "Create")
+            if (Message.SupportsFilteredAttributes)
             {
                 if (crmFilteringAttributes.AllAttributes)
                 {
@@ -845,7 +845,7 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 crmFilteringAttributes.DisabledMessage = null;
                 if (m_currentStep == null)
                 {   // Default to no attributes, to encourage explicitly selecting them
-                    crmFilteringAttributes.ClearAttributes();
+                    crmFilteringAttributes.ClearAttributes(Message.Name == "Create");
                 }
             }
             else

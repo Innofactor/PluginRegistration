@@ -231,9 +231,9 @@ namespace Xrm.Sdk.PluginRegistration.Controls
 
         #region Public Methods
 
-        public void ClearAttributes()
+        public void ClearAttributes(bool allAttributes = false)
         {
-            UpdateParameters(null, false);
+            UpdateParameters(null, allAttributes);
         }
 
         #endregion Public Methods
