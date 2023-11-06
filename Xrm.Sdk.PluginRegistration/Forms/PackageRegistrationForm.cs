@@ -226,11 +226,31 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                 if (chkAddToSolution.Checked)
                 {
                     ((BackgroundWorker)bw).ReportProgress(0, "Adding to solution...");
+
+                    // Find the right component type for the current environment
+                    var scd = _service.RetrieveMultiple(new QueryExpression("solutioncomponentdefinition")
+                    {
+                        NoLock = true,
+                        ColumnSet = new ColumnSet("solutioncomponenttype"),
+                        Criteria = new FilterExpression
+                        {
+                            Conditions =
+                                {
+                                    new ConditionExpression("primaryentityname", ConditionOperator.Equal, "pluginpackage")
+                                }
+                        }
+                    }).Entities.FirstOrDefault();
+
+                    if (scd == null)
+                    {
+                        throw new Exception($"Unable to find the solution component type for table pluginpackage");
+                    }
+
                     _service.Execute(new AddSolutionComponentRequest
                     {
                         AddRequiredComponents = false,
                         ComponentId = pluginPackage.Id,
-                        ComponentType = 10090,
+                        ComponentType = scd.GetAttributeValue<int>("solutioncomponenttype"),
                         SolutionUniqueName = solutionUniqueName
                     });
                 }
