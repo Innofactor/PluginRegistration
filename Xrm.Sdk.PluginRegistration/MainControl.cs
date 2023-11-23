@@ -2086,7 +2086,7 @@ namespace Xrm.Sdk.PluginRegistration
             bool isForAssembly = false;
             Guid componentId = Guid.Empty;
             int componentType = -1;
-
+            bool isPackage = false;
             switch (trvPlugins.SelectedNode.NodeType)
             {
                 case CrmTreeNodeType.Assembly:
@@ -2103,6 +2103,7 @@ namespace Xrm.Sdk.PluginRegistration
                         var package = (CrmPluginPackage)trvPlugins.SelectedNode;
                         componentId = package.PackageId;
                         componentType = 10090;
+                        isPackage = true;
                     }
                     break;
 
@@ -2123,6 +2124,29 @@ namespace Xrm.Sdk.PluginRegistration
                     Message = $"Adding {trvPlugins.SelectedNode.NodeType} to solution {dialog.SelectedSolution.GetAttributeValue<string>("friendlyname")}",
                     Work = (bw, evt) =>
                     {
+                        if (isPackage)
+                        {
+                            var scd = Service.RetrieveMultiple(new QueryExpression("solutioncomponentdefinition")
+                            {
+                                NoLock = true,
+                                ColumnSet = new ColumnSet("solutioncomponenttype"),
+                                Criteria = new FilterExpression
+                                {
+                                    Conditions =
+                                {
+                                    new ConditionExpression("primaryentityname", ConditionOperator.Equal, "pluginpackage")
+                                }
+                                }
+                            }).Entities.FirstOrDefault();
+
+                            if (scd == null)
+                            {
+                                throw new Exception($"Unable to find the solution component type for table pluginpackage");
+                            }
+
+                            componentType = scd.GetAttributeValue<int>("solutioncomponenttype");
+                        }
+
                         Service.Execute(new AddSolutionComponentRequest
                         {
                             AddRequiredComponents = false,
