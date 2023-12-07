@@ -1,7 +1,7 @@
-﻿namespace Xrm.Sdk.PluginRegistration.Tests.Enities
+﻿namespace Xrm.Sdk.PluginRegistration.Tests.Entities
 {
-    using Entities;
-    using Entities.Transformation;
+    using Xrm.Sdk.PluginRegistration.Entities;
+    using Xrm.Sdk.PluginRegistration.Entities.Transformation;
     using Microsoft.Xrm.Sdk;
     using NUnit.Framework;
     using System;
