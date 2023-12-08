@@ -7,7 +7,7 @@
         public object alias { get; set; }
         public bool actions { get; set; }
         public bool cors { get; set; }
-        public bool expiry { get; set; }
+        public bool? expiry { get; set; }
         public int timeout { get; set; }
         public bool premium { get; set; }
         public object user_id { get; set; }
