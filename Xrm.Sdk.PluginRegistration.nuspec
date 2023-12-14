@@ -1,37 +1,43 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Xrm.Sdk.PluginRegistration</id>
-    <version>1.0.0</version>
-    <title>Plugin Registration for XrmToolBox</title>
-    <authors>Microsoft, Alexey, Jonas, Imran and the Power Platform community</authors>
-    <owners>Innofactor</owners>
-    <iconUrl>https://user-images.githubusercontent.com/13014005/80118859-41d95f80-8589-11ea-9262-8d18cbccbe0c.png</iconUrl>
-    <icon>icon.png</icon>
-    <projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>
-      The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite.
+	<metadata>
+		<id>Xrm.Sdk.PluginRegistration</id>
+		<version>1.0.0</version>
+		<title>Plugin Registration for XrmToolBox</title>
+		<authors>Microsoft, Alexey, Jonas, Imran and the Power Platform community</authors>
+		<owners>Innofactor</owners>
+		<iconUrl>https://user-images.githubusercontent.com/13014005/80118859-41d95f80-8589-11ea-9262-8d18cbccbe0c.png</iconUrl>
+		<icon>icon.png</icon>
+		<projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>
+			The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite.
 
-This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of an XrmToolBox tool and intended to work with the same set of the Common Data Service / Dynamics 365 / CRM versions as supported by main application.
-    </description>
-    <summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
-    <releaseNotes>
--- Bug Fixes --
-#108: Added support for Plugin Packages @MscrmTools
-#49: Added image information to export
-#57 Added User Context to export, user name and userid will be mentioned for a specific user.
+			This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of an XrmToolBox tool and intended to work with the same set of the Common Data Service / Dynamics 365 / CRM versions as supported by main application.
+		</description>
+		<summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
+		<releaseNotes>
+			-- Bug Fixes --
+			#108: Added support for Plugin Packages @MscrmTools
+			#49: Added image information to export
+			#57 Added User Context to export, user name and userid will be mentioned for a specific user.
 
-	</releaseNotes>
-    <tags>XrmToolBox Plugins PluginRegistration</tags>
-    <dependencies>
-      <dependency id="XrmToolBoxPackage" version="1.2022.10.58" />
-      <dependency id="CsvHelper" version="30.0.1"/>
-      <dependency id="EPPlus" version="6.1.1"/>
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="Xrm.Sdk.PluginRegistration\bin\Release\Xrm.Sdk.PluginRegistration.dll" target="lib\net462\Plugins" />
-    <file src="icon.png" target="" />
-  </files>
+		</releaseNotes>
+		<tags>XrmToolBox Plugins PluginRegistration</tags>
+		<dependencies>
+			<dependency id="XrmToolBoxPackage" version="1.2022.10.58" />
+			<dependency id="CsvHelper" version="30.0.1"/>
+			<dependency id="EPPlus" version="6.1.1"/>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Xrm.Sdk.PluginRegistration.dll" target="lib\net48\Plugins" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\CsvHelper.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\EPPlus.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\EPPlus.Interfaces.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\EPPlus.System.Drawing.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.IO.RecyclableMemoryStream.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="icon.png" target="" />
+	</files>
 </package>
