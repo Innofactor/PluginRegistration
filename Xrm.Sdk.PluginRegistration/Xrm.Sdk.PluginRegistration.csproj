@@ -77,10 +77,6 @@
     <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="ILMerge, Version=3.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ILMerge.3.0.41\tools\net452\ILMerge.exe</HintPath>
-    </Reference>
     <Reference Include="McTools.Xrm.Connection, Version=1.2023.6.56, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
       <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2023.6.56\lib\net462\McTools.Xrm.Connection.dll</HintPath>
       <Private>True</Private>
@@ -750,9 +746,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "Plugins" mkdir "Plugins"
-
-copy /Y $(TargetName).dll "Plugins\$(TargetName).dll"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
