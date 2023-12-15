@@ -38,6 +38,7 @@
 		<file src="Xrm.Sdk.PluginRegistration\bin\Release\EPPlus.System.Drawing.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
 		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.IO.RecyclableMemoryStream.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
 		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
+		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.Bcl.HashCode.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
 		<file src="icon.png" target="" />
 	</files>
 </package>
