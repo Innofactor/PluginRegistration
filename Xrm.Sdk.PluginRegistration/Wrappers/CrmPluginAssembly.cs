@@ -44,7 +44,10 @@ namespace Xrm.Sdk.PluginRegistration.Wrappers
         Disk = 1,
 
         [Description("GAC")]
-        GAC = 2
+        GAC = 2,
+
+        [Description("Package")]
+        Package = 4
     }
 
     [Serializable]
