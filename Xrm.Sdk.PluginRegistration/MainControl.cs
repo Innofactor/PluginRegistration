@@ -1929,6 +1929,11 @@ namespace Xrm.Sdk.PluginRegistration
             {
                 case CrmTreeNodeType.Assembly:
                     {
+                        if(((CrmPluginAssembly)trvPlugins.SelectedNode).SourceType == CrmAssemblySourceType.Package)
+                        {
+                            MessageBox.Show("This assembly is part of a package and cannot be updated. Please update the package instead.", "Update Assembly", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
                         var regForm = new PluginRegistrationForm(Organization, this, (CrmPluginAssembly)trvPlugins.SelectedNode, m_settings.Mappings);
                         regForm.ShowDialog(ParentForm);
                         SettingsManager.Instance.Save(GetType(), m_settings, ConnectionDetail.ConnectionId.Value.ToString());
