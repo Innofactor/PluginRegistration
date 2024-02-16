@@ -88,7 +88,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             txtName.Text = package.Name.Split('_')[1];
             txtVersion.Text = package.Version;
 
-            AnalyzePackage();
+            if (!String.IsNullOrEmpty(txtPluginPackageFile.Text))
+                AnalyzePackage();
 
             Height = Height - 50;
         }
