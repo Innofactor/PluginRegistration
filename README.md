@@ -1,11 +1,11 @@
-# The Classic Microsoft Dynamics CRM tool
+# The Classic Microsoft Dynamics CRM Plugin Registration Tool
 ## Now in the XrmToolBox suite
 
 [![Join the chat at https://gitter.im/Innofactor/PluginRegistration](https://badges.gitter.im/Innofactor/PluginRegistration.svg)](https://gitter.im/Innofactor/PluginRegistration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ##### Project description
 
-![Plugin Registration](http://i.imgur.com/83pJL6K.png)
+![Plugin Registration](https://github.com/Innofactor/PluginRegistration/assets/13014005/edd97502-f897-42ef-b6b8-6f77ac0c9f83)
 
 This is special flavor of classical Plugin Registration Tool provided by Microsoft as CRM SDK code sample. It was adopted to the format of [XrmToolBox](http://www.xrmtoolbox.com/) plugin and itended to work with the same set of the Dynamics CRM versions as supported by main application.
 
@@ -14,6 +14,10 @@ This is special flavor of classical Plugin Registration Tool provided by Microso
 * All main operations are working (but still use carefully on production environments!);
 * Azure-related code was stripped away;
 * Plugin might 'freeze' for couple seconds during calls to CRM backend (user should be notified about operation performed in `XrmToolBox`-like way);
+* Some add-on features Including 
+	* Filtering Managed/Unmanaged Assemblies 
+	* Exporting Plugin Assemblies, Steps and image information to Excel
+	* Filtering Attributes etc.
 
 ##### Project needs
 
