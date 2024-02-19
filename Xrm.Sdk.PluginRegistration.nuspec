@@ -8,6 +8,7 @@
 		<owners>Innofactor</owners>
 		<iconUrl>https://user-images.githubusercontent.com/13014005/80118859-41d95f80-8589-11ea-9262-8d18cbccbe0c.png</iconUrl>
 		<icon>icon.png</icon>
+		<readme>docs\README.md</readme>
 		<projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
@@ -18,10 +19,7 @@
 		<summary>The Classic Microsoft Dynamics CRM tool, now in the XrmToolBox suite</summary>
 		<releaseNotes>
 			-- Bug Fixes --
-			#108: Added support for Plugin Packages @MscrmTools
-			#49: Added image information to export
-			#57 Added User Context to export, user name and userid will be mentioned for a specific user.
-
+			#139: Bug fixing in Package handling @MarkMpn
 		</releaseNotes>
 		<tags>XrmToolBox Plugins PluginRegistration</tags>
 		<dependencies>
@@ -40,5 +38,6 @@
 		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
 		<file src="Xrm.Sdk.PluginRegistration\bin\Release\Microsoft.Bcl.HashCode.dll" target="lib\net48\Plugins\Xrm.Sdk.PluginRegistration" />
 		<file src="icon.png" target="" />
+		<file src="README.md" target="docs\" />
 	</files>
 </package>
