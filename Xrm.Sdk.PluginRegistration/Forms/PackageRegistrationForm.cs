@@ -88,7 +88,8 @@ namespace Xrm.Sdk.PluginRegistration.Forms
             txtName.Text = package.Name.Split('_')[1];
             txtVersion.Text = package.Version;
 
-            AnalyzePackage();
+            if (!String.IsNullOrEmpty(txtPluginPackageFile.Text))
+                AnalyzePackage();
 
             Height = Height - 50;
         }
@@ -120,11 +121,31 @@ namespace Xrm.Sdk.PluginRegistration.Forms
                             doc.Load(xReader);
 
                             XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
-                            nsmgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd");
+                            nsmgr.AddNamespace("ns", doc.DocumentElement.NamespaceURI);
 
                             var metadata = doc.SelectSingleNode("ns:package/ns:metadata", nsmgr);
-                            id = metadata.SelectSingleNode("ns:id", nsmgr).InnerText;
-                            version = metadata.SelectSingleNode("ns:version", nsmgr).InnerText;
+
+                            if (metadata == null)
+                            {
+                                MessageBox.Show(this, "Package metadata not found\r\n\r\nCould not find the package/metadata node in " + part.Uri, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            id = metadata.SelectSingleNode("ns:id", nsmgr)?.InnerText;
+
+                            if (id == null)
+                            {
+                                MessageBox.Show(this, "Package metadata not found\r\n\r\nCould not find the package/metadata/id node in " + part.Uri, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            version = metadata.SelectSingleNode("ns:version", nsmgr)?.InnerText;
+
+                            if (version == null)
+                            {
+                                MessageBox.Show(this, "Package metadata not found\r\n\r\nCould not find the package/metadata/version node in " + part.Uri, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
                         }
                     }
                 }
