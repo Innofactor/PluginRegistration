@@ -8,6 +8,7 @@
 		<owners>Innofactor</owners>
 		<iconUrl>https://user-images.githubusercontent.com/13014005/80118859-41d95f80-8589-11ea-9262-8d18cbccbe0c.png</iconUrl>
 		<icon>icon.png</icon>
+		<readme>docs\README.md</readme>
 		<projectUrl>https://github.com/Innofactor/PluginRegistration</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
