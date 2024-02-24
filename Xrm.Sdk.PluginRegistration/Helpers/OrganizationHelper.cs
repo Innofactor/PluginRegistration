@@ -1416,7 +1416,6 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                     break;
 
                 case "Create":
-
                     if (org.ConnectionDetail.OrganizationMajorVersion > 9 || (org.ConnectionDetail.OrganizationMajorVersion == 9 && org.ConnectionDetail.OrganizationMinorVersion >= 2))
                     {
                         message.SupportsFilteredAttributes = true;
@@ -1424,6 +1423,15 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
 
                     message.ImageMessagePropertyNames.Add(
                         new ImageMessagePropertyName(ParameterName.Id, "Created Entity"));
+                    break;
+
+                case "CreateMultiple":
+                    if (org.ConnectionDetail.OrganizationMajorVersion > 9 || (org.ConnectionDetail.OrganizationMajorVersion == 9 && org.ConnectionDetail.OrganizationMinorVersion >= 2))
+                    {
+                        message.SupportsFilteredAttributes = true;
+                        message.ImageMessagePropertyNames.Add(
+                            new ImageMessagePropertyName(ParameterName.Ids, "Created Entities"));
+                    }
                     break;
 
                 case "Delete":
@@ -1483,6 +1491,15 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
                         new ImageMessagePropertyName(ParameterName.Target, "Updated Entity"));
                     break;
 
+                case "UpdateMultiple":
+                    if (org.ConnectionDetail.OrganizationMajorVersion > 9 || (org.ConnectionDetail.OrganizationMajorVersion == 9 && org.ConnectionDetail.OrganizationMinorVersion >= 2))
+                    {
+                        message.SupportsFilteredAttributes = true;
+                        message.ImageMessagePropertyNames.Add(
+                            new ImageMessagePropertyName(ParameterName.Targets, "Updated Entities"));
+                    }
+                    break;
+
                 default:
                     //There are no valid message property names for images for any other messages
                     break;
@@ -1502,8 +1519,10 @@ namespace Xrm.Sdk.PluginRegistration.Helpers
             public const string EmailId = "EmailId";
             public const string EntityMoniker = "EntityMoniker";
             public const string Id = "Id";
+            public const string Ids = "Ids";
             public const string SubordinateId = "SubordinateId";
             public const string Target = "Target";
+            public const string Targets = "Targets";
 
             #endregion Public Fields
         }
